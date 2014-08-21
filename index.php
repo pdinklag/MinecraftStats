@@ -85,26 +85,28 @@
             <span class="icon"><img src="<? echo(getStatIcon($viewStat)); ?>"/></span>
             <? echo($viewStat['award']); ?>
         </div>
-        <div id="ranking">
-            <p>Ranking for the "<? echo($viewStat['award'])?>" award (<? echo($viewStat['desc'])?>):</p>
-            <table>
-                <tr>
-                    <th>Rank</th>
-                    <th>Player</th>
-                    <th><? echo($viewStat['desc'])?></th>
-                </tr>
-                <?
-                    foreach($viewStat['ranking'] as $i => $e) {
-                        ?>
-                        <tr>
-                            <td class="rank <? echo("place$i medal$i"); ?>"><? echo($i + 1); ?></td>
-                            <td class="player <? echo("place$i"); ?>"><? echo($players[$e[0]]); ?></td>
-                            <td class="score <? echo("place$i"); ?>"><? echo(getStatDisplayValue($viewStat, $e[1])); ?></td>
-                        </tr>
-                        <?
-                    }
-                ?>
-            </table>
+        <div id="ranking-wrapper">
+            <div id="ranking">
+                <p>Ranking for the "<? echo($viewStat['award'])?>" award (<? echo($viewStat['desc'])?>):</p>
+                <table>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th><? echo($viewStat['desc'])?></th>
+                    </tr>
+                    <?
+                        foreach($viewStat['ranking'] as $i => $e) {
+                            ?>
+                            <tr>
+                                <td class="rank <? echo("place$i medal$i"); ?>"><? echo($i + 1); ?></td>
+                                <td class="player <? echo("place$i"); ?>"><? echo($players[$e[0]]); ?></td>
+                                <td class="score <? echo("place$i"); ?>"><? echo(getStatDisplayValue($viewStat, $e[1])); ?></td>
+                            </tr>
+                            <?
+                        }
+                    ?>
+                </table>
+            </div>
         </div>
         <?
     } else {
@@ -155,6 +157,12 @@
 <?
     }
 ?>
+<div id="foot-wrapper">
+    &nbsp;
+    <div id="foot">
+        Written by Patrick Dinklage a.k.a. "pdinklag".
+    </div>
+</div>
 
 </body>
 </html>
