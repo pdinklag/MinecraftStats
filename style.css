@@ -1,0 +1,279 @@
+@font-face {
+	font-family: 'minecraftfont';
+	src: url('minecraftfont/minecraftfont.eot');
+	src: local('minecraftfont'), url('minecraftfont/minecraftfont.woff') format('woff'), url('minecraftfont/minecraftfont.ttf') format('truetype');
+}
+
+body {
+    font-family: sans-serif;
+    font-size: 12pt;
+    
+    background-image: url('img/bg/grass_side.png'), url('img/bg/dirt.png'), url('img/bg/stone.png');
+    background-position: left top, left 64px, left 128px;
+    background-repeat: repeat-x, repeat-x, repeat;
+}
+
+h1 {
+    clear: both;
+
+    text-align: center;
+    font-family: 'minecraftfont';
+    font-size: 125%;
+    font-weight: normal;
+    color: #C0C0C0;
+    
+    margin-top: 1em;
+    margin-bottom: 0;
+}
+
+#last-update {
+    position: absolute;
+    top: 0;
+    right: 0;
+    
+    font-size: 75%;
+    font-style: italic;
+    color: #808080;
+    
+    padding-top: 3ex;
+    padding-right: 1em;
+}
+
+#back-to-index {
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    font-size: 75%;
+    font-style: italic;
+    color: #C0C0C0;
+    
+    padding-top: 3ex;
+    padding-left: 1em;
+}
+
+#back-to-index a {
+    color: #C0C0C0;
+}
+
+#ranking-header {
+    margin-top: 0;
+    margin-bottom: 0;
+    
+    text-align: center;
+    font-family: 'minecraftfont';
+    font-size: 350%;
+    color: #FFFFFF;
+}
+
+#ranking-header span.icon {
+    display: inline-block;
+    width: 76px;
+    height: 76px;
+
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+
+    vertical-align: -10%;
+}
+
+#ranking-header span.icon img {
+    margin-left: 0px;
+    margin-top: 6px;
+    
+    width: 64px;
+    height: 64px;
+    
+    border: none;
+}
+
+#ranking {
+    position: absolute;
+    left: 30%;
+    right: 30%;
+    
+    margin-top: 2ex;
+    margin-bottom: 2ex;
+}
+
+#ranking p {
+    text-align: center;
+    font-family: 'minecraftfont';
+    font-size: 75%;
+    color: #FFFFFF;
+}
+
+#ranking table {
+    width: 100%;
+
+    font-family: 'minecraftfont';
+    color: #FFFFFF;
+
+    border: 2px solid #282828;
+    border-collapse: collapse;
+    background-image: url('img/bg/stonebrick.png');
+}
+
+#ranking table th {
+    font-weight: normal;
+    text-decoration: underline;
+    color: #C0C0C0;
+    border: 2px dotted #606060;
+    background-color: rgba(0, 0, 0, 0.33);
+    padding: 0.5ex;
+}
+
+#ranking table td {
+    padding: 0.5ex;
+    border: 2px dotted #606060;
+}
+
+#ranking table td.medal0 {
+    background-image: url('img/fatcow/medal_award_gold.png');
+    background-position: 0.5em center;
+    background-repeat: no-repeat;
+}
+
+#ranking table td.medal1 {
+    background-image: url('img/fatcow/medal_award_silver.png');
+    background-position: 0.5em center;
+    background-repeat: no-repeat;
+}
+
+#ranking table td.medal2 {
+    background-image: url('img/fatcow/medal_award_bronze.png');
+    background-position: 0.5em center;
+    background-repeat: no-repeat;
+}
+
+#ranking table td.place0 {
+    background-color: rgba(255,224,0,0.33);
+}
+
+#ranking table td.place1 {
+    background-color: rgba(255,255,255,0.33);
+}
+
+#ranking table td.place2 {
+    background-color: rgba(255,128,0,0.33);
+}
+
+#ranking table td.rank {
+    text-align: right;
+    color: #C0C0C0;
+}
+
+#ranking table td.player {
+    font-weight: bold;
+}
+
+#ranking table td.score {
+    color: #C0C0C0;
+}
+
+#hof-header {
+    text-align: center;
+    font-family: 'minecraftfont';
+    font-size: 350%;
+    color: #FFFFFF;
+    
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#hof {
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    
+    margin-top: 2ex;
+    margin-bottom: 2ex;
+}
+
+#hof .award-box {
+    font-family: 'minecraftfont';
+    font-size: 12pt;
+
+    border: 2px solid #282828;
+    border-radius: 6px;
+    background-image: url('img/bg/stonebrick.png');
+    
+    float: left;
+    width: 23%;
+    
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    margin-top: 1ex;
+    padding: 0.5ex;
+}
+
+#hof .award-box .award-icon {
+    width: 40px;
+    height: 40px;
+    float: left;
+    
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+}
+
+#hof .award-box .award-icon img {
+    margin-left: 4px;
+    margin-top: 4px;
+    
+    width: 32px;
+    height: 32px;
+    
+    border: none;
+}
+
+#hof .award-box .award-title {
+    height: 40px;
+
+    font-size: 125%;
+    
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    
+    margin-left: 42px;
+    padding-left: 0.5em;
+}
+
+#hof .award-box .award-title a {
+    color: #A0F0FF;
+}
+
+#hof .award-box .award-winner-box {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    
+    padding: 0.5ex;
+    margin-top: 0.5ex;
+}
+
+#hof .award-box .award-winner {
+    text-align: center;
+    font-weight: bold;
+    color: #FFFFFF;
+    
+    /*border-top: 2px solid #383838;*/
+
+}
+
+#hof .award-box .award-winner span.award-winner-nobody {
+    font-weight: normal;
+    font-style: italic;
+}
+
+#hof .award-box .award-text {
+    text-align: center;
+    color: #A0A0A0;
+    
+    font-size: 75%;
+    /*font-style: italic;*/
+}
+
+#hof .award-box .award-text span.award-score {
+    font-weight: bold;
+    
+    margin-left: 0.5em;
+}
