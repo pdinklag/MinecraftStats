@@ -10,11 +10,29 @@
     
     function cmToDistance($cm) {
         if($cm > 100000) {
-            return number_format($cm / 100000, 1) . "km";
+            return number_format($cm / 100000, 1) . 'km';
         } else if($cm > 100) {
-            return (int)($cm / 100) . "m";
+            return (int)($cm / 100) . 'm';
         } else {
-            return $cm . "cm";
+            return $cm . 'cm';
+        }
+    }
+    
+    function ticksToTime($ticks) {
+        $seconds = (int)($ticks / 20);
+        
+        $minutes = (int)($seconds / 60);
+        $seconds %= 60;
+        
+        $hours = (int)($minutes / 60);
+        $minutes %= 60;
+        
+        if($hours > 0) {
+            return sprintf("%d:%02d h", $hours, $minutes);
+        } else if($minutes > 0) {
+            return sprintf("%d:%02d min", $minutes, $seconds);
+        } else {
+            return "$seconds s";
         }
     }
     
@@ -69,7 +87,8 @@
             $json['stat.useItem.minecraft.beef'] +
             $json['stat.useItem.minecraft.mutton'] +
             $json['stat.useItem.minecraft.porkchop'] +
-            $json['stat.useItem.minecraft.rabbit'];
+            $json['stat.useItem.minecraft.rabbit'] +
+            $json['stat.useItem.minecraft.fish'];
             
         return ($sum > 0) ? $sum : FALSE;
     }
@@ -101,6 +120,14 @@
         return ($sum > 0) ? $sum : FALSE;
     }
     
+    function eatStewProvider($json) {
+        $sum =
+            $json['stat.useItem.minecraft.mushroom_stew'] +
+            $json['stat.useItem.minecraft.rabbit_stew'];
+            
+        return ($sum > 0) ? $sum : FALSE;
+    }
+    
     function eatCrapProvider($json) {
         $sum =
             $json['stat.useItem.minecraft.rotten_flesh'] +
@@ -110,11 +137,45 @@
         return ($sum > 0) ? $sum : FALSE;
     }
     
-    function mineLogProvider($json) {
+    function exploreBiomesProvider($json) {
+        $sum = count($json['achievement.exploreAllBiomes']['progress']);
+        return ($sum > 0) ? $sum : FALSE;
+    }
+    
+    function placePlantProvider($json) {
         $sum =
-            $json['stat.mineBlock.minecraft.log'] +
-            $json['stat.mineBlock.minecraft.log2'];
-            
+            $json['stat.useItem.minecraft.sapling'] +
+            $json['stat.useItem.minecraft.yellow_flower'] +
+            $json['stat.useItem.minecraft.red_flower'] +
+            $json['stat.useItem.minecraft.double_plant'];
+        
+        return ($sum > 0) ? $sum : FALSE;
+    }
+    
+    function placeRedstoneProvider($json) {
+        $sum =
+            $json['stat.useItem.minecraft.redstone'] +
+            $json['stat.useItem.minecraft.stone_button'] +
+            $json['stat.useItem.minecraft.wooden_button'] +
+            $json['stat.useItem.minecraft.daylight_detector'] +
+            $json['stat.useItem.minecraft.daylight_detector_inverted'] +
+            $json['stat.useItem.minecraft.detector_rail'] +
+            $json['stat.useItem.minecraft.lever'] +
+            $json['stat.useItem.minecraft.stone_pressure_plate'] +
+            $json['stat.useItem.minecraft.wooden_pressure_plate'] +
+            $json['stat.useItem.minecraft.light_weighted_pressure_plate'] +
+            $json['stat.useItem.minecraft.heavy_weighted_pressure_plate'] +
+            $json['stat.useItem.minecraft.redstone_torch'];
+        
+        return ($sum > 0) ? $sum : FALSE;
+    }
+    
+    function placeTrapProvider($json) {
+        $sum =
+            $json['stat.useItem.minecraft.trapped_chest'] +
+            $json['stat.useItem.minecraft.tripwire_hook'] +
+            $json['stat.useItem.minecraft.tripwire'];
+        
         return ($sum > 0) ? $sum : FALSE;
     }
 
@@ -142,6 +203,18 @@
             'award' => 'Minecraft Open',
             'desc'  => 'Ghasts killed with own fireball',
             'icon'  => 'items/fireball.png',
+        ],
+        [
+            'id' => 'achievement.killEnemy',
+            'award' => 'Hero',
+            'desc'  => 'Enemies killed',
+            'icon'  => 'items/diamond_sword.png',
+        ],
+        [
+            'id' => 'achievement.mineWood',
+            'award' => 'Woodcutter',
+            'desc'  => 'Wood cut',
+            'icon'  => 'blocks/log_oak_top.png',
         ],
         [
             'id' => 'achievement.openInventory',
@@ -183,6 +256,13 @@
             'provider' => 'eatRawMeatProvider',
         ],
         [
+            'id' => 'custom.eatStew',
+            'award' => 'Soupy Kaspar',
+            'desc'  => 'Stews eaten',
+            'icon'  => 'items/mushroom_stew.png',
+            'provider' => 'eatStewProvider',
+        ],
+        [
             'id' => 'custom.eatFish',
             'award' => 'Fish Gourmet',
             'desc'  => 'Fish eaten',
@@ -204,11 +284,32 @@
             'provider' => 'eatCrapProvider',
         ],
         [
-            'id' => 'custom.mineBlock.log',
-            'award' => 'Woodcutter',
-            'desc'  => 'Logs cut',
-            'icon'  => 'blocks/log_oak_top.png',
-            'provider' => 'mineLogProvider',
+            'id' => 'custom.exploreBiomes',
+            'award' => 'Explorer',
+            'desc'  => 'Different biomes explored',
+            'icon'  => 'items/map_filled.png',
+            'provider' => 'exploreBiomesProvider',
+        ],
+        [
+            'id' => 'custom.placePlant',
+            'award' => 'Green Thumb',
+            'desc'  => 'Saplings and flowers planted',
+            'icon'  => 'blocks/sapling_oak.png',
+            'provider' => 'placePlantProvider',
+        ],
+        [
+            'id' => 'custom.placeRedstone',
+            'award' => 'Electrician',
+            'desc'  => 'Redstone items placed',
+            'icon'  => 'items/redstone_dust.png',
+            'provider' => 'placeRedstoneProvider',
+        ],
+        [
+            'id' => 'custom.placeTrap',
+            'award' => 'Prankster',
+            'desc'  => 'Trap items placed',
+            'icon'  => 'blocks/trip_wire_source.png',
+            'provider' => 'placeTrapProvider',
         ],
         [
             'id' => 'stat.animalsBred',
@@ -241,6 +342,12 @@
             'award' => 'Where am I?',
             'desc'  => 'Compasses crafted',
             'icon'  => 'items/compass.png',
+        ],
+        [
+            'id' => 'stat.craftItem.minecraft.cookie',
+            'award' => 'Cookie Monster',
+            'desc'  => 'Cookies made',
+            'icon'  => 'items/cookie.png',
         ],
         [
             'id' => 'stat.craftItem.minecraft.ender_eye',
@@ -533,6 +640,12 @@
             'icon'  => 'blocks/lapis_ore.png',
         ],
         [
+            'id' => 'stat.mineBlock.minecraft.netherrack',
+            'award' => 'Terraformer',
+            'desc'  => 'Netherrack mined',
+            'icon'  => 'blocks/netherrack.png',
+        ],
+        [
             'id' => 'stat.mineBlock.minecraft.obsidian',
             'award' => 'Obsidian Miner',
             'desc'  => 'Obsidian blocks mined',
@@ -588,6 +701,12 @@
             'displayFunc' => 'cmToDistance',
         ],
         [
+            'id' => 'stat.playOneMinute',
+            'award' => 'Addict',
+            'desc'  => 'Time played on the server',
+            'displayFunc' => 'ticksToTime',
+        ],
+        [
             'id' => 'stat.sprintOneCm',
             'award' => 'Marathon Runner',
             'desc'  => 'Distance sprinted',
@@ -606,6 +725,12 @@
             'desc'  => 'Villagers talked to',
         ],
         [
+            'id' => 'stat.timeSinceDeath',
+            'award' => 'Survivor',
+            'desc'  => 'Time since last death',
+            'displayFunc' => 'ticksToTime',
+        ],
+        [
             'id' => 'stat.tradedWithVillager',
             'award' => 'Trader',
             'desc'  => 'Villager trades completed',
@@ -616,6 +741,12 @@
             'award' => 'Treasure Hunter',
             'desc'  => 'Treasures fished',
             'icon'  => 'items/gold_ingot.png',
+        ],
+        [
+            'id' => 'stat.useItem.minecraft.banner',
+            'award' => 'Propaganda',
+            'desc'  => 'Banners placed',
+            'icon'  => 'items/banner.png',
         ],
         [
             'id' => 'stat.useItem.minecraft.dirt',
@@ -660,6 +791,12 @@
             'icon'  => 'items/bucket_lava.png',
         ],
         [
+            'id' => 'stat.useItem.minecraft.milk_bucket',
+            'award' => 'Milksop',
+            'desc'  => 'Milk buckets drunk',
+            'icon'  => 'items/bucket_milk.png',
+        ],
+        [
             'id' => 'stat.useItem.minecraft.noteblock',
             'award' => 'Musician',
             'desc'  => 'Note blocks placed',
@@ -684,12 +821,6 @@
             'icon'  => 'blocks/rail_normal.png',
         ],
         [
-            'id' => 'stat.useItem.minecraft.redstone',
-            'award' => 'Electrician',
-            'desc'  => 'Redstone wire placed',
-            'icon'  => 'items/redstone_dust.png',
-        ],
-        [
             'id' => 'stat.useItem.minecraft.sign',
             'award' => 'readme.txt',
             'desc'  => 'Signs placed',
@@ -700,6 +831,12 @@
             'award' => 'Enlightened',
             'desc'  => 'Torches placed',
             'icon'  => 'blocks/torch_on.png',
+        ],
+        [
+            'id' => 'stat.useItem.minecraft.writable_book',
+            'award' => 'Bestseller',
+            'desc'  => 'Books written',
+            'icon'  => 'items/book_writable.png',
         ],
         [
             'id' => 'stat.walkOneCm',
