@@ -18,7 +18,15 @@ span.player {
 }
 
 span.player img {
-    border: none;
+    display: none; /* Magic will be done using JavaScript */
+}
+
+span.player canvas {
+    width: 24px;
+    height: 24px;
+    
+    margin-right: 0.25em;
+    border: 1px solid #202020;
 }
 
 h1 {

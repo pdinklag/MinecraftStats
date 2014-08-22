@@ -60,7 +60,7 @@
     function createPlayerWidget($uuid) {
         return
             '<span class="player">' .
-            //'<img src="' . getPlayerSkin($uuid) . '"/>' .
+            '<img src="' . getPlayerSkin($uuid) . '"/><span><canvas/></span>' .
             getPlayerName($uuid) .
             '</span>';
     }
@@ -202,6 +202,18 @@
         Written by Patrick Dinklage a.k.a. "pdinklag".
     </div>
 </div>
+
+<script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
+    $(".player img").load(function(event) {
+        var img = event.target;
+        var canvas = img.parentNode.getElementsByTagName("canvas")[0];
+        
+        var ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, 8, 8, 8, 8, 0, 0, canvas.width, canvas.height);
+    });
+</script>
 
 </body>
 </html>
