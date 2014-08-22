@@ -34,7 +34,7 @@
     
         $d = $b[1] - $a[1];    
         if($d == 0) {
-            return strcmp($players[$a[0]]['name'], $players[$b[0]]['name']);
+            return strcasecmp($players[$a[0]]['name'], $players[$b[0]]['name']);
         } else {
             return $d;
         }
