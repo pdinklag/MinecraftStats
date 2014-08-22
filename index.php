@@ -121,7 +121,13 @@
         <div id="hof-header">Hall of Fame</div>
         <div id="hof">
             <?
-                foreach($stats as $i => $stat) {
+                //Stat sorter
+                function compareStats($a, $b) {
+                    return strcmp($a['award'], $b['award']);
+                }
+                
+                usort($stats, 'compareStats');
+                foreach($stats as $stat) {
                     ?>
                         <div class="award-box">
                             <div class="award-icon">

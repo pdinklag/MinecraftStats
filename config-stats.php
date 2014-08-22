@@ -822,7 +822,7 @@
         ],
         [
             'id' => 'stat.useItem.minecraft.sign',
-            'award' => 'readme.txt',
+            'award' => 'Readme.txt',
             'desc'  => 'Signs placed',
             'icon'  => 'items/sign.png',
         ],
