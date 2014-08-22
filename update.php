@@ -5,6 +5,8 @@
      
     require_once('config.php');
     
+    error_reporting(E_ALL ^ E_NOTICE);
+    
     //Resolves a UUID to the last ingame name used
     function lookupPlayerName($uuid) {
         $uuid = str_replace("-", "", $uuid);
