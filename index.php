@@ -212,6 +212,10 @@
         var ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = false;
         ctx.drawImage(img, 8, 8, 8, 8, 0, 0, canvas.width, canvas.height);
+    }).each(function() {
+        if(this.complete) {
+            $(this).load();
+        }
     });
 </script>
 
