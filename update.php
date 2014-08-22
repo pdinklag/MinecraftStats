@@ -16,7 +16,14 @@
     
     //Comparator for rankings (using usort)
     function compareRankingEntries($a, $b) {
-        return $b[1] - $a[1];
+        global $players;
+    
+        $d = $b[1] - $a[1];    
+        if($d == 0) {
+            return strcmp($players[$a[0]], $players[$b[0]]);
+        } else {
+            return $d;
+        }
     }
     
     //Scan raw data dir
