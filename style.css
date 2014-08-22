@@ -13,6 +13,14 @@ body {
     background-repeat: repeat-x, repeat-x, repeat;
 }
 
+span.player {
+    font-weight: bold;
+}
+
+span.player img {
+    border: none;
+}
+
 h1 {
     clear: both;
 

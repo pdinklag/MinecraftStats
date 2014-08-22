@@ -18,6 +18,10 @@
     //Icons
     $awardIconDir = "icons";
     $defaultIcon = "minecraft-wiki/64px-No_image.svg.png";
+    
+    //Skins
+    
+    $defaultSkin = "skins/steve.png";
 
     //Load Stats configuration
     require("config-stats.php");

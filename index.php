@@ -32,6 +32,39 @@
         }
     }
     
+    function getPlayerName($uuid) {
+        global $players;
+        
+        if(array_key_exists($uuid, $players)) {
+            return $players[$uuid]['name'];
+        } else {
+            return $uuid;
+        }
+    }
+    
+    function getPlayerSkin($uuid) {
+        global $players, $defaultSkin;
+        
+        if(array_key_exists($uuid, $players)) {
+            $info = $players[$uuid];
+            if(isset($info['skinUrl'])) {
+                return $info['skinUrl'];
+            } else {
+                return $defaultSkin;
+            }
+        } else {
+            return $defaultSkin;
+        }
+    }
+    
+    function createPlayerWidget($uuid) {
+        return
+            '<span class="player">' .
+            //'<img src="' . getPlayerSkin($uuid) . '"/>' .
+            getPlayerName($uuid) .
+            '</span>';
+    }
+    
     //Check if a certain stat is to be viewed
     if(isset($_GET["stat"])) {
         $viewStat = findStat($_GET["stat"]);
@@ -99,7 +132,7 @@
                             ?>
                             <tr>
                                 <td class="rank <? echo("place$i medal$i"); ?>"><? echo($i + 1); ?></td>
-                                <td class="player <? echo("place$i"); ?>"><? echo($players[$e[0]]); ?></td>
+                                <td class="player <? echo("place$i"); ?>"><? echo(createPlayerWidget($e[0])); ?></td>
                                 <td class="score <? echo("place$i"); ?>"><? echo(getStatDisplayValue($viewStat, $e[1])); ?></td>
                             </tr>
                             <?
@@ -139,7 +172,7 @@
                             
                             <?
                                 if(array_key_exists($stat['id'], $hof)) {
-                                    $awardWinner = $players[$hof[$stat['id']][0]];
+                                    $awardWinner = createPlayerWidget($hof[$stat['id']][0]);
                                     $awardText = $stat['desc'] . ': <span class="award-score">' . getStatDisplayValue($stat, $hof[$stat['id']][1]) . '</span>';
                                 } else {
                                     $awardWinner = '<span class="award-winner-nobody">Nobody yet</span>';

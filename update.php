@@ -8,10 +8,24 @@
     error_reporting(E_ALL ^ E_NOTICE);
     
     //Resolves a UUID to the last ingame name used
-    function lookupPlayerName($uuid) {
+    function lookupPlayerInfo($uuid) {
         $uuid = str_replace("-", "", $uuid);
-        $json = json_decode(file_get_contents("https://api.mojang.com/user/profiles/$uuid/names"));
-        return $json[0];
+        $json = json_decode(file_get_contents("https://sessionserver.mojang.com/session/minecraft/profile/$uuid"), true);
+        
+        $info = [];
+        $info['name'] = $json['name'];
+        
+        //find skin
+        foreach($json['properties'] as $prop) {
+            if($prop['name'] == 'textures') {
+                //decode the value set...
+                $jsonTextures = json_decode(base64_decode($prop['value']), true);
+                $info['skinUrl'] = $jsonTextures['textures']['SKIN']['url'];
+                break;
+            }
+        }
+        
+        return $info;
     }
     
     //Comparator for rankings (using usort)
@@ -20,7 +34,7 @@
     
         $d = $b[1] - $a[1];    
         if($d == 0) {
-            return strcmp($players[$a[0]], $players[$b[0]]);
+            return strcmp($players[$a[0]]['name'], $players[$b[0]]['name']);
         } else {
             return $d;
         }
@@ -41,9 +55,13 @@
                 if(!array_key_exists($uuid, $players)) {
                     //if not, look it up
                     echo("Looking up new UUID $uuid ... ");
-                    $name = lookupPlayerName($uuid);
-                    $players[$uuid] = $name;
-                    echo("$name\n");
+                    $info = lookupPlayerInfo($uuid);
+                    $players[$uuid] = $info;
+                    
+                    //DEBUG
+                    echo($info['name'] . ", skin: " . $info['skinUrl'] . "\n");
+                } else {
+                    $info = $players[$uuid];
                 }
                 
                 //Parse JSON
@@ -63,6 +81,11 @@
             }
         }
         closedir($dir);
+    }
+    
+    //Create data dir if necessary
+    if(!is_dir($dataDir)) {
+        mkdir($dataDir, 0755);
     }
     
     //Save players
