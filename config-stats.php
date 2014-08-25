@@ -308,6 +308,11 @@
             'icon'  => 'blocks/ladder.png',
             'displayFunc' => 'cmToDistance',
         ],
+        'stat.craftItem.minecraft.beacon' => [
+            'award' => 'Ray of Light',
+            'desc'  => 'Beacons crafted',
+            'icon'  => 'blocks/beacon.png',
+        ],
         'stat.craftItem.minecraft.clock' => [
             'award' => 'What time is it?',
             'desc'  => 'Clocks crafted',
@@ -327,6 +332,11 @@
             'award' => 'Stronghold Radar',
             'desc'  => 'Ender Eyes crafted',
             'icon'  => 'items/ender_eye.png',
+        ],
+        'stat.craftItem.minecraft.lit_pumpkin' => [
+            'award' => 'Trick or Treat!',
+            'desc'  => 'Jack o\'Lanterns crafted',
+            'icon'  => 'blocks/pumpkin_face_on.png',
         ],
         'stat.craftItem.minecraft.tnt' => [
             'award' => 'Bad Intentions',
@@ -696,6 +706,11 @@
             'desc'  => 'Milk buckets drunk',
             'icon'  => 'items/bucket_milk.png',
         ],
+        'stat.useItem.minecraft.nether_wart' => [
+            'award' => 'Nether Farmer',
+            'desc'  => 'Nether Warts planted',
+            'icon'  => 'blocks/nether_wart_stage_2.png',
+        ],
         'stat.useItem.minecraft.noteblock' => [
             'award' => 'Musician',
             'desc'  => 'Note blocks placed',
@@ -725,6 +740,11 @@
             'award' => 'Enlightened',
             'desc'  => 'Torches placed',
             'icon'  => 'blocks/torch_on.png',
+        ],
+        'stat.useItem.minecraft.water_bucket' => [
+            'award' => 'Spring',
+            'desc'  => 'Water buckets emptied',
+            'icon'  => 'items/bucket_water.png',
         ],
         'stat.useItem.minecraft.writable_book' => [
             'award' => 'Bestseller',
