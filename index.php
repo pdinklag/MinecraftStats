@@ -55,11 +55,15 @@
     }
     
     function createPlayerWidget($uuid) {
-        return
-            '<span class="player">' .
-            '<img src="' . getPlayerSkin($uuid) . '"/><span><canvas/></span>' .
-            getPlayerName($uuid) .
-            '</span>';
+        if($uuid !== FALSE) {
+            return
+                '<span class="player">' .
+                '<img src="' . getPlayerSkin($uuid) . '"/><span><canvas/></span>' .
+                getPlayerName($uuid) .
+                '</span>';
+        } else {
+            return '<div class="player-nobody"><div>Nobody</div></div>';
+        }
     }
     
     //Check if a certain stat is to be viewed
@@ -173,7 +177,7 @@
                                     $awardWinner = createPlayerWidget($hof[$id][0]);
                                     $awardText = $stat['desc'] . ': <span class="award-score">' . getStatDisplayValue($stat, $hof[$id][1]) . '</span>';
                                 } else {
-                                    $awardWinner = '<span class="award-winner-nobody">Nobody yet</span>';
+                                    $awardWinner = createPlayerWidget(FALSE);
                                     $awardText = '(' . $stat['desc'] . ')';
                                 }
                             ?>

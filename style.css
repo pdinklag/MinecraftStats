@@ -17,6 +17,21 @@ span.player {
     font-weight: bold;
 }
 
+div.player-nobody {
+    font-weight: normal;
+    font-style: italic;
+    color: #A0A0A0;
+    height: 28px;
+    position: relative;
+}
+
+div.player-nobody div {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
 span.player img {
     display: none; /* Magic will be done using JavaScript */
 }
