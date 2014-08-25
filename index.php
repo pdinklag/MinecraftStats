@@ -198,6 +198,9 @@
     &nbsp;
     <div id="foot">
         Written by Patrick Dinklage a.k.a. "pdinklag".
+        <? if(isset($disclaimer)) { ?>
+            <div id="disclaimer"><? echo($disclaimer); ?></div>
+        <? } ?>
     </div>
 </div>
 
