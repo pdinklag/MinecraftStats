@@ -69,13 +69,9 @@
                 
                 //Count stats
                 foreach($stats as $id => $stat) {
-                    if(isset($stat['provider'])) {
-                        $value = call_user_func($stat['provider'], $json);
-                        if($value !== FALSE) {
-                            $stats[$id]['ranking'][] = [$uuid, $value];
-                        }
-                    } else if(array_key_exists($id, $json)) {
-                        $stats[$id]['ranking'][] = [$uuid, $json[$id]];
+                    $value = getStatProgressForPlayer($id, $json);
+                    if($value !== FALSE) {
+                        $stats[$id]['ranking'][] = [$uuid, $value];
                     }
                 }
             }

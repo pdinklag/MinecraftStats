@@ -36,103 +36,111 @@
         }
     }
     
+    function safeGet($key, $json, $def) {
+        if(array_key_exists($key, $json)) {
+            return $json[$key];
+        } else {
+            return $def;
+        }
+    }
+    
     function breakToolProvider($json) {
         $sum =
-            $json['stat.breakItem.minecraft.fishing_rod'] +
-            $json['stat.breakItem.minecraft.shears'] +
-            $json['stat.breakItem.minecraft.wooden_axe'] +
-            $json['stat.breakItem.minecraft.wooden_hoe'] +
-            $json['stat.breakItem.minecraft.wooden_pickaxe'] +
-            $json['stat.breakItem.minecraft.wooden_shovel'] +
-            $json['stat.breakItem.minecraft.stone_axe'] +
-            $json['stat.breakItem.minecraft.stone_hoe'] +
-            $json['stat.breakItem.minecraft.stone_pickaxe'] +
-            $json['stat.breakItem.minecraft.stone_shovel'] +
-            $json['stat.breakItem.minecraft.iron_axe'] +
-            $json['stat.breakItem.minecraft.iron_hoe'] +
-            $json['stat.breakItem.minecraft.iron_pickaxe'] +
-            $json['stat.breakItem.minecraft.iron_shovel'] +
-            $json['stat.breakItem.minecraft.golden_axe'] +
-            $json['stat.breakItem.minecraft.golden_hoe'] +
-            $json['stat.breakItem.minecraft.golden_pickaxe'] +
-            $json['stat.breakItem.minecraft.golden_shovel'] +
-            $json['stat.breakItem.minecraft.diamond_axe'] +
-            $json['stat.breakItem.minecraft.diamond_hoe'] +
-            $json['stat.breakItem.minecraft.diamond_pickaxe'] +
-            $json['stat.breakItem.minecraft.diamond_shovel'];
+            safeGet('stat.breakItem.minecraft.fishing_rod', $json, 0) +
+            safeGet('stat.breakItem.minecraft.shears', $json, 0) +
+            safeGet('stat.breakItem.minecraft.wooden_axe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.wooden_hoe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.wooden_pickaxe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.wooden_shovel', $json, 0) +
+            safeGet('stat.breakItem.minecraft.stone_axe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.stone_hoe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.stone_pickaxe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.stone_shovel', $json, 0) +
+            safeGet('stat.breakItem.minecraft.iron_axe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.iron_hoe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.iron_pickaxe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.iron_shovel', $json, 0) +
+            safeGet('stat.breakItem.minecraft.golden_axe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.golden_hoe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.golden_pickaxe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.golden_shovel', $json, 0) +
+            safeGet('stat.breakItem.minecraft.diamond_axe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.diamond_hoe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.diamond_pickaxe', $json, 0) +
+            safeGet('stat.breakItem.minecraft.diamond_shovel', $json, 0);
             
         return ($sum > 0) ? $sum : FALSE;
     }
     
     function eatMeatProvider($json) {
         $sum =
-            $json['stat.useItem.minecraft.cooked_chicken'] +
-            $json['stat.useItem.minecraft.chicken'] +
-            $json['stat.useItem.minecraft.cooked_beef'] +
-            $json['stat.useItem.minecraft.beef'] +
-            $json['stat.useItem.minecraft.cooked_mutton'] +
-            $json['stat.useItem.minecraft.mutton'] +
-            $json['stat.useItem.minecraft.cooked_porkchop'] +
-            $json['stat.useItem.minecraft.porkchop'] +
-            $json['stat.useItem.minecraft.cooked_rabbit'] +
-            $json['stat.useItem.minecraft.rabbit'] +
-            $json['stat.useItem.minecraft.rabbit_stew'];
+            safeGet('stat.useItem.minecraft.cooked_chicken', $json, 0) +
+            safeGet('stat.useItem.minecraft.chicken', $json, 0) +
+            safeGet('stat.useItem.minecraft.cooked_beef', $json, 0) +
+            safeGet('stat.useItem.minecraft.beef', $json, 0) +
+            safeGet('stat.useItem.minecraft.cooked_mutton', $json, 0) +
+            safeGet('stat.useItem.minecraft.mutton', $json, 0) +
+            safeGet('stat.useItem.minecraft.cooked_porkchop', $json, 0) +
+            safeGet('stat.useItem.minecraft.porkchop', $json, 0) +
+            safeGet('stat.useItem.minecraft.cooked_rabbit', $json, 0) +
+            safeGet('stat.useItem.minecraft.rabbit', $json, 0) +
+            safeGet('stat.useItem.minecraft.rabbit_stew', $json, 0);
             
         return ($sum > 0) ? $sum : FALSE;
     }
     
     function eatRawMeatProvider($json) {
         $sum =
-            $json['stat.useItem.minecraft.chicken'] +
-            $json['stat.useItem.minecraft.beef'] +
-            $json['stat.useItem.minecraft.mutton'] +
-            $json['stat.useItem.minecraft.porkchop'] +
-            $json['stat.useItem.minecraft.rabbit'] +
-            $json['stat.useItem.minecraft.fish'];
+            safeGet('stat.useItem.minecraft.chicken', $json, 0) +
+            safeGet('stat.useItem.minecraft.beef', $json, 0) +
+            safeGet('stat.useItem.minecraft.mutton', $json, 0) +
+            safeGet('stat.useItem.minecraft.porkchop', $json, 0) +
+            safeGet('stat.useItem.minecraft.rabbit', $json, 0) +
+            safeGet('stat.useItem.minecraft.fish', $json, 0);
             
         return ($sum > 0) ? $sum : FALSE;
     }
     
     function eatVeggiesProvider($json) {
         $sum =
-            $json['stat.useItem.minecraft.apple'] +
-            $json['stat.useItem.minecraft.baked_potato'] +
-            $json['stat.useItem.minecraft.break'] +
-            $json['stat.useItem.minecraft.beef'] +
-            $json['stat.useItem.minecraft.cake'] +
-            $json['stat.useItem.minecraft.carrot'] +
-            $json['stat.useItem.minecraft.cookie'] +
-            $json['stat.useItem.minecraft.golden_apple'] +
-            $json['stat.useItem.minecraft.golden_carrot'] +
-            $json['stat.useItem.minecraft.melon'] +
-            $json['stat.useItem.minecraft.mushroom_stew'] +
-            $json['stat.useItem.minecraft.potato'] +
-            $json['stat.useItem.minecraft.pumpkin_pie'];
+            safeGet('stat.useItem.minecraft.apple', $json, 0) +
+            safeGet('stat.useItem.minecraft.baked_potato', $json, 0) +
+            safeGet('stat.useItem.minecraft.break', $json, 0) +
+            safeGet('stat.useItem.minecraft.beef', $json, 0) +
+            safeGet('stat.useItem.minecraft.cake', $json, 0) +
+            safeGet('stat.useItem.minecraft.carrot', $json, 0) +
+            safeGet('stat.useItem.minecraft.cookie', $json, 0) +
+            safeGet('stat.useItem.minecraft.golden_apple', $json, 0) +
+            safeGet('stat.useItem.minecraft.golden_carrot', $json, 0) +
+            safeGet('stat.useItem.minecraft.melon', $json, 0) +
+            safeGet('stat.useItem.minecraft.mushroom_stew', $json, 0) +
+            safeGet('stat.useItem.minecraft.potato', $json, 0) +
+            safeGet('stat.useItem.minecraft.pumpkin_pie', $json, 0);
             
         return ($sum > 0) ? $sum : FALSE;
     }
     
     function eatFishProvider($json) {
         $sum =
-            $json['stat.useItem.minecraft.cooked_fished'] +
-            $json['stat.useItem.minecraft.fish'];
+            safeGet('stat.useItem.minecraft.cooked_fished', $json, 0) +
+            safeGet('stat.useItem.minecraft.fish', $json, 0);
             
         return ($sum > 0) ? $sum : FALSE;
     }
     
     function eatStewProvider($json) {
         $sum =
-            $json['stat.useItem.minecraft.mushroom_stew'] +
-            $json['stat.useItem.minecraft.rabbit_stew'];
+            safeGet('stat.useItem.minecraft.mushroom_stew', $json, 0) +
+            safeGet('stat.useItem.minecraft.rabbit_stew', $json, 0);
             
         return ($sum > 0) ? $sum : FALSE;
     }
     
     function eatCrapProvider($json) {
         $sum =
-            $json['stat.useItem.minecraft.rotten_flesh'] +
-            $json['stat.useItem.minecraft.spider_eye'] +
-            $json['stat.useItem.minecraft.poisonous_potato'];
+            safeGet('stat.useItem.minecraft.rotten_flesh', $json, 0) +
+            safeGet('stat.useItem.minecraft.spider_eye', $json, 0) +
+            safeGet('stat.useItem.minecraft.poisonous_potato', $json, 0);
             
         return ($sum > 0) ? $sum : FALSE;
     }
@@ -144,37 +152,37 @@
     
     function placePlantProvider($json) {
         $sum =
-            $json['stat.useItem.minecraft.sapling'] +
-            $json['stat.useItem.minecraft.yellow_flower'] +
-            $json['stat.useItem.minecraft.red_flower'] +
-            $json['stat.useItem.minecraft.double_plant'];
+            safeGet('stat.useItem.minecraft.sapling', $json, 0) +
+            safeGet('stat.useItem.minecraft.yellow_flower', $json, 0) +
+            safeGet('stat.useItem.minecraft.red_flower', $json, 0) +
+            safeGet('stat.useItem.minecraft.double_plant', $json, 0);
         
         return ($sum > 0) ? $sum : FALSE;
     }
     
     function placeRedstoneProvider($json) {
         $sum =
-            $json['stat.useItem.minecraft.redstone'] +
-            $json['stat.useItem.minecraft.stone_button'] +
-            $json['stat.useItem.minecraft.wooden_button'] +
-            $json['stat.useItem.minecraft.daylight_detector'] +
-            $json['stat.useItem.minecraft.daylight_detector_inverted'] +
-            $json['stat.useItem.minecraft.detector_rail'] +
-            $json['stat.useItem.minecraft.lever'] +
-            $json['stat.useItem.minecraft.stone_pressure_plate'] +
-            $json['stat.useItem.minecraft.wooden_pressure_plate'] +
-            $json['stat.useItem.minecraft.light_weighted_pressure_plate'] +
-            $json['stat.useItem.minecraft.heavy_weighted_pressure_plate'] +
-            $json['stat.useItem.minecraft.redstone_torch'];
+            safeGet('stat.useItem.minecraft.redstone', $json, 0) +
+            safeGet('stat.useItem.minecraft.stone_button', $json, 0) +
+            safeGet('stat.useItem.minecraft.wooden_button', $json, 0) +
+            safeGet('stat.useItem.minecraft.daylight_detector', $json, 0) +
+            safeGet('stat.useItem.minecraft.daylight_detector_inverted', $json, 0) +
+            safeGet('stat.useItem.minecraft.detector_rail', $json, 0) +
+            safeGet('stat.useItem.minecraft.lever', $json, 0) +
+            safeGet('stat.useItem.minecraft.stone_pressure_plate', $json, 0) +
+            safeGet('stat.useItem.minecraft.wooden_pressure_plate', $json, 0) +
+            safeGet('stat.useItem.minecraft.light_weighted_pressure_plate', $json, 0) +
+            safeGet('stat.useItem.minecraft.heavy_weighted_pressure_plate', $json, 0) +
+            safeGet('stat.useItem.minecraft.redstone_torch', $json, 0);
         
         return ($sum > 0) ? $sum : FALSE;
     }
     
     function placeTrapProvider($json) {
         $sum =
-            $json['stat.useItem.minecraft.trapped_chest'] +
-            $json['stat.useItem.minecraft.tripwire_hook'] +
-            $json['stat.useItem.minecraft.tripwire'];
+            safeGet('stat.useItem.minecraft.trapped_chest', $json, 0) +
+            safeGet('stat.useItem.minecraft.tripwire_hook', $json, 0) +
+            safeGet('stat.useItem.minecraft.tripwire', $json, 0);
         
         return ($sum > 0) ? $sum : FALSE;
     }

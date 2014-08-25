@@ -33,6 +33,8 @@
 <?
     if(isset($_GET["stat"])) {
         require("view-stat.php");
+    } else if(isset($_GET["player"])) {
+        require("view-player.php");
     } else {
         require("view-hof.php");
     }

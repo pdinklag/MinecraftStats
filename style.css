@@ -13,6 +13,10 @@ body {
     background-repeat: repeat-x, repeat-x, repeat;
 }
 
+a {
+    color: #A0F0FF;
+}
+
 span.player {
     font-weight: bold;
 }
@@ -37,9 +41,6 @@ span.player img {
 }
 
 span.player canvas {
-    width: 24px;
-    height: 24px;
-    
     margin-right: 0.25em;
     border: 1px solid #202020;
 }
@@ -200,7 +201,37 @@ h1 {
 }
 
 #ranking table td.score {
+    /*color: #C0C0C0;*/
+    font-weight: bold;
+}
+
+#ranking table td.award {
+    font-weight: bold;
+}
+
+#ranking-header table td.award span.icon {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+}
+
+#ranking-header table td.award span.icon img {
+    max-width: 24px;
+    max-height: 24px;
+    border: none;
+}
+
+#ranking table td.award img {
+    max-width: 24px;
+    max-height: 24px;
+}
+
+#ranking table td.stat {
     color: #C0C0C0;
+    text-align: right
 }
 
 #hof-header {
@@ -264,10 +295,6 @@ h1 {
     
     margin-left: 38px;
     padding-left: 0.5em;
-}
-
-#hof .award-box .award-title a {
-    color: #A0F0FF;
 }
 
 #hof .award-box .award-winner-box {

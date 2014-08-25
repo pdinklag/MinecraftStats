@@ -13,6 +13,15 @@
         }
     }
     
+    function compareStatAwardNames($a, $b) {
+        return strcasecmp($a['award'], $b['award']);
+    }
+    
+    function sortStatsByAwardName() {
+        global $stats;
+        uasort($stats, 'compareStatAwardNames');
+    }
+    
     function getStatIcon($stat) {
         global $awardIconDir, $defaultIcon;
     
@@ -56,12 +65,28 @@
         }
     }
     
-    function createPlayerWidget($uuid) {
+    function getStatProgressForPlayer($statId, $json) {
+        global $stats;
+        
+        $stat = findStat($statId);
+        if($stat) {
+            if(isset($stat['provider'])) {
+                $value = call_user_func($stat['provider'], $json);
+                return $value;
+            } else if(array_key_exists($statId, $json)) {
+                return $json[$statId];
+            }
+        }
+        
+        return FALSE;
+    }
+    
+    function createPlayerWidget($uuid, $size) {
         if($uuid !== FALSE) {
             return
                 '<span class="player">' .
-                '<img src="' . getPlayerSkin($uuid) . '"/><span><canvas/></span>' .
-                getPlayerName($uuid) .
+                '<img src="' . getPlayerSkin($uuid) . '"/><span><canvas width="' . $size . '" height="'.$size.'"/></span>' .
+                "<a href='?player=$uuid'>" . getPlayerName($uuid) . '</a>' .
                 '</span>';
         } else {
             return '<div class="player-nobody"><div>Nobody</div></div>';

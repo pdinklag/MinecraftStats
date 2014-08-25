@@ -13,12 +13,7 @@
 <div id="hof-header">Hall of Fame</div>
 <div id="hof">
     <?
-        //Stat sorter
-        function compareStats($a, $b) {
-            return strcasecmp($a['award'], $b['award']);
-        }
-        
-        uasort($stats, 'compareStats');
+        sortStatsByAwardName();
         foreach($stats as $id => $stat) {
             ?>
                 <div class="award-box">
@@ -31,10 +26,10 @@
                     
                     <?
                         if(array_key_exists($id, $hof)) {
-                            $awardWinner = createPlayerWidget($hof[$id][0]);
+                            $awardWinner = createPlayerWidget($hof[$id][0], 24);
                             $awardText = $stat['desc'] . ': <span class="award-score">' . getStatDisplayValue($stat, $hof[$id][1]) . '</span>';
                         } else {
-                            $awardWinner = createPlayerWidget(FALSE);
+                            $awardWinner = createPlayerWidget(FALSE, 24);
                             $awardText = '(' . $stat['desc'] . ')';
                         }
                     ?>

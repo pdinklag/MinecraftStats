@@ -38,7 +38,7 @@
                     ?>
                     <tr>
                         <td class="rank <? echo("place$i medal$i"); ?>"><? echo($i + 1); ?></td>
-                        <td class="player <? echo("place$i"); ?>"><? echo(createPlayerWidget($e[0])); ?></td>
+                        <td class="player <? echo("place$i"); ?>"><? echo(createPlayerWidget($e[0], 24)); ?></td>
                         <td class="score <? echo("place$i"); ?>"><? echo(getStatDisplayValue($viewStat, $e[1])); ?></td>
                     </tr>
                     <?
