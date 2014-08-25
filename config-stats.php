@@ -180,666 +180,558 @@
     }
 
     $stats = [
-        [
-            'id' => 'achievement.buildSword',
+        'achievement.buildSword' => [
             'award' => 'Blacksmith',
             'desc'  => 'Swords crafted',
             'icon'  => 'items/stone_sword.png',
         ],
-        [
-            'id' => 'achievement.diamonds',
+        'achievement.diamonds' => [
             'award' => 'Capitalist',
             'desc'  => 'Diamonds acquired',
             'icon'  => 'blocks/diamond_block.png',
         ],
-        [
-            'id' => 'achievement.diamondsToYou',
+        'achievement.diamondsToYou' => [
             'award' => 'Communist',
             'desc'  => 'Diamonds tossed to others',
             'icon'  => 'items/diamond.png',
         ],
-        [
-            'id' => 'achievement.ghast',
+        'achievement.ghast' => [
             'award' => 'Minecraft Open',
             'desc'  => 'Ghasts killed with own fireball',
             'icon'  => 'items/fireball.png',
         ],
-        [
-            'id' => 'achievement.killEnemy',
+        'achievement.killEnemy' => [
             'award' => 'Hero',
             'desc'  => 'Enemies killed',
             'icon'  => 'items/diamond_sword.png',
         ],
-        [
-            'id' => 'achievement.mineWood',
+        'achievement.mineWood' => [
             'award' => 'Woodcutter',
             'desc'  => 'Wood cut',
             'icon'  => 'blocks/log_oak_top.png',
         ],
-        [
-            'id' => 'achievement.openInventory',
+        'achievement.openInventory' => [
             'award' => 'Where did I put...?',
             'desc'  => 'Times the inventory was opened',
             'icon'  => 'blocks/crafting_table_front.png',
         ],
-        [
-            'id' => 'achievement.portal',
+        'achievement.portal' => [
             'award' => 'Multiworld',
             'desc'  => 'Number of portal uses',
             'icon'  => 'blocks/portal.png',
         ],
-        [
-            'id' => 'achievement.potion',
+        'achievement.potion' => [
             'award' => 'Alchemist',
             'desc'  => 'Potions brewed',
             'icon'  => 'items/brewing_stand.png'
         ],
-        [
-            'id' => 'custom.breakTool',
+        'custom.breakTool' => [
             'award' => 'Wastrel',
             'desc'  => 'Tools broken',
             'icon'  => 'items/stick.png',
             'provider' => 'breakToolProvider',
         ],
-        [
-            'id' => 'custom.eatMeat',
+        'custom.eatMeat' => [
             'award' => 'Meat on the Table',
             'desc'  => 'Meat items eaten',
             'icon'  => 'items/beef_cooked.png',
             'provider' => 'eatMeatProvider',
         ],
-        [
-            'id' => 'custom.eatRawMeat',
+        'custom.eatRawMeat' => [
             'award' => 'Raw Eater',
             'desc'  => 'Raw meat items eaten',
             'icon'  => 'items/beef_raw.png',
             'provider' => 'eatRawMeatProvider',
         ],
-        [
-            'id' => 'custom.eatStew',
+        'custom.eatStew' => [
             'award' => 'Soupy Kaspar',
             'desc'  => 'Stews eaten',
             'icon'  => 'items/mushroom_stew.png',
             'provider' => 'eatStewProvider',
         ],
-        [
-            'id' => 'custom.eatFish',
+        'custom.eatFish' => [
             'award' => 'Fish Gourmet',
             'desc'  => 'Fish eaten',
             'icon'  => 'items/fish_cod_cooked.png',
             'provider' => 'eatFishProvider',
         ],
-        [
-            'id' => 'custom.eatVeggies',
+        'custom.eatVeggies' => [
             'award' => 'Vegetarian',
             'desc'  => 'Veggie items eaten',
             'icon'  => 'items/apple.png',
             'provider' => 'eatVeggiesProvider',
         ],
-        [
-            'id' => 'custom.eatCrap',
+        'custom.eatCrap' => [
             'award' => 'Bottom Feeder',
             'desc'  => 'Crap items eaten',
             'icon'  => 'items/rotten_flesh.png',
             'provider' => 'eatCrapProvider',
         ],
-        [
-            'id' => 'custom.exploreBiomes',
+        'custom.exploreBiomes' => [
             'award' => 'Explorer',
             'desc'  => 'Different biomes explored',
             'icon'  => 'items/map_filled.png',
             'provider' => 'exploreBiomesProvider',
         ],
-        [
-            'id' => 'custom.placePlant',
+        'custom.placePlant' => [
             'award' => 'Green Thumb',
             'desc'  => 'Saplings and flowers planted',
             'icon'  => 'blocks/sapling_oak.png',
             'provider' => 'placePlantProvider',
         ],
-        [
-            'id' => 'custom.placeRedstone',
+        'custom.placeRedstone' => [
             'award' => 'Electrician',
             'desc'  => 'Redstone items placed',
             'icon'  => 'items/redstone_dust.png',
             'provider' => 'placeRedstoneProvider',
         ],
-        [
-            'id' => 'custom.placeTrap',
+        'custom.placeTrap' => [
             'award' => 'Prankster',
             'desc'  => 'Trap items placed',
             'icon'  => 'blocks/trip_wire_source.png',
             'provider' => 'placeTrapProvider',
         ],
-        [
-            'id' => 'stat.animalsBred',
+        'stat.animalsBred' => [
             'award' => 'Animal Lover',
             'desc'  => 'Animals bred',
             'icon'  => 'items/wheat.png',
         ],
-        [
-            'id' => 'stat.boatOneCm',
+        'stat.boatOneCm' => [
             'award' => 'Sailor',
             'desc'  => 'Distance gone by boat',
             'icon'  => 'items/boat.png',
             'displayFunc' => 'cmToDistance',
         ],
-        [
-            'id' => 'stat.climbOneCm',
+        'stat.climbOneCm' => [
             'award' => 'Climber',
             'desc'  => 'Distance climbed',
             'icon'  => 'blocks/ladder.png',
             'displayFunc' => 'cmToDistance',
         ],
-        [
-            'id' => 'stat.craftItem.minecraft.clock',
+        'stat.craftItem.minecraft.clock' => [
             'award' => 'What time is it?',
             'desc'  => 'Clocks crafted',
             'icon'  => 'items/clock.png',
         ],
-        [
-            'id' => 'stat.craftItem.minecraft.compass',
+        'stat.craftItem.minecraft.compass' => [
             'award' => 'Where am I?',
             'desc'  => 'Compasses crafted',
             'icon'  => 'items/compass.png',
         ],
-        [
-            'id' => 'stat.craftItem.minecraft.cookie',
+        'stat.craftItem.minecraft.cookie' => [
             'award' => 'Cookie Monster',
             'desc'  => 'Cookies made',
             'icon'  => 'items/cookie.png',
         ],
-        [
-            'id' => 'stat.craftItem.minecraft.ender_eye',
+        'stat.craftItem.minecraft.ender_eye' => [
             'award' => 'Stronghold Radar',
             'desc'  => 'Ender Eyes crafted',
             'icon'  => 'items/ender_eye.png',
         ],
-        [
-            'id' => 'stat.craftItem.minecraft.tnt',
+        'stat.craftItem.minecraft.tnt' => [
             'award' => 'Bad Intentions',
             'desc'  => 'TNT crafted',
             'icon'  => 'blocks/tnt_side.png',
         ],
-        [
-            'id' => 'stat.crouchOneCm',
+        'stat.crouchOneCm' => [
             'award' => 'Sneaker',
             'desc'  => 'Distance crouched',
             'icon'  => 'gui/eye.png',
             'displayFunc' => 'cmToDistance',
         ],
-        [
-            'id' => 'stat.damageDealt',
+        'stat.damageDealt' => [
             'award' => 'Berserker',
             'desc'  => 'Hearts of damage dealt',
             'icon'  => 'gui/sword_bloody.png',
         ],
-        [
-            'id' => 'stat.damageTaken',
+        'stat.damageTaken' => [
             'award' => 'Masochist',
             'desc'  => 'Hearts of damage taken',
             'icon'  => 'gui/heart_black.png',
         ],
-        [
-            'id' => 'stat.deaths',
+        'stat.deaths' => [
             'award' => 'Extra Life',
             'desc'  => 'Number of deaths',
             'icon'  => 'gui/heart.png',
         ],
-        [
-            'id' => 'stat.diveOneCm',
+        'stat.diveOneCm' => [
             'award' => 'Diver',
             'desc'  => 'Distance dived',
             'icon'  => 'gui/depth_strider.png',
             'displayFunc' => 'cmToDistance',
         ],
-        [
-            'id' => 'stat.drop',
+        'stat.drop' => [
             'award' => 'Begone!',
             'desc'  => 'Items dropped',
         ],
-        [
-            'id' => 'stat.fallOneCm',
+        'stat.fallOneCm' => [
             'award' => 'Basejumper',
             'desc'  => 'Distance fallen',
             'displayFunc' => 'cmToDistance',
         ],
-        [
-            'id' => 'stat.fishCaught',
+        'stat.fishCaught' => [
             'award' => 'Fisherman',
             'desc'  => 'Fish caught',
             'icon'  => 'items/fish_cod_raw.png',
         ],
-        [
-            'id' => 'stat.horseOneCm',
+        'stat.horseOneCm' => [
             'award' => 'Rider',
             'desc'  => 'Distance ridden on horse',
             'icon'  => 'items/saddle.png',
             'displayFunc' => 'cmToDistance',
         ],
-        [
-            'id' => 'stat.jump',
+        'stat.jump' => [
             'award' => 'Bunnyhopper',
             'desc'  => 'Times jumped',
             'icon'  => 'gui/bunny.png',
         ],
-        [
-            'id' => 'stat.junkFished',
+        'stat.junkFished' => [
             'award' => 'Wannabe Fisherman',
             'desc'  => 'Junk items fished',
             'icon'  => 'items/bowl.png',
         ],
-        [
-            'id' => 'stat.killEntity.Bat',
+        'stat.killEntity.Bat' => [
             'award' => 'Badman',
             'desc'  => 'Bats killed',
             'icon'  => 'minecraft-wiki/BatFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.Blaze',
+        'stat.killEntity.Blaze' => [
             'award' => 'Nether Extinguisher',
             'desc'  => 'Blazes killed',
             'icon'  => 'minecraft-wiki/Blaze_Face.png',
         ],
-        [
-            'id' => 'stat.killEntity.Chicken',
+        'stat.killEntity.Chicken' => [
             'award' => 'Kentucky Fried Chicken',
             'desc'  => 'Chickens killed',
             'icon'  => 'items/chicken_cooked.png',
         ],
-        [
-            'id' => 'stat.killEntity.Cow',
+        'stat.killEntity.Cow' => [
             'award' => 'Cow Tipper',
             'desc'  => 'Cows killed',
             'icon'  => 'items/leather.png',
         ],
-        [
-            'id' => 'stat.killEntity.Creeper',
+        'stat.killEntity.Creeper' => [
             'award' => 'Creeper Creep',
             'desc'  => 'Creepers killed',
             'icon'  => 'minecraft-wiki/CreeperFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.Enderman',
+        'stat.killEntity.Enderman' => [
             'award' => 'Enderman Ender',
             'desc'  => 'Endermen killed',
             'icon'  => 'minecraft-wiki/EndermanFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.Endermite',
+        'stat.killEntity.Endermite' => [
             'award' => 'Endermite Ender',
             'desc'  => 'Endermites killed',
             'icon'  => 'minecraft-wiki/64px-EndermiteFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.EntityHorse',
+        'stat.killEntity.EntityHorse' => [
             'award' => 'Horse Hater',
             'desc'  => 'Horses killed',
             'icon'  => 'minecraft-wiki/HorseHead.png',
         ],
-        [
-            'id' => 'stat.killEntity.Ghast',
+        'stat.killEntity.Ghast' => [
             'award' => 'Tear Drinker',
             'desc'  => 'Ghasts killed',
             'icon'  => 'items/ghast_tear.png',
         ],
-        [
-            'id' => 'stat.killEntity.Guardian',
+        'stat.killEntity.Guardian' => [
             'award' => 'Underwater Raider',
             'desc'  => 'Guardians killed',
             'icon'  => 'minecraft-wiki/64px-GuardianFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.LavaSlime',
+        'stat.killEntity.LavaSlime' => [
             'award' => 'Magma Cream',
             'desc'  => 'Magma Cubes killed',
             'icon'  => 'items/magma_cream.png',
         ],
-        [
-            'id' => 'stat.killEntity.MushroomCow',
+        'stat.killEntity.MushroomCow' => [
             'award' => 'I Killed a Mooshroom!',
             'desc'  => 'Mooshrooms killed',
             'icon'  => 'minecraft-wiki/MooshroomFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.Ocelot',
+        'stat.killEntity.Ocelot' => [
             'award' => 'Bad Kitty!',
             'desc'  => 'Ocelots / cats killed',
             'icon'  => 'minecraft-wiki/OcelotFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.Pig',
+        'stat.killEntity.Pig' => [
             'award' => 'Bacon Lover',
             'desc'  => 'Pigs killed',
             'icon'  => 'items/porkchop_raw.png',
         ],
-        [
-            'id' => 'stat.killEntity.PigZombie',
+        'stat.killEntity.PigZombie' => [
             'award' => 'Against the Nether',
             'desc'  => 'Zombie Pigmen killed',
             'icon'  => 'minecraft-wiki/ZombiePigmanFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.Rabbit',
+        'stat.killEntity.Rabbit' => [
             'award' => 'Bunny Killer :(',
             'desc'  => 'Rabbits killed',
             'icon'  => 'minecraft-wiki/Rabbiticon.png',
         ],
-        [
-            'id' => 'stat.killEntity.Sheep',
+        'stat.killEntity.Sheep' => [
             'award' => 'Antishepherd',
             'desc'  => 'Sheep killed',
             'icon'  => 'minecraft-wiki/SheepFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.Silverfish',
+        'stat.killEntity.Silverfish' => [
             'award' => 'Nasty Little...',
             'desc'  => 'Silverfish killed',
             'icon'  => 'minecraft-wiki/SilverfishFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.Skeleton',
+        'stat.killEntity.Skeleton' => [
             'award' => 'Bone Collector',
             'desc'  => 'Skeletons killed',
             'icon'  => 'minecraft-wiki/SkeletonFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.Slime',
+        'stat.killEntity.Slime' => [
             'award' => 'Swamp Lurker',
             'desc'  => 'Slimes killed',
             'icon'  => 'minecraft-wiki/SlimeFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.Spider',
+        'stat.killEntity.Spider' => [
             'award' => 'Arachnophobia',
             'desc'  => 'Spiders killed',
             'icon'  => 'minecraft-wiki/SpiderFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.Squid',
+        'stat.killEntity.Squid' => [
             'award' => 'Pool Cleaner',
             'desc'  => 'Squids killed',
             'icon'  => 'minecraft-wiki/Squidface.png',
         ],
-        [
-            'id' => 'stat.killEntity.Villager',
+        'stat.killEntity.Villager' => [
             'award' => 'Bully',
             'desc'  => 'Villagers killed',
             'icon'  => 'minecraft-wiki/Villagerhead.png',
         ],
-        [
-            'id' => 'stat.killEntity.VillagerGolem',
+        'stat.killEntity.VillagerGolem' => [
             'award' => 'Down with the Defense!',
             'desc'  => 'Iron Golems killed',
             'icon'  => 'minecraft-wiki/Vg_face.png',
         ],
-        [
-            'id' => 'stat.killEntity.Witch',
+        'stat.killEntity.Witch' => [
             'award' => 'Burn the Witch!',
             'desc'  => 'Witches killed',
             'icon'  => 'minecraft-wiki/Witchface2.png',
         ],
-        [
-            'id' => 'stat.killEntity.Wolf',
+        'stat.killEntity.Wolf' => [
             'award' => 'Bad Dog!',
             'desc'  => 'Wolves / dogs killed',
             'icon'  => 'minecraft-wiki/WolfFace.png',
         ],
-        [
-            'id' => 'stat.killEntity.Zombie',
+        'stat.killEntity.Zombie' => [
             'award' => 'Zombie Grinder',
             'desc'  => 'Zombies killed',
             'icon'  => 'minecraft-wiki/ZombieFace.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.coal_ore',
+        'stat.mineBlock.minecraft.coal_ore' => [
             'award' => 'Black Gold',
             'desc'  => 'Coal ore blocks mined',
             'icon'  => 'blocks/coal_ore.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.diamond_ore',
+        'stat.mineBlock.minecraft.diamond_ore' => [
             'award' => 'X-Ray',
             'desc'  => 'Diamond ore blocks mined',
             'icon'  => 'blocks/diamond_ore.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.dirt',
+        'stat.mineBlock.minecraft.dirt' => [
             'award' => 'Excavator',
             'desc'  => 'Dirt "mined"',
             'icon'  => 'items/stone_shovel.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.emerald_ore',
+        'stat.mineBlock.minecraft.emerald_ore' => [
             'award' => 'Mountain Miner',
             'desc'  => 'Emerald ore blocks mined',
             'icon'  => 'blocks/emerald_ore.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.gold_ore',
+        'stat.mineBlock.minecraft.gold_ore' => [
             'award' => 'Gold Rush',
             'desc'  => 'Gold ore blocks mined',
             'icon'  => 'blocks/gold_ore.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.ice',
+        'stat.mineBlock.minecraft.ice' => [
             'award' => 'Ice Breaker',
             'desc'  => 'Ice blocks destroyed',
             'icon'  => 'blocks/ice.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.iron_ore',
+        'stat.mineBlock.minecraft.iron_ore' => [
             'award' => 'Heart of Iron',
             'desc'  => 'Iron ore blocks mined',
             'icon'  => 'blocks/iron_ore.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.lapis_ore',
+        'stat.mineBlock.minecraft.lapis_ore' => [
             'award' => 'Enchanter\'s Gopher',
             'desc'  => 'Lapis Lazuli ore blocks mined',
             'icon'  => 'blocks/lapis_ore.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.netherrack',
+        'stat.mineBlock.minecraft.netherrack' => [
             'award' => 'Terraformer',
             'desc'  => 'Netherrack mined',
             'icon'  => 'blocks/netherrack.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.obsidian',
+        'stat.mineBlock.minecraft.obsidian' => [
             'award' => 'Obsidian Miner',
             'desc'  => 'Obsidian blocks mined',
             'icon'  => 'blocks/obsidian.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.quartz_ore',
+        'stat.mineBlock.minecraft.quartz_ore' => [
             'award' => 'Use the Quartz!',
             'desc'  => 'Nether Quartz ore blocks mined',
             'icon'  => 'blocks/quartz_ore.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.redstone_ore',
+        'stat.mineBlock.minecraft.redstone_ore' => [
             'award' => 'I Need This!',
             'desc'  => 'Redstone ore blocks mined',
             'icon'  => 'blocks/redstone_ore.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.tallgrass',
+        'stat.mineBlock.minecraft.tallgrass' => [
             'award' => 'Lawnmower',
             'desc'  => 'Tall grass block destroyed',
             'icon'  => 'blocks/tallgrass.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.torch',
+        'stat.mineBlock.minecraft.torch' => [
             'award' => 'The Darkside',
             'desc'  => 'Torches destroyed',
             'icon'  => 'blocks/redstone_torch_off.png',
         ],
-        [
-            'id' => 'stat.mineBlock.minecraft.web',
+        'stat.mineBlock.minecraft.web' => [
             'award' => 'God...Damnit...!!',
             'desc'  => 'Cobweb removed',
             'icon'  => 'blocks/web.png',
         ],
-        [
-            'id' => 'stat.minecartOneCm',
+        'stat.minecartOneCm' => [
             'award' => 'Rail Rider',
             'desc'  => 'Distance gone by minecart',
             'icon'  => 'items/minecart_normal.png',
             'displayFunc' => 'cmToDistance',
         ],
-        [
-            'id' => 'stat.mobKills',
+        'stat.mobKills' => [
             'award' => 'Killing Spree',
             'desc'  => 'Mobs killed',
         ],
-        [
-            'id' => 'stat.pigOneCm',
+        'stat.pigOneCm' => [
             'award' => 'Because I Can',
             'desc'  => 'Distance ridden on a pig',
             'icon'  => 'items/carrot_on_a_stick.png',
             'displayFunc' => 'cmToDistance',
         ],
-        [
-            'id' => 'stat.playOneMinute',
+        'stat.playOneMinute' => [
             'award' => 'Addict',
             'desc'  => 'Time played on the server',
             'displayFunc' => 'ticksToTime',
         ],
-        [
-            'id' => 'stat.sprintOneCm',
+        'stat.sprintOneCm' => [
             'award' => 'Marathon Runner',
             'desc'  => 'Distance sprinted',
             'displayFunc' => 'cmToDistance',
         ],
-        [
-            'id' => 'stat.swimOneCm',
+        'stat.swimOneCm' => [
             'award' => 'Swimmer',
             'desc'  => 'Distance swum',
             'icon'  => 'blocks/water_still.png',
             'displayFunc' => 'cmToDistance',
         ],
-        [
-            'id' => 'stat.talkedToVillager',
+        'stat.talkedToVillager' => [
             'award' => 'Negotiator',
             'desc'  => 'Villagers talked to',
         ],
-        [
-            'id' => 'stat.timeSinceDeath',
+        'stat.timeSinceDeath' => [
             'award' => 'Survivor',
             'desc'  => 'Time since last death',
             'displayFunc' => 'ticksToTime',
         ],
-        [
-            'id' => 'stat.tradedWithVillager',
+        'stat.tradedWithVillager' => [
             'award' => 'Trader',
             'desc'  => 'Villager trades completed',
             'icon'  => 'items/emerald.png',
         ],
-        [
-            'id' => 'stat.treasureFished',
+        'stat.treasureFished' => [
             'award' => 'Treasure Hunter',
             'desc'  => 'Treasures fished',
             'icon'  => 'items/gold_ingot.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.banner',
+        'stat.useItem.minecraft.banner' => [
             'award' => 'Propaganda',
             'desc'  => 'Banners placed',
             'icon'  => 'items/banner.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.dirt',
+        'stat.useItem.minecraft.dirt' => [
             'award' => 'Dirtbag',
             'desc'  => 'Dirt placed',
             'icon'  => 'blocks/dirt.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.fireworks',
+        'stat.useItem.minecraft.fireworks' => [
             'award' => 'Happy New Year!',
             'desc'  => 'Fireworks launched',
             'icon'  => 'items/fireworks.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.flint_and_steel',
+        'stat.useItem.minecraft.flint_and_steel' => [
             'award' => 'Pyromaniac',
             'desc'  => 'Fires started',
             'icon'  => 'blocks/fire.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.flower_pot',
+        'stat.useItem.minecraft.flower_pot' => [
             'award' => 'Florist',
             'desc'  => 'Flower pots placed',
             'icon'  => 'blocks/flower_rose.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.item_frame',
+        'stat.useItem.minecraft.item_frame' => [
             'award' => 'Museum Owner',
             'desc'  => 'Item frames placed',
             'icon'  => 'items/item_frame.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.jukebox',
+        'stat.useItem.minecraft.jukebox' => [
             'award' => 'Disc Jockey',
             'desc'  => 'Jukeboxes placed',
             'icon'  => 'items/record_13.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.lava_bucket',
+        'stat.useItem.minecraft.lava_bucket' => [
             'award' => 'I\'m a Griefer!',
             'desc'  => 'Lava buckets emptied',
             'icon'  => 'items/bucket_lava.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.milk_bucket',
+        'stat.useItem.minecraft.milk_bucket' => [
             'award' => 'Milksop',
             'desc'  => 'Milk buckets drunk',
             'icon'  => 'items/bucket_milk.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.noteblock',
+        'stat.useItem.minecraft.noteblock' => [
             'award' => 'Musician',
             'desc'  => 'Note blocks placed',
             'icon'  => 'blocks/noteblock.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.piston',
+        'stat.useItem.minecraft.piston' => [
             'award' => 'Mechanic',
             'desc'  => 'Pistons placed',
             'icon'  => 'blocks/piston_side.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.potion',
+        'stat.useItem.minecraft.potion' => [
             'award' => 'Are you a Wizard',
             'desc'  => 'Potions used',
             'icon'  => 'items/potion_bottle_empty.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.rail',
+        'stat.useItem.minecraft.rail' => [
             'award' => 'Railway Company',
             'desc'  => 'Rails placed',
             'icon'  => 'blocks/rail_normal.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.sign',
+        'stat.useItem.minecraft.sign' => [
             'award' => 'Readme.txt',
             'desc'  => 'Signs placed',
             'icon'  => 'items/sign.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.torch',
+        'stat.useItem.minecraft.torch' => [
             'award' => 'Enlightened',
             'desc'  => 'Torches placed',
             'icon'  => 'blocks/torch_on.png',
         ],
-        [
-            'id' => 'stat.useItem.minecraft.writable_book',
+        'stat.useItem.minecraft.writable_book' => [
             'award' => 'Bestseller',
             'desc'  => 'Books written',
             'icon'  => 'items/book_writable.png',
         ],
-        [
-            'id' => 'stat.walkOneCm',
+        'stat.walkOneCm' => [
             'award' => 'Traveler',
             'desc'  => 'Distance walked',
             'icon'  => 'items/iron_boots.png',

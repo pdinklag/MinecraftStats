@@ -4,14 +4,11 @@
     function findStat($id) {
         global $stats;
     
-        //linear search ftw!
-        foreach($stats as $stat) {
-            if($stat['id'] == $id) {
-                return $stat;
-            }
+        if(array_key_exists($id, $stats)) {
+            return $stats[$id];
+        } else {
+            return FALSE;
         }
-        
-        return FALSE;
     }
     
     function getStatIcon($stat) {
@@ -67,18 +64,19 @@
     
     //Check if a certain stat is to be viewed
     if(isset($_GET["stat"])) {
-        $viewStat = findStat($_GET["stat"]);
+        $id = $_GET["stat"];
+        if(isset($stats[$id])) {
+            $viewStat = $stats[$id];
         
-        if($viewStat === FALSE) {
-            die("Unknown stat.");
-        }
-        
-        //Load ranking
-        $rankingFile = "$dataDir/" . $viewStat['id'];
-        if(is_file($rankingFile)) {
-            $viewStat['ranking'] = unserialize(file_get_contents($rankingFile));
+            //Load ranking
+            $rankingFile = "$dataDir/" . $id;
+            if(is_file($rankingFile)) {
+                $viewStat['ranking'] = unserialize(file_get_contents($rankingFile));
+            } else {
+                $viewStat['ranking'] = [];
+            }
         } else {
-            $viewStat['ranking'] = [];
+            die("Unknown stat.");
         }
     }
 ?>
@@ -156,24 +154,24 @@
             <?
                 //Stat sorter
                 function compareStats($a, $b) {
-                    return strcmp($a['award'], $b['award']);
+                    return strcasecmp($a['award'], $b['award']);
                 }
                 
-                usort($stats, 'compareStats');
-                foreach($stats as $stat) {
+                uasort($stats, 'compareStats');
+                foreach($stats as $id => $stat) {
                     ?>
                         <div class="award-box">
                             <div class="award-icon">
                                 <img src="<? echo(getStatIcon($stat)); ?>"/>
                             </div>
                             <div class="award-title">
-                                <a href="?stat=<? echo($stat['id']); ?>"><? echo($stat['award']); ?></a>
+                                <a href="?stat=<? echo($id); ?>"><? echo($stat['award']); ?></a>
                             </div>
                             
                             <?
-                                if(array_key_exists($stat['id'], $hof)) {
-                                    $awardWinner = createPlayerWidget($hof[$stat['id']][0]);
-                                    $awardText = $stat['desc'] . ': <span class="award-score">' . getStatDisplayValue($stat, $hof[$stat['id']][1]) . '</span>';
+                                if(array_key_exists($id, $hof)) {
+                                    $awardWinner = createPlayerWidget($hof[$id][0]);
+                                    $awardText = $stat['desc'] . ': <span class="award-score">' . getStatDisplayValue($stat, $hof[$id][1]) . '</span>';
                                 } else {
                                     $awardWinner = '<span class="award-winner-nobody">Nobody yet</span>';
                                     $awardText = '(' . $stat['desc'] . ')';

@@ -68,14 +68,14 @@
                 $json = json_decode(file_get_contents($jsonFile), true);
                 
                 //Count stats
-                foreach($stats as $i => $stat) {
+                foreach($stats as $id => $stat) {
                     if(isset($stat['provider'])) {
                         $value = call_user_func($stat['provider'], $json);
                         if($value !== FALSE) {
-                            $stats[$i]['ranking'][] = [$uuid, $value];
+                            $stats[$id]['ranking'][] = [$uuid, $value];
                         }
-                    } else if(array_key_exists($stat['id'], $json)) {
-                        $stats[$i]['ranking'][] = [$uuid, $json[$stat['id']]];
+                    } else if(array_key_exists($id, $json)) {
+                        $stats[$id]['ranking'][] = [$uuid, $json[$id]];
                     }
                 }
             }
@@ -94,14 +94,14 @@
     
     //Sort and save stat rankings, compute HOF
     $hof = [];
-    foreach($stats as $stat) {
-        echo("Saving data for " . $stat['id'] . " ...\n");
+    foreach($stats as $id => $stat) {
+        echo("Saving data for " . $id . " ...\n");
         
         if(isset($stat['ranking'])) {
             usort($stat['ranking'], "compareRankingEntries");
-            $hof[$stat['id']] = $stat['ranking'][0];
+            $hof[$id] = $stat['ranking'][0];
             
-            file_put_contents("$dataDir/" . $stat['id'], serialize($stat['ranking']));
+            file_put_contents("$dataDir/" . $id, serialize($stat['ranking']));
         }
     }
     
