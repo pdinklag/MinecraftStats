@@ -393,12 +393,12 @@
         'stat.killEntity.Bat' => [
             'award' => 'Badman',
             'desc'  => 'Bats killed',
-            'icon'  => 'minecraft-wiki/BatFace.png',
+            'icon'  => 'minecraft-wiki/mobs/BatFace.png',
         ],
         'stat.killEntity.Blaze' => [
             'award' => 'Nether Extinguisher',
             'desc'  => 'Blazes killed',
-            'icon'  => 'minecraft-wiki/Blaze_Face.png',
+            'icon'  => 'minecraft-wiki/mobs/Blaze_Face.png',
         ],
         'stat.killEntity.Chicken' => [
             'award' => 'Kentucky Fried Chicken',
@@ -413,22 +413,22 @@
         'stat.killEntity.Creeper' => [
             'award' => 'Creeper Creep',
             'desc'  => 'Creepers killed',
-            'icon'  => 'minecraft-wiki/CreeperFace.png',
+            'icon'  => 'minecraft-wiki/mobs/CreeperFace.png',
         ],
         'stat.killEntity.Enderman' => [
             'award' => 'Enderman Ender',
             'desc'  => 'Endermen killed',
-            'icon'  => 'minecraft-wiki/EndermanFace.png',
+            'icon'  => 'minecraft-wiki/mobs/EndermanFace.png',
         ],
         'stat.killEntity.Endermite' => [
             'award' => 'Endermite Ender',
             'desc'  => 'Endermites killed',
-            'icon'  => 'minecraft-wiki/64px-EndermiteFace.png',
+            'icon'  => 'minecraft-wiki/mobs/64px-EndermiteFace.png',
         ],
         'stat.killEntity.EntityHorse' => [
             'award' => 'Horse Hater',
             'desc'  => 'Horses killed',
-            'icon'  => 'minecraft-wiki/HorseHead.png',
+            'icon'  => 'minecraft-wiki/mobs/HorseHead.png',
         ],
         'stat.killEntity.Ghast' => [
             'award' => 'Tear Drinker',
@@ -438,7 +438,7 @@
         'stat.killEntity.Guardian' => [
             'award' => 'Underwater Raider',
             'desc'  => 'Guardians killed',
-            'icon'  => 'minecraft-wiki/64px-GuardianFace.png',
+            'icon'  => 'minecraft-wiki/mobs/64px-GuardianFace.png',
         ],
         'stat.killEntity.LavaSlime' => [
             'award' => 'Magma Cream',
@@ -448,12 +448,12 @@
         'stat.killEntity.MushroomCow' => [
             'award' => 'I Killed a Mooshroom!',
             'desc'  => 'Mooshrooms killed',
-            'icon'  => 'minecraft-wiki/MooshroomFace.png',
+            'icon'  => 'minecraft-wiki/mobs/MooshroomFace.png',
         ],
         'stat.killEntity.Ocelot' => [
             'award' => 'Bad Kitty!',
             'desc'  => 'Ocelots / cats killed',
-            'icon'  => 'minecraft-wiki/OcelotFace.png',
+            'icon'  => 'minecraft-wiki/mobs/OcelotFace.png',
         ],
         'stat.killEntity.Pig' => [
             'award' => 'Bacon Lover',
@@ -463,67 +463,67 @@
         'stat.killEntity.PigZombie' => [
             'award' => 'Against the Nether',
             'desc'  => 'Zombie Pigmen killed',
-            'icon'  => 'minecraft-wiki/ZombiePigmanFace.png',
+            'icon'  => 'minecraft-wiki/mobs/ZombiePigmanFace.png',
         ],
         'stat.killEntity.Rabbit' => [
             'award' => 'Bunny Killer :(',
             'desc'  => 'Rabbits killed',
-            'icon'  => 'minecraft-wiki/Rabbiticon.png',
+            'icon'  => 'minecraft-wiki/mobs/Rabbiticon.png',
         ],
         'stat.killEntity.Sheep' => [
             'award' => 'Antishepherd',
             'desc'  => 'Sheep killed',
-            'icon'  => 'minecraft-wiki/SheepFace.png',
+            'icon'  => 'minecraft-wiki/mobs/SheepFace.png',
         ],
         'stat.killEntity.Silverfish' => [
             'award' => 'Nasty Little...',
             'desc'  => 'Silverfish killed',
-            'icon'  => 'minecraft-wiki/SilverfishFace.png',
+            'icon'  => 'minecraft-wiki/mobs/SilverfishFace.png',
         ],
         'stat.killEntity.Skeleton' => [
             'award' => 'Bone Collector',
             'desc'  => 'Skeletons killed',
-            'icon'  => 'minecraft-wiki/SkeletonFace.png',
+            'icon'  => 'minecraft-wiki/mobs/SkeletonFace.png',
         ],
         'stat.killEntity.Slime' => [
             'award' => 'Swamp Lurker',
             'desc'  => 'Slimes killed',
-            'icon'  => 'minecraft-wiki/SlimeFace.png',
+            'icon'  => 'minecraft-wiki/mobs/SlimeFace.png',
         ],
         'stat.killEntity.Spider' => [
             'award' => 'Arachnophobia',
             'desc'  => 'Spiders killed',
-            'icon'  => 'minecraft-wiki/SpiderFace.png',
+            'icon'  => 'minecraft-wiki/mobs/SpiderFace.png',
         ],
         'stat.killEntity.Squid' => [
             'award' => 'Pool Cleaner',
             'desc'  => 'Squids killed',
-            'icon'  => 'minecraft-wiki/Squidface.png',
+            'icon'  => 'minecraft-wiki/mobs/Squidface.png',
         ],
         'stat.killEntity.Villager' => [
             'award' => 'Bully',
             'desc'  => 'Villagers killed',
-            'icon'  => 'minecraft-wiki/Villagerhead.png',
+            'icon'  => 'minecraft-wiki/mobs/Villagerhead.png',
         ],
         'stat.killEntity.VillagerGolem' => [
             'award' => 'Down with the Defense!',
             'desc'  => 'Iron Golems killed',
-            'icon'  => 'minecraft-wiki/Vg_face.png',
+            'icon'  => 'minecraft-wiki/mobs/Vg_face.png',
         ],
         'stat.killEntity.Witch' => [
             'award' => 'Burn the Witch!',
             'desc'  => 'Witches killed',
-            'icon'  => 'minecraft-wiki/Witchface2.png',
+            'icon'  => 'minecraft-wiki/mobs/Witchface2.png',
         ],
         'stat.killEntity.Wolf' => [
             'award' => 'Bad Dog!',
             'desc'  => 'Wolves / dogs killed',
-            'icon'  => 'minecraft-wiki/WolfFace.png',
+            'icon'  => 'minecraft-wiki/mobs/WolfFace.png',
         ],
         'stat.killEntity.Zombie' => [
             'award' => 'Zombie Grinder',
             'desc'  => 'Zombies killed',
-            'icon'  => 'minecraft-wiki/ZombieFace.png',
+            'icon'  => 'minecraft-wiki/mobs/ZombieFace.png',
         ],
         'stat.mineBlock.minecraft.coal_ore' => [
             'award' => 'Black Gold',

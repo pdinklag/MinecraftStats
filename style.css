@@ -97,8 +97,8 @@ h1 {
     margin-left: 0px;
     margin-top: 6px;
     
-    width: 64px;
-    height: 64px;
+    max-width: 64px;
+    max-height: 64px;
     
     border: none;
 }
@@ -233,8 +233,8 @@ h1 {
     margin-left: 2px;
     margin-top: 2px;
     
-    width: 30px;
-    height: 30px;
+    max-width: 30px;
+    max-height: 30px;
     
     border: none;
 }
