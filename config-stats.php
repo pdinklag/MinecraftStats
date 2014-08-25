@@ -336,6 +336,11 @@
             'desc'  => 'Cookies made',
             'icon'  => 'items/cookie.png',
         ],
+        'stat.craftItem.minecraft.ender_chest' => [
+            'award' => 'Grief This!',
+            'desc'  => 'Ender Chests crafted',
+            'icon'  => 'blocks/ender_chest.png',
+        ],
         'stat.craftItem.minecraft.ender_eye' => [
             'award' => 'Stronghold Radar',
             'desc'  => 'Ender Eyes crafted',
@@ -345,11 +350,6 @@
             'award' => 'Trick or Treat!',
             'desc'  => 'Jack o\'Lanterns crafted',
             'icon'  => 'blocks/pumpkin_face_on.png',
-        ],
-        'stat.craftItem.minecraft.tnt' => [
-            'award' => 'Bad Intentions',
-            'desc'  => 'TNT crafted',
-            'icon'  => 'blocks/tnt_side.png',
         ],
         'stat.crouchOneCm' => [
             'award' => 'Sneaker',
