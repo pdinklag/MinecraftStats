@@ -72,6 +72,32 @@
         return ($sum > 0) ? $sum : FALSE;
     }
     
+    function craftArmorProvider($json) {
+        $sum =
+            safeGet('stat.craftItem.minecraft.leather_helmet', $json, 0) +
+            safeGet('stat.craftItem.minecraft.leather_chestplate', $json, 0) +
+            safeGet('stat.craftItem.minecraft.leather_leggings', $json, 0) +
+            safeGet('stat.craftItem.minecraft.leather_boots', $json, 0) +
+            safeGet('stat.craftItem.minecraft.chainmail_helmet', $json, 0) +
+            safeGet('stat.craftItem.minecraft.chainmail_chestplate', $json, 0) +
+            safeGet('stat.craftItem.minecraft.chainmail_leggings', $json, 0) +
+            safeGet('stat.craftItem.minecraft.chainmail_boots', $json, 0) +
+            safeGet('stat.craftItem.minecraft.iron_helmet', $json, 0) +
+            safeGet('stat.craftItem.minecraft.iron_chestplate', $json, 0) +
+            safeGet('stat.craftItem.minecraft.iron_leggings', $json, 0) +
+            safeGet('stat.craftItem.minecraft.iron_boots', $json, 0) +
+            safeGet('stat.craftItem.minecraft.golden_helmet', $json, 0) +
+            safeGet('stat.craftItem.minecraft.golden_chestplate', $json, 0) +
+            safeGet('stat.craftItem.minecraft.golden_leggings', $json, 0) +
+            safeGet('stat.craftItem.minecraft.golden_boots', $json, 0) +
+            safeGet('stat.craftItem.minecraft.diamond_helmet', $json, 0) +
+            safeGet('stat.craftItem.minecraft.diamond_chestplate', $json, 0) +
+            safeGet('stat.craftItem.minecraft.diamond_leggings', $json, 0) +
+            safeGet('stat.craftItem.minecraft.diamond_boots', $json, 0);
+        
+        return ($sum > 0) ? $sum : FALSE;
+    }
+    
     function eatMeatProvider($json) {
         $sum =
             safeGet('stat.useItem.minecraft.cooked_chicken', $json, 0) +
@@ -238,6 +264,12 @@
             'desc'  => 'Tools broken',
             'icon'  => 'items/stick.png',
             'provider' => 'breakToolProvider',
+        ],
+        'custom.craftArmor' => [
+            'award' => 'Armorer',
+            'desc'  => 'Pieces of armor crafted',
+            'icon'  => 'items/diamond_chestplate.png',
+            'provider' => 'craftArmorProvider',
         ],
         'custom.eatMeat' => [
             'award' => 'Meat on the Table',
@@ -643,6 +675,7 @@
             'award' => 'Marathon Runner',
             'desc'  => 'Distance sprinted',
             'displayFunc' => 'cmToDistance',
+            'icon'  => 'gui/speed.png',
         ],
         'stat.swimOneCm' => [
             'award' => 'Swimmer',
