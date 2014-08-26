@@ -703,6 +703,7 @@
         'stat.playOneMinute' => [
             'award' => 'Addict',
             'desc'  => 'Time played on the server',
+            'icon'  => 'gui/connection.png',
             'displayFunc' => 'ticksToTime',
         ],
         'stat.sprintOneCm' => [
