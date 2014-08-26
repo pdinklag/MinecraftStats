@@ -33,9 +33,9 @@
     function compareRankingEntries($a, $b) {
         global $players;
     
-        $d = $b[1] - $a[1];    
+        $d = $b['score'] - $a['score'];
         if($d == 0) {
-            return strcasecmp($players[$a[0]]['name'], $players[$b[0]]['name']);
+            return strcasecmp($players[$a['id']]['name'], $players[$b['id']]['name']);
         } else {
             return $d;
         }
@@ -72,7 +72,7 @@
                 foreach($stats as $id => $stat) {
                     $value = getStatProgressForPlayer($id, $json);
                     if($value !== FALSE) {
-                        $stats[$id]['ranking'][] = [$uuid, $value];
+                        $stats[$id]['ranking'][] = ['id' => $uuid, 'score' => $value];
                     }
                 }
             }
@@ -80,9 +80,17 @@
         closedir($dir);
     }
     
-    //Create data dir if necessary
+    //Create data directories if necessary
     if(!is_dir($dataDir)) {
         mkdir($dataDir, 0755);
+    }
+    
+    if(!is_dir($statDataDir)) {
+        mkdir($statDataDir, 0755);
+    }
+    
+    if(!is_dir($playerDataDir)) {
+        mkdir($playerDataDir, 0755);
     }
     
     //Save players
@@ -98,7 +106,7 @@
             usort($stat['ranking'], "compareRankingEntries");
             $hof[$id] = $stat['ranking'][0];
             
-            file_put_contents("$dataDir/" . $id, serialize($stat['ranking']));
+            file_put_contents("$statDataDir/" . $id, serialize($stat['ranking']));
         }
     }
     

@@ -9,7 +9,7 @@
         $viewStat = $stats[$viewStatId];
 
         //Load ranking
-        $rankingFile = "$dataDir/" . $viewStatId;
+        $rankingFile = "$statDataDir/" . $viewStatId;
         if(is_file($rankingFile)) {
             $viewStat['ranking'] = unserialize(file_get_contents($rankingFile));
         } else {
@@ -38,8 +38,8 @@
                     ?>
                     <tr>
                         <td class="rank <? echo("place$i medal$i"); ?>"><? echo($i + 1); ?></td>
-                        <td class="player <? echo("place$i"); ?>"><? echo(createPlayerWidget($e[0], 24)); ?></td>
-                        <td class="score <? echo("place$i"); ?>"><? echo(getStatDisplayValue($viewStat, $e[1])); ?></td>
+                        <td class="player <? echo("place$i"); ?>"><? echo(createPlayerWidget($e['id'], 24)); ?></td>
+                        <td class="score <? echo("place$i"); ?>"><? echo(getStatDisplayValue($viewStat, $e['score'])); ?></td>
                     </tr>
                     <?
                 }

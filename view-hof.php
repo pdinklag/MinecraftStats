@@ -26,8 +26,8 @@
                     
                     <?
                         if(array_key_exists($id, $hof)) {
-                            $awardWinner = createPlayerWidget($hof[$id][0], 24);
-                            $awardText = $stat['desc'] . ': <span class="award-score">' . getStatDisplayValue($stat, $hof[$id][1]) . '</span>';
+                            $awardWinner = createPlayerWidget($hof[$id]['id'], 24);
+                            $awardText = $stat['desc'] . ': <span class="award-score">' . getStatDisplayValue($stat, $hof[$id]['score']) . '</span>';
                         } else {
                             $awardWinner = createPlayerWidget(FALSE, 24);
                             $awardText = '(' . $stat['desc'] . ')';

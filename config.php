@@ -8,8 +8,12 @@
     $rawDataDir = "raw";
     
     $playerCacheFile = "$dataDir/players.txt";
+    
     $hofFile = "$dataDir/hof.txt";
     $lastUpdateFile = "$dataDir/lastUpdate";
+    
+    $statDataDir = "$dataDir/stats";
+    $playerDataDir = "$dataDir/players";
     
     //General Settings
     $title = "DVGaming.COM Snapshot";
