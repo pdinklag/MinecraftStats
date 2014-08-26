@@ -4,6 +4,7 @@
      */
      
     require_once('config.php');
+    require_once('util.php');
     
     error_reporting(E_ALL ^ E_NOTICE);
     
