@@ -524,7 +524,7 @@
             'desc'  => 'Mooshrooms killed',
             'icon'  => 'minecraft-wiki/mobs/MooshroomFace.png',
         ],
-        'stat.killEntity.Ocelot' => [
+        'stat.killEntity.Ozelot' => [
             'award' => 'Bad Kitty!',
             'desc'  => 'Ocelots / cats killed',
             'icon'  => 'minecraft-wiki/mobs/OcelotFace.png',
