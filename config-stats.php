@@ -707,10 +707,20 @@
             'desc'  => 'Banners placed',
             'icon'  => 'items/banner.png',
         ],
+        'stat.useItem.minecraft.bow' => [
+            'award' => 'Archer',
+            'desc'  => 'Arrows shot',
+            'icon'  => 'items/bow_standby.png',
+        ],
         'stat.useItem.minecraft.dirt' => [
             'award' => 'Dirtbag',
             'desc'  => 'Dirt placed',
             'icon'  => 'blocks/dirt.png',
+        ],
+        'stat.useItem.minecraft.egg' => [
+            'award' => 'Catch!',
+            'desc'  => 'Eggs thrown',
+            'icon'  => 'items/egg.png',
         ],
         'stat.useItem.minecraft.fireworks' => [
             'award' => 'Happy New Year!',
@@ -776,6 +786,11 @@
             'award' => 'Readme.txt',
             'desc'  => 'Signs placed',
             'icon'  => 'items/sign.png',
+        ],
+        'stat.useItem.minecraft.snowball' => [
+            'award' => 'Snowball Fight!',
+            'desc'  => 'Snowballs thrown',
+            'icon'  => 'items/snowball.png',
         ],
         'stat.useItem.minecraft.torch' => [
             'award' => 'Enlightened',
