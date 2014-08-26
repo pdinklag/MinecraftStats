@@ -98,6 +98,19 @@
         return ($sum > 0) ? $sum : FALSE;
     }
     
+    function craftMineralBlockProvider($json) {
+        $sum =
+            safeGet('stat.craftItem.minecraft.coal_block', $json, 0) +
+            safeGet('stat.craftItem.minecraft.diamond_block', $json, 0) +
+            safeGet('stat.craftItem.minecraft.emerald_block', $json, 0) +
+            safeGet('stat.craftItem.minecraft.gold_block', $json, 0) +
+            safeGet('stat.craftItem.minecraft.iron_block', $json, 0) +
+            safeGet('stat.craftItem.minecraft.lapis_block', $json, 0) +
+            safeGet('stat.craftItem.minecraft.redstone_block', $json, 0);
+        
+        return ($sum > 0) ? $sum : FALSE;
+    }
+    
     function eatMeatProvider($json) {
         $sum =
             safeGet('stat.useItem.minecraft.cooked_chicken', $json, 0) +
@@ -271,6 +284,12 @@
             'icon'  => 'items/diamond_chestplate.png',
             'provider' => 'craftArmorProvider',
         ],
+        'custom.craftMineralBlock' => [
+            'award' => 'Compressor',
+            'desc'  => 'Mineral blocks crafted',
+            'icon'  => 'blocks/emerald_block.png',
+            'provider' => 'craftMineralBlockProvider',
+        ],
         'custom.eatMeat' => [
             'award' => 'Meat on the Table',
             'desc'  => 'Meat items eaten',
@@ -352,6 +371,11 @@
             'award' => 'Ray of Light',
             'desc'  => 'Beacons crafted',
             'icon'  => 'blocks/beacon.png',
+        ],
+        'stat.craftItem.minecraft.bookshelf' => [
+            'award' => 'Librarian',
+            'desc'  => 'Bookshelves crafted',
+            'icon'  => 'blocks/bookshelf.png',
         ],
         'stat.craftItem.minecraft.clock' => [
             'award' => 'What time is it?',
@@ -535,6 +559,11 @@
             'desc'  => 'Skeletons killed',
             'icon'  => 'minecraft-wiki/mobs/SkeletonFace.png',
         ],
+        'stat.killEntity.SnowGolem' => [
+            'award' => 'Snowman Melter',
+            'desc'  => 'Snow Golems killed',
+            'icon'  => 'minecraft-wiki/mobs/Snowgolemhead.png',
+        ],
         'stat.killEntity.Slime' => [
             'award' => 'Swamp Lurker',
             'desc'  => 'Slimes killed',
@@ -574,6 +603,11 @@
             'award' => 'Zombie Grinder',
             'desc'  => 'Zombies killed',
             'icon'  => 'minecraft-wiki/mobs/ZombieFace.png',
+        ],
+        'stat.mineBlock.minecraft.cactus' => [
+            'award' => 'Cactus Farmer',
+            'desc'  => 'Cacti mined',
+            'icon'  => 'blocks/cactus_side.png',
         ],
         'stat.mineBlock.minecraft.coal_ore' => [
             'award' => 'Black Gold',
@@ -690,6 +724,7 @@
         'stat.timeSinceDeath' => [
             'award' => 'Survivor',
             'desc'  => 'Time since last death',
+            'icon'  => 'gui/resistance.png',
             'displayFunc' => 'ticksToTime',
         ],
         'stat.tradedWithVillager' => [
