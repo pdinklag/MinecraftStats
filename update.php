@@ -99,15 +99,38 @@
     
     //Sort and save stat rankings, compute HOF
     $hof = [];
+    $playerStats = [];
+    
     foreach($stats as $id => $stat) {
-        echo("Saving data for " . $id . " ...\n");
+        echo("Saving data for $id ...\n");
         
         if(isset($stat['ranking'])) {
+            //Sort ranking
             usort($stat['ranking'], "compareRankingEntries");
+            
+            //Save stat ranking for players
+            foreach($stat['ranking'] as $rank => $entry) {
+                $uuid = $entry['id'];
+            
+                if(!array_key_exists($uuid, $playerStats)) {
+                    $playerStats[$uuid] = [];
+                }
+                
+                $playerStats[$uuid][$id] = ['score' => $entry['score'], 'rank' => $rank];
+            }
+            
+            //Create HOF entry
             $hof[$id] = $stat['ranking'][0];
             
+            //Save stat data
             file_put_contents("$statDataDir/" . $id, serialize($stat['ranking']));
         }
+    }
+    
+    //Save player stats
+    foreach($playerStats as $id => $pstat) {
+        echo("Saving data for $id ...\n");
+        file_put_contents("$playerDataDir/" . $id, serialize($pstat));
     }
     
     //Save HOF

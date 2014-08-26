@@ -13,6 +13,11 @@ body {
     background-repeat: repeat-x, repeat-x, repeat;
 }
 
+hr {
+    border: none;
+    border-top: 2px dotted #606060;
+}
+
 a {
     color: #A0F0FF;
 }
@@ -327,6 +332,35 @@ h1 {
     font-weight: bold;
     
     margin-left: 0.5em;
+}
+
+#medals {
+    text-align: center;
+
+    margin-left: 20%;
+    width: 60%;
+}
+
+#medals p {
+    text-align: center;
+    font-family: 'minecraftfont';
+    font-size: 75%;
+    color: #FFFFFF;
+}
+
+#medals table {
+    font-family: 'minecraftfont';
+    color: #FFFFFF;
+
+    width: 100%;
+}
+
+#medals table td.medal {
+    text-align: right;
+}
+
+#medals table td.count {
+    text-align: left;
 }
 
 #foot-wrapper {
