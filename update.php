@@ -137,7 +137,7 @@
     
     //Save awards
     echo("Saving awards ...\n");
-    file_put_contents($awardFile, serialize($awards));
+    file_put_contents($awardsFile, serialize($awards));
     
     //Save last update
     echo("Saving last update time ...\n");
