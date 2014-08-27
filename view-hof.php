@@ -10,7 +10,7 @@
         $hof = [];
     }
 ?>
-<div id="back-to-index"><a href="?stat=stat.playOneMinute">List of players</a></div>
+<div id="nav"><a href="?stat=stat.playOneMinute">List of players</a></div>
 <div id="header">Hall of Fame</div>
 <div id="hof">
     <?

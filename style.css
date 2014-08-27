@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: sans-serif;
+    font-family: 'minecraftfont';
     font-size: 12pt;
     
     color: #FFFFFF;
@@ -56,7 +56,6 @@ h1 {
     clear: both;
 
     text-align: center;
-    font-family: 'minecraftfont';
     font-size: 125%;
     font-weight: normal;
     color: #C0C0C0;
@@ -71,27 +70,25 @@ h1 {
     right: 0;
     
     font-size: 75%;
-    font-style: italic;
     color: #808080;
     
     padding-top: 3ex;
     padding-right: 1em;
 }
 
-#back-to-index {
+#nav {
     position: absolute;
     top: 0;
     left: 0;
     
     font-size: 75%;
-    font-style: italic;
     color: #C0C0C0;
     
     padding-top: 3ex;
     padding-left: 1em;
 }
 
-#back-to-index a {
+#nav a {
     color: #C0C0C0;
 }
 
@@ -100,7 +97,6 @@ h1 {
     margin-bottom: 0;
     
     text-align: center;
-    font-family: 'minecraftfont';
     font-size: 350%;
     color: #FFFFFF;
 }
@@ -159,7 +155,6 @@ h1 {
 
 .listing p {
     text-align: center;
-    font-family: 'minecraftfont';
     font-size: 75%;
     color: #FFFFFF;
 }
@@ -169,7 +164,6 @@ h1 {
 }
 
 table.medals {
-    font-family: 'minecraftfont';
     color: #FFFFFF;
 
     width: 100%;
@@ -186,7 +180,6 @@ table.medals td.count {
 table.listing {
     width: 100%;
 
-    font-family: 'minecraftfont';
     color: #FFFFFF;
 
     border: 2px solid #282828;
@@ -278,7 +271,6 @@ table.listing td.stat {
 }
 
 #hof .award-box {
-    font-family: 'minecraftfont';
     font-size: 12pt;
 
     border: 2px solid #282828;
@@ -369,6 +361,5 @@ table.listing td.stat {
     
     text-align: right;
     font-size: 75%;
-    font-style: italic;
     color: #808080;
 }

@@ -21,7 +21,7 @@
         die("Unknown stat.");
     }
 ?>
-<div id="back-to-index">&larr; <a href="index.php">Back to Hall of Fame</a></div>
+<div id="nav">&larr; <a href="index.php">Back to Hall of Fame</a></div>
 <div id="header">
     <span class="icon"><img src="<? echo(getStatIcon($viewStat)); ?>"/></span>
     <? echo($viewStat['award']); ?>

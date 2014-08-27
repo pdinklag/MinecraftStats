@@ -20,7 +20,7 @@
         die("Unknown player.");
     }
 ?>
-<div id="back-to-index">&larr; <a href="index.php">Back to Hall of Fame</a></div>
+<div id="nav">&larr; <a href="index.php">Back to Hall of Fame</a></div>
 <div id="header">
     <? echo(createPlayerWidget($playerId, 64)); ?>
 </div>

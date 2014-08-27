@@ -44,7 +44,7 @@
     ksort($otherStats);
     ksort($blockStats);
 ?>
-<div id="back-to-index">&larr; <a href="?player=<? echo($playerId); ?>">Back to processed player data</a></div>
+<div id="nav">&larr; <a href="?player=<? echo($playerId); ?>">Back to processed player data</a></div>
 <div id="header">
     <? echo(createPlayerWidget($playerId, 64)); ?>
 </div>
