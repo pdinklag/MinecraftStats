@@ -2,7 +2,6 @@
     /**
      * Utilities
      */
-
     function findStat($id) {
         global $stats;
     

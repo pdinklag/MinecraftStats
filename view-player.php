@@ -4,6 +4,8 @@
      *
      * Included by index.php when $_GET['player'] is set.
      */
+    date_default_timezone_set('Europe/Berlin');
+     
     $playerId = $_GET["player"];
     if(isset($players[$playerId])) {
         $player = $players[$playerId];
@@ -26,6 +28,7 @@
 </div>
 <div id="ranking-wrapper">
     <div id="medals">
+        <p class="date">Last online: <? echo(date('D, M d, Y - H:i', $players[$playerId]['date']) . ' (CEST)'); ?></p>
         <p>Medals held by <? echo(getPlayerName($playerId)); ?>:</p>
         <?
             //Count medals

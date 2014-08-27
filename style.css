@@ -143,6 +143,10 @@ h1 {
     color: #FFFFFF;
 }
 
+#ranking p.date {
+    color: #A0A0A0;
+}
+
 #ranking table {
     width: 100%;
 
@@ -348,6 +352,10 @@ h1 {
     font-family: 'minecraftfont';
     font-size: 75%;
     color: #FFFFFF;
+}
+
+#medals p.date {
+    color: #A0A0A0;
 }
 
 #medals table {

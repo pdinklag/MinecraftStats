@@ -65,6 +65,8 @@
                     $info = $players[$uuid];
                 }
                 
+                $players[$uuid]['date'] = filemtime($jsonFile);
+                
                 //Parse JSON
                 $json = json_decode(file_get_contents($jsonFile), true);
                 

@@ -50,6 +50,7 @@
 </div>
 <div id="ranking-wrapper">
     <div id="ranking">
+        <p class="date">Last online: <? echo(date('D, M d, Y - H:i', $players[$playerId]['date']) . ' (CEST)'); ?></p>
         <p>Raw craft, use/place and mine/destroy statisitcs:</p>
         <table>
             <colgroup>
