@@ -95,7 +95,7 @@ h1 {
     color: #C0C0C0;
 }
 
-#ranking-header {
+#header {
     margin-top: 0;
     margin-bottom: 0;
     
@@ -105,7 +105,7 @@ h1 {
     color: #FFFFFF;
 }
 
-#ranking-header span.icon {
+#header span.icon {
     display: inline-block;
     width: 76px;
     height: 76px;
@@ -116,7 +116,7 @@ h1 {
     vertical-align: -10%;
 }
 
-#ranking-header span.icon img {
+#header span.icon img {
     margin-left: 0px;
     margin-top: 6px;
     
@@ -126,28 +126,64 @@ h1 {
     border: none;
 }
 
-#ranking-wrapper {
+#header table td.award span.icon {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+}
+
+#header table td.award span.icon img {
+    max-width: 24px;
+    max-height: 24px;
+    border: none;
+}
+
+#header table td.award img {
+    max-width: 24px;
+    max-height: 24px;
+}
+
+#listing-wrapper {
     margin-top: 2ex;
-    width: 100%;
-}
-
-#ranking {
-    margin-left: 20%;
+    
     width: 60%;
+    margin-left: 20%;
 }
 
-#ranking p {
+.listing {
+    text-align: center;
+}
+
+.listing p {
     text-align: center;
     font-family: 'minecraftfont';
     font-size: 75%;
     color: #FFFFFF;
 }
 
-#ranking p.date {
+.listing p.date {
     color: #A0A0A0;
 }
 
-#ranking table {
+table.medals {
+    font-family: 'minecraftfont';
+    color: #FFFFFF;
+
+    width: 100%;
+}
+
+table.medals td.medal {
+    text-align: right;
+}
+
+table.medals td.count {
+    text-align: left;
+}
+
+table.listing {
     width: 100%;
 
     font-family: 'minecraftfont';
@@ -158,7 +194,7 @@ h1 {
     background-image: url('img/bg/stonebrick.png');
 }
 
-#ranking table th {
+table.listing th {
     font-weight: normal;
     text-decoration: underline;
     color: #C0C0C0;
@@ -167,96 +203,73 @@ h1 {
     padding: 0.5ex;
 }
 
-#ranking table td {
+table.listing td {
     padding: 0.5ex;
     border: 2px dotted #404040;
+    
+    text-align: left;
 }
 
-#ranking table td.medal0 {
+table.listing td.medal0 {
     background-image: url('img/fatcow/medal_award_gold.png');
     background-position: 0.5em center;
     background-repeat: no-repeat;
 }
 
-#ranking table td.medal1 {
+table.listing td.medal1 {
     background-image: url('img/fatcow/medal_award_silver.png');
     background-position: 0.5em center;
     background-repeat: no-repeat;
 }
 
-#ranking table td.medal2 {
+table.listing td.medal2 {
     background-image: url('img/fatcow/medal_award_bronze.png');
     background-position: 0.5em center;
     background-repeat: no-repeat;
 }
 
-#ranking table td.place0 {
+table.listing td.place0 {
     background-color: rgba(255,224,0,0.33);
 }
 
-#ranking table td.place1 {
+table.listing td.place1 {
     background-color: rgba(255,255,255,0.33);
 }
 
-#ranking table td.place2 {
+table.listing td.place2 {
     background-color: rgba(255,128,0,0.33);
 }
 
-#ranking table td.rank {
+table.listing td.rank {
     text-align: right;
     color: #C0C0C0;
 }
 
-#ranking table td.player {
+table.listing td.player {
     font-weight: bold;
 }
 
-#ranking table td.score {
-    /*color: #C0C0C0;*/
+table.listing td.score {
     font-weight: bold;
 }
 
-#ranking table td.award {
+table.listing td.award {
     font-weight: bold;
 }
 
-#ranking table td.date {
+table.listing td.award img {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+table.listing td.date {
     color: #C0C0C0;
 }
 
-#ranking-header table td.award span.icon {
-    display: inline-block;
-    width: 28px;
-    height: 28px;
-
-    background-color: rgba(0, 0, 0, 0.25);
-    border-radius: 4px;
-}
-
-#ranking-header table td.award span.icon img {
-    max-width: 24px;
-    max-height: 24px;
-    border: none;
-}
-
-#ranking table td.award img {
-    max-width: 24px;
-    max-height: 24px;
-}
-
-#ranking table td.stat {
+table.listing td.stat {
     color: #C0C0C0;
     text-align: right
-}
-
-#hof-header {
-    text-align: center;
-    font-family: 'minecraftfont';
-    font-size: 350%;
-    color: #FFFFFF;
-    
-    margin-top: 0;
-    margin-bottom: 0;
 }
 
 #hof {
@@ -342,39 +355,6 @@ h1 {
     font-weight: bold;
     
     margin-left: 0.5em;
-}
-
-#medals {
-    text-align: center;
-
-    margin-left: 20%;
-    width: 60%;
-}
-
-#medals p {
-    text-align: center;
-    font-family: 'minecraftfont';
-    font-size: 75%;
-    color: #FFFFFF;
-}
-
-#medals p.date {
-    color: #A0A0A0;
-}
-
-#medals table {
-    font-family: 'minecraftfont';
-    color: #FFFFFF;
-
-    width: 100%;
-}
-
-#medals table td.medal {
-    text-align: right;
-}
-
-#medals table td.count {
-    text-align: left;
 }
 
 #foot-wrapper {

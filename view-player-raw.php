@@ -45,60 +45,64 @@
     ksort($blockStats);
 ?>
 <div id="back-to-index">&larr; <a href="?player=<? echo($playerId); ?>">Back to processed player data</a></div>
-<div id="ranking-header">
+<div id="header">
     <? echo(createPlayerWidget($playerId, 64)); ?>
 </div>
-<div id="ranking-wrapper">
-    <div id="ranking">
+<div id="listing-wrapper">
+    <div class="listing">
         <p class="date">Last online: <? echo(formatDate($players[$playerId]['date'])); ?></p>
         <p>Raw craft, use/place and mine/destroy statisitcs:</p>
-        <table>
+        <table class="listing">
             <colgroup>
                 <col style="width:40%;"/>
                 <col style="width:20%;"/>
                 <col style="width:20%;"/>
                 <col style="width:20%;"/>
             </colgroup>
-            <tr>
-                <th>Item/Block ID</th>
-                <th>Crafted</th>
-                <th>Used/Placed</th>
-                <th>Mined/Destroyed</th>
-            </tr>
-            <?
-                foreach($blockStats as $id => $stats) {
-                    ?>
-                        <tr>
-                        <td><? echo($id); ?></td>
-                        <td><? echo(safeGet('craft', $stats, 0)); ?></td>
-                        <td><? echo(safeGet('use', $stats, 0)); ?></td>
-                        <td><? echo(safeGet('mine', $stats, 0)); ?></td>
-                        </tr>
-                    <?
-                }
-            ?>
+            <tbody>
+                <tr>
+                    <th>Item/Block ID</th>
+                    <th>Crafted</th>
+                    <th>Used/Placed</th>
+                    <th>Mined/Destroyed</th>
+                </tr>
+                <?
+                    foreach($blockStats as $id => $stats) {
+                        ?>
+                            <tr>
+                            <td><? echo($id); ?></td>
+                            <td><? echo(safeGet('craft', $stats, 0)); ?></td>
+                            <td><? echo(safeGet('use', $stats, 0)); ?></td>
+                            <td><? echo(safeGet('mine', $stats, 0)); ?></td>
+                            </tr>
+                        <?
+                    }
+                ?>
+            </tbody>
         </table>
         <hr />
         <p>Miscellaneous raw statistics:</p>
-        <table>
+        <table class="listing">
             <colgroup>
-                <col style="width:50%;"/>
-                <col style="width:50%;"/>
+                <col style="width:40%;"/>
+                <col style="width:60%;"/>
             </colgroup>
-            <tr>
-                <th>Stat</th>
-                <th>Value</th>
-            </tr>
-            <?
-                foreach($otherStats as $key => $value) {
-                    ?>
-                        <tr>
-                        <td><? echo($key); ?></td>
-                        <td><? echo($value); ?></td>
-                        </tr>
-                    <?
-                }
-            ?>
+            <tbody>
+                <tr>
+                    <th>Stat</th>
+                    <th>Value</th>
+                </tr>
+                <?
+                    foreach($otherStats as $key => $value) {
+                        ?>
+                            <tr>
+                            <td><? echo($key); ?></td>
+                            <td><? echo($value); ?></td>
+                            </tr>
+                        <?
+                    }
+                ?>
+            </tbody>
         </table>
     </div>
 </div>

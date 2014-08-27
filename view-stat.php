@@ -22,14 +22,15 @@
     }
 ?>
 <div id="back-to-index">&larr; <a href="index.php">Back to Hall of Fame</a></div>
-<div id="ranking-header">
+<div id="header">
     <span class="icon"><img src="<? echo(getStatIcon($viewStat)); ?>"/></span>
     <? echo($viewStat['award']); ?>
 </div>
-<div id="ranking-wrapper">
-    <div id="ranking">
+<div id="listing-wrapper">
+    <div class="listing">
         <p>Ranking for the "<? echo($viewStat['award'])?>" award (<? echo($viewStat['desc'])?>):</p>
-        <table>
+        <table class="listing">
+            <tbody>
             <tr>
                 <th>Rank</th>
                 <th>Player</th>
@@ -60,6 +61,7 @@
                     <?
                 }
             ?>
+            </tbody>
         </table>
     </div>
 </div>
