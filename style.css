@@ -8,6 +8,8 @@ body {
     font-family: sans-serif;
     font-size: 12pt;
     
+    color: #FFFFFF;
+    
     background-image: url('img/bg/grass_side.png'), url('img/bg/dirt.png'), url('img/bg/stone.png');
     background-position: left top, left 64px, left 128px;
     background-repeat: repeat-x, repeat-x, repeat;

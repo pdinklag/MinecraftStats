@@ -2,6 +2,7 @@
     /**
      * General configuration.
      */
+    require_once("util.php");
 
     //Data structure
     $dataDir = "data";

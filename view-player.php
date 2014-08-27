@@ -56,21 +56,21 @@
             </colgroup>
             <tr>
                 <td class="medal"><img src="img/fatcow/medal_award_gold.png"/></td>
-                <td class="count"><? echo($gold) ?></td>
+                <td class="count"><? echo($gold); ?></td>
             </tr>
             <tr>
                 <td class="medal"><img src="img/fatcow/medal_award_silver.png"/></td>
-                <td class="count"><? echo($silver) ?></td>
+                <td class="count"><? echo($silver); ?></td>
             </tr>
             <tr>
                 <td class="medal"><img src="img/fatcow/medal_award_bronze.png"/></td>
-                <td class="count"><? echo($bronze) ?></td>
+                <td class="count"><? echo($bronze); ?></td>
             </tr>
         </table>
     </div>
     <hr/>
     <div id="ranking">
-        <p>Statistics by award:</p> 
+        <p>Statistics by award (<a href="?raw=<? echo($playerId); ?>">view raw data</a>):</p> 
         <table>
             <colgroup>
                 <col style="width:40%;"/>

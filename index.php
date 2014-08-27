@@ -35,6 +35,8 @@
         require("view-stat.php");
     } else if(isset($_GET["player"])) {
         require("view-player.php");
+    } else if(isset($_GET["raw"])) {
+        require("view-player-raw.php");
     } else {
         require("view-hof.php");
     }

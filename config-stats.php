@@ -40,14 +40,6 @@
         }
     }
     
-    function safeGet($key, $json, $def) {
-        if(array_key_exists($key, $json)) {
-            return $json[$key];
-        } else {
-            return $def;
-        }
-    }
-    
     function breakToolProvider($json) {
         $sum =
             safeGet('stat.breakItem.minecraft.fishing_rod', $json, 0) +

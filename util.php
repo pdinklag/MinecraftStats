@@ -92,4 +92,12 @@
             return '<div class="player-nobody"><div>Nobody</div></div>';
         }
     }
+    
+    function safeGet($key, $arr, $def) {
+        if(array_key_exists($key, $arr)) {
+            return $arr[$key];
+        } else {
+            return $def;
+        }
+    }
 ?>
