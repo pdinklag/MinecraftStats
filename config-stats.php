@@ -18,8 +18,12 @@
         }
     }
     
+    function ticksToSeconds($ticks) {
+        return $ticks / 20;
+    }
+    
     function ticksToTime($ticks) {
-        $seconds = (int)($ticks / 20);
+        $seconds = (int)ticksToSeconds($ticks);
         
         $minutes = (int)($seconds / 60);
         $seconds %= 60;
@@ -47,6 +51,7 @@
     function breakToolProvider($json) {
         $sum =
             safeGet('stat.breakItem.minecraft.fishing_rod', $json, 0) +
+            safeGet('stat.breakItem.minecraft.flint_and_steel', $json, 0) +
             safeGet('stat.breakItem.minecraft.shears', $json, 0) +
             safeGet('stat.breakItem.minecraft.wooden_axe', $json, 0) +
             safeGet('stat.breakItem.minecraft.wooden_hoe', $json, 0) +
@@ -95,6 +100,35 @@
             safeGet('stat.craftItem.minecraft.diamond_leggings', $json, 0) +
             safeGet('stat.craftItem.minecraft.diamond_boots', $json, 0);
         
+        return ($sum > 0) ? $sum : FALSE;
+    }
+    
+    function craftToolProvider($json) {
+        $sum =
+            safeGet('stat.craftItem.minecraft.fishing_rod', $json, 0) +
+            safeGet('stat.craftItem.minecraft.flint_and_steel', $json, 0) +
+            safeGet('stat.craftItem.minecraft.shears', $json, 0) +
+            safeGet('stat.craftItem.minecraft.wooden_axe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.wooden_hoe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.wooden_pickaxe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.wooden_shovel', $json, 0) +
+            safeGet('stat.craftItem.minecraft.stone_axe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.stone_hoe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.stone_pickaxe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.stone_shovel', $json, 0) +
+            safeGet('stat.craftItem.minecraft.iron_axe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.iron_hoe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.iron_pickaxe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.iron_shovel', $json, 0) +
+            safeGet('stat.craftItem.minecraft.golden_axe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.golden_hoe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.golden_pickaxe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.golden_shovel', $json, 0) +
+            safeGet('stat.craftItem.minecraft.diamond_axe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.diamond_hoe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.diamond_pickaxe', $json, 0) +
+            safeGet('stat.craftItem.minecraft.diamond_shovel', $json, 0);
+            
         return ($sum > 0) ? $sum : FALSE;
     }
     
@@ -225,6 +259,84 @@
         
         return ($sum > 0) ? $sum : FALSE;
     }
+    
+    function plowDirtProvider($json) {
+        $sum =
+            safeGet('stat.useItem.minecraft.wooden_hoe', $json, 0) +
+            safeGet('stat.useItem.minecraft.stone_hoe', $json, 0) +
+            safeGet('stat.useItem.minecraft.iron_hoe', $json, 0) +
+            safeGet('stat.useItem.minecraft.golden_hoe', $json, 0) +
+            safeGet('stat.useItem.minecraft.diamond_hoe', $json, 0);
+            
+        return ($sum > 0) ? $sum : FALSE;
+    }
+    
+    function getMinePlaceDiff($json, $block) {
+        return max(0, safeGet("stat.mineBlock.$block", $json, 0) - safeGet("stat.useItem.$block", $json, 0));
+    }
+
+    function suspectProvider($json) {
+        $score = 0;
+        
+        $playTime = ticksToSeconds(safeGet('stat.playOneMinute', $json, 0));
+    
+        $diamonds = safeGet('achievement.diamonds', $json, 0);
+        $obsMined = safeGet('stat.mineBlock.minecraft.obsidian', $json, 0);
+        $enderEyes = safeGet('stat.craftItem.minecraft.ender_eye', $json, 0);
+        
+        //Mined more Enchanting Tables than ever placed
+        $d = getMinePlaceDiff($json, 'minecraft.enchanting_table');
+        if($d > 0) {
+            //never mined enough diamonds to craft any
+            if($diamonds < 2) {
+                $d *= $d;
+            }
+            
+            //never mined enough obsidian to craft any
+            if($obsMined < 4) {
+                $d *= $d;
+            }
+            
+            $score += 10 * $d;
+        }
+        
+        //Mined more Ender Chests than ever placed
+        $d = getMinePlaceDiff($json, 'minecraft.ender_chest');
+        if($d > 0) {
+            //never crafted any ender eyes
+            if($enderEyes == 0) {
+                $d *= $d;
+            }
+            
+            //never mined enough obsidian to craft any
+            if($obsMined < 8) {
+                $d *= $d;
+            }
+            
+            $score += 10 * $d;
+        }
+        
+        //Destroyed more build blocks than ever placed
+        $score += 3 * getMinePlaceDiff($json, 'minecraft.stained_glass') +
+                  3 * getMinePlaceDiff($json, 'minecraft.stained_glass_pane') +
+                  2 * getMinePlaceDiff($json, 'minecraft.planks') +
+                  1 * getMinePlaceDiff($json, 'minecraft.torch') +
+                  3 * getMinePlaceDiff($json, 'minecraft.rail') +
+                  2 * getMinePlaceDiff($json, 'minecraft.brick_block') +
+                  5 * getMinePlaceDiff($json, 'minecraft.chest');
+        
+        //Increase suspicion according to lava buckets emptied, TNT crafted and fires started
+        if($score > 0) {
+            $score += 10 * safeGet('stat.useItem.minecraft.lava_bucket', $json, 0);
+            $score += 7 * safeGet('stat.craftItem.minecraft.tnt', $json, 0);
+            $score += 5 * safeGet('stat.useItem.minecraft.flint_and_steel', $json, 0);
+        }
+        
+        //Scale suspicion score for low play times
+        $score *= min(100, max(1, 43200 / $playTime)); //no scaling if played more than 12 hours
+    
+        return ($score > 100) ? (int)$score : FALSE;
+    }
 
     $stats = [
         'achievement.buildSword' => [
@@ -260,7 +372,7 @@
         'achievement.openInventory' => [
             'award' => 'Where did I put...?',
             'desc'  => 'Times the inventory was opened',
-            'icon'  => 'blocks/crafting_table_front.png',
+            'icon'  => 'gui/inventory.png',
         ],
         'achievement.portal' => [
             'award' => 'Multiworld',
@@ -283,6 +395,12 @@
             'desc'  => 'Pieces of armor crafted',
             'icon'  => 'items/diamond_chestplate.png',
             'provider' => 'craftArmorProvider',
+        ],
+        'custom.craftTool' => [
+            'award' => 'Workshop',
+            'desc'  => 'Tools crafted',
+            'icon'  => 'blocks/crafting_table_front.png',
+            'provider' => 'craftToolProvider',
         ],
         'custom.craftMineralBlock' => [
             'award' => 'Compressor',
@@ -350,6 +468,18 @@
             'icon'  => 'blocks/trip_wire_source.png',
             'provider' => 'placeTrapProvider',
         ],
+        'custom.plowDirt' => [
+            'award' => 'Farmer',
+            'desc'  => 'Ground blocks plowed',
+            'icon'  => 'items/diamond_hoe.png',
+            'provider' => 'plowDirtProvider',
+        ],
+        'custom.suspect' => [
+            'award' => 'Suspect',
+            'desc'  => 'You don\'t want this award',
+            'icon'  => 'items/barrier.png',
+            'provider' => 'suspectProvider',
+        ],
         'stat.animalsBred' => [
             'award' => 'Animal Lover',
             'desc'  => 'Animals bred',
@@ -377,6 +507,11 @@
             'desc'  => 'Bookshelves crafted',
             'icon'  => 'blocks/bookshelf.png',
         ],
+        'stat.craftItem.minecraft.cake' => [
+            'award' => 'Liar',
+            'desc'  => 'Cakes made',
+            'icon'  => 'items/cake.png',
+        ],
         'stat.craftItem.minecraft.clock' => [
             'award' => 'What time is it?',
             'desc'  => 'Clocks crafted',
@@ -397,15 +532,20 @@
             'desc'  => 'Ender Chests crafted',
             'icon'  => 'blocks/ender_chest.png',
         ],
-        'stat.craftItem.minecraft.ender_eye' => [
-            'award' => 'Stronghold Radar',
-            'desc'  => 'Ender Eyes crafted',
-            'icon'  => 'items/ender_eye.png',
-        ],
         'stat.craftItem.minecraft.lit_pumpkin' => [
             'award' => 'Trick or Treat!',
             'desc'  => 'Jack o\'Lanterns crafted',
             'icon'  => 'blocks/pumpkin_face_on.png',
+        ],
+        'stat.craftItem.minecraft.tnt' => [
+            'award' => 'Bad Intentions',
+            'desc'  => 'TNT crafted',
+            'icon'  => 'blocks/tnt_side.png',
+        ],
+        'stat.craftItem.minecraft.wool' => [
+            'award' => 'Clothier',
+            'desc'  => 'Wool crafted or dyed',
+            'icon'  => 'blocks/wool_colored_white.png',
         ],
         'stat.crouchOneCm' => [
             'award' => 'Sneaker',
@@ -437,6 +577,7 @@
         'stat.drop' => [
             'award' => 'Begone!',
             'desc'  => 'Items dropped',
+            'icon'  => 'gui/destroy.png',
         ],
         'stat.fallOneCm' => [
             'award' => 'Basejumper',
@@ -585,7 +726,7 @@
             'icon'  => 'minecraft-wiki/mobs/Villagerhead.png',
         ],
         'stat.killEntity.VillagerGolem' => [
-            'award' => 'Down with the Defense!',
+            'award' => 'Defense down!',
             'desc'  => 'Iron Golems killed',
             'icon'  => 'minecraft-wiki/mobs/Vg_face.png',
         ],
@@ -668,6 +809,11 @@
             'award' => 'I Need This!',
             'desc'  => 'Redstone ore blocks mined',
             'icon'  => 'blocks/redstone_ore.png',
+        ],
+        'stat.mineBlock.minecraft.stone' => [
+            'award' => 'Mason',
+            'desc'  => 'Stone mined',
+            'icon'  => 'blocks/stone.png',
         ],
         'stat.mineBlock.minecraft.tallgrass' => [
             'award' => 'Lawnmower',
@@ -757,6 +903,16 @@
             'award' => 'Catch!',
             'desc'  => 'Eggs thrown',
             'icon'  => 'items/egg.png',
+        ],
+        'stat.craftItem.minecraft.ender_eye' => [
+            'award' => 'Stronghold Seeker',
+            'desc'  => 'Ender Eyes thrown',
+            'icon'  => 'items/ender_eye.png',
+        ],
+        'stat.useItem.minecraft.ender_pearl' => [
+            'award' => 'Translocator',
+            'desc'  => 'Ender pearls thrown',
+            'icon'  => 'items/ender_pearl.png',
         ],
         'stat.useItem.minecraft.fireworks' => [
             'award' => 'Happy New Year!',
