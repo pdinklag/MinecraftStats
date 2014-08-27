@@ -311,9 +311,11 @@
         //Destroyed more build blocks than ever placed
         $score += 3 * getMinePlaceDiff($json, 'minecraft.stained_glass') +
                   3 * getMinePlaceDiff($json, 'minecraft.stained_glass_pane') +
-                  2 * getMinePlaceDiff($json, 'minecraft.planks') +
-                  1 * getMinePlaceDiff($json, 'minecraft.torch') +
+                  1 * max(0, getMinePlaceDiff($json, 'minecraft.planks') - 10) +
+                  1 * max(0, getMinePlaceDiff($json, 'minecraft.torch') - 10) +
+                  3 * getMinePlaceDiff($json, 'minecraft.furnace') +
                   3 * getMinePlaceDiff($json, 'minecraft.rail') +
+                  3 * getMinePlaceDiff($json, 'minecraft.golden_rail') +
                   2 * getMinePlaceDiff($json, 'minecraft.brick_block') +
                   5 * getMinePlaceDiff($json, 'minecraft.chest');
         
@@ -325,7 +327,7 @@
         }
         
         //Scale suspicion score for low play times
-        $score *= min(100, max(1, 43200 / $playTime)); //no scaling if played more than 12 hours
+        $score *= min(300, max(1, 14400 / $playTime)); //no scaling if played more than 4 hours
     
         return ($score > 100) ? (int)$score : FALSE;
     }
