@@ -15,6 +15,8 @@
         } else {
             $viewStat['ranking'] = [];
         }
+        
+        $showLastOnline = ($viewStatId == 'stat.playOneMinute');
     } else {
         die("Unknown stat.");
     }
@@ -32,6 +34,13 @@
                 <th>Rank</th>
                 <th>Player</th>
                 <th><? echo($viewStat['desc'])?></th>
+                <?
+                    if($showLastOnline) {
+                        ?>
+                        <th>Last Online</th>
+                        <?
+                    }
+                ?>
             </tr>
             <?
                 foreach($viewStat['ranking'] as $i => $e) {
@@ -40,6 +49,13 @@
                         <td class="rank <? echo("place$i medal$i"); ?>"><? echo($i + 1); ?></td>
                         <td class="player <? echo("place$i"); ?>"><? echo(createPlayerWidget($e['id'], 24)); ?></td>
                         <td class="score <? echo("place$i"); ?>"><? echo(getStatDisplayValue($viewStat, $e['score'])); ?></td>
+                        <?
+                            if($showLastOnline) {
+                                ?>
+                                <td class="date <? echo("place$i"); ?>"><? echo(formatDate($players[$e['id']]['date'])); ?></td>
+                                <?
+                            }
+                        ?>
                     </tr>
                     <?
                 }

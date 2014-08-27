@@ -4,8 +4,6 @@
      *
      * Included by index.php when $_GET['player'] is set.
      */
-    date_default_timezone_set('Europe/Berlin');
-     
     $playerId = $_GET["player"];
     if(isset($players[$playerId])) {
         $player = $players[$playerId];

@@ -2,6 +2,8 @@
     /**
      * Utilities
      */
+    date_default_timezone_set('Europe/Berlin');
+     
     function findStat($id) {
         global $stats;
     
@@ -10,6 +12,10 @@
         } else {
             return FALSE;
         }
+    }
+    
+    function formatDate($t) {
+        return date('M d, Y - H:i', $t) . ' (CEST)';
     }
     
     function compareStatAwardNames($a, $b) {

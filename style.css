@@ -220,6 +220,10 @@ h1 {
     font-weight: bold;
 }
 
+#ranking table td.date {
+    color: #C0C0C0;
+}
+
 #ranking-header table td.award span.icon {
     display: inline-block;
     width: 28px;
