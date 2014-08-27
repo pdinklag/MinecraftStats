@@ -680,7 +680,7 @@
             'icon'  => 'minecraft-wiki/mobs/Rabbiticon.png',
         ],
         'stat.killEntity.Sheep' => [
-            'award' => 'Antishepherd',
+            'award' => 'Big Bad Wolf',
             'desc'  => 'Sheep killed',
             'icon'  => 'minecraft-wiki/mobs/SheepFace.png',
         ],
