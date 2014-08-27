@@ -10,7 +10,7 @@
     
     $playerCacheFile = "$dataDir/players.txt";
     
-    $hofFile = "$dataDir/hof.txt";
+    $awardsFile = "$dataDir/awards.txt";
     $lastUpdateFile = "$dataDir/lastUpdate";
     
     $statDataDir = "$dataDir/stats";

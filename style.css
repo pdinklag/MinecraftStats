@@ -265,12 +265,12 @@ table.listing td.stat {
     text-align: right
 }
 
-#hof {
+#awards {
     width: 100%;
     margin: 2ex;
 }
 
-#hof .award-box {
+#awards .award-box {
     font-size: 12pt;
 
     border: 2px solid #282828;
@@ -286,7 +286,7 @@ table.listing td.stat {
     padding: 0.5ex;
 }
 
-#hof .award-box .award-icon {
+#awards .award-box .award-icon {
     width: 34px;
     height: 34px;
     float: left;
@@ -295,7 +295,7 @@ table.listing td.stat {
     border-radius: 4px;
 }
 
-#hof .award-box .award-icon img {
+#awards .award-box .award-icon img {
     margin-left: 2px;
     margin-top: 2px;
     
@@ -305,7 +305,7 @@ table.listing td.stat {
     border: none;
 }
 
-#hof .award-box .award-title {
+#awards .award-box .award-title {
     height: 34px;
 
     font-size: 125%;
@@ -317,7 +317,7 @@ table.listing td.stat {
     padding-left: 0.5em;
 }
 
-#hof .award-box .award-winner-box {
+#awards .award-box .award-winner-box {
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     
@@ -325,25 +325,25 @@ table.listing td.stat {
     margin-top: 0.25ex;
 }
 
-#hof .award-box .award-winner {
+#awards .award-box .award-winner {
     text-align: center;
     font-weight: bold;
     color: #FFFFFF;
 }
 
-#hof .award-box .award-winner span.award-winner-nobody {
+#awards .award-box .award-winner span.award-winner-nobody {
     font-weight: normal;
     font-style: italic;
 }
 
-#hof .award-box .award-text {
+#awards .award-box .award-text {
     text-align: center;
     color: #A0A0A0;
     
     font-size: 75%;
 }
 
-#hof .award-box .award-text span.award-score {
+#awards .award-box .award-text span.award-score {
     font-weight: bold;
     
     margin-left: 0.5em;

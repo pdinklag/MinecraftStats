@@ -38,7 +38,7 @@
     } else if(isset($_GET["raw"])) {
         require("view-player-raw.php");
     } else {
-        require("view-hof.php");
+        require("view-awards.php");
     }
 ?>
 <div id="foot-wrapper">

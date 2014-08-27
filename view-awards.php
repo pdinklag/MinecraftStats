@@ -1,18 +1,18 @@
 <?
     /**
-     * Viewing the hall of fame.
+     * Viewing the awards page.
      *
      * Included by index.php no specific site is to be viewed.
      */
-    if(is_file($hofFile)) {
-        $hof = unserialize(file_get_contents($hofFile));
+    if(is_file($awardsFile)) {
+        $awards = unserialize(file_get_contents($awardsFile));
     } else {
-        $hof = [];
+        $awards = [];
     }
 ?>
 <div id="nav"><a href="?stat=stat.playOneMinute">List of players</a></div>
-<div id="header">Hall of Fame</div>
-<div id="hof">
+<div id="header">Awards</div>
+<div id="awards">
     <?
         sortStatsByAwardName();
         foreach($stats as $id => $stat) {
@@ -26,9 +26,9 @@
                     </div>
                     
                     <?
-                        if(array_key_exists($id, $hof)) {
-                            $awardWinner = createPlayerWidget($hof[$id]['id'], 24);
-                            $awardText = $stat['desc'] . ': <span class="award-score">' . getStatDisplayValue($stat, $hof[$id]['score']) . '</span>';
+                        if(array_key_exists($id, $awards)) {
+                            $awardWinner = createPlayerWidget($awards[$id]['id'], 24);
+                            $awardText = $stat['desc'] . ': <span class="award-score">' . getStatDisplayValue($stat, $awards[$id]['score']) . '</span>';
                         } else {
                             $awardWinner = createPlayerWidget(FALSE, 24);
                             $awardText = '(' . $stat['desc'] . ')';

@@ -44,13 +44,13 @@
     ksort($otherStats);
     ksort($blockStats);
 ?>
-<div id="nav">&larr; <a href="?player=<? echo($playerId); ?>">Back to processed player data</a></div>
+<div id="nav"><a href="index.php">Awards</a> &middot; <a href="?player=<? echo($playerId); ?>"><? echo($player['name']); ?></a></div>
 <div id="header">
     <? echo(createPlayerWidget($playerId, 64)); ?>
 </div>
 <div id="listing-wrapper">
     <div class="listing">
-        <p class="date">Last online: <? echo(formatDate($players[$playerId]['date'])); ?></p>
+        <p class="date">Last online: <? echo(formatDate($player['date'])); ?></p>
         <p>Raw craft, use/place and mine/destroy statisitcs:</p>
         <table class="listing">
             <colgroup>

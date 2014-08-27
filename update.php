@@ -99,8 +99,8 @@
     echo("Saving player cache ...\n");
     file_put_contents($playerCacheFile, serialize($players));
     
-    //Sort and save stat rankings, compute HOF
-    $hof = [];
+    //Sort and save stat rankings, compute awards
+    $awards = [];
     $playerStats = [];
     
     foreach($stats as $id => $stat) {
@@ -121,8 +121,8 @@
                 $playerStats[$uuid][$id] = ['score' => $entry['score'], 'rank' => $rank];
             }
             
-            //Create HOF entry
-            $hof[$id] = $stat['ranking'][0];
+            //Create award entry
+            $awards[$id] = $stat['ranking'][0];
             
             //Save stat data
             file_put_contents("$statDataDir/" . $id, serialize($stat['ranking']));
@@ -135,9 +135,9 @@
         file_put_contents("$playerDataDir/" . $id, serialize($pstat));
     }
     
-    //Save HOF
-    echo("Saving HOF ...\n");
-    file_put_contents($hofFile, serialize($hof));
+    //Save awards
+    echo("Saving awards ...\n");
+    file_put_contents($awardFile, serialize($awards));
     
     //Save last update
     echo("Saving last update time ...\n");
