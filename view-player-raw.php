@@ -44,7 +44,6 @@
     ksort($otherStats);
     ksort($blockStats);
 ?>
-<div id="nav"><a href="index.php">Awards</a> &middot; <a href="?player=<? echo($playerId); ?>"><? echo($player['name']); ?></a></div>
 <div id="header">
     <? echo(createPlayerWidget($playerId, 64)); ?>
 </div>

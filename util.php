@@ -15,7 +15,7 @@
     }
     
     function formatDate($t) {
-        return date('M d, Y - H:i', $t) . ' (CEST)';
+        return date('M d, Y - H:i', $t);
     }
     
     function compareStatAwardNames($a, $b) {
@@ -86,12 +86,13 @@
         return FALSE;
     }
     
-    function createPlayerWidget($uuid, $size) {
+    function createPlayerWidget($uuid, $size, $inject = '') {
         if($uuid !== FALSE) {
             return
                 '<span class="player">' .
                 '<img src="' . getPlayerSkin($uuid) . '"/><span><canvas width="' . $size . '" height="'.$size.'"/></span>' .
                 "<a href='?player=$uuid'>" . getPlayerName($uuid) . '</a>' .
+                $inject .
                 '</span>';
         } else {
             return '<div class="player-nobody"><div>Nobody</div></div>';

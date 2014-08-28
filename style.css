@@ -72,7 +72,7 @@ h1 {
     right: 0;
     
     font-size: 75%;
-    color: #808080;
+    color: #C0C0C0;
     
     padding-top: 3ex;
     padding-right: 1em;
@@ -91,7 +91,7 @@ h1 {
 }
 
 #nav a {
-    color: #C0C0C0;
+    color: #E0E0E0;
 }
 
 #header {
@@ -225,6 +225,24 @@ table.listing td.medal2 {
     background-repeat: no-repeat;
 }
 
+table.listing td.crown0 {
+    background-image: url('img/fatcow/crown_gold.png');
+    background-position: 0.5em center;
+    background-repeat: no-repeat;
+}
+
+table.listing td.crown1 {
+    background-image: url('img/fatcow/crown_silver.png');
+    background-position: 0.5em center;
+    background-repeat: no-repeat;
+}
+
+table.listing td.crown2 {
+    background-image: url('img/fatcow/crown_bronze.png');
+    background-position: 0.5em center;
+    background-repeat: no-repeat;
+}
+
 table.listing td.place0 {
     background-color: rgba(255,224,0,0.33);
 }
@@ -244,6 +262,22 @@ table.listing td.rank {
 
 table.listing td.player {
     font-weight: bold;
+}
+
+table.listing td.center {
+    text-align: center;
+}
+
+table.listing td.score-bronze {
+    color: #FFA050;
+}
+
+table.listing td.score-silver {
+    color: #E0E0FF;
+}
+
+table.listing td.score-gold {
+    color: #FFE000;
 }
 
 table.listing td.score {
@@ -351,6 +385,36 @@ table.listing td.stat {
     font-weight: bold;
     
     margin-left: 0.5em;
+}
+
+#king {
+    font-size: 150%;
+    text-align: center;
+    
+    border: 4px solid #FFE040;
+    border-radius: 16px;
+    background-image: url('img/bg/wool_colored_red.png');
+    
+    margin-top: 1.5ex;
+    margin-bottom: 1.5ex;
+    padding-bottom: 1.5ex;
+}
+
+#king p {
+    color: #FFE040;
+    margin-bottom: 2ex;
+}
+
+#king span.player {
+    position: relative;
+}
+
+#king span.player img.crown {
+    display: inline;
+
+    position: absolute;
+    left: -1px;
+    bottom: 20px;
 }
 
 #foot-wrapper {

@@ -10,7 +10,6 @@
         $awards = [];
     }
 ?>
-<div id="nav"><a href="?stat=stat.playOneMinute">List of players</a></div>
 <div id="header">Awards</div>
 <div id="awards">
     <?

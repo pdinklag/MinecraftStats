@@ -21,7 +21,6 @@
         die("Unknown stat.");
     }
 ?>
-<div id="nav"><a href="index.php">Awards</a></div>
 <div id="header">
     <span class="icon"><img src="<? echo(getStatIcon($viewStat)); ?>"/></span>
     <? echo($viewStat['award']); ?>

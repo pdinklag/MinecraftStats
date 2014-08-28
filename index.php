@@ -9,7 +9,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<div id="nav">
+    <a href="?hof">Awards</a>
+    &nbsp;|&nbsp;
+    <a href="?hof">Hall of Fame</a>
+    &nbsp;|&nbsp;
+    <a href="?stat=stat.playOneMinute">List of players</a>
+</div>
 <div id="last-update">
     The statistics were last updated 
     <?
@@ -37,6 +43,8 @@
         require("view-player.php");
     } else if(isset($_GET["raw"])) {
         require("view-player-raw.php");
+    } else if(isset($_GET["hof"])) {
+        require("view-hof.php");
     } else {
         require("view-awards.php");
     }
@@ -44,7 +52,8 @@
 <div id="foot-wrapper">
     &nbsp;
     <div id="foot">
-        Written by Patrick Dinklage a.k.a. "pdinklag".
+        Written by Patrick Dinklage a.k.a. "pdinklag".<br/>
+        All times are CEST.
         <? if(isset($disclaimer)) { ?>
             <div id="disclaimer"><? echo($disclaimer); ?></div>
         <? } ?>

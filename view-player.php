@@ -20,7 +20,6 @@
         die("Unknown player.");
     }
 ?>
-<div id="nav"><a href="index.php">Awards</a></div>
 <div id="header">
     <? echo(createPlayerWidget($playerId, 64)); ?>
 </div>
