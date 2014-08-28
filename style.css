@@ -298,6 +298,11 @@ table.listing td.date {
     color: #C0C0C0;
 }
 
+table.listing td.inactive {
+    color: #C0A0A0;
+    font-style: italic;
+}
+
 table.listing td.stat {
     color: #C0C0C0;
     text-align: right

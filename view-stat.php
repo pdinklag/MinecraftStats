@@ -43,6 +43,7 @@
                 ?>
             </tr>
             <?
+                $now = time();
                 foreach($viewStat['ranking'] as $i => $e) {
                     ?>
                     <tr>
@@ -51,8 +52,11 @@
                         <td class="score <? echo("place$i"); ?>"><? echo(getStatDisplayValue($viewStat, $e['score'])); ?></td>
                         <?
                             if($showLastOnline) {
+                                $lastOnline = $players[$e['id']]['date'];
+                                $inactive = ($now - $lastOnline >= $inactiveTime);
+                                
                                 ?>
-                                <td class="date <? echo("place$i"); ?>"><? echo(formatDate($players[$e['id']]['date'])); ?></td>
+                                <td class="date <? if($inactive) { echo('inactive'); } ?> <? echo("place$i"); ?>"><? echo(formatDate($lastOnline)); ?></td>
                                 <?
                             }
                         ?>

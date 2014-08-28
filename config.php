@@ -20,6 +20,7 @@
     //General Settings
     $title = "DVGaming.COM Snapshot";
     $disclaimer = "";
+    $inactiveTime = 864000; //ten days
     
     //Hall of Fame score settings
     $goldMedalScore   = 4;
