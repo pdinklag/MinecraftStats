@@ -16,7 +16,7 @@
             $viewStat['ranking'] = [];
         }
         
-        $showLastOnline = ($viewStatId == 'stat.playOneMinute');
+        $isPlayerList = ($viewStatId == 'stat.playOneMinute');
     } else {
         die("Unknown stat.");
     }
@@ -35,7 +35,7 @@
                 <th>Player</th>
                 <th><? echo($viewStat['desc'])?></th>
                 <?
-                    if($showLastOnline) {
+                    if($isPlayerList) {
                         ?>
                         <th>Last Online</th>
                         <?
@@ -44,14 +44,17 @@
             </tr>
             <?
                 $now = time();
-                foreach($viewStat['ranking'] as $i => $e) {
+                $ranking = $viewStat['ranking'];
+                $n = count($ranking);
+                for($i = 0; $i < $n && ($i < $statListLimit || $isPlayerList); $i++) {
+                    $e = $ranking[$i];
                     ?>
                     <tr>
                         <td class="rank <? echo("place$i medal$i"); ?>"><? echo($i + 1); ?></td>
                         <td class="player <? echo("place$i"); ?>"><? echo(createPlayerWidget($e['id'], 24)); ?></td>
                         <td class="score <? echo("place$i"); ?>"><? echo(getStatDisplayValue($viewStat, $e['score'])); ?></td>
                         <?
-                            if($showLastOnline) {
+                            if($isPlayerList) {
                                 $lastOnline = $players[$e['id']]['date'];
                                 $inactive = ($now - $lastOnline >= $inactiveTime);
                                 

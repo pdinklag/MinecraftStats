@@ -22,6 +22,8 @@
     $disclaimer = "";
     $inactiveTime = 864000; //ten days
     
+    $statListLimit = 50;
+    
     //Hall of Fame score settings
     $goldMedalScore   = 4;
     $silverMedalScore = 2;
