@@ -10,7 +10,7 @@
 </head>
 <body>
 <div id="nav">
-    <a href="?hof">Awards</a>
+    <a href="index.php">Awards</a>
     &nbsp;|&nbsp;
     <a href="?hof">Hall of Fame</a>
     &nbsp;|&nbsp;
