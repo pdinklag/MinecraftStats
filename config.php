@@ -10,6 +10,7 @@
     
     $playerCacheFile = "$dataDir/players.txt";
     
+    $hofFile = "$dataDir/hof.txt";
     $awardsFile = "$dataDir/awards.txt";
     $lastUpdateFile = "$dataDir/lastUpdate";
     
@@ -19,6 +20,11 @@
     //General Settings
     $title = "DVGaming.COM Snapshot";
     $disclaimer = "";
+    
+    //Hall of Fame score settings
+    $goldMedalScore   = 4;
+    $silverMedalScore = 2;
+    $bronzeMedalScore = 1;
     
     //Icons
     $awardIconDir = "icons";

@@ -99,8 +99,9 @@
     echo("Saving player cache ...\n");
     file_put_contents($playerCacheFile, serialize($players));
     
-    //Sort and save stat rankings, compute awards
+    //Sort and save stat rankings, compute awards and hall of fame
     $awards = [];
+    $hof = [];
     $playerStats = [];
     
     foreach($stats as $id => $stat) {
@@ -108,7 +109,7 @@
         
         if(isset($stat['ranking'])) {
             //Sort ranking
-            usort($stat['ranking'], "compareRankingEntries");
+            usort($stat['ranking'], 'compareRankingEntries');
             
             //Save stat ranking for players
             foreach($stat['ranking'] as $rank => $entry) {
@@ -116,6 +117,28 @@
             
                 if(!array_key_exists($uuid, $playerStats)) {
                     $playerStats[$uuid] = [];
+                }
+                
+                if($rank < 3) {
+                    $e = safeGet($uuid, $hof, []);
+                    $e['id'] = $uuid; //save for sorter
+                    switch($rank) {
+                        case 0:
+                            safeInc('gold', $e, 1);
+                            safeInc('score', $e, $goldMedalScore);
+                            break;
+                        
+                        case 1:
+                            safeInc('silver', $e, 1);
+                            safeInc('score', $e, $silverMedalScore);
+                            break;
+                        
+                        case 2:
+                            safeInc('bronze', $e, 1);
+                            safeInc('score', $e, $bronzeMedalScore);
+                            break;
+                    }
+                    $hof[$uuid] = $e;
                 }
                 
                 $playerStats[$uuid][$id] = ['score' => $entry['score'], 'rank' => $rank];
@@ -138,6 +161,11 @@
     //Save awards
     echo("Saving awards ...\n");
     file_put_contents($awardsFile, serialize($awards));
+    
+    //Sort and save Hall of Fame
+    echo("Saving hall of fame\n");
+    uasort($hof, 'compareRankingEntries');
+    file_put_contents($hofFile, serialize($hof));
     
     //Save last update
     echo("Saving last update time ...\n");

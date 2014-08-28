@@ -105,4 +105,12 @@
             return $def;
         }
     }
+    
+    function safeInc($key, &$arr, $inc) {
+        if(array_key_exists($key, $arr)) {
+            $arr[$key] += $inc;
+        } else {
+            $arr[$key] = $inc;
+        }
+    }
 ?>
