@@ -531,11 +531,13 @@
             'desc'  => 'Jack o\'Lanterns crafted',
             'icon'  => 'blocks/pumpkin_face_on.png',
         ],
+        /* don't want to promote TNT
         'stat.craftItem.minecraft.tnt' => [
             'award' => 'Bad Intentions',
             'desc'  => 'TNT crafted',
             'icon'  => 'blocks/tnt_side.png',
         ],
+        */
         'stat.craftItem.minecraft.wool' => [
             'award' => 'Clothier',
             'desc'  => 'Wool crafted or dyed',
@@ -599,6 +601,11 @@
             'desc'  => 'Junk items fished',
             'icon'  => 'items/bowl.png',
         ],
+        'stat.entityKilledBy.Zombie' => [
+            'award' => 'Infected',
+            'desc'  => 'Times killed by a zombie',
+            'icon'  => 'minecraft-wiki/mobs/ZombieVillagerHead.png',
+        ],
         'stat.killEntity.Bat' => [
             'award' => 'Badman',
             'desc'  => 'Bats killed',
@@ -629,11 +636,13 @@
             'desc'  => 'Endermen killed',
             'icon'  => 'minecraft-wiki/mobs/EndermanFace.png',
         ],
+        /* not working: https://bugs.mojang.com/browse/MC-33710
         'stat.killEntity.Endermite' => [
             'award' => 'Endermite Ender',
             'desc'  => 'Endermites killed',
             'icon'  => 'minecraft-wiki/mobs/64px-EndermiteFace.png',
         ],
+        */
         'stat.killEntity.EntityHorse' => [
             'award' => 'Horse Hater',
             'desc'  => 'Horses killed',
@@ -694,11 +703,13 @@
             'desc'  => 'Skeletons killed',
             'icon'  => 'minecraft-wiki/mobs/SkeletonFace.png',
         ],
+        /* not working: https://bugs.mojang.com/browse/MC-33710
         'stat.killEntity.SnowGolem' => [
             'award' => 'Snowman Melter',
             'desc'  => 'Snow Golems killed',
             'icon'  => 'minecraft-wiki/mobs/Snowgolemhead.png',
         ],
+        */
         'stat.killEntity.Slime' => [
             'award' => 'Swamp Lurker',
             'desc'  => 'Slimes killed',
@@ -719,11 +730,13 @@
             'desc'  => 'Villagers killed',
             'icon'  => 'minecraft-wiki/mobs/Villagerhead.png',
         ],
+        /* not working: https://bugs.mojang.com/browse/MC-33710
         'stat.killEntity.VillagerGolem' => [
             'award' => 'Defense down!',
             'desc'  => 'Iron Golems killed',
             'icon'  => 'minecraft-wiki/mobs/Vg_face.png',
         ],
+        */
         'stat.killEntity.Witch' => [
             'award' => 'Burn the Witch!',
             'desc'  => 'Witches killed',
@@ -858,10 +871,12 @@
             'icon'  => 'blocks/water_still.png',
             'displayFunc' => 'cmToDistance',
         ],
+        /* What is this even good for?
         'stat.talkedToVillager' => [
             'award' => 'Negotiator',
             'desc'  => 'Villagers talked to',
         ],
+        */
         'stat.timeSinceDeath' => [
             'award' => 'Survivor',
             'desc'  => 'Time since last death',
