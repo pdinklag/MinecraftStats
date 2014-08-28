@@ -15,6 +15,10 @@ body {
     background-repeat: repeat-x, repeat-x, repeat;
 }
 
+.error {
+    color: #FF8080;
+}
+
 hr {
     border: none;
     border-top: 2px dotted #606060;
@@ -92,6 +96,15 @@ h1 {
 
 #nav a {
     color: #E0E0E0;
+}
+
+#nav a.notme {
+    color: #E0A0A0;
+    text-decoration: none;
+}
+
+#nav form {
+    margin-top: 0.5ex;
 }
 
 #header {

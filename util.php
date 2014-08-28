@@ -14,6 +14,19 @@
         }
     }
     
+    function findPlayerUUIDByName($name) {
+        global $players;
+        
+        //linear search is back again!
+        foreach($players as $uuid => $p) {
+            if(strcasecmp($p['name'], $name) == 0) {
+                return $uuid;
+            }
+        }
+        
+        return FALSE;
+    }
+    
     function formatDate($t) {
         return date('M d, Y - H:i', $t);
     }

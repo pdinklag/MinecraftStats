@@ -15,6 +15,42 @@
     <a href="?hof">Hall of Fame</a>
     &nbsp;|&nbsp;
     <a href="?stat=stat.playOneMinute">List of players</a>
+    
+    <?
+        if(isset($_POST['me'])) {
+            $name = $_POST['me'];
+            $me = findPlayerUUIDByName($name);
+            if($me !== FALSE) {
+                setcookie('me', $me);
+            } else {
+                $formError = "Can't find " . htmlspecialchars($name) . "!"; //good thing I recently learned about cross-site-scripting!
+                unset($me);
+            }
+        } else if(isset($_GET['notme'])) {
+            setcookie('me', null);
+        } else if(isset($_COOKIE['me'])) {
+            $me = $_COOKIE['me'];
+        }
+    
+        if(isset($me)) {
+            ?>&nbsp;|&nbsp;<?
+            echo(createPlayerWidget($me, 16));
+            ?>
+            <a class="notme" href="?notme">[X]</a>
+            <?
+        } else {
+            ?>
+                <form action="index.php" method="post">
+                Player name: <input name="me" type="text" size="16"/> <input type="submit" value="Make shortcut"/>
+                <?
+                    if(isset($formError)) {
+                        echo("<span class=\"error\">$formError</span>");
+                    }
+                ?>
+                </form>
+            <?
+        }
+    ?>
 </div>
 <div id="last-update">
     The statistics were last updated 
