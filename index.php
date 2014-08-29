@@ -21,7 +21,7 @@
             $name = $_POST['me'];
             $me = findPlayerUUIDByName($name);
             if($me !== FALSE) {
-                setcookie('me', $me);
+                setcookie('me', $me, time() + 60*60*24*365);
             } else {
                 $formError = "Can't find " . htmlspecialchars($name) . "!"; //good thing I recently learned about cross-site-scripting!
                 unset($me);
