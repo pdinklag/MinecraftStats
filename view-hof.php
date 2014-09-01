@@ -12,7 +12,6 @@
         $hof = [];
     }
 ?>
-<div id="nav"><a href="index.php">Awards</a></div>
 <div id="header">
     Hall of Fame
 </div>
