@@ -532,6 +532,11 @@
             'desc'  => 'Bookshelves crafted',
             'icon'  => 'blocks/bookshelf.png',
         ],
+        'stat.craftItem.minecraft.brick_block' => [
+            'award' => 'Brickhead',
+            'desc'  => 'Brick blocks crafted',
+            'icon'  => 'blocks/brick.png',
+        ],
         'stat.craftItem.minecraft.cake' => [
             'award' => 'Liar',
             'desc'  => 'Cakes made',
@@ -557,6 +562,16 @@
             'desc'  => 'Jack o\'Lanterns crafted',
             'icon'  => 'blocks/pumpkin_face_on.png',
         ],
+        'stat.craftItem.minecraft.netherbrick' => [
+            'award' => 'Nether Constructor',
+            'desc'  => 'Nether Bricks made',
+            'icon'  => 'items/netherbrick.png',
+        ],
+        'stat.craftItem.minecraft.paper' => [
+            'award' => 'Paper Champion',
+            'desc'  => 'Paper produced',
+            'icon'  => 'items/paper.png',
+        ],
         /* don't want to promote TNT
         'stat.craftItem.minecraft.tnt' => [
             'award' => 'Bad Intentions',
@@ -564,6 +579,11 @@
             'icon'  => 'blocks/tnt_side.png',
         ],
         */
+        'stat.craftItem.minecraft.sponge' => [
+            'award' => 'Spongebob',
+            'desc'  => 'Sponges dried',
+            'icon'  => 'blocks/sponge.png',
+        ],
         'stat.craftItem.minecraft.wool' => [
             'award' => 'Clothier',
             'desc'  => 'Wool crafted or dyed',
