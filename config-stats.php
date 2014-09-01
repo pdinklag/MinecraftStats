@@ -215,6 +215,25 @@
         return ($sum > 0) ? $sum : FALSE;
     }
     
+    function mineDirtProvider($json) {
+        $sum =
+            safeGet('stat.mineBlock.minecraft.dirt', $json, 0) +
+            safeGet('stat.mineBlock.minecraft.gravel', $json, 0) +
+            safeGet('stat.mineBlock.minecraft.sand', $json, 0);
+        
+        return ($sum > 0) ? $sum : FALSE;
+    }
+    
+    function placeGlassProvider($json) {
+        $sum =
+            safeGet('stat.useItem.minecraft.glass', $json, 0) +
+            safeGet('stat.useItem.minecraft.glass_pane', $json, 0) +
+            safeGet('stat.useItem.minecraft.stained_glass', $json, 0) +
+            safeGet('stat.useItem.minecraft.stained_glass_pane', $json, 0);
+        
+        return ($sum > 0) ? $sum : FALSE;
+    }
+    
     function placePlantProvider($json) {
         $sum =
             safeGet('stat.useItem.minecraft.sapling', $json, 0) +
@@ -444,6 +463,18 @@
             'icon'  => 'items/map_filled.png',
             'provider' => 'exploreBiomesProvider',
         ],
+        'custom.mineDirt' => [
+            'award' => 'Excavator',
+            'desc'  => 'Dirt, sand and gravel "mined"',
+            'icon'  => 'items/stone_shovel.png',
+            'provider' => 'mineDirtProvider',
+        ],
+        'custom.placeGlass' => [
+            'award' => 'Glassworker',
+            'desc'  => 'Glass placed',
+            'icon'  => 'blocks/glass.png',
+            'provider' => 'placeGlassProvider',
+        ],
         'custom.placePlant' => [
             'award' => 'Green Thumb',
             'desc'  => 'Saplings and flowers planted',
@@ -515,11 +546,6 @@
             'award' => 'Where am I?',
             'desc'  => 'Compasses crafted',
             'icon'  => 'items/compass.png',
-        ],
-        'stat.craftItem.minecraft.cookie' => [
-            'award' => 'Cookie Monster',
-            'desc'  => 'Cookies made',
-            'icon'  => 'items/cookie.png',
         ],
         'stat.craftItem.minecraft.ender_chest' => [
             'award' => 'Grief This!',
@@ -617,7 +643,7 @@
             'icon'  => 'minecraft-wiki/mobs/Blaze_Face.png',
         ],
         'stat.killEntity.Chicken' => [
-            'award' => 'Kentucky Fried Chicken',
+            'award' => 'KFC',
             'desc'  => 'Chickens killed',
             'icon'  => 'items/chicken_cooked.png',
         ],
@@ -767,11 +793,6 @@
             'desc'  => 'Diamond ore blocks mined',
             'icon'  => 'blocks/diamond_ore.png',
         ],
-        'stat.mineBlock.minecraft.dirt' => [
-            'award' => 'Excavator',
-            'desc'  => 'Dirt "mined"',
-            'icon'  => 'items/stone_shovel.png',
-        ],
         'stat.mineBlock.minecraft.emerald_ore' => [
             'award' => 'Mountain Miner',
             'desc'  => 'Emerald ore blocks mined',
@@ -903,6 +924,11 @@
             'desc'  => 'Arrows shot',
             'icon'  => 'items/bow_standby.png',
         ],
+        'stat.useItem.minecraft.cookie' => [
+            'award' => 'Cookie Monster',
+            'desc'  => 'Cookies eaten',
+            'icon'  => 'items/cookie.png',
+        ],
         'stat.useItem.minecraft.dirt' => [
             'award' => 'Dirtbag',
             'desc'  => 'Dirt placed',
@@ -937,6 +963,11 @@
             'award' => 'Florist',
             'desc'  => 'Flower pots placed',
             'icon'  => 'blocks/flower_rose.png',
+        ],
+        'stat.useItem.minecraft.iron_bars' => [
+            'award' => 'Jailer',
+            'desc'  => 'Iron Bars placed',
+            'icon'  => 'blocks/iron_bars.png',
         ],
         'stat.useItem.minecraft.item_frame' => [
             'award' => 'Museum Owner',
@@ -982,6 +1013,16 @@
             'award' => 'Railway Company',
             'desc'  => 'Rails placed',
             'icon'  => 'blocks/rail_normal.png',
+        ],
+        'stat.useItem.minecraft.sea_lantern' => [
+            'award' => 'Seabed Inhabitant',
+            'desc'  => 'Sea Lanterns placed',
+            'icon'  => 'blocks/sea_lantern.png',
+        ],
+        'stat.useItem.minecraft.shears' => [
+            'award' => 'Cutter',
+            'desc'  => 'Shears used',
+            'icon'  => 'items/shears.png',
         ],
         'stat.useItem.minecraft.sign' => [
             'award' => 'Readme.txt',
