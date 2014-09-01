@@ -234,6 +234,14 @@
         return ($sum > 0) ? $sum : FALSE;
     }
     
+    function placePistonProvider($json) {
+        $sum =
+            safeGet('stat.useItem.minecraft.piston', $json, 0) +
+            safeGet('stat.useItem.minecraft.sticky_piston', $json, 0);
+            
+        return ($sum > 0) ? $sum : FALSE;
+    }
+    
     function placePlantProvider($json) {
         $sum =
             safeGet('stat.useItem.minecraft.sapling', $json, 0) +
@@ -357,11 +365,6 @@
             'desc'  => 'Swords crafted',
             'icon'  => 'items/stone_sword.png',
         ],
-        'achievement.diamonds' => [
-            'award' => 'Capitalist',
-            'desc'  => 'Diamonds acquired',
-            'icon'  => 'blocks/diamond_block.png',
-        ],
         'achievement.diamondsToYou' => [
             'award' => 'Communist',
             'desc'  => 'Diamonds tossed to others',
@@ -371,11 +374,6 @@
             'award' => 'Minecraft Open',
             'desc'  => 'Ghasts killed with own fireball',
             'icon'  => 'items/fireball.png',
-        ],
-        'achievement.killEnemy' => [
-            'award' => 'Hero',
-            'desc'  => 'Enemies killed',
-            'icon'  => 'items/diamond_sword.png',
         ],
         'achievement.mineWood' => [
             'award' => 'Woodcutter',
@@ -391,11 +389,6 @@
             'award' => 'Multiworld',
             'desc'  => 'Number of portal uses',
             'icon'  => 'blocks/portal.png',
-        ],
-        'achievement.potion' => [
-            'award' => 'Alchemist',
-            'desc'  => 'Potions brewed',
-            'icon'  => 'items/brewing_stand.png'
         ],
         'custom.breakTool' => [
             'award' => 'Wastrel',
@@ -474,6 +467,12 @@
             'desc'  => 'Glass placed',
             'icon'  => 'blocks/glass.png',
             'provider' => 'placeGlassProvider',
+        ],
+        'custom.placePiston' => [
+            'award' => 'Mechanic',
+            'desc'  => 'Pistons placed',
+            'icon'  => 'blocks/piston_side.png',
+            'provider' => 'placePistonProvider',
         ],
         'custom.placePlant' => [
             'award' => 'Green Thumb',
@@ -620,11 +619,6 @@
             'award' => 'Begone!',
             'desc'  => 'Items dropped',
             'icon'  => 'gui/destroy.png',
-        ],
-        'stat.fallOneCm' => [
-            'award' => 'Basejumper',
-            'desc'  => 'Distance fallen',
-            'displayFunc' => 'cmToDistance',
         ],
         'stat.fishCaught' => [
             'award' => 'Fisherman',
@@ -809,7 +803,7 @@
             'icon'  => 'blocks/coal_ore.png',
         ],
         'stat.mineBlock.minecraft.diamond_ore' => [
-            'award' => 'X-Ray',
+            'award' => 'Capitalist',
             'desc'  => 'Diamond ore blocks mined',
             'icon'  => 'blocks/diamond_ore.png',
         ],
@@ -837,6 +831,11 @@
             'award' => 'Enchanter\'s Gopher',
             'desc'  => 'Lapis Lazuli ore blocks mined',
             'icon'  => 'blocks/lapis_ore.png',
+        ],
+        'stat.mineBlock.minecraft.melon_block' => [
+            'award' => 'Why can\'t I hold...',
+            'desc'  => 'Melons farmed',
+            'icon'  => 'blocks/melon_side.png',
         ],
         'stat.mineBlock.minecraft.netherrack' => [
             'award' => 'Terraformer',
@@ -883,10 +882,6 @@
             'desc'  => 'Distance gone by minecart',
             'icon'  => 'items/minecart_normal.png',
             'displayFunc' => 'cmToDistance',
-        ],
-        'stat.mobKills' => [
-            'award' => 'Killing Spree',
-            'desc'  => 'Mobs killed',
         ],
         'stat.pigOneCm' => [
             'award' => 'Because I Can',
@@ -959,7 +954,7 @@
             'desc'  => 'Eggs thrown',
             'icon'  => 'items/egg.png',
         ],
-        'stat.craftItem.minecraft.ender_eye' => [
+        'stat.useItem.minecraft.ender_eye' => [
             'award' => 'Stronghold Seeker',
             'desc'  => 'Ender Eyes thrown',
             'icon'  => 'items/ender_eye.png',
@@ -1019,13 +1014,8 @@
             'desc'  => 'Note blocks placed',
             'icon'  => 'blocks/noteblock.png',
         ],
-        'stat.useItem.minecraft.piston' => [
-            'award' => 'Mechanic',
-            'desc'  => 'Pistons placed',
-            'icon'  => 'blocks/piston_side.png',
-        ],
         'stat.useItem.minecraft.potion' => [
-            'award' => 'Are you a Wizard',
+            'award' => 'Alchemist',
             'desc'  => 'Potions used',
             'icon'  => 'items/potion_bottle_empty.png',
         ],
