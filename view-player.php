@@ -107,6 +107,8 @@
                             
                             if(isset($pstats[$id]['rank'])) {
                                 $rank = $pstats[$id]['rank'];
+                            } else {
+                                unset($rank);
                             }
                         } else {
                             unset($score);
