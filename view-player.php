@@ -15,6 +15,8 @@
         } else {
             $pstats = [];
         }
+        
+        $inactive = isPlayerInactive($playerId);
 
     } else {
         die("Unknown player.");
@@ -25,50 +27,60 @@
 </div>
 <div id="listing-wrapper">
     <div class="listing">
-        <p class="date">Last online: <? echo(date('D, M d, Y - H:i', $players[$playerId]['date']) . ' (CEST)'); ?></p>
-        <p>Medals held by <? echo(getPlayerName($playerId)); ?>:</p>
+        <p class="date">Last online: <? echo(formatDate(getPlayerLastOnline($playerId))); ?></p>
         <?
-            //Count medals
-            $gold = 0;
-            $silver = 0;
-            $bronze = 0;
-        
-            foreach($pstats as $id => $data) {
-                switch($data['rank']) {
-                    case 0:
-                        $gold++;
-                        break;
+            if($inactive) {
+                ?>
+                    <p class="inactive">This player has been inactive for over <? echo((int)($inactiveTime / 86400)); ?> days.</p>
+                <?
+            } else {
+                ?>
+                <p>Medals held by <? echo(getPlayerName($playerId)); ?>:</p>
+                <?
+                    //Count medals
+                    $gold = 0;
+                    $silver = 0;
+                    $bronze = 0;
+                
+                    foreach($pstats as $id => $data) {
+                        switch($data['rank']) {
+                            case 0:
+                                $gold++;
+                                break;
 
-                    case 1:
-                        $silver++;
-                        break;
-                    
-                    case 2:
-                        $bronze++;
-                        break;
-                }
+                            case 1:
+                                $silver++;
+                                break;
+                            
+                            case 2:
+                                $bronze++;
+                                break;
+                        }
+                    }
+                ?>
+                <table class="medals">
+                    <colgroup>
+                        <col style="width:50%;"/>
+                        <col style="width:50%;"/>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td class="medal"><img src="img/fatcow/medal_award_gold.png"/></td>
+                            <td class="count"><? echo($gold); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="medal"><img src="img/fatcow/medal_award_silver.png"/></td>
+                            <td class="count"><? echo($silver); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="medal"><img src="img/fatcow/medal_award_bronze.png"/></td>
+                            <td class="count"><? echo($bronze); ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <?
             }
         ?>
-        <table class="medals">
-            <colgroup>
-                <col style="width:50%;"/>
-                <col style="width:50%;"/>
-            </colgroup>
-            <tbody>
-                <tr>
-                    <td class="medal"><img src="img/fatcow/medal_award_gold.png"/></td>
-                    <td class="count"><? echo($gold); ?></td>
-                </tr>
-                <tr>
-                    <td class="medal"><img src="img/fatcow/medal_award_silver.png"/></td>
-                    <td class="count"><? echo($silver); ?></td>
-                </tr>
-                <tr>
-                    <td class="medal"><img src="img/fatcow/medal_award_bronze.png"/></td>
-                    <td class="count"><? echo($bronze); ?></td>
-                </tr>
-            </tbody>
-        </table>
     </div>
     <hr/>
     <div class="listing">
@@ -92,7 +104,10 @@
                     foreach($stats as $id => $stat) {
                         if(array_key_exists($id, $pstats)) {
                             $score = getStatDisplayValue($stat, $pstats[$id]['score']);
-                            $rank = $pstats[$id]['rank'];
+                            
+                            if(isset($pstats[$id]['rank'])) {
+                                $rank = $pstats[$id]['rank'];
+                            }
                         } else {
                             unset($score);
                             unset($rank);

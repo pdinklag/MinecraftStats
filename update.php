@@ -44,6 +44,7 @@
     //Scan raw data dir
     echo("Scanning raw data ...\n");
     
+    $playerStats = [];
     if(is_dir($rawDataDir)) {
         $dir = opendir($rawDataDir);
         while($f = readdir($dir)) {
@@ -65,7 +66,8 @@
                     $info = $players[$uuid];
                 }
                 
-                $players[$uuid]['date'] = filemtime($jsonFile);
+                $lastOnline = filemtime($jsonFile);
+                $players[$uuid]['date'] = $lastOnline;
                 
                 //Parse JSON
                 $json = json_decode(file_get_contents($jsonFile), true);
@@ -74,7 +76,13 @@
                 foreach($stats as $id => $stat) {
                     $value = getStatProgressForPlayer($id, $json);
                     if($value !== FALSE) {
-                        $stats[$id]['ranking'][] = ['id' => $uuid, 'score' => $value];
+                        if(!isInactive($lastOnline) || isPlayerListStat($id)) {
+                            //Insert into ranking
+                            $stats[$id]['ranking'][] = ['id' => $uuid, 'score' => $value];
+                        }
+                        
+                        //Set player stat
+                        $playerStats[$uuid][$id] = ['score' => $value];
                     }
                 }
             }
@@ -102,7 +110,6 @@
     //Sort and save stat rankings, compute awards and hall of fame
     $awards = [];
     $hof = [];
-    $playerStats = [];
     
     foreach($stats as $id => $stat) {
         echo("Saving data for $id ...\n");
@@ -141,7 +148,7 @@
                     $hof[$uuid] = $e;
                 }
                 
-                $playerStats[$uuid][$id] = ['score' => $entry['score'], 'rank' => $rank];
+                $playerStats[$uuid][$id]['rank'] = $rank;
             }
             
             //Create award entry
@@ -170,14 +177,4 @@
     //Save last update
     echo("Saving last update time ...\n");
     file_put_contents($lastUpdateFile, serialize(time()));
-    
-    //Debug output
-    /*
-    echo("<hr/>");
-    var_dump($players);
-    echo("<hr/>");
-    var_dump($stats);
-    echo("<hr/>");
-    var_dump($hof);
-    */
 ?>

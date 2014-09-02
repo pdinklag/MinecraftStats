@@ -16,7 +16,7 @@
             $viewStat['ranking'] = [];
         }
         
-        $isPlayerList = ($viewStatId == 'stat.playOneMinute');
+        $isPlayerList = isPlayerListStat($viewStatId);
     } else {
         die("Unknown stat.");
     }
@@ -55,11 +55,10 @@
                         <td class="score <? echo("place$i"); ?>"><? echo(getStatDisplayValue($viewStat, $e['score'])); ?></td>
                         <?
                             if($isPlayerList) {
-                                $lastOnline = $players[$e['id']]['date'];
-                                $inactive = ($now - $lastOnline >= $inactiveTime);
+                                $lastOnline = getPlayerLastOnline($e['id']);
                                 
                                 ?>
-                                <td class="date <? if($inactive) { echo('inactive'); } ?> <? echo("place$i"); ?>"><? echo(formatDate($lastOnline)); ?></td>
+                                <td class="date <? if(isPlayerInactive($e['id'])) { echo('inactive'); } ?> <? echo("place$i"); ?>"><? echo(formatDate($lastOnline)); ?></td>
                                 <?
                             }
                         ?>

@@ -32,6 +32,15 @@ span.player {
     font-weight: bold;
 }
 
+span.inactive {
+    color: #C0A0A0;
+    font-style: italic;
+}
+
+span.inactive a {
+    color: #C0A0A0;
+}
+
 div.player-nobody {
     font-weight: normal;
     font-style: italic;
@@ -178,6 +187,11 @@ h1 {
 
 .listing p.date {
     color: #A0A0A0;
+}
+
+.listing p.inactive {
+    color: #C0A0A0;
+    font-style: italic;
 }
 
 table.medals {

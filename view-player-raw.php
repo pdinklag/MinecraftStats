@@ -19,6 +19,8 @@
         die("Unknown player.");
     }
     
+    $inactive = isPlayerInactive($playerId);
+    
     //Count stats
     $blockStats = [];
     $otherStats = [];
@@ -49,7 +51,14 @@
 </div>
 <div id="listing-wrapper">
     <div class="listing">
-        <p class="date">Last online: <? echo(formatDate($player['date'])); ?></p>
+        <p class="date">Last online: <? echo(formatDate(getPlayerLastOnline($playerId))); ?></p>
+        <?
+            if($inactive) {
+                ?>
+                    <p class="inactive">This player has been inactive for over <? echo((int)($inactiveTime / 86400)); ?> days.</p>
+                <?
+            }
+        ?>
         <p>Raw craft, use/place and mine/destroy statisitcs:</p>
         <table class="listing">
             <colgroup>

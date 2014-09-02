@@ -83,6 +83,26 @@
         }
     }
     
+    function getPlayerLastOnline($uuid) {
+        global $players;
+        
+        if(array_key_exists($uuid, $players)) {
+            return $players[$uuid]['date'];
+        } else {
+            return 0;
+        }
+    }
+    
+    function isInactive($last) {
+        global $inactiveTime;
+        
+        return time() - $last >= $inactiveTime;
+    }
+    
+    function isPlayerInactive($uuid) {
+        return isInactive(getPlayerLastOnline($uuid));
+    }
+    
     function getStatProgressForPlayer($statId, $json) {
         global $stats;
         
@@ -102,14 +122,22 @@
     function createPlayerWidget($uuid, $size, $inject = '') {
         if($uuid !== FALSE) {
             return
-                '<span class="player">' .
+                '<span class="player '
+                . (isPlayerInactive($uuid) ? 'inactive' : '') .
+                '">' .
                 '<img src="' . getPlayerSkin($uuid) . '"/><span><canvas width="' . $size . '" height="'.$size.'"/></span>' .
-                "<a href='?player=$uuid'>" . getPlayerName($uuid) . '</a>' .
+                "<a href='?player=$uuid'>" .
+                getPlayerName($uuid) .
+                '</a>' .
                 $inject .
                 '</span>';
         } else {
             return '<div class="player-nobody"><div>Nobody</div></div>';
         }
+    }
+    
+    function isPlayerListStat($id) {
+        return ($id == 'stat.playOneMinute');
     }
     
     function safeGet($key, $arr, $def) {
