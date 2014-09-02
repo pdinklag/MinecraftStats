@@ -20,7 +20,7 @@
     //General Settings
     $title = "DVGaming.COM Snapshot";
     $disclaimer = "";
-    $inactiveTime = 864000; //ten days
+    $inactiveTime = 604800; //seven days
     
     $statListLimit = 50;
     
