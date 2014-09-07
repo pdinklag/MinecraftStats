@@ -354,7 +354,7 @@
         }
         
         //Scale suspicion score for low play times
-        $score *= min(300, max(1, 14400 / $playTime)); //no scaling if played more than 4 hours
+        $score *= min(300, max(1, 14400 / max(1, $playTime))); //no scaling if played more than 4 hours
     
         return ($score > 100) ? (int)$score : FALSE;
     }
