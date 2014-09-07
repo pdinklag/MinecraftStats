@@ -68,19 +68,29 @@
         }
     }
     
+    function uuidHash($uuid) {
+        $sub = [];
+        $uuid = str_replace('-', '', $uuid);
+        
+        for($i=0; $i<4; $i++){
+            $sub[$i] = intval('0x'.substr($uuid, $i*8, 8) + 0, 16);
+        }
+        
+        return ($sub[0] ^ $sub[1]) ^ ($sub[2] ^ $sub[3]);
+    }
+    
     function getPlayerSkin($uuid) {
-        global $players, $defaultSkin;
+        global $players, $defaultSkins;
         
         if(array_key_exists($uuid, $players)) {
             $info = $players[$uuid];
             if(isset($info['skinUrl'])) {
                 return $info['skinUrl'];
-            } else {
-                return $defaultSkin;
             }
-        } else {
-            return $defaultSkin;
         }
+        
+        //default
+        return $defaultSkins[uuidHash($uuid) % 2];
     }
     
     function getPlayerLastOnline($uuid) {
