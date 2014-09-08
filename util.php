@@ -90,7 +90,7 @@
         }
         
         //default
-        return $defaultSkins[uuidHash($uuid) % 2];
+        return $defaultSkins[abs(uuidHash($uuid) % 2)];
     }
     
     function getPlayerLastOnline($uuid) {
