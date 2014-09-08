@@ -293,58 +293,88 @@
     function getMinePlaceDiff($json, $block) {
         return max(0, safeGet("stat.mineBlock.$block", $json, 0) - safeGet("stat.useItem.$block", $json, 0));
     }
+    
+    function getWeightedMinePlaceDiff($json, $block, $weight) {
+        return $weight * getMinePlaceDiff($json, $block);
+    }
+    
+    function getWeightedMinePlaceDiffCmp($json, $block, $weight, $compare) {
+        $d = getWeightedMinePlaceDiff($json, $block, $weight);
+        if($d > 0) {
+            foreach($compare as $x) {
+                if($x['has'] < $x['shouldHave']) {
+                    $d *= $d;
+                }
+            }
+        }
+        
+        return $d;
+    }
 
     function suspectProvider($json) {
         $score = 0;
         
         $playTime = ticksToSeconds(safeGet('stat.playOneMinute', $json, 0));
+        $shortPlayTime = 14400; //4 hours in considered short
     
+        //acquire some data
         $diamonds = safeGet('achievement.diamonds', $json, 0);
         $obsMined = safeGet('stat.mineBlock.minecraft.obsidian', $json, 0);
         $enderEyes = safeGet('stat.craftItem.minecraft.ender_eye', $json, 0);
+        $blazeRods = safeGet('achievement.blazeRod', $json, 0);
+        $iron = safeGet('achievement.acquireIron', $json, 0);
+        $stone = safeGet('stat.mineBlock.minecraft.stone', $json, 0);
+        $wood = safeGet('achievement.mineWood', $json, 0);
         
         //Mined more Enchanting Tables than ever placed
-        $d = getMinePlaceDiff($json, 'minecraft.enchanting_table');
-        if($d > 0) {
-            //never mined enough diamonds to craft any
-            if($diamonds < 2) {
-                $d *= $d;
-            }
-            
-            //never mined enough obsidian to craft any
-            if($obsMined < 4) {
-                $d *= $d;
-            }
-            
-            $score += 10 * $d;
-        }
+        $score += getWeightedMinePlaceDiffCmp($json, 'minecraft.enchanting_table', 5, [
+                ['has' => $diamonds, 'shouldHave' => 2],
+                ['has' => $obsMined, 'shouldHave' => 4]
+        ]);
         
-        //Mined more Ender Chests than ever placed
-        $d = getMinePlaceDiff($json, 'minecraft.ender_chest');
-        if($d > 0) {
-            //never crafted any ender eyes
-            if($enderEyes == 0) {
-                $d *= $d;
-            }
-            
-            //never mined enough obsidian to craft any
-            if($obsMined < 8) {
-                $d *= $d;
-            }
-            
-            $score += 10 * $d;
-        }
+        $score += getWeightedMinePlaceDiffCmp($json, 'minecraft.ender_chest', 5, [
+                ['has' => $enderEyes, 'shouldHave' => 1],
+                ['has' => $obsMined,  'shouldHave' => 8]
+        ]);
+
+        $score += getWeightedMinePlaceDiffCmp($json, 'minecraft.brewing_stand', 5, [
+                ['has' => $blazeRods, 'shouldHave' => 1]
+        ]);
+        
+        $score += getWeightedMinePlaceDiffCmp($json, 'minecraft.anvil', 5, [
+                ['has' => $iron, 'shouldHave' => 31]
+        ]);
+
+        $score += getWeightedMinePlaceDiffCmp($json, 'minecraft.chest', 3, [
+                ['has' => $wood, 'shouldHave' => 3]
+        ]);
+
+        $score += getWeightedMinePlaceDiffCmp($json, 'minecraft.furnace', 1, [
+                ['has' => $stone, 'shouldHave' => 9]
+        ]);
         
         //Destroyed more build blocks than ever placed
-        $score += 3 * getMinePlaceDiff($json, 'minecraft.stained_glass') +
-                  3 * getMinePlaceDiff($json, 'minecraft.stained_glass_pane') +
-                  1 * max(0, getMinePlaceDiff($json, 'minecraft.planks') - 10) +
-                  1 * max(0, getMinePlaceDiff($json, 'minecraft.torch') - 10) +
-                  3 * getMinePlaceDiff($json, 'minecraft.furnace') +
-                  3 * getMinePlaceDiff($json, 'minecraft.rail') +
-                  3 * getMinePlaceDiff($json, 'minecraft.golden_rail') +
-                  2 * getMinePlaceDiff($json, 'minecraft.brick_block') +
-                  5 * getMinePlaceDiff($json, 'minecraft.chest');
+        $score += getWeightedMinePlaceDiff($json, 'minecraft.stained_glass', 5) +
+                  getWeightedMinePlaceDiff($json, 'minecraft.stained_glass_pane', 5) +
+                  getWeightedMinePlaceDiff($json, 'minecraft.golden_rail', 5) +
+                  getWeightedMinePlaceDiff($json, 'minecraft.brick_block', 3) +
+                  getWeightedMinePlaceDiff($json, 'minecraft.ladder', 3) +
+                  getWeightedMinePlaceDiff($json, 'minecraft.dark_oak_fence', 3) +
+                  getWeightedMinePlaceDiff($json, 'minecraft.spruce_fence', 3) +
+                  getWeightedMinePlaceDiff($json, 'minecraft.birch_fence', 3) +
+                  getWeightedMinePlaceDiff($json, 'minecraft.jungle_fence', 3) +
+                  getWeightedMinePlaceDiff($json, 'minecraft.acacia_fence', 3) +
+                  getWeightedMinePlaceDiff($json, 'minecraft.cobblestone_wall', 3);
+        
+        //Destroyed more blocks than ever played after a SHORT playing time
+        if($playTime < $shortPlayTime) {
+            $score += getWeightedMinePlaceDiff($json, 'minecraft.rail', 5) +     //found in mineshafts
+                      getWeightedMinePlaceDiff($json, 'minecraft.bookshelf', 5); //found in strongholds
+                      getWeightedMinePlaceDiff($json, 'minecraft.fence', 3) +    //found in mineshafts
+                      getWeightedMinePlaceDiff($json, 'minecraft.planks', 2) +   //found in mineshafts
+                      getWeightedMinePlaceDiff($json, 'minecraft.torch', 1);     //found in MANY places
+                      
+        }
         
         //Increase suspicion according to lava buckets emptied, TNT crafted and fires started
         if($score > 0) {
@@ -354,7 +384,7 @@
         }
         
         //Scale suspicion score for low play times
-        $score *= min(300, max(1, 14400 / max(1, $playTime))); //no scaling if played more than 4 hours
+        $score *= min(300, max(1, $shortPlayTime / max(1, $playTime))); //no scaling if played more than 4 hours
     
         return ($score > 100) ? (int)$score : FALSE;
     }
