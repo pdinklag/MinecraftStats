@@ -77,7 +77,12 @@
                     <?
                 } else {
                     ?>
-                    page <? echo($page); ?> of <? echo($numPages); ?>. (<a href="?stat=<? echo($viewStatId); ?>&all">show all</a>)
+                    page <? echo($page); ?> of <? echo($numPages); ?>.
+                    
+                    <?if($numPages > 1) {?>
+                     (<a href="?stat=<? echo($viewStatId); ?>&all">show all</a>)
+                    <?}?>
+                    
                     <?
                 }
                 ?>
