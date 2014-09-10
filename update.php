@@ -169,6 +169,25 @@
     echo("Saving awards ...\n");
     file_put_contents($awardsFile, serialize($awards));
     
+    //Create award output
+    if($awardOutputFile) {
+        echo("Generating award output ...\n");
+        $f = fopen($awardOutputFile, 'w');
+        foreach($stats as $id => $stat) {
+            if(array_key_exists($id, $awards)) {
+                $award = $awards[$id];
+                
+                fwrite($f,
+                    str_replace('%A%', $stat['award'],
+                    str_replace('%D%', $stat['desc'],
+                    str_replace('%W%', getPlayerName($award['id']),
+                    str_replace('%S%', getStatDisplayValue($stat, $award['score']), $awardOutputFormat)))));
+            }
+        }
+        
+        fclose($f);
+    }
+    
     //Sort and save Hall of Fame
     echo("Saving hall of fame\n");
     uasort($hof, 'compareRankingEntries');

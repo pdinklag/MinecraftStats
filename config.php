@@ -17,8 +17,12 @@
     $statDataDir = "$dataDir/stats";
     $playerDataDir = "$dataDir/players";
     
+    //Award output - %A% = award name, %W% = Winner, %D% = Award description, %S% = Score
+    $awardOutputFile = "$dataDir/awardsOutput.txt";
+    $awardOutputFormat = "%A%;%W%;%D%;%S%\n";
+    
     //General Settings
-    $title = "DVGaming.COM Snapshot";
+    $title = "DVG Snapshot Stats";
     $disclaimer = "";
     $inactiveTime = 604800; //seven days
     
