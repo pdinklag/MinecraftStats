@@ -22,7 +22,8 @@
     $disclaimer = "";
     $inactiveTime = 604800; //seven days
     
-    $statListLimit = 50;
+    //Paging
+    $itemsPerPage = 50;
     
     //Hall of Fame score settings
     $goldMedalScore   = 4;

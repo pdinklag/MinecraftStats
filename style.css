@@ -194,6 +194,28 @@ h1 {
     font-style: italic;
 }
 
+table.page {
+    width: 100%;
+    border: none;
+}
+
+table.page td {
+    font-size: 75%;
+    color: #A0A0A0;
+}
+
+table.page td.left {
+    text-align: left;
+}
+
+table.page td.center {
+    text-align: center;
+}
+
+table.page td.right {
+    text-align: right;
+}
+
 table.medals {
     color: #FFFFFF;
 
