@@ -73,11 +73,11 @@
                 <?
                 if($page == 'all') {
                     ?>
-                    all <? echo($numPages); ?> pages.
+                    all <? echo($numItems); ?> entries.
                     <?
                 } else {
                     ?>
-                    page <? echo($page); ?> of <? echo($numPages); ?>.
+                    entries <? echo($start + 1); ?> - <? echo($start + $num); ?> of <? echo($numItems); ?>.
                     
                     <?if($numPages > 1) {?>
                      (<a href="?stat=<? echo($viewStatId); ?>&all">show all</a>)
