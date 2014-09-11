@@ -50,9 +50,9 @@
         <p>Ranking for the "<? echo($viewStat['award'])?>" award (<? echo($viewStat['desc'])?>):</p>
         <table class="page">
             <colgroup>
-                <col style="width: 33%"/>
-                <col style="width: 34%"/>
-                <col style="width: 33%"/>
+                <col style="width: 20%"/>
+                <col style="width: 60%"/>
+                <col style="width: 20%"/>
             </colgroup>
             <tbody><tr>
             <td class="left">
