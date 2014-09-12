@@ -310,9 +310,22 @@
         
         return $d;
     }
+    
+    function suspectAdd(&$details, $key, $score) {
+        if($score > 0) {
+            if(array_key_exists($key, $details)) {
+                $details[$key] += $score;
+            } else {
+                $details[$key] = $score;
+            }
+        }
+        
+        return $score;
+    }
 
     function suspectProvider($json) {
         $score = 0;
+        $details = [];
         
         $playTime = ticksToSeconds(safeGet('stat.playOneMinute', $json, 0));
         $shortPlayTime = 14400; //4 hours in considered short
@@ -327,66 +340,75 @@
         $wood = safeGet('achievement.mineWood', $json, 0);
         
         //Mined more Enchanting Tables than ever placed
-        $score += getWeightedMinePlaceDiffCmp($json, 'minecraft.enchanting_table', 5, [
+        $score += suspectAdd($details, 'Enchanting Tables', getWeightedMinePlaceDiffCmp($json, 'minecraft.enchanting_table', 5, [
                 ['has' => $diamonds, 'shouldHave' => 2],
                 ['has' => $obsMined, 'shouldHave' => 4]
-        ]);
+        ]));
         
-        $score += getWeightedMinePlaceDiffCmp($json, 'minecraft.ender_chest', 5, [
+        $score += suspectAdd($details, 'Ender Chests', getWeightedMinePlaceDiffCmp($json, 'minecraft.ender_chest', 5, [
                 ['has' => $enderEyes, 'shouldHave' => 1],
                 ['has' => $obsMined,  'shouldHave' => 8]
-        ]);
+        ]));
 
-        $score += getWeightedMinePlaceDiffCmp($json, 'minecraft.brewing_stand', 5, [
+        $score += suspectAdd($details, 'Brewing Stands', getWeightedMinePlaceDiffCmp($json, 'minecraft.brewing_stand', 5, [
                 ['has' => $blazeRods, 'shouldHave' => 1]
-        ]);
+        ]));
         
-        $score += getWeightedMinePlaceDiffCmp($json, 'minecraft.anvil', 5, [
+        $score += suspectAdd($details, 'Anvils', getWeightedMinePlaceDiffCmp($json, 'minecraft.anvil', 5, [
                 ['has' => $iron, 'shouldHave' => 31]
-        ]);
+        ]));
 
-        $score += getWeightedMinePlaceDiffCmp($json, 'minecraft.chest', 3, [
+        $score += suspectAdd($details, 'Chests', getWeightedMinePlaceDiffCmp($json, 'minecraft.chest', 3, [
                 ['has' => $wood, 'shouldHave' => 3]
-        ]);
+        ]));
 
-        $score += getWeightedMinePlaceDiffCmp($json, 'minecraft.furnace', 1, [
+        $score += suspectAdd($details, 'Furnaces', getWeightedMinePlaceDiffCmp($json, 'minecraft.furnace', 1, [
                 ['has' => $stone, 'shouldHave' => 9]
-        ]);
+        ]));
         
         //Destroyed more build blocks than ever placed
-        $score += getWeightedMinePlaceDiff($json, 'minecraft.stained_glass', 5) +
-                  getWeightedMinePlaceDiff($json, 'minecraft.stained_glass_pane', 5) +
-                  getWeightedMinePlaceDiff($json, 'minecraft.golden_rail', 5) +
-                  getWeightedMinePlaceDiff($json, 'minecraft.brick_block', 3) +
-                  getWeightedMinePlaceDiff($json, 'minecraft.ladder', 3) +
-                  getWeightedMinePlaceDiff($json, 'minecraft.dark_oak_fence', 3) +
-                  getWeightedMinePlaceDiff($json, 'minecraft.spruce_fence', 3) +
-                  getWeightedMinePlaceDiff($json, 'minecraft.birch_fence', 3) +
-                  getWeightedMinePlaceDiff($json, 'minecraft.jungle_fence', 3) +
-                  getWeightedMinePlaceDiff($json, 'minecraft.acacia_fence', 3) +
-                  getWeightedMinePlaceDiff($json, 'minecraft.cobblestone_wall', 3);
+        $score += suspectAdd($details, 'Glass', getWeightedMinePlaceDiff($json, 'minecraft.stained_glass', 5)) +
+                  suspectAdd($details, 'Glass', getWeightedMinePlaceDiff($json, 'minecraft.stained_glass_pane', 5)) +
+                  suspectAdd($details, 'Glass', getWeightedMinePlaceDiff($json, 'minecraft.glass', 5)) +
+                  suspectAdd($details, 'Glass', getWeightedMinePlaceDiff($json, 'minecraft.glass_pane', 5)) +
+                  suspectAdd($details, 'Rails', getWeightedMinePlaceDiff($json, 'minecraft.golden_rail', 5)) +
+                  suspectAdd($details, 'Brick Blocks', getWeightedMinePlaceDiff($json, 'minecraft.brick_block', 3)) +
+                  suspectAdd($details, 'Ladders', getWeightedMinePlaceDiff($json, 'minecraft.ladder', 3)) +
+                  suspectAdd($details, 'Fences', getWeightedMinePlaceDiff($json, 'minecraft.dark_oak_fence', 3)) +
+                  suspectAdd($details, 'Fences', getWeightedMinePlaceDiff($json, 'minecraft.spruce_fence', 3)) +
+                  suspectAdd($details, 'Fences', getWeightedMinePlaceDiff($json, 'minecraft.birch_fence', 3)) +
+                  suspectAdd($details, 'Fences', getWeightedMinePlaceDiff($json, 'minecraft.jungle_fence', 3)) +
+                  suspectAdd($details, 'Fences', getWeightedMinePlaceDiff($json, 'minecraft.acacia_fence', 3)) +
+                  suspectAdd($details, 'Fences', getWeightedMinePlaceDiff($json, 'minecraft.cobblestone_wall', 3));
         
         //Destroyed more blocks than ever played after a SHORT playing time
         if($playTime < $shortPlayTime) {
-            $score += getWeightedMinePlaceDiff($json, 'minecraft.rail', 5) +     //found in mineshafts
-                      getWeightedMinePlaceDiff($json, 'minecraft.bookshelf', 5); //found in strongholds
-                      getWeightedMinePlaceDiff($json, 'minecraft.fence', 3) +    //found in mineshafts
-                      getWeightedMinePlaceDiff($json, 'minecraft.planks', 2) +   //found in mineshafts
-                      getWeightedMinePlaceDiff($json, 'minecraft.torch', 1);     //found in MANY places
-                      
+            $score += suspectAdd($details, 'Rails', getWeightedMinePlaceDiff($json, 'minecraft.rail', 5)) +           //found in mineshafts
+                      suspectAdd($details, 'Bookshelves', getWeightedMinePlaceDiff($json, 'minecraft.bookshelf', 5)); //found in strongholds
+                      suspectAdd($details, 'Fences', getWeightedMinePlaceDiff($json, 'minecraft.fence', 3)) +         //found in mineshafts
+                      suspectAdd($details, 'Planks', getWeightedMinePlaceDiff($json, 'minecraft.planks', 2)) +        //found in mineshafts
+                      suspectAdd($details, 'Torches', getWeightedMinePlaceDiff($json, 'minecraft.torch', 1));         //found in MANY places
+
+            $score += suspectAdd($details, 'Lava Buckets', 25 * safeGet('stat.useItem.minecraft.lava_bucket', $json, 0));
+            $score += suspectAdd($details, 'TNT', 25 * safeGet('stat.craftItem.minecraft.tnt', $json, 0));
+            $score += suspectAdd($details, 'Fire', 10 * safeGet('stat.useItem.minecraft.flint_and_steel', $json, 0));
         }
         
         //Increase suspicion according to lava buckets emptied, TNT crafted and fires started
-        if($score > 0) {
-            $score += 10 * safeGet('stat.useItem.minecraft.lava_bucket', $json, 0);
-            $score += 7 * safeGet('stat.craftItem.minecraft.tnt', $json, 0);
-            $score += 5 * safeGet('stat.useItem.minecraft.flint_and_steel', $json, 0);
+        if($score > 100 && $playTime >= $shortPlayTime) {
+            $score += suspectAdd($details, 'Lava Buckets', 10 * safeGet('stat.useItem.minecraft.lava_bucket', $json, 0));
+            $score += suspectAdd($details, 'TNT', 10 * safeGet('stat.craftItem.minecraft.tnt', $json, 0));
+            $score += suspectAdd($details, 'Fire', 5 * safeGet('stat.useItem.minecraft.flint_and_steel', $json, 0));
         }
         
         //Scale suspicion score for low play times
-        $score *= min(300, max(1, $shortPlayTime / max(1, $playTime))); //no scaling if played more than 4 hours
+        $score = (int)($score * suspectAdd($details, 'Playtime Factor', min(300, max(1, $shortPlayTime / max(1, $playTime)))));
     
-        return ($score > 100) ? (int)$score : FALSE;
+        return ($score > 100) ? ['score' => $score, 'details' => $details] : FALSE;
+    }
+    
+    function suspectDisplay($suspect) {
+        return $suspect['score'];
     }
 
     $stats = [
@@ -533,6 +555,7 @@
             'desc'  => 'You don\'t want this award',
             'icon'  => 'items/barrier.png',
             'provider' => 'suspectProvider',
+            'displayFunc' => 'suspectDisplay',
         ],
         'stat.animalsBred' => [
             'award' => 'Animal Lover',

@@ -33,7 +33,12 @@
     function compareRankingEntries($a, $b) {
         global $players;
     
-        $d = $b['score'] - $a['score'];
+        if(is_array($a['score'])) {
+            $d = $b['score']['score'] - $a['score']['score'];
+        } else {
+            $d = $b['score'] - $a['score'];
+        }
+        
         if($d == 0) {
             return strcasecmp($players[$a['id']]['name'], $players[$b['id']]['name']);
         } else {

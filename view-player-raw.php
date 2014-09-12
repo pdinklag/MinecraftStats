@@ -15,6 +15,15 @@
         } else {
             die("No data file.");
         }
+        
+        //Load suspect score for player, if any
+        $dataFile = "$playerDataDir/$playerId";
+        if(is_file($dataFile)) {
+            $pstats = unserialize(file_get_contents($dataFile));
+            if(array_key_exists('custom.suspect', $pstats)) {
+                $suspect = $pstats['custom.suspect']['score'];
+            }
+        }
     } else {
         die("Unknown player.");
     }
@@ -112,5 +121,38 @@
                 ?>
             </tbody>
         </table>
+        <?
+            if(isset($suspect)) {
+        ?>
+            <p>Suspect score details:</p>
+            <table class="listing">
+                <colgroup>
+                    <col style="width:40%;"/>
+                    <col style="width:60%;"/>
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    <?
+                        foreach($suspect['details'] as $key => $value) {
+                            ?>
+                                <tr>
+                                <td><? echo($key); ?></td>
+                                <td><? echo(is_int($value) ? $value : number_format($value, 2)); ?></td>
+                                </tr>
+                            <?
+                        }
+                    ?>
+                    <tr>
+                        <td>Total</td>
+                        <td><? echo((int)$suspect['score']); ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        <?
+            }
+        ?>
     </div>
 </div>
