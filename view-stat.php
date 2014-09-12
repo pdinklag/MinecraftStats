@@ -69,15 +69,18 @@
                 ?>
             </td>
             <td class="center">
-                Showing
                 <?
-                if($page == 'all') {
+                if($numItems == 0) {
                     ?>
-                    all <? echo($numItems); ?> entries.
+                    No entries.
+                    <?
+                } else if($page == 'all') {
+                    ?>
+                    Showing all <? echo($numItems); ?> entries.
                     <?
                 } else {
                     ?>
-                    entries <? echo($start + 1); ?> - <? echo($start + $num); ?> of <? echo($numItems); ?>.
+                    Showing entries <? echo($start + 1); ?> - <? echo(min($start + $num, $numItems)); ?> of <? echo($numItems); ?>.
                     
                     <?if($numPages > 1) {?>
                      (<a href="?stat=<? echo($viewStatId); ?>&all">show all</a>)
