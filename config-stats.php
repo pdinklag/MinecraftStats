@@ -886,7 +886,7 @@
             'icon'  => 'blocks/lapis_ore.png',
         ],
         'stat.mineBlock.minecraft.melon_block' => [
-            'award' => 'Why can\'t I hold...',
+            'award' => 'Melon Helmet',
             'desc'  => 'Melons farmed',
             'icon'  => 'blocks/melon_side.png',
         ],
