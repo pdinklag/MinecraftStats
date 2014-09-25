@@ -339,26 +339,28 @@
         $stone = safeGet('stat.mineBlock.minecraft.stone', $json, 0);
         $wood = safeGet('achievement.mineWood', $json, 0);
         
-        //Mined more Enchanting Tables than ever placed
-        $score += suspectAdd($details, 'Enchanting Tables', getWeightedMinePlaceDiffCmp($json, 'minecraft.enchanting_table', 5, [
-                ['has' => $diamonds, 'shouldHave' => 2],
+
+        $score += suspectAdd($details, 'Beacons', getWeightedMinePlaceDiffCmp($json, 'minecraft.beacon', 25, [
+                ['has' => safeGet('achievement.killWither', $json, 0), 'shouldHave' => 1],
+        ]));
+        
+        $score += suspectAdd($details, 'Enchanting Tables', getWeightedMinePlaceDiffCmp($json, 'minecraft.enchanting_table', 15, [
                 ['has' => $obsMined, 'shouldHave' => 4]
         ]));
         
-        $score += suspectAdd($details, 'Ender Chests', getWeightedMinePlaceDiffCmp($json, 'minecraft.ender_chest', 5, [
+        $score += suspectAdd($details, 'Ender Chests', getWeightedMinePlaceDiffCmp($json, 'minecraft.ender_chest', 15, [
                 ['has' => $enderEyes, 'shouldHave' => 1],
-                ['has' => $obsMined,  'shouldHave' => 8]
         ]));
 
-        $score += suspectAdd($details, 'Brewing Stands', getWeightedMinePlaceDiffCmp($json, 'minecraft.brewing_stand', 5, [
+        $score += suspectAdd($details, 'Brewing Stands', getWeightedMinePlaceDiffCmp($json, 'minecraft.brewing_stand', 15, [
                 ['has' => $blazeRods, 'shouldHave' => 1]
         ]));
         
-        $score += suspectAdd($details, 'Anvils', getWeightedMinePlaceDiffCmp($json, 'minecraft.anvil', 5, [
+        $score += suspectAdd($details, 'Anvils', getWeightedMinePlaceDiffCmp($json, 'minecraft.anvil', 15, [
                 ['has' => $iron, 'shouldHave' => 31]
         ]));
 
-        $score += suspectAdd($details, 'Chests', getWeightedMinePlaceDiffCmp($json, 'minecraft.chest', 3, [
+        $score += suspectAdd($details, 'Chests', getWeightedMinePlaceDiffCmp($json, 'minecraft.chest', 8, [
                 ['has' => $wood, 'shouldHave' => 3]
         ]));
 
@@ -373,6 +375,7 @@
                   suspectAdd($details, 'Glass', getWeightedMinePlaceDiff($json, 'minecraft.glass_pane', 5)) +
                   suspectAdd($details, 'Rails', getWeightedMinePlaceDiff($json, 'minecraft.golden_rail', 5)) +
                   suspectAdd($details, 'Brick Blocks', getWeightedMinePlaceDiff($json, 'minecraft.brick_block', 3)) +
+                  suspectAdd($details, 'Quartz Blocks', getWeightedMinePlaceDiff($json, 'minecraft.quartz_block', 3)) +
                   suspectAdd($details, 'Ladders', getWeightedMinePlaceDiff($json, 'minecraft.ladder', 3)) +
                   suspectAdd($details, 'Fences', getWeightedMinePlaceDiff($json, 'minecraft.dark_oak_fence', 3)) +
                   suspectAdd($details, 'Fences', getWeightedMinePlaceDiff($json, 'minecraft.spruce_fence', 3)) +
@@ -383,8 +386,8 @@
         
         //Destroyed more blocks than ever played after a SHORT playing time
         if($playTime < $shortPlayTime) {
-            $score += suspectAdd($details, 'Rails', getWeightedMinePlaceDiff($json, 'minecraft.rail', 5)) +           //found in mineshafts
-                      suspectAdd($details, 'Bookshelves', getWeightedMinePlaceDiff($json, 'minecraft.bookshelf', 5)); //found in strongholds
+            $score += suspectAdd($details, 'Rails', getWeightedMinePlaceDiff($json, 'minecraft.rail', 8)) +           //found in mineshafts
+                      suspectAdd($details, 'Bookshelves', getWeightedMinePlaceDiff($json, 'minecraft.bookshelf', 8)); //found in strongholds
                       suspectAdd($details, 'Fences', getWeightedMinePlaceDiff($json, 'minecraft.fence', 3)) +         //found in mineshafts
                       suspectAdd($details, 'Planks', getWeightedMinePlaceDiff($json, 'minecraft.planks', 2)) +        //found in mineshafts
                       suspectAdd($details, 'Torches', getWeightedMinePlaceDiff($json, 'minecraft.torch', 1));         //found in MANY places
