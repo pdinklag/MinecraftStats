@@ -46,6 +46,10 @@
         }
     }
     
+    //Read command-line options
+    $opts = getopt('', ['update-playercache']);
+    $forcePlayerCacheUpdate = isset($opts['update-playercache']);
+    
     //Scan raw data dir
     echo("Scanning raw data ...\n");
     
@@ -59,14 +63,12 @@
                 $uuid = substr($f, 0, -5); //5 = length of ".json"
                 
                 //Check if UUID is in player cache
-                if(!array_key_exists($uuid, $players)) {
+                if($forcePlayerCacheUpdate || !array_key_exists($uuid, $players)) {
                     //if not, look it up
                     echo("Looking up new UUID $uuid ... ");
                     $info = lookupPlayerInfo($uuid);
                     $players[$uuid] = $info;
-                    
-                    //DEBUG
-                    echo($info['name'] . ", skin: " . $info['skinUrl'] . "\n");
+                    echo($info['name'] . "\n");
                 } else {
                     $info = $players[$uuid];
                 }
