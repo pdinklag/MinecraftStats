@@ -290,6 +290,14 @@
         return ($sum > 0) ? $sum : FALSE;
     }
     
+    function useNoteblockProvider($json) {
+        $sum =
+            safeGet('stat.noteblockPlayed', $json, 0) +
+            safeGet('stat.noteblockTuned', $json, 0);
+        
+        return ($sum > 0) ? $sum : FALSE;
+    }
+    
     function getMinePlaceDiff($json, $block) {
         return max(0, safeGet("stat.mineBlock.$block", $json, 0) - safeGet("stat.useItem.$block", $json, 0));
     }
@@ -560,6 +568,12 @@
             'provider' => 'suspectProvider',
             'displayFunc' => 'suspectDisplay',
         ],
+        'custom.useNoteblock' => [
+            'award' => 'Musician',
+            'desc'  => 'Note blocks played/tuned',
+            'icon'  => 'blocks/noteblock.png',
+            'provider' => 'useNoteblockProvider',
+        ],
         'stat.animalsBred' => [
             'award' => 'Animal Lover',
             'desc'  => 'Animals bred',
@@ -570,6 +584,11 @@
             'desc'  => 'Distance gone by boat',
             'icon'  => 'items/boat.png',
             'displayFunc' => 'cmToDistance',
+        ],
+        'stat.chestOpened' => [
+            'award' => 'Warehouser',
+            'desc'  => 'Chests opened',
+            'icon'  => 'blocks/chest.png',
         ],
         'stat.climbOneCm' => [
             'award' => 'Climber',
@@ -681,6 +700,11 @@
             'desc'  => 'Fish caught',
             'icon'  => 'items/fish_cod_raw.png',
         ],
+        'stat.flowerPotted' => [
+            'award' => 'Florist',
+            'desc'  => 'Plants potted',
+            'icon'  => 'blocks/flower_rose.png',
+        ],
         'stat.horseOneCm' => [
             'award' => 'Rider',
             'desc'  => 'Distance ridden on horse',
@@ -696,6 +720,11 @@
             'award' => 'Wannabe Fisherman',
             'desc'  => 'Junk items fished',
             'icon'  => 'items/bowl.png',
+        ],
+        'stat.entityKilledBy.Creeper' => [
+            'award' => 'Crept',
+            'desc'  => 'Times killed by a creeper',
+            'icon'  => 'minecraft-wiki/mobs/CreeperFace.png',
         ],
         'stat.entityKilledBy.Zombie' => [
             'award' => 'Infected',
@@ -725,7 +754,7 @@
         'stat.killEntity.Creeper' => [
             'award' => 'Creeper Creep',
             'desc'  => 'Creepers killed',
-            'icon'  => 'minecraft-wiki/mobs/CreeperFace.png',
+            'icon'  => 'items/gunpowder.png',
         ],
         'stat.killEntity.Enderman' => [
             'award' => 'Enderman Ender',
@@ -834,7 +863,7 @@
         ],
         */
         'stat.killEntity.Witch' => [
-            'award' => 'Burn the Witch!',
+            'award' => 'Witch Hunter',
             'desc'  => 'Witches killed',
             'icon'  => 'minecraft-wiki/mobs/Witchface2.png',
         ],
@@ -847,6 +876,11 @@
             'award' => 'Zombie Grinder',
             'desc'  => 'Zombies killed',
             'icon'  => 'minecraft-wiki/mobs/ZombieFace.png',
+        ],
+        'stat.itemEnchanted' => [
+            'award' => 'Enchanter',
+            'desc'  => 'Items enchanted',
+            'icon'  => 'blocks/enchanting_table_top.png',
         ],
         'stat.mineBlock.minecraft.cactus' => [
             'award' => 'Cactus Farmer',
@@ -951,6 +985,11 @@
             'icon'  => 'gui/connection.png',
             'displayFunc' => 'ticksToTime',
         ],
+        'stat.recordPlayed' => [
+            'award' => 'Disc Jockey',
+            'desc'  => 'Records played',
+            'icon'  => 'items/record_13.png',
+        ],
         'stat.sprintOneCm' => [
             'award' => 'Marathon Runner',
             'desc'  => 'Distance sprinted',
@@ -979,6 +1018,11 @@
             'award' => 'Trader',
             'desc'  => 'Villager trades completed',
             'icon'  => 'items/emerald.png',
+        ],
+        'stat.trappedChestTriggered' => [
+            'award' => 'Klutz',
+            'desc'  => 'Trapped chests triggered',
+            'icon'  => 'blocks/trapped_chest.png',
         ],
         'stat.treasureFished' => [
             'award' => 'Treasure Hunter',
@@ -1030,11 +1074,6 @@
             'desc'  => 'Fires started',
             'icon'  => 'blocks/fire.png',
         ],
-        'stat.useItem.minecraft.flower_pot' => [
-            'award' => 'Florist',
-            'desc'  => 'Flower pots placed',
-            'icon'  => 'blocks/flower_rose.png',
-        ],
         'stat.useItem.minecraft.iron_bars' => [
             'award' => 'Jailer',
             'desc'  => 'Iron Bars placed',
@@ -1044,11 +1083,6 @@
             'award' => 'Museum Owner',
             'desc'  => 'Item frames placed',
             'icon'  => 'items/item_frame.png',
-        ],
-        'stat.useItem.minecraft.jukebox' => [
-            'award' => 'Disc Jockey',
-            'desc'  => 'Jukeboxes placed',
-            'icon'  => 'items/record_13.png',
         ],
         'stat.useItem.minecraft.lava_bucket' => [
             'award' => 'I\'m a Griefer!',
@@ -1064,11 +1098,6 @@
             'award' => 'Nether Farmer',
             'desc'  => 'Nether Warts planted',
             'icon'  => 'blocks/nether_wart_stage_2.png',
-        ],
-        'stat.useItem.minecraft.noteblock' => [
-            'award' => 'Musician',
-            'desc'  => 'Note blocks placed',
-            'icon'  => 'blocks/noteblock.png',
         ],
         'stat.useItem.minecraft.potion' => [
             'award' => 'Alchemist',
