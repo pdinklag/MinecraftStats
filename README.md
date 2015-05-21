@@ -47,7 +47,7 @@ __Hall of Fame settings:__
 * `$bronzeMedalScore` - the crown score amount gained for a bronze medal.
 
 ### Award configuration
-The huge `$stats` array defined at the end of `config-stats.php` determines what awards there are and how they work. I recommend giving a custom prefix (e.g. `custom.`, duh) to stats that you invented yourself. The `achievement.` and `stat.` stats come from Minecraft directly.
+The huge `$stats` array defined at the end of `config-stats.php` determines what awards there are and how they work. I recommend giving a custom prefix (e.g. `custom.`, duh) to stats that you invented yourself. The `achievement.`, `minecraft.` and `stat.` stats come from Minecraft directly.
 
 Awards support the following fields:
 * `award` - the award's name displayed on the site.
