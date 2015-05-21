@@ -23,6 +23,7 @@ Simply checkout this repository somewhere in your webserver's document root (e.g
 Minecraft stores its statistics in the many JSON files under `world/stats` (this is valid for vanilla servers, I cannot speak for Bukkit or other modded servers, but it should be similar). That's the only data source that _MinecraftStats_ needs. However, it is _not_ a live browser. Instead, the info is cached in a custom format so the site can be displayed efficiently. This means that _MinecraftStats_ needs to be fed with up-to-date data regularly.
 
 First, create a directory named `raw` in your _MinecraftStats_ directory. The following steps are then used to update _MinecraftStats_' data:
+
 1. Copy the JSON files from `<Minecraft server dir>/world/stats` into the `raw` directory.
 2. Run `php update.php` in a command shell [*]. __Note:__ If you have an established server with many players, the initial update may take a long time. This is because _MinecraftStats_ is retrieving the players' skin URLs using Mojang's web API.
 
