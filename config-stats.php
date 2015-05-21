@@ -395,7 +395,7 @@
         //Destroyed more blocks than ever played after a SHORT playing time
         if($playTime < $shortPlayTime) {
             $score += suspectAdd($details, 'Rails', getWeightedMinePlaceDiff($json, 'minecraft.rail', 8)) +           //found in mineshafts
-                      suspectAdd($details, 'Bookshelves', getWeightedMinePlaceDiff($json, 'minecraft.bookshelf', 8)); //found in strongholds
+                      suspectAdd($details, 'Bookshelves', getWeightedMinePlaceDiff($json, 'minecraft.bookshelf', 8)) + //found in strongholds
                       suspectAdd($details, 'Fences', getWeightedMinePlaceDiff($json, 'minecraft.fence', 3)) +         //found in mineshafts
                       suspectAdd($details, 'Planks', getWeightedMinePlaceDiff($json, 'minecraft.planks', 2)) +        //found in mineshafts
                       suspectAdd($details, 'Torches', getWeightedMinePlaceDiff($json, 'minecraft.torch', 1));         //found in MANY places
