@@ -17,15 +17,22 @@
     <a href="?stat=stat.playOneMinute">List of players</a>
     
     <?
-        if(isset($_POST['me'])) {
-            $name = $_POST['me'];
-            $me = findPlayerUUIDByName($name);
-            if($me !== FALSE) {
-                setcookie('me', $me, time() + 60*60*24*365);
-            } else {
-                $formError = "Can't find " . htmlspecialchars($name) . "!"; //good thing I recently learned about cross-site-scripting!
-                unset($me);
+        if(isset($_POST['findname'])) {
+            $name = $_POST['findname'];
+            $foundUUID = findPlayerUUIDByName($name);
+            if($foundUUID === FALSE) {
+                $formError = "Can't find " . htmlspecialchars($name) . "!";
+                unset($foundUUID);
             }
+        }
+        
+        if(isset($foundUUID) && isset($_POST['goto'])) {
+            $_GET["player"] = $foundUUID;
+        }
+    
+        if(isset($foundUUID) && isset($_POST['shortcut'])) {
+            $me = $foundUUID;
+            setcookie('me', $foundUUID, time() + 60*60*24*365);
         } else if(isset($_GET['notme'])) {
             setcookie('me', null);
         } else if(isset($_COOKIE['me'])) {
@@ -38,18 +45,26 @@
             ?>
             <a class="notme" href="?notme">[X]</a>
             <?
-        } else {
-            ?>
-                <form action="index.php" method="post">
-                Player name: <input name="me" type="text" size="16"/> <input type="submit" value="Make shortcut"/>
-                <?
-                    if(isset($formError)) {
-                        echo("<span class=\"error\">$formError</span>");
-                    }
-                ?>
-                </form>
-            <?
         }
+        
+        ?>
+            <form action="index.php" method="post">
+            Player name: <input name="findname" type="text" size="16"/>
+            <button name="goto">Go</button>
+            <?
+                if(!isset($me)) {
+                    ?>
+                    <button name="shortcut">It's me!</button>
+                    <?
+                }
+            ?>
+            <?
+                if(isset($formError)) {
+                    echo("<span class=\"error\">$formError</span>");
+                }
+            ?>
+            </form>
+        <?
     ?>
 </div>
 <div id="last-update">
