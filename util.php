@@ -2,8 +2,6 @@
     /**
      * Utilities
      */
-    date_default_timezone_set('Europe/Berlin');
-     
     function findStat($id) {
         global $stats;
     

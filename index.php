@@ -88,12 +88,15 @@
 <div id="foot-wrapper">
     &nbsp;
     <div id="foot">
-        Written by Patrick Dinklage a.k.a. "pdinklag".<br/>
-        All times are CEST.
-        <? if(isset($disclaimer)) { ?>
-            <div id="disclaimer"><? echo($disclaimer); ?></div>
-        <? } ?>
+        All times are <? echo($timezone); ?>.
     </div>
+</div>
+<div id="legal">
+    <span class="hl">MinecraftStats Version <? echo($mcstatsVersion); ?></span>.<br/>
+    Written by Patrick Dinklage a.k.a. "pdinklag".<br/>
+    <br/>
+    Minecraft UI icons and default skins are trademarks and copyrights of <a href="http://mojang.com/">Mojang</a>.<br/>
+    Images from the <a href="http://minecraft.gamepedia.com/Minecraft_Wiki">Minecraft Wiki</a> are licensed under <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">CreativeCommons BY-NC-SA 3.0</a>.
 </div>
 
 <script type="text/javascript" src="jquery-2.1.1.min.js"></script>

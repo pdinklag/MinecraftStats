@@ -3,6 +3,12 @@
      * General configuration.
      */
     require_once("util.php");
+    
+    $mcstatsVersion = "1.00";
+    
+    //Time zone
+    date_default_timezone_set('Europe/Berlin');
+    $timezone = 'CEST';
 
     //Data structure
     $dataDir = "data";
@@ -23,7 +29,6 @@
     
     //General Settings
     $title = "DVG Snapshot Stats";
-    $disclaimer = "";
     $inactiveTime = 604800; //seven days
     
     //Paging
@@ -35,11 +40,11 @@
     $bronzeMedalScore = 1;
     
     //Icons
-    $awardIconDir = "icons";
+    $awardIconDir = "img/icons";
     $defaultIcon = "minecraft-wiki/64px-No_image.svg.png";
     
     //Skins
-    $defaultSkins = ["skins/steve.png", "skins/alex.png"];
+    $defaultSkins = ["img/skins/steve.png", "img/skins/alex.png"];
 
     //Load Stats configuration
     require("config-stats.php");
