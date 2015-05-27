@@ -8,25 +8,11 @@
     
     error_reporting(E_ALL ^ E_NOTICE);
     
-    //Resolves a UUID to the last ingame name used
-    function lookupPlayerInfo($uuid) {
+    //Resolves a UUID to the ingame name by contacting Mojang's servers
+    function lookupPlayerName($uuid) {
         $uuid = str_replace("-", "", $uuid);
         $json = json_decode(file_get_contents("https://sessionserver.mojang.com/session/minecraft/profile/$uuid"), true);
-        
-        $info = [];
-        $info['name'] = $json['name'];
-        
-        //find skin
-        foreach($json['properties'] as $prop) {
-            if($prop['name'] == 'textures') {
-                //decode the value set...
-                $jsonTextures = json_decode(base64_decode($prop['value']), true);
-                $info['skinUrl'] = $jsonTextures['textures']['SKIN']['url'];
-                break;
-            }
-        }
-        
-        return $info;
+        return $json['name'];
     }
     
     //Comparator for rankings (using usort)
@@ -51,12 +37,27 @@
     $forcePlayerCacheUpdate = isset($opts['update-playercache']);
     
     //Scan raw data dir
-    echo("Scanning raw data ...\n");
-    
     $playerStats = [];
     if(is_dir($rawDataDir)) {
+        //Read usercache
+        $userCache = [];
+        $userCacheFile = 'usercache.json';
+        if(is_file("$rawDataDir/$userCacheFile")) {
+            echo("Reading user cache ...\n");
+            $userCacheJSON = json_decode(file_get_contents("$rawDataDir/$userCacheFile"), true);
+            foreach($userCacheJSON as $entry) {
+                $userCache[$entry['uuid']] = $entry['name'];
+            }
+        }
+    
+        //Scan for player JSON files
+        echo("Scanning raw data ...\n");
         $dir = opendir($rawDataDir);
         while($f = readdir($dir)) {
+            if($f == $userCacheFile) {
+                continue;
+            }
+        
             $jsonFile = "$rawDataDir/$f";
             if(is_file($jsonFile)) {
                 //Extract UUID from file name
@@ -66,11 +67,22 @@
                 if($forcePlayerCacheUpdate || !array_key_exists($uuid, $players)) {
                     //if not, look it up
                     echo("Looking up new UUID $uuid ... ");
-                    $info = lookupPlayerInfo($uuid);
-                    $players[$uuid] = $info;
-                    echo($info['name'] . "\n");
+                    
+                    if(isset($userCache[$uuid])) {
+                        //it's in the local user cache!
+                        $playerName = $userCache[$uuid];
+                    } else {
+                        //fetch from Mojang
+                        $playerName = lookupPlayerName($uuid);
+                    }
+                    
+                    $players[$uuid] = ['name' => $playerName];
+                    echo($players[$uuid]['name'] . "\n");
                 } else {
-                    $info = $players[$uuid];
+                    //if yes, update the name from the user cache - it may have changed
+                    if(isset($userCache[$uuid])) {
+                        $players[$uuid]['name'] = $userCache[$uuid];
+                    }
                 }
                 
                 $lastOnline = filemtime($jsonFile);

@@ -24,7 +24,7 @@ Minecraft stores its statistics in the many JSON files under `world/stats` (this
 
 First, create a directory named `raw` in your _MinecraftStats_ directory. The following steps are then used to update _MinecraftStats_' data:
 
-1. Copy the JSON files from `<Minecraft server dir>/world/stats` into the `raw` directory.
+1. Copy `<Minecraft server dir>/usercache.json` and all the JSON files in `<Minecraft server dir>/world/stats` into the `raw` directory.
 2. Run `php update.php` in a command shell [*]. __Note:__ If you have an established server with many players, the initial update may take a long time. This is because _MinecraftStats_ is retrieving the players' skin URLs using Mojang's web API.
 
 Step one is necessary, because if we just used the original JSON files as the data source, they may change while the update is running. This might result in read/write conflicts as well as inconsistencies. So better just create a copy.

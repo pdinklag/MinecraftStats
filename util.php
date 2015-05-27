@@ -77,18 +77,16 @@
         return ($sub[0] ^ $sub[1]) ^ ($sub[2] ^ $sub[3]);
     }
     
+    function getDefaultSkinGender($uuid) {
+        return abs(uuidHash($uuid) % 2);
+    }
+    
     function getPlayerSkin($uuid) {
-        global $players, $defaultSkins;
+        global $players;
+
+        $urlName = urlencode($players[$uuid]['name']);
+        return "http://skins.minecraft.net/MinecraftSkins/$urlName.png";
         
-        if(array_key_exists($uuid, $players)) {
-            $info = $players[$uuid];
-            if(isset($info['skinUrl'])) {
-                return $info['skinUrl'];
-            }
-        }
-        
-        //default
-        return $defaultSkins[abs(uuidHash($uuid) % 2)];
     }
     
     function getPlayerLastOnline($uuid) {
@@ -133,7 +131,9 @@
                 '<span class="player '
                 . (isPlayerInactive($uuid) ? 'inactive' : '') .
                 '">' .
-                '<img src="' . getPlayerSkin($uuid) . '"/><span><canvas width="' . $size . '" height="'.$size.'"/></span>' .
+                '<img src="' . getPlayerSkin($uuid) . '" ' .
+                    'onload="skinLoaded(this);" onerror="skinError(this, ' . getDefaultSkinGender($uuid) .
+                    ');"/><span><canvas width="' . $size . '" height="'.$size.'"/></span>' .
                 "<a href='?player=$uuid'>" .
                 getPlayerName($uuid) .
                 '</a>' .
