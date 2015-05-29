@@ -7,6 +7,28 @@
 <head>
     <title><? echo($title); ?></title>
     <link rel="stylesheet" href="style.css">
+    <script src="jquery-2.1.1.min.js"></script>
+    <script>
+        function skinLoaded(img) {
+            var canvas = img.parentNode.getElementsByTagName("canvas")[0];
+            
+            var ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(img, 8, 8, 8, 8, 0, 0, canvas.width, canvas.height);
+        }
+        
+        function skinError(img, gender) {
+            switch(gender) {
+                case 0:
+                    img.src = "<? echo($defaultSkins[0]); ?>";
+                    break;
+                
+                case 1:
+                    img.src = "<? echo($defaultSkins[1]); ?>";
+                    break;
+            }
+        }
+    </script>
 </head>
 <body>
 <div id="nav">
@@ -100,40 +122,17 @@
         require("view-awards.php");
     }
 ?>
-<div id="foot-wrapper">
-    &nbsp;
-    <div id="foot">
+<div id="clear">&nbsp;</div>
+<div id="foot">
+    <div id="timezone">
         All times are <? echo($timezone); ?>.
     </div>
+    <div id="legal">
+        <span class="hl">MinecraftStats Version <? echo($mcstatsVersion); ?></span>.
+        Written by Patrick Dinklage a.k.a. "pdinklag".<br/>
+        Minecraft UI icons and default skins are trademarks and copyrights of <a href="http://mojang.com/">Mojang</a>.
+        Images from the <a href="http://minecraft.gamepedia.com/Minecraft_Wiki">Minecraft Wiki</a> are licensed under <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">CreativeCommons BY-NC-SA 3.0</a>.
+    </div>
 </div>
-<div id="legal">
-    <span class="hl">MinecraftStats Version <? echo($mcstatsVersion); ?></span>.<br/>
-    Written by Patrick Dinklage a.k.a. "pdinklag".<br/>
-    <br/>
-    Minecraft UI icons and default skins are trademarks and copyrights of <a href="http://mojang.com/">Mojang</a>.<br/>
-    Images from the <a href="http://minecraft.gamepedia.com/Minecraft_Wiki">Minecraft Wiki</a> are licensed under <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">CreativeCommons BY-NC-SA 3.0</a>.
-</div>
-<script src="jquery-2.1.1.min.js"></script>
-<script>
-    function skinLoaded(img) {
-        var canvas = img.parentNode.getElementsByTagName("canvas")[0];
-        
-        var ctx = canvas.getContext('2d');
-        ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(img, 8, 8, 8, 8, 0, 0, canvas.width, canvas.height);
-    }
-    
-    function skinError(img, gender) {
-        switch(gender) {
-            case 0:
-                img.src = "<? echo($defaultSkins[0]); ?>";
-                break;
-            
-            case 1:
-                img.src = "<? echo($defaultSkins[1]); ?>";
-                break;
-        }
-    }
-</script>
 </body>
 </html>

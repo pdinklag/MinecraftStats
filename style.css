@@ -5,6 +5,8 @@
 }
 
 body {
+    margin: 0;
+
     font-family: 'minecraftfont';
     font-size: 12pt;
     
@@ -471,15 +473,21 @@ table.listing td.stat {
     bottom: 20px;
 }
 
-#foot-wrapper {
+#clear {
     clear: both;
 }
 
 #foot {
-    background-color: rgba(0, 0, 0, 0.33);
-    border-radius: 8px;
-    
-    padding: 0.5em;
+    background-image: url('img/bg/bedrock.png');
+    background-position: top left;
+    background-repeat: repeat;
+}
+
+#timezone {
+    padding-top: 2ex;
+    padding-bottom: 1ex;
+
+    margin: 0;
 
     font-size: 75%;
     color: #808080;
@@ -488,21 +496,14 @@ table.listing td.stat {
 }
 
 #legal {
-    margin-top: 5ex;
-    margin-bottom: 3ex;
+    padding-bottom: 2ex;
     
-    margin-left: 67%;
-    margin-right: 1em;
-    
-    border-top: 1px dotted #606060;
-    padding-top: 1ex;
-    
-    text-align: right;
+    text-align: center;
     
     font-size: 50%;
     color: #808080;
 }
 
-#legal .hl {
+#legal .hl, #legal a {
     color: #A0A0A0;
 }
