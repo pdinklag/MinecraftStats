@@ -6,7 +6,7 @@
 <html>
 <head>
     <title><? echo($title); ?></title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"/>
     <script src="jquery-2.1.1.min.js"></script>
     <script>
         function skinLoaded(img) {
