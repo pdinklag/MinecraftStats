@@ -473,6 +473,30 @@ table.listing td.stat {
     bottom: 20px;
 }
 
+#searchterm {
+    color: #FFE040;
+}
+
+#searchresults-wrapper {
+    margin-top: 1.5ex;
+
+    float: left;
+    position: relative;
+    left: 50%;
+}
+
+#searchresults {
+    float: left;
+    position: relative;
+    left: -50%;
+    
+    text-align: left;
+}
+
+.searchresult + .searchresult {
+    margin-top: 0.5ex;
+}
+
 #clear {
     clear: both;
 }

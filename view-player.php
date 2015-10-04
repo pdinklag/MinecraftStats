@@ -24,6 +24,17 @@
 ?>
 <div id="header">
     <? echo(createPlayerWidget($playerId, 64)); ?>
+    <?
+        if(!isset($me)) {
+            ?>
+            <form action="index.php?player=<? echo($playerId); ?>" method="post">
+                <button name="itsme" value="<? echo($playerId); ?>" title="Click to create a shortcut to this profile.">
+                    This is me!
+                </button>
+            </form>
+            <?
+        }
+    ?>
 </div>
 <div id="listing-wrapper">
     <div class="listing">

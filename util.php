@@ -12,17 +12,21 @@
         }
     }
     
-    function findPlayerUUIDByName($name) {
-        global $players;
+    function findPlayersByName($search) {
+        global $players; //call me electro
         
-        //linear search is back again!
+        //Turn search phrase into regex pattern
+        $pattern = '/.*' . str_replace('*', '.*', $search) . '.*/i';
+        
+        //linear search!!
+        $found = [];
         foreach($players as $uuid => $p) {
-            if(strcasecmp($p['name'], $name) == 0) {
-                return $uuid;
+            if(preg_match($pattern,  $p['name'])) {
+                $found[] = $uuid;
             }
         }
         
-        return FALSE;
+        return $found;
     }
     
     function formatDate($t) {

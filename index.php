@@ -41,12 +41,22 @@
     <a href="?stat=stat.playOneMinute">List of players</a>
     
     <?
+        function compareUUIDsByPlayerName($a, $b) {
+            return strcasecmp(getPlayerName($a), getPlayerName($b));
+        }
+    
+        $searchResults = [];
         if(isset($_POST['findname'])) {
-            $name = $_POST['findname'];
-            $foundUUID = findPlayerUUIDByName($name);
-            if($foundUUID === FALSE) {
-                $formError = "Can't find " . htmlspecialchars($name) . "!";
-                unset($foundUUID);
+            $search = $_POST['findname'];
+            $searchResults = findPlayersByName($search);
+            
+            if(count($searchResults) == 0) {
+                $formError = "No matches for " . htmlspecialchars($search) . "!";
+            } else if(count($searchResults) == 1) {
+                $foundUUID = $searchResults[0]; //only result
+            } else {
+                //sort results
+                usort($searchResults, 'compareUUIDsByPlayerName');
             }
         }
         
@@ -54,11 +64,12 @@
             $_GET["player"] = $foundUUID;
         }
     
-        if(isset($foundUUID) && isset($_POST['shortcut'])) {
-            $me = $foundUUID;
-            setcookie('me', $foundUUID, time() + 60*60*24*365);
+        if(isset($_POST['itsme'])) {
+            $me = $_POST['itsme'];
+            setcookie('me', $me, time() + 60*60*24*365);
         } else if(isset($_GET['notme'])) {
             setcookie('me', null);
+            unset($me);
         } else if(isset($_COOKIE['me'])) {
             $me = $_COOKIE['me'];
         }
@@ -73,15 +84,8 @@
         
         ?>
             <form action="index.php" method="post">
-            Player name: <input name="findname" type="text" size="16"/>
+            Player search: <input name="findname" type="text" size="16"/>
             <button name="goto">Go</button>
-            <?
-                if(!isset($me)) {
-                    ?>
-                    <button name="shortcut">It's me!</button>
-                    <?
-                }
-            ?>
             <?
                 if(isset($formError)) {
                     echo("<span class=\"error\">$formError</span>");
@@ -112,7 +116,9 @@
 </div>
 <h1><? echo($title); ?></h1>
 <?
-    if(isset($_GET["stat"])) {
+    if(count($searchResults) > 1) {
+        require("view-search.php");
+    } else if(isset($_GET["stat"])) {
         require("view-stat.php");
     } else if(isset($_GET["player"])) {
         require("view-player.php");
