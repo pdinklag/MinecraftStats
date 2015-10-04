@@ -187,7 +187,7 @@
     
     function eatFishProvider($json) {
         $sum =
-            safeGet('stat.useItem.minecraft.cooked_fished', $json, 0) +
+            safeGet('stat.useItem.minecraft.cooked_fish', $json, 0) +
             safeGet('stat.useItem.minecraft.fish', $json, 0);
             
         return ($sum > 0) ? $sum : FALSE;
@@ -549,12 +549,13 @@
             'icon'  => 'items/redstone_dust.png',
             'provider' => 'placeRedstoneProvider',
         ],
+        /* This award doesn't mean much, because placing trap chests is a common way to save space
         'custom.placeTrap' => [
             'award' => 'Prankster',
             'desc'  => 'Trap items placed',
             'icon'  => 'blocks/trip_wire_source.png',
             'provider' => 'placeTrapProvider',
-        ],
+        ], */
         'custom.plowDirt' => [
             'award' => 'Farmer',
             'desc'  => 'Ground blocks plowed',
@@ -989,6 +990,11 @@
             'award' => 'Disc Jockey',
             'desc'  => 'Records played',
             'icon'  => 'items/record_13.png',
+        ],
+        'stat.sleepInBed' => [
+            'award' => 'Sleepyhead',
+            'desc'  => 'Times slept in bed',
+            'icon'  => 'items/bed.png',
         ],
         'stat.sprintOneCm' => [
             'award' => 'Marathon Runner',
