@@ -1,6 +1,6 @@
 from mcstats import __mcstats__
 
-def createMobKillStat(name, title, mobId, mobName, iconPos):
+def createKillStat(name, title, mobId, mobName, iconPos):
     __mcstats__.registry.append(
         __mcstats__.MinecraftStat(
             name,
@@ -14,5 +14,5 @@ def createMobKillStat(name, title, mobId, mobName, iconPos):
             __mcstats__.StatReader(['minecraft:killed',mobId])
         ))
 
-createMobKillStat('kill_creeper','Creeper Creep','minecraft:creeper','Creepers',[16,16])
-createMobKillStat('kill_zombie','Zombie Grinder','minecraft:zombie','Zombies',[128,0])
+createKillStat('kill_creeper','Creeper Creep','minecraft:creeper','Creepers',[16,16])
+createKillStat('kill_zombie','Zombie Grinder','minecraft:zombie','Zombies',[128,0])
