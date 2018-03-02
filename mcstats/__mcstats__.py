@@ -39,6 +39,12 @@ class MinecraftStat(Ranking):
         self.meta = meta
         self.reader = reader
 
+    # enter the player with id and value into the ranking
+    def enter(self, id, value):
+        # only if greater than zero
+        if value > 0:
+            Ranking.enter(self, id, value)
+
     # read the statistic value from the player stats
     def read(self, stats):
         return self.reader.read(stats)
