@@ -16,6 +16,15 @@ class StatReader:
 
         return stats
 
+# Reader that subtracts one stat from another (a minus b)
+class StatDiffReader:
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+
+    def read(self, stats):
+        return self.a.read(stats) - self.b.read(stats)
+
 # Rankings
 class Ranking:
     def __init__(self):
