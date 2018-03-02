@@ -4,10 +4,10 @@ __mcstats__.registry.append(
     __mcstats__.MinecraftStat(
         'addict',
         {
-            'name': 'Addict',
+            'title': 'Addict',
             'desc': 'Time played on the server',
             'icon': 'gui/connection.png',
             'unit': 'ticks',
         },
-         __mcstats__.StatReader(['minecraft:custom','minecraft:play_one_minute'])
+        __mcstats__.StatReader(['minecraft:custom','minecraft:play_one_minute'])
     ))

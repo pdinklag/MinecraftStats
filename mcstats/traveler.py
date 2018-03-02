@@ -4,7 +4,7 @@ __mcstats__.registry.append(
     __mcstats__.MinecraftStat(
         'traveler',
         {
-            'name': 'Traveler',
+            'title': 'Traveler',
             'desc': 'Distance walked',
             'icon': 'items/iron_boots.png',
             'unit': 'cm',
