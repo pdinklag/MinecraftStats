@@ -40,7 +40,7 @@ if not os.path.isdir(args.stats):
 # paths
 mcUsercacheFilename = args.stats + '/usercache.json'
 
-dbPlayersFilename = args.database + '/players.json'
+dbPlayersFilename = args.database + '/_playerdb.json'
 dbRankingsPath = args.database + '/rankings'
 dbPlayerDataPath = args.database + '/playerdata'
 
