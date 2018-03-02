@@ -1,4 +1,15 @@
 import json
+import re
+
+# basic path reading function
+def read(stats, path, default):
+    for key in path:
+        if key in stats:
+            stats = stats[key]
+        else:
+            return default
+
+    return stats
 
 # Reader for a single statistic
 class StatReader:
@@ -8,13 +19,7 @@ class StatReader:
 
     # read from stats
     def read(self, stats):
-        for key in self.path:
-            if key in stats:
-                stats = stats[key]
-            else:
-                return self.default
-
-        return stats
+        return read(stats, self.path, self.default)
 
 # Reader that subtracts one stat from another (a minus b)
 class StatDiffReader:
@@ -24,6 +29,23 @@ class StatDiffReader:
 
     def read(self, stats):
         return self.a.read(stats) - self.b.read(stats)
+
+class StatSumMatchReader:
+    def __init__(self, path, patterns):
+        self.path = path
+        self.progs = []
+        for p in patterns:
+            self.progs.append(re.compile(p))
+
+    def read(self, stats):
+        sum = 0
+        group = read(stats, self.path, dict())
+        for k,v in group.items():
+            for p in self.progs:
+                if p.match(k):
+                    sum += v
+
+        return sum
 
 # Rankings
 class Ranking:
