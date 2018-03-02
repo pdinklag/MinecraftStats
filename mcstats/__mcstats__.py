@@ -30,9 +30,10 @@ class Ranking:
 
 # Base for all minecraft stats
 class MinecraftStat(Ranking):
-    def __init__(self, name):
+    def __init__(self, name, meta):
         Ranking.__init__(self)
         self.name = name
+        self.meta = meta
 
     # read the statistic value from the player stats
     def read(self, stats):
@@ -40,8 +41,8 @@ class MinecraftStat(Ranking):
 
 # Base for simple single-value stats
 class MinecraftBasicStat(MinecraftStat):
-    def __init__(self, name, path, default = 0):
-        MinecraftStat.__init__(self, name)
+    def __init__(self, name, meta, path, default = 0):
+        MinecraftStat.__init__(self, name, meta)
         self.path = path
         self.default = default
 
@@ -50,57 +51,57 @@ class MinecraftBasicStat(MinecraftStat):
 
 # Statistics under 'minecraft:broken'
 class MinecraftBrokenStat(MinecraftBasicStat):
-    def __init__(self, name, id, default = 0):
+    def __init__(self, name, meta, id, default = 0):
         MinecraftBasicStat.__init__(
-            self, name, ['minecraft:broken', id], default)
+            self, name, meta, ['minecraft:broken', id], default)
 
 # Statistics under 'minecraft:crafted'
 class MinecraftCraftedStat(MinecraftBasicStat):
-    def __init__(self, name, id, default = 0):
+    def __init__(self, name, meta, id, default = 0):
         MinecraftBasicStat.__init__(
-            self, name, ['minecraft:crafted', id], default)
+            self, name, meta, ['minecraft:crafted', id], default)
 
 # Statistics under 'minecraft:custom'
 class MinecraftCustomStat(MinecraftBasicStat):
-    def __init__(self, name, id, default = 0):
+    def __init__(self, name, meta, id, default = 0):
         MinecraftBasicStat.__init__(
-            self, name, ['minecraft:custom', id], default)
+            self, name, meta, ['minecraft:custom', id], default)
 
 # Statistics under 'minecraft:dropped'
 class MinecraftDroppedStat(MinecraftBasicStat):
-    def __init__(self, name, id, default = 0):
+    def __init__(self, name, meta, id, default = 0):
         MinecraftBasicStat.__init__(
-            self, name, ['minecraft:dropped', id], default)
+            self, name, meta, ['minecraft:dropped', id], default)
 
 # Statistics under 'minecraft:killed'
 class MinecraftKilledByStat(MinecraftBasicStat):
-    def __init__(self, name, id, default = 0):
+    def __init__(self, name, meta, id, default = 0):
         MinecraftBasicStat.__init__(
-            self, name, ['minecraft:killed', id], default)
+            self, name, meta, ['minecraft:killed', id], default)
 
 # Statistics under 'minecraft:killed_by'
 class MinecraftKilledByStat(MinecraftBasicStat):
-    def __init__(self, name, id, default = 0):
+    def __init__(self, name, meta, id, default = 0):
         MinecraftBasicStat.__init__(
-            self, name, ['minecraft:killed_by', id], default)
+            self, name, meta, ['minecraft:killed_by', id], default)
 
 # Statistics under 'minecraft:mined'
 class MinecraftMinedStat(MinecraftBasicStat):
-    def __init__(self, name, id, default = 0):
+    def __init__(self, name, meta, id, default = 0):
         MinecraftBasicStat.__init__(
-            self, name, ['minecraft:mined', id], default)
+            self, name, meta, ['minecraft:mined', id], default)
 
 # Statistics under 'minecraft:picked_up'
 class MinecraftPickedUpStat(MinecraftBasicStat):
-    def __init__(self, name, id, default = 0):
+    def __init__(self, name, meta, id, default = 0):
         MinecraftBasicStat.__init__(
-            self, name, ['minecraft:picked_up', id], default)
+            self, name, meta, ['minecraft:picked_up', id], default)
 
 # Statistics under 'minecraft:used'
 class MinecraftUsedStat(MinecraftBasicStat):
-    def __init__(self, name, id, default = 0):
+    def __init__(self, name, meta, id, default = 0):
         MinecraftBasicStat.__init__(
-            self, name, ['minecraft:used', id], default)
+            self, name, meta, ['minecraft:used', id], default)
 
 
 # the global registry

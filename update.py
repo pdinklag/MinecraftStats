@@ -41,6 +41,9 @@ if not os.path.isdir(args.stats):
 mcUsercacheFilename = args.stats + '/usercache.json'
 
 dbPlayersFilename = args.database + '/_playerdb.json'
+
+dbAwardsFilename = args.database + '/awards.json'
+dbHofFilename = args.database + '/hof.json'
 dbRankingsPath = args.database + '/rankings'
 dbPlayerDataPath = args.database + '/playerdata'
 
@@ -138,6 +141,8 @@ for uuid, player in players.items():
     hof.enter(uuid, crown)
 
 # compute award rankings
+awards = dict()
+
 for mcstat in __mcstats__.registry:
     # sort
     mcstat.sort()
@@ -159,6 +164,13 @@ for mcstat in __mcstats__.registry:
     with open(dbRankingsPath + '/' + mcstat.name + '.json', 'w') as rankingFile:
         json.dump(outRanking, rankingFile)
 
+    # add to award info list
+    awards[mcstat.name] = mcstat.meta
+
+# write award info
+with open(dbAwardsFilename, 'w') as awardsFile:
+    json.dump(awards, awardsFile)
+
 # compute and write hall of fame
 hof.sort()
 outHallOfFame = []
@@ -168,7 +180,7 @@ for (id, crown) in hof.ranking:
 
     outHallOfFame.append({'uuid':id,'name':players[id]['name'],'value':crown})
 
-with open(args.database + '/' + 'hof.json', 'w') as hofFile:
+with open(dbHofFilename, 'w') as hofFile:
     json.dump(outHallOfFame, hofFile)
 
 # write player data
