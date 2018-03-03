@@ -2,11 +2,10 @@ from mcstats import __mcstats__
 
 __mcstats__.registry.append(
     __mcstats__.MinecraftStat(
-        'wastrel',
+        'break_tools',
         {
             'title': 'Wastrel',
             'desc': 'Tools broken',
-            'icon': 'items/stick.png',
             'unit': 'int',
         },
         __mcstats__.StatSumMatchReader(

@@ -2,11 +2,10 @@ from mcstats import __mcstats__
 
 __mcstats__.registry.append(
     __mcstats__.MinecraftStat(
-        'forester',
+        'place_sapling',
         {
             'title': 'Forester',
             'desc': 'Trees planted',
-            'icon': 'blocks/oak_sapling.png',
             'unit': 'int',
         },
         # subtract mined saplings from placed saplings

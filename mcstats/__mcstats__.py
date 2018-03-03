@@ -30,6 +30,19 @@ class StatDiffReader:
     def read(self, stats):
         return self.a.read(stats) - self.b.read(stats)
 
+# Reader that cumulates multiple stats
+class StatSumReader:
+    def __init__(self, summands):
+        self.summands = stats
+
+    def read(self, stats):
+        sum = 0
+        for s in self.summands:
+            sum += s.read(stats)
+
+        return sum
+
+# Reader that sums up all stats matching one of multiple regular expressions
 class StatSumMatchReader:
     def __init__(self, path, patterns):
         self.path = path
