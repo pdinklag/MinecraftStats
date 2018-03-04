@@ -164,8 +164,14 @@ for mcstat in __mcstats__.registry:
     with open(dbRankingsPath + '/' + mcstat.name + '.json', 'w') as rankingFile:
         json.dump(outRanking, rankingFile)
 
+    # set first rank in award info
+    award = mcstat.meta
+    if(len(mcstat.ranking) > 0):
+        (id, value) = mcstat.ranking[0]
+        award['best'] = {'uuid':id,'name':players[id]['name'],'value':value}
+
     # add to award info list
-    awards[mcstat.name] = mcstat.meta
+    awards[mcstat.name] = award
 
 # write award info
 with open(dbAwardsFilename, 'w') as awardsFile:
