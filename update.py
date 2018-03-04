@@ -27,7 +27,7 @@ class CrownScoreRanking(__mcstats__.Ranking):
 parser = argparse.ArgumentParser(description='Update Minecraft statistics')
 parser.add_argument('--stats', '-s', type=str, required=True,
                     help='the path to the stats directory of the Minecraft world')
-parser.add_argument('--database', '-d', type=str, required=True,
+parser.add_argument('--database', '-d', type=str, required=False, default='data',
                     help='the path into which to store the MinecraftStats database')
 
 args = parser.parse_args()
