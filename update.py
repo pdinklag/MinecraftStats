@@ -29,6 +29,8 @@ class CrownScoreRanking(__mcstats__.Ranking):
 parser = argparse.ArgumentParser(description='Update Minecraft statistics')
 parser.add_argument('--stats', '-s', type=str, required=True,
                     help='path to the stats directory of the Minecraft world')
+parser.add_argument('--usercache', '-u', type=str, required=True,
+                    help='path to Minecraft server\'s usercache.json')
 parser.add_argument('--database', '-d', type=str, required=False, default='data',
                     help='path into which to store the MinecraftStats database')
 parser.add_argument('--inactive-days', type=int, required=False, default=7,
@@ -42,8 +44,6 @@ if not os.path.isdir(args.stats):
     exit(1)
 
 # paths
-mcUsercacheFilename = args.stats + '/usercache.json'
-
 dbPlayersFilename = args.database + '/players.json'
 dbAwardsFilename = args.database + '/awards.json'
 dbHofFilename = args.database + '/hof.json'
@@ -69,10 +69,10 @@ except:
 
 # read Minecraft user cache
 try:
-    with open(mcUsercacheFilename) as mcUsercacheFile:
-        mcUsercache = json.load(mcUsercacheFile)
+    with open(args.usercache) as usercacheFile:
+        mcUsercache = json.load(usercacheFile)
 except:
-    print('failed to read Minecraft user cache: ' + mcUsercacheFilename)
+    print('failed to read Minecraft user cache: ' + args.usercache)
     exit(1)
 
 # update player database using Minecraft user cache
