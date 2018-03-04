@@ -8,5 +8,8 @@ __mcstats__.registry.append(
             'desc': 'Potions used',
             'unit': 'int',
         },
-        __mcstats__.StatReader(['minecraft:used','minecraft:potion'])
+        __mcstats__.StatSumReader([
+            __mcstats__.StatReader(['minecraft:used','minecraft:potion']),
+            __mcstats__.StatReader(['minecraft:used','minecraft:splash_potion'])
+        ])
     ))

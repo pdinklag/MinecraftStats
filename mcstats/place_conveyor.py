@@ -2,18 +2,18 @@ from mcstats import __mcstats__
 
 __mcstats__.registry.append(
     __mcstats__.MinecraftStat(
-        'place_sapling',
+        'place_conveyor',
         {
-            'title': 'Forester',
-            'desc': 'Trees planted',
+            'title': 'Conveyor',
+            'desc': 'Hoppers and droppers placed',
             'unit': 'int',
         },
-        # subtract mined from placed
         __mcstats__.StatDiffReader(
             __mcstats__.StatSumMatchReader(
                 ['minecraft:used'],
-                ['minecraft:.+_sapling']),
+                ['minecraft:hopper','minecraft:dropper']),
             __mcstats__.StatSumMatchReader(
                 ['minecraft:mined'],
-                ['minecraft:.+_sapling'])),
+                ['minecraft:hopper','minecraft:dropper']),
+        )
     ))

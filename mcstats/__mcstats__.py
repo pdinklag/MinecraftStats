@@ -33,7 +33,7 @@ class StatDiffReader:
 # Reader that cumulates multiple stats
 class StatSumReader:
     def __init__(self, summands):
-        self.summands = stats
+        self.summands = summands
 
     def read(self, stats):
         sum = 0
