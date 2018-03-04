@@ -11,17 +11,18 @@ from mcstats import __mcstats__
 from mcstats import *
 
 # Crown score (a meta statistic)
-def initCrownScore():
-    return [0,0,0,0]
+class CrownScore:
+    def __init__(self):
+        self.score = [0,0,0,0]
 
-def increaseCrownScore(score, i):
-    score[i+1] += 1
-    score[0] = 4*score[1] + 2*score[2] + score[3]
+    def increase(self, i):
+        self.score[i+1] += 1
+        self.score[0] = 4*self.score[1] + 2*self.score[2] + self.score[3]
 
 class CrownScoreRanking(__mcstats__.Ranking):
     def sort(self):
         self.ranking = sorted(
-            self.ranking, key = lambda x : x[1][0], reverse = True)
+            self.ranking, key = lambda x : x[1].score[0], reverse = True)
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description='Update Minecraft statistics')
@@ -136,7 +137,7 @@ for uuid, player in players.items():
     player['data'] = playerData
 
     # init crown score
-    crown = initCrownScore()
+    crown = CrownScore()
     player['crown'] = crown
     hof.enter(uuid, crown)
 
@@ -154,7 +155,7 @@ for mcstat in __mcstats__.registry:
         player['data']['stats'][mcstat.name]['rank'] = i+1
 
         if i < 3:
-            increaseCrownScore(player['crown'], i)
+            player['crown'].increase(i)
 
     # write ranking
     outRanking = []
@@ -181,10 +182,10 @@ with open(dbAwardsFilename, 'w') as awardsFile:
 hof.sort()
 outHallOfFame = []
 for (id, crown) in hof.ranking:
-    if crown[0] == 0:
+    if crown.score[0] == 0:
         break
 
-    outHallOfFame.append({'uuid':id,'name':players[id]['name'],'value':crown})
+    outHallOfFame.append({'uuid':id,'name':players[id]['name'],'crown':crown.score})
 
 with open(dbHofFilename, 'w') as hofFile:
     json.dump(outHallOfFame, hofFile)
