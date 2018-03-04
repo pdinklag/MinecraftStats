@@ -150,6 +150,10 @@ for uuid, player in players.items():
 awards = dict()
 
 for mcstat in __mcstats__.registry:
+    if mcstat.name in awards:
+        print('WARNING: stat name "' + mcstat.name + '" already in use')
+        continue
+
     # sort
     mcstat.sort()
 
@@ -177,6 +181,7 @@ for mcstat in __mcstats__.registry:
         award['best'] = {'uuid':id,'name':players[id]['name'],'value':value}
 
     # add to award info list
+
     awards[mcstat.name] = award
 
 # write award info
