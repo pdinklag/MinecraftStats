@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import time
 
 from collections import namedtuple
 
@@ -27,9 +28,11 @@ class CrownScoreRanking(__mcstats__.Ranking):
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description='Update Minecraft statistics')
 parser.add_argument('--stats', '-s', type=str, required=True,
-                    help='the path to the stats directory of the Minecraft world')
+                    help='path to the stats directory of the Minecraft world')
 parser.add_argument('--database', '-d', type=str, required=False, default='data',
-                    help='the path into which to store the MinecraftStats database')
+                    help='path into which to store the MinecraftStats database')
+parser.add_argument('--inactive-days', type=int, required=False, default=7,
+                    help='number of days after which a player is considered inactive')
 
 args = parser.parse_args()
 
@@ -41,8 +44,7 @@ if not os.path.isdir(args.stats):
 # paths
 mcUsercacheFilename = args.stats + '/usercache.json'
 
-dbPlayersFilename = args.database + '/_playerdb.json'
-
+dbPlayersFilename = args.database + '/players.json'
 dbAwardsFilename = args.database + '/awards.json'
 dbHofFilename = args.database + '/hof.json'
 dbRankingsPath = args.database + '/rankings'
@@ -92,11 +94,12 @@ for uuid, player in players.items():
             '(' + uuid + ')')
         continue
 
-    # get last play time
+    # get last play time and determine activity
     last = int(os.path.getmtime(dataFilename))
-    player['last'] = last
+    inactive = ((time.time() - last) > 86400 * args.inactive_days)
 
-    # TODO: determine if player is eligible for awards
+    player['last'] = last
+    player['inactive'] = inactive
 
     # load data
     try:
@@ -121,25 +124,27 @@ for uuid, player in players.items():
     stats = data['stats']
 
     # init database data
+    playerStats = dict()
+
     playerData = dict()
     playerData['uuid'] = uuid
-    playerData['name'] = name
-    playerData['last'] = last
-    playerStats = dict()
+    playerData['stats'] = playerStats
+
+    player['data'] = playerData
 
     # process stats
     for mcstat in __mcstats__.registry:
         value = mcstat.read(stats)
-        mcstat.enter(uuid, value)
         playerStats[mcstat.name] = {'value':value}
 
-    playerData['stats'] = playerStats
-    player['data'] = playerData
+        if not inactive:
+            mcstat.enter(uuid, value)
 
     # init crown score
-    crown = CrownScore()
-    player['crown'] = crown
-    hof.enter(uuid, crown)
+    if not inactive:
+        crown = CrownScore()
+        player['crown'] = crown
+        hof.enter(uuid, crown)
 
 # compute award rankings
 awards = dict()
@@ -194,7 +199,11 @@ with open(dbHofFilename, 'w') as hofFile:
 playerCache = dict()
 
 for uuid, player in players.items():
-    playerCache[uuid] = player['name']
+    playerCache[uuid] = {
+        'name': player['name'],
+        'last': player['last'],
+        'inactive': player['inactive']
+    }
 
     if 'data' in player:
         with open(dbPlayerDataPath + '/' + uuid + '.json', 'w') as dataFile:
