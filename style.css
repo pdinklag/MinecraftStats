@@ -26,21 +26,137 @@ a {
     color: #ACF;
 }
 
+a.h6 {
+    color: #ACF;
+}
+
 a:hover {
     color: #ACF;
 }
 
-span.disabled {
+a.nav-link {
+}
+
+a.nav-link:hover {
+    text-decoration: underline;
+}
+
+.disabled {
     color: #888;
     font-style: italic;
 }
 
-span.award-value {
+.award-value {
     color: #FF8;
 }
 
+.last-played {
+    color: #AAA;
+}
+
+.last-played .date {
+    color: #AFA;
+}
+
+.last-played .date.inactive {
+    color: #FAA;
+}
+
+.award-desc {
+    color: #AAA;
+}
+
+img.pixelated {
+    image-rendering: pixelated;
+}
+
+img.vb {
+    vertical-align: bottom;
+}
+
+img.vt {
+    vertical-align: top;
+}
+
+.h1, h1 { font-size: 2rem; }
+.h2, h2 { font-size: 1.75rem; }
+.h3, h3 { font-size: 1.5rem; }
+.h4, h4 { font-size: 1.25rem; }
+.h5, h5 { font-size: 1rem; }
+.h6, h6 { font-size: 0.85rem; }
+
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     text-shadow: 2px 2px rgba(0,0,0,0.5);
+}
+
+.round-box {
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 0.25rem;
+}
+
+.mcstats-entry {
+    border: 0.125rem solid #444;
+    border-radius: 0.5rem;
+
+    background-image: url('img/bg/stonebrick.png');
+}
+
+.sz-1_5 {
+    width: 1.5rem;
+    max-width: 1.5rem;
+    height: 1.5rem;
+    max-height: 1.5rem;
+}
+
+.sz-2 {
+    width: 2rem;
+    max-width: 2rem;
+    height: 2rem;
+    max-height: 2rem;
+}
+
+.sz-2_5 {
+    width: 2.5rem;
+    max-width: 2.5rem;
+    height: 2.5rem;
+    max-height: 2.5rem;
+}
+
+.sz-3 {
+    width: 3rem;
+    max-width: 3rem;
+    height: 3rem;
+    max-height: 3rem;
+}
+
+.h-2_5 {
+    height: 2.5rem;
+    max-height: 2.5rem;
+}
+
+.h-3 {
+    height: 3rem;
+    max-height: 3rem;
+}
+
+span.rank {
+    color: #888;
+}
+
+span.rank-1 {
+    color: #FC0;
+}
+
+span.rank-2 {
+    color: #DDF;
+}
+
+span.rank-3 {
+    color: #A80;
+}
+
+#info {
+    color: #AAA;
 }
 
 #loader img {
@@ -48,41 +164,6 @@ span.award-value {
 
     width: 8rem;
     height: 8rem;
-}
-
-#awards .award {
-    border: 0.125rem solid #444;
-    border-radius: 0.5rem;
-
-    background-image: url('img/bg/stonebrick.png');
-}
-
-#awards .award .icon {
-    background-color: rgba(0,0,0,0.5);
-    border-radius: 0.25rem;
-
-    height: 3rem;
-    max-height: 3rem;
-}
-
-#awards .award .icon img {
-    image-rendering: pixelated;
-
-    width: 2rem;
-    height: 2rem;
-}
-
-#awards .award .title {
-    background-color: rgba(0,0,0,0.5);
-    border-radius: 0.25rem;
-
-    height: 3rem;
-    max-height: 3rem;
-}
-
-#awards .award .holder {
-    background-color: rgba(0,0,0,0.5);
-    border-radius: 0.25rem;
 }
 
 #footer {

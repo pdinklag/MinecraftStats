@@ -50,13 +50,13 @@ mcstats.hideLoader = function() {
 // Register navigation event handler
 window.onhashchange = function() {
     mcstats.hideAll();
+    window.scrollTo(0, 0);
     mcstats.showLoader();
 
     var hash = window.location.hash;
     if(hash.startsWith('#award:')) {
         // open award view
         var id = hash.substr(7);
-        mcstats.hideAll();
         mcstats.showAward(id);
     } else if(hash.startsWith('#player:')) {
         // open player view

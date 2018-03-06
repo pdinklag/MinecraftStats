@@ -5,6 +5,16 @@ formatFloat = function(value) {
     return (value != parseInt(value)) ? value.toFixed(1) : value;
 };
 
+formatTime = function(unixTime) {
+    var date = new Date();
+    date.setTime(unixTime * 1000);
+
+    return date.toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'}) +
+        ' - ' +
+        date.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false});
+
+};
+
 // Format an award value
 mcstats.formatValue = function(value, unit) {
     switch(unit) {
@@ -62,10 +72,9 @@ mcstats.playerWidget = function(uuid) {
     if(uuid) {
         var p = mcstats.players[uuid];
         return `
-            <!-- face -->
-            <a href="#player:${uuid}">
-                <span class="player-name">${p.name}</span>
-            </a>
+            <!-- TODO: face -->
+            <a href="#player:${uuid}">${p.name}</a>
+
         `;
     } else {
         return `<span class="disabled">(nobody)</span>`;

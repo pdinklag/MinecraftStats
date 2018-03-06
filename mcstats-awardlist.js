@@ -1,6 +1,6 @@
 mcstats.showAwardsList = function() {
     if(!mcstats.awardsListLoaded) {
-        var numPerRow = 2;
+        var numPerRow = 3;
         var counter = 0;
         var currentRow = '';
 
@@ -18,19 +18,17 @@ mcstats.showAwardsList = function() {
 
             currentRow += `
                 <div class="col-sm">
-                    <div class="container award mb-3">
+                    <div class="container mb-3 mcstats-entry">
                         <div class="row">
-                            <div class="p-2 m-1 icon">
-                                <img class="award-icon" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
-                            </div>
-                            <div class="col pt-2 pl-2 mt-1 mr-1 title">
-                                <h4 class="m-0">
+                            <div class="col p-1 m-1 round-box text-center">
+                                <img class="pixelated sz-1_5 vt" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
+                                <span class="h4 ml-1">
                                     <a href="#award:${id}">${award.title}</a>
-                                </h4>
+                                </span>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col py-2 mx-1 mb-1 text-center holder">
+                            <div class="col p-1 mx-1 mb-1 round-box text-center">
                                 ${holder}
                                 <br/>
                                 ${info}

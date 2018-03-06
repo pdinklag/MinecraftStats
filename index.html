@@ -10,25 +10,41 @@
         <title>Minecraft Stats</title>
     </head>
     <body>
-        <ul class="nav">
-        </ul>
+        <div class="d-flex">
+            <div>
+                <ul class="nav">
+                    <li class="nav-item mt-2 ml-2">
+                        <a class="nav-link round-box p-2" href="#">Awards</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="info" class="ml-auto mr-4 mt-4 small text-right">
+            MinecraftStats V2
+            </div>
+        </div>
         <div id="loader" class="container mx-auto text-center">
             <img src="img/loader.gif"/>
             <h4 class="mt-2">Loading...</h4>
         </div>
         <div id="content" style="display:none;">
             <div id="awards" class="container mx-auto">
-                <h1 class="text-center mb-4">Awards</h1>
+                <h1 class="text-center mb-5">Awards</h1>
             </div>
             <div id="player-view" class="container mx-auto">
-                <h1 class="text-center mb-4">[player]</h1>
+                <h1 class="text-center mb-5">[player]</h1>
+                <h5 class="text-center"><u>Player Statistics</u></h5>
                 <div class="content"></div>
             </div>
             <div id="award-view" class="container mx-auto">
-                <h1 class="text-center mb-4">[award]</h1>
+                <div class="text-center mb-5">
+                    <img class="pixelated sz-2_5 vt round-box p-1" src=""/>
+                    <span class="h1 mx-1">[award]</span>
+                    <img class="pixelated sz-2_5 vt round-box p-1" src=""/>
+                </div>
+                <h5 class="text-center"><u>Award Ranking</u></h5>
                 <div class="content"></div>
             </div>
-            <div id="footer" class="container-fluid py-2 text-center small">
+            <div id="footer" class="container-fluid mt-3 py-2 text-center small">
                 MinecraftStats V2 &ndash; written by Patrick Dinklage a.k.a. "pdinklag".<br/>
                 Minecraft UI icons and default skins are trademarks and copyrights of <a href="http://mojang.com/">Mojang</a>.
             </div>
