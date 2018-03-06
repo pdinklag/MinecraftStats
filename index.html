@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="lib/bootstrap-4.0.0.min.css"/>
+        <link rel="stylesheet" href="style.css"/>
+
+        <title>Minecraft Stats</title>
+    </head>
+    <body>
+        <ul class="nav">
+        </ul>
+        <div id="loader" class="container mx-auto text-center">
+            <img src="img/loader.gif"/>
+            <h4 class="mt-2">Loading...</h4>
+        </div>
+        <div id="content" style="display:none;">
+            <div id="awards" class="container mx-auto">
+                <h1 class="text-center mb-4">Awards</h1>
+            </div>
+            <div id="player-view" class="container mx-auto">
+                <h1 class="text-center mb-4">[player]</h1>
+                <div class="content"></div>
+            </div>
+            <div id="award-view" class="container mx-auto">
+                <h1 class="text-center mb-4">[award]</h1>
+                <div class="content"></div>
+            </div>
+            <div id="footer" class="container-fluid py-2 text-center small">
+                MinecraftStats V2 &ndash; written by Patrick Dinklage a.k.a. "pdinklag".<br/>
+                Minecraft UI icons and default skins are trademarks and copyrights of <a href="http://mojang.com/">Mojang</a>.
+            </div>
+        </div>
+
+        <script src="lib/jquery-3.2.1.min.js"></script>
+        <script src="lib/popper-1.12.9.min.js"></script>
+        <script src="lib/bootstrap-4.0.0.min.js"></script>
+
+        <script src="mcstats.js"></script>
+        <script src="mcstats-widgets.js"></script>
+        <script src="mcstats-awardlist.js"></script>
+        <script src="mcstats-awardview.js"></script>
+        <script src="mcstats-playerview.js"></script>
+        <script src="mcstats-start.js"></script>
+    </body>
+</html>
