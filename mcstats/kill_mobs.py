@@ -96,7 +96,7 @@ __mcstats__.registry.append(
     __mcstats__.MinecraftStat(
         'score_skeleton',
         {
-            'title': '',
+            'title': 'Bone Collector',
             'desc': 'Score against Skeletons and Strays',
             'unit': 'int',
         },
@@ -174,7 +174,7 @@ __mcstats__.registry.append(
 # Fish mobs
 __mcstats__.registry.append(
     __mcstats__.MinecraftStat(
-        'killed_fish',
+        'kill_fish',
         {
             'title': 'Fish Catcher',
             'desc': 'Fish killed',
