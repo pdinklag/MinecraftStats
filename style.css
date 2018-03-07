@@ -92,12 +92,12 @@ img.vt {
 
 .round-box {
     background-color: rgba(0,0,0,0.5);
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
 }
 
 .mcstats-entry {
     border: 0.125rem solid #444;
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
 
     background-image: url('img/bg/stonebrick.png');
 }
