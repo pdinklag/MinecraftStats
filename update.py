@@ -1,15 +1,12 @@
 #!/usr/bin/python3
-
 import argparse
 import json
 import os
 import time
 
-from collections import namedtuple
-
-# import statistics modules
-from mcstats import __mcstats__
-from mcstats import *
+# import custom modules
+from mcstats import mcstats
+from mcstats.stats import *
 
 # Crown score (a meta statistic)
 class CrownScore:
@@ -20,7 +17,7 @@ class CrownScore:
         self.score[i+1] += 1
         self.score[0] = 4*self.score[1] + 2*self.score[2] + self.score[3]
 
-class CrownScoreRanking(__mcstats__.Ranking):
+class CrownScoreRanking(mcstats.Ranking):
     def sort(self):
         self.ranking = sorted(
             self.ranking, key = lambda x : x[1].score[0], reverse = True)
@@ -128,7 +125,7 @@ for uuid, player in players.items():
     player['stats'] = playerStats
 
     # process stats
-    for mcstat in __mcstats__.registry:
+    for mcstat in mcstats.registry:
         value = mcstat.read(stats)
         playerStats[mcstat.name] = {'value':value}
 
@@ -144,7 +141,7 @@ for uuid, player in players.items():
 # compute award rankings
 awards = dict()
 
-for mcstat in __mcstats__.registry:
+for mcstat in mcstats.registry:
     if mcstat.name in awards:
         print('WARNING: stat name "' + mcstat.name + '" already in use')
         continue
