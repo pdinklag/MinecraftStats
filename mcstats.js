@@ -1,8 +1,3 @@
-// Loader
-load = function(filename, success_func) {
-    $.ajax({url: 'data/' + filename, success: success_func});
-};
-
 // Initialize
 var mcstats = {
     loaded: 0,

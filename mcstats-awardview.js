@@ -1,5 +1,5 @@
 mcstats.showAward = function(id) {
-    load('rankings/' + id + '.json', function(ranking) {
+    load('data/rankings/' + id + '.json', function(ranking) {
         var content = $('.content', mcstats.awardView);
         content.empty();
 

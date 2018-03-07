@@ -1,18 +1,9 @@
-// Loader synchronizer
-mcstats.onLoaded = function() {
-    ++mcstats.loaded;
-    if(mcstats.loaded >= 2) {
-        window.onhashchange();
-    }
-};
+var loader = new Loader(function() {
+    // navigate when loading is complete
+    window.onhashchange();
+});
 
-// Show loader
-mcstats.hideAll();
-mcstats.init();
-mcstats.showLoader();
-
-// Load awards
-load('awards.json', function(result) {
+loader.addRequest('data/awards.json', function(result) {
     mcstats.awards = result;
 
     // sort award keys by award title
@@ -24,12 +15,15 @@ load('awards.json', function(result) {
         return mcstats.awards[a].title.localeCompare(
             mcstats.awards[b].title);
     });
-
-    mcstats.onLoaded();
 });
 
-// Load players
-load('players.json', function(result) {
+loader.addRequest('data/players.json', function(result) {
     mcstats.players = result;
-    mcstats.onLoaded();
 });
+
+// Start
+mcstats.hideAll();
+mcstats.init();
+mcstats.showLoader();
+
+loader.start();
