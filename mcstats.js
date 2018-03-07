@@ -1,52 +1,67 @@
 // Initialize
 var mcstats = {
-    loaded: 0,
-    awardsListLoaded: false,
-
-    content: $('#content'),
-
     loader: $('#loader'),
+
     info: $('#info'),
+    content: $('#content'),
     footer: $('#footer'),
-    awardsContainer: $('#awards'),
-    awardView: $('#award-view'),
-    playerView: $('#player-view'),
+
+    view: $('#view'),
+    viewTitle: $('#view-title'),
+    viewSubtitle: $('#view-subtitle'),
+    viewDesc: $('#view-desc'),
+    viewIcon: $('#view-icon'),
+    viewContent: $('#view-content'),
 
     awards: {},
-    awardKeys: new Array(),
+    awardKeysByTitle: new Array(),
     players: {},
+    playerIdsByName: new Array(),
 };
 
-// Initialize contents
+// Initialize client
 mcstats.init = function() {
-    mcstats.content.css('display', 'block');
     mcstats.info.css('display', 'block');
+    mcstats.content.css('display', 'block');
 }
 
-// Hide all containers
-mcstats.hideAll = function() {
-    mcstats.awardsContainer.hide();
-
-    mcstats.loader.hide();
-    mcstats.awardView.hide();
-    mcstats.playerView.hide();
-};
-
-// Show loader
+// Show loader and nothing else
 mcstats.showLoader = function() {
-    mcstats.footer.hide();
+    mcstats.content.hide();
     mcstats.loader.show();
 }
 
-// Hide loader
-mcstats.hideLoader = function() {
+// Show view - content shall be prepared before calling this
+mcstats.showView = function(title, subtitle, desc, iconUrl) {
+    mcstats.viewTitle.html(title);
+
+    if(subtitle) {
+        mcstats.viewSubtitle.html(subtitle);
+        mcstats.viewSubtitle.show();
+    } else {
+        mcstats.viewSubtitle.hide();
+    }
+
+    if(desc) {
+        mcstats.viewDesc.html(desc);
+        mcstats.viewDesc.show();
+    } else {
+        mcstats.viewDesc.hide();
+    }
+
+    if(iconUrl) {
+        mcstats.viewIcon.attr('src', iconUrl);
+        mcstats.viewIcon.show();
+    } else {
+        mcstats.viewIcon.hide();
+    }
+
     mcstats.loader.hide();
-    mcstats.footer.show();
+    mcstats.content.show();
 }
 
 // Register navigation event handler
 window.onhashchange = function() {
-    mcstats.hideAll();
     window.scrollTo(0, 0);
     mcstats.showLoader();
 
@@ -59,8 +74,11 @@ window.onhashchange = function() {
         // open player view
         var uuid = hash.substr(8);
         mcstats.showPlayer(uuid);
+    } else if(hash == '#players') {
+        // go to player list
+        mcstats.showPlayerList();
     } else {
-        // go to awards list
+        // go to awards list (default)
         mcstats.showAwardsList();
     }
 };

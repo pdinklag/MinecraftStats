@@ -14,17 +14,20 @@
             <div>
                 <ul class="nav">
                     <li class="nav-item mt-2 ml-2">
-                        <a class="nav-link round-box p-2" href="#">Awards</a>
+                        <a class="nav-link round-box p-2" href="#awards">Awards</a>
+                    </li>
+                    <li class="nav-item mt-2 ml-2">
+                        <a class="nav-link round-box p-2" href="#players">Players</a>
                     </li>
                 </ul>
             </div>
             <div id="info" class="ml-auto mr-4 mt-4 p-1 round-box small text-right" style="display:none;">
                 <div>
                     <img id="server-icon" class="sz-2 mr-1 vb" src=""/>
-                    <span id="server-name" class="h6">(null)</span>
+                    <span id="server-name" class="h6">(server name)</span>
                 </div>
                 <div>
-                    Last update: <span id="update-time">(null)</span>
+                    Last update: <span id="update-time">(last update)</span>
                 </div>
             </div>
         </div>
@@ -33,22 +36,14 @@
             <h4 class="mt-2">Loading...</h4>
         </div>
         <div id="content" style="display:none;">
-            <div id="awards" class="container mx-auto">
-                <h1 class="text-center mb-5">Awards</h1>
-            </div>
-            <div id="player-view" class="container mx-auto">
-                <h1 class="text-center mb-5">[player]</h1>
-                <h5 class="text-center"><u>Player Statistics</u></h5>
-                <div class="content"></div>
-            </div>
-            <div id="award-view" class="container mx-auto">
-                <div class="text-center mb-5">
-                    <img class="pixelated sz-2_5 vt round-box p-1" src=""/>
-                    <span class="h1 mx-1">[award]</span>
-                    <img class="pixelated sz-2_5 vt round-box p-1" src=""/>
+            <div id="view" class="container mx-auto">
+                <div class="mb-4 text-center">
+                    <img id="view-icon" class="pixelated sz-2_5 vt round-box p-1" src=""/>
+                    <span class="h1" id="view-title">(view title)</h1>
                 </div>
-                <h5 class="text-center"><u>Award Ranking</u></h5>
-                <div class="content"></div>
+                <h5 id="view-subtitle" class="text-center">(view subtitle)</h5>
+                <div id="view-desc" class="mb-2 text-center">(view desc)</div>
+                <div id="view-content">(view content)</div>
             </div>
             <div id="footer" class="container-fluid mt-3 py-2 text-center small">
                 MinecraftStats V2 &ndash; written by Patrick Dinklage a.k.a. "pdinklag".<br/>
@@ -64,6 +59,7 @@
         <script src="mcstats-widgets.js"></script>
         <script src="mcstats-awardlist.js"></script>
         <script src="mcstats-awardview.js"></script>
+        <script src="mcstats-playerlist.js"></script>
         <script src="mcstats-playerview.js"></script>
         <script src="mcstats-loader.js"></script>
         <script src="mcstats-start.js"></script>

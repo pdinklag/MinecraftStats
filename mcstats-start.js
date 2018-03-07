@@ -8,10 +8,10 @@ loader.addRequest('data/awards.json', function(result) {
 
     // sort award keys by award title
     for(var key in mcstats.awards) {
-        mcstats.awardKeys.push(key);
+        mcstats.awardKeysByTitle.push(key);
     }
 
-    mcstats.awardKeys.sort(function(a,b) {
+    mcstats.awardKeysByTitle.sort(function(a,b) {
         return mcstats.awards[a].title.localeCompare(
             mcstats.awards[b].title);
     });
@@ -19,6 +19,16 @@ loader.addRequest('data/awards.json', function(result) {
 
 loader.addRequest('data/players.json', function(result) {
     mcstats.players = result;
+
+    // sort player UUIDs by player name
+    for(var uuid in mcstats.players) {
+        mcstats.playerIdsByName.push(uuid);
+    }
+
+    mcstats.playerIdsByName.sort(function(a,b) {
+        return mcstats.players[a].name.localeCompare(
+            mcstats.players[b].name);
+    });
 });
 
 loader.addRequest('data/info.json', function(result) {
@@ -35,7 +45,6 @@ loader.addRequest('data/info.json', function(result) {
 });
 
 // Start
-mcstats.hideAll();
 mcstats.init();
 mcstats.showLoader();
 

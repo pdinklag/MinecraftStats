@@ -9,7 +9,7 @@ formatTime = function(unixTime) {
     var date = new Date();
     date.setTime(unixTime * 1000);
 
-    return date.toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'}) +
+    return date.toLocaleDateString('en-US', {day: 'numeric', month: 'short', year: 'numeric'}) +
         ' - ' +
         date.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false});
 
@@ -66,6 +66,20 @@ mcstats.formatValue = function(value, unit) {
 
     return `<span class="award-value">${value}</span>`;
 };
+
+// Create a widget showing a player's last online time and activity
+mcstats.lastOnlineWidget = function(last) {
+    var fmt = formatTime(last);
+
+    var daysSinceLast = (mcstats.info.updateTime - last) / 86400;
+    if(daysSinceLast <= mcstats.info.inactiveDays) {
+        return `<span class="online-date">${fmt}</span>`;
+    } else {
+        return `
+            <span class="online-date inactive">${fmt}</span>
+        `;
+    }
+}
 
 // Create a player widget
 mcstats.playerWidget = function(uuid) {

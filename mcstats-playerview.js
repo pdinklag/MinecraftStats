@@ -2,33 +2,10 @@ mcstats.showPlayer = function(uuid) {
     load('data/playerdata/' + uuid + '.json', function(stats) {
         var player = mcstats.players[uuid];
 
-        $('h1', mcstats.playerView).text(player.name);
-        var content = $('.content', mcstats.playerView);
-
-        content.empty();
-
-        // show last online time
-        var last = formatTime(player.last);
-
-        var daysSinceLast = (mcstats.info.updateTime - player.last) / 86400;
-        if(daysSinceLast <= mcstats.info.inactiveDays) {
-            last = `<span class="date">${last}</span>`;
-        } else {
-            last = `
-                <span class="date inactive">${last}</span>
-                (more than ${mcstats.info.inactiveDays} days ago)
-            `;
-        }
-
-        content.append(`
-            <div class="mb-2 text-center last-played">
-                Last played: ${last}
-            </div>
-        `
-        );
+        mcstats.viewContent.empty();
 
         // list statistics
-        mcstats.awardKeys.forEach(function(id) {
+        mcstats.awardKeysByTitle.forEach(function(id) {
             var award = mcstats.awards[id];
             var stat = stats[id];
             if(stat) {
@@ -69,7 +46,7 @@ mcstats.showPlayer = function(uuid) {
                     rank = `<span class="rank">-</span>`;
                 }
 
-                content.append(`
+                mcstats.viewContent.append(`
                     <div class="row p-1 mb-1 mcstats-entry">
                         <div class="col-sm mr-1 p-1 round-box">
                             <div class="d-flex">
@@ -90,7 +67,11 @@ mcstats.showPlayer = function(uuid) {
             }
         });
 
-        mcstats.hideLoader();
-        mcstats.playerView.show();
+        // show
+        mcstats.showView(
+            player.name,
+            'Player Statistics',
+            'Last played: ' + mcstats.lastOnlineWidget(player.last),
+            false);
     });
 };

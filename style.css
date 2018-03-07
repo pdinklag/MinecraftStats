@@ -55,15 +55,16 @@ a.nav-link:hover {
     color: #AAA;
 }
 
-.last-played .date {
+.online-date {
     color: #AFA;
 }
 
-.last-played .date.inactive {
+.online-date.inactive {
+    font-style: italic;
     color: #FAA;
 }
 
-.award-desc {
+#view-desc {
     color: #AAA;
 }
 
