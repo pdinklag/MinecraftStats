@@ -1,5 +1,5 @@
 mcstats.showPlayer = function(uuid) {
-    load('playerdata/' + uuid + '.json', function(data) {
+    load('playerdata/' + uuid + '.json', function(stats) {
         var player = mcstats.players[uuid];
 
         $('h1', mcstats.playerView).text(player.name);
@@ -8,7 +8,6 @@ mcstats.showPlayer = function(uuid) {
         content.empty();
 
         // show last online time
-        console.log(player);
         var last = formatTime(player.last);
         if(!player.inactive) {
             last = `<span class="date">${last}</span>`;
@@ -26,7 +25,7 @@ mcstats.showPlayer = function(uuid) {
         // list statistics
         mcstats.awardKeys.forEach(function(id) {
             var award = mcstats.awards[id];
-            var stat = data.stats[id];
+            var stat = stats[id];
             if(stat) {
                 var value = mcstats.formatValue(stat.value, award.unit);
                 var rank;

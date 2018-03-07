@@ -125,12 +125,7 @@ for uuid, player in players.items():
 
     # init database data
     playerStats = dict()
-
-    playerData = dict()
-    playerData['uuid'] = uuid
-    playerData['stats'] = playerStats
-
-    player['data'] = playerData
+    player['stats'] = playerStats
 
     # process stats
     for mcstat in __mcstats__.registry:
@@ -161,7 +156,7 @@ for mcstat in __mcstats__.registry:
     for i in range(0, len(mcstat.ranking)):
         (id, ranking) = mcstat.ranking[i]
         player = players[id]
-        player['data']['stats'][mcstat.name]['rank'] = i+1
+        player['stats'][mcstat.name]['rank'] = i+1
 
         if i < 3:
             player['crown'].increase(i)
@@ -169,7 +164,7 @@ for mcstat in __mcstats__.registry:
     # write ranking
     outRanking = []
     for (id, value) in mcstat.ranking:
-        outRanking.append({'uuid':id,'name':players[id]['name'],'value':value})
+        outRanking.append({'uuid':id,'value':value})
 
     with open(dbRankingsPath + '/' + mcstat.name + '.json', 'w') as rankingFile:
         json.dump(outRanking, rankingFile)
@@ -178,10 +173,9 @@ for mcstat in __mcstats__.registry:
     award = mcstat.meta
     if(len(mcstat.ranking) > 0):
         (id, value) = mcstat.ranking[0]
-        award['best'] = {'uuid':id,'name':players[id]['name'],'value':value}
+        award['best'] = {'uuid':id,'value':value}
 
     # add to award info list
-
     awards[mcstat.name] = award
 
 # write award info
@@ -195,7 +189,7 @@ for (id, crown) in hof.ranking:
     if crown.score[0] == 0:
         break
 
-    outHallOfFame.append({'uuid':id,'name':players[id]['name'],'crown':crown.score})
+    outHallOfFame.append({'uuid':id,'value':crown.score})
 
 with open(dbHofFilename, 'w') as hofFile:
     json.dump(outHallOfFame, hofFile)
@@ -210,9 +204,9 @@ for uuid, player in players.items():
         'inactive': player['inactive']
     }
 
-    if 'data' in player:
+    if 'stats' in player:
         with open(dbPlayerDataPath + '/' + uuid + '.json', 'w') as dataFile:
-            json.dump(player['data'], dataFile)
+            json.dump(player['stats'], dataFile)
 
 # write player cache
 with open(dbPlayersFilename, 'w') as dbPlayersFile:
