@@ -21,6 +21,19 @@ loader.addRequest('data/players.json', function(result) {
     mcstats.players = result;
 });
 
+loader.addRequest('data/info.json', function(result) {
+    mcstats.info = result;
+
+    $('#info #server-name').text(result.serverName);
+    $('#info #update-time').text(formatTime(result.updateTime));
+
+    if(result.hasIcon) {
+        $('#info #server-icon').attr('src', 'data/server-icon.png');
+    } else {
+        $('#info #server-icon').hide();
+    }
+});
+
 // Start
 mcstats.hideAll();
 mcstats.init();

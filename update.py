@@ -2,6 +2,8 @@
 import argparse
 import json
 import os
+import re
+import shutil
 import time
 
 # import custom modules
@@ -10,10 +12,12 @@ from mcstats.stats import *
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description='Update Minecraft statistics')
-parser.add_argument('--stats', '-s', type=str, required=True,
-                    help='path to the stats directory of the Minecraft world')
-parser.add_argument('--usercache', '-u', type=str, required=True,
-                    help='path to Minecraft server\'s usercache.json')
+parser.add_argument('--server', '-s', type=str, required=True,
+                    help='path to the Minecraft server')
+parser.add_argument('--world', '-w', type=str, required=False, default='world',
+                    help='name of the server\'s main world that contains the stats directory')
+parser.add_argument('--server-name', type=str, required=False, default=None,
+                    help='the server\'s display name (default: motd from server.properties)')
 parser.add_argument('--database', '-d', type=str, required=False, default='data',
                     help='path into which to store the MinecraftStats database')
 parser.add_argument('--inactive-days', type=int, required=False, default=7,
@@ -21,17 +25,35 @@ parser.add_argument('--inactive-days', type=int, required=False, default=7,
 
 args = parser.parse_args()
 
+# paths
+mcUsercacheFilename = args.server + '/usercache.json'
+mcStatsDir = args.server + '/' + args.world + '/stats'
+
 # sanity checks
-if not os.path.isdir(args.stats):
-    print('not a directory: ' + args.stats)
+if not os.path.isdir(args.server):
+    print('not a directory: ' + args.server)
     exit(1)
 
-# paths
+if not os.path.isdir(mcStatsDir):
+    print('no valid stat directory: ' + mcStatsDir)
+    exit(1)
+
+dbInfoFilename = args.database + '/info.json'
 dbPlayersFilename = args.database + '/players.json'
 dbAwardsFilename = args.database + '/awards.json'
 dbHofFilename = args.database + '/hof.json'
 dbRankingsPath = args.database + '/rankings'
 dbPlayerDataPath = args.database + '/playerdata'
+
+# get server.properties motd if no server name is set
+if not args.server_name:
+    p = re.compile('^motd=(.+)$')
+    with open(args.server + '/server.properties') as f:
+        for line in f:
+            m = p.match(line)
+            if m:
+                args.server_name = m.group(1)
+                break
 
 # initialize database
 if not os.path.isdir(args.database):
@@ -52,7 +74,7 @@ except:
 
 # read Minecraft user cache
 try:
-    with open(args.usercache) as usercacheFile:
+    with open(mcUsercacheFilename) as usercacheFile:
         mcUsercache = json.load(usercacheFile)
 except:
     print('failed to read Minecraft user cache: ' + args.usercache)
@@ -71,7 +93,7 @@ for uuid, player in players.items():
     name = player['name']
 
     # check if data file is available
-    dataFilename = args.stats + '/' + uuid + '.json'
+    dataFilename = mcStatsDir + '/' + uuid + '.json'
     if not os.path.isfile(dataFilename):
         print('no player data available for ' + name +
             '(' + uuid + ')')
@@ -194,3 +216,21 @@ for uuid, player in players.items():
 # write player cache
 with open(dbPlayersFilename, 'w') as dbPlayersFile:
     json.dump(playerCache, dbPlayersFile)
+
+# copy server icon if available
+if os.path.isfile(args.server + '/server-icon.png'):
+    has_icon = True
+    shutil.copy(args.server + '/server-icon.png', args.database)
+else:
+    has_icon = False
+
+# write info file
+info = {
+    'hasIcon': has_icon,
+    'serverName': args.server_name,
+    'updateTime': int(time.time()),
+    'inactiveDays': args.inactive_days
+}
+
+with open(dbInfoFilename, 'w') as dbInfoFile:
+    json.dump(info, dbInfoFile)

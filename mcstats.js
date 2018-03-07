@@ -6,6 +6,7 @@ var mcstats = {
     content: $('#content'),
 
     loader: $('#loader'),
+    info: $('#info'),
     footer: $('#footer'),
     awardsContainer: $('#awards'),
     awardView: $('#award-view'),
@@ -19,6 +20,7 @@ var mcstats = {
 // Initialize contents
 mcstats.init = function() {
     mcstats.content.css('display', 'block');
+    mcstats.info.css('display', 'block');
 }
 
 // Hide all containers
