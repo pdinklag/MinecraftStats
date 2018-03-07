@@ -9,10 +9,15 @@ mcstats.showPlayer = function(uuid) {
 
         // show last online time
         var last = formatTime(player.last);
-        if(!player.inactive) {
+
+        var daysSinceLast = (mcstats.info.updateTime - player.last) / 86400;
+        if(daysSinceLast <= mcstats.info.inactiveDays) {
             last = `<span class="date">${last}</span>`;
         } else {
-            last = `<span class="date inactive">${last}</span> (inactive)`;
+            last = `
+                <span class="date inactive">${last}</span>
+                (more than ${mcstats.info.inactiveDays} days ago)
+            `;
         }
 
         content.append(`

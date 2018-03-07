@@ -101,10 +101,9 @@ for uuid, player in players.items():
 
     # get last play time and determine activity
     last = int(os.path.getmtime(dataFilename))
-    inactive = ((time.time() - last) > 86400 * args.inactive_days)
-
     player['last'] = last
-    player['inactive'] = inactive
+
+    inactive = ((time.time() - last) > 86400 * args.inactive_days)
 
     # load data
     try:
@@ -206,7 +205,6 @@ for uuid, player in players.items():
     playerCache[uuid] = {
         'name': player['name'],
         'last': player['last'],
-        'inactive': player['inactive']
     }
 
     if 'stats' in player:
