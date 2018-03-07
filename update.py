@@ -8,20 +8,6 @@ import time
 from mcstats import mcstats
 from mcstats.stats import *
 
-# Crown score (a meta statistic)
-class CrownScore:
-    def __init__(self):
-        self.score = [0,0,0,0]
-
-    def increase(self, i):
-        self.score[i+1] += 1
-        self.score[0] = 4*self.score[1] + 2*self.score[2] + self.score[3]
-
-class CrownScoreRanking(mcstats.Ranking):
-    def sort(self):
-        self.ranking = sorted(
-            self.ranking, key = lambda x : x[1].score[0], reverse = True)
-
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description='Update Minecraft statistics')
 parser.add_argument('--stats', '-s', type=str, required=True,
@@ -78,7 +64,7 @@ for mcUser in mcUsercache:
     players[mcUser['uuid']] = {'name': mcUser['name']}
 
 # update player data
-hof = CrownScoreRanking()
+hof = mcstats.CrownScoreRanking()
 
 for uuid, player in players.items():
     # cache name
@@ -134,7 +120,7 @@ for uuid, player in players.items():
 
     # init crown score
     if not inactive:
-        crown = CrownScore()
+        crown = mcstats.CrownScore()
         player['crown'] = crown
         hof.enter(uuid, crown)
 

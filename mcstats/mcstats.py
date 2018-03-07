@@ -93,5 +93,19 @@ class MinecraftStat(Ranking):
     def read(self, stats):
         return self.reader.read(stats)
 
+# Crown score (a meta statistic)
+class CrownScore:
+    def __init__(self):
+        self.score = [0,0,0,0]
+
+    def increase(self, i):
+        self.score[i+1] += 1
+        self.score[0] = 4*self.score[1] + 2*self.score[2] + self.score[3]
+
+class CrownScoreRanking(Ranking):
+    def sort(self):
+        self.ranking = sorted(
+            self.ranking, key = lambda x : x[1].score[0], reverse = True)
+
 # the global registry
 registry = []
