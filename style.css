@@ -64,10 +64,6 @@ a.nav-link:hover {
     color: #FAA;
 }
 
-#view-desc {
-    color: #AAA;
-}
-
 img.pixelated {
     image-rendering: pixelated;
 }
@@ -78,6 +74,10 @@ img.vb {
 
 img.vt {
     vertical-align: top;
+}
+
+.grey {
+    color: #AAA;
 }
 
 .h1, h1 { font-size: 2rem; }
@@ -157,10 +157,6 @@ span.rank-3 {
     color: #A80;
 }
 
-#info {
-    color: #AAA;
-}
-
 #info #server-name {
     color: #EEE;
 }
@@ -180,6 +176,4 @@ span.rank-3 {
     background-image: url('img/bg/bedrock.png');
     background-position: top left;
     background-repeat: repeat;
-
-    color: #AAA;
 }

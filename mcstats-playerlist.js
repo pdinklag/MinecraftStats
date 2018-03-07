@@ -14,7 +14,7 @@ mcstats.showPlayerList = function() {
                         ${widget}
                     </div>
                     <div class="ml-auto">
-                        Last online: ${last}
+                        <span class="grey">Last online:</span> ${last}
                     </div>
                 </div>
             </div>
@@ -22,5 +22,12 @@ mcstats.showPlayerList = function() {
     });
 
     // show
-    mcstats.showView('Player List', false, false, false);
+    mcstats.showView(
+        'Player List',
+        false,
+        `
+            Players inactive for over ${mcstats.info.inactiveDays} days
+            are considered inactive and are not eligible for any awards.
+        `,
+        false);
 }

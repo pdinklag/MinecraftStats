@@ -1,6 +1,6 @@
 var loader = new Loader(function() {
-    // navigate when loading is complete
-    window.onhashchange();
+    mcstats.init();
+    window.onhashchange(); // navigate
 });
 
 loader.addRequest('data/awards.json', function(result) {
@@ -37,15 +37,12 @@ loader.addRequest('data/info.json', function(result) {
     $('#info #server-name').text(result.serverName);
     $('#info #update-time').text(formatTime(result.updateTime));
 
-    if(result.hasIcon) {
-        $('#info #server-icon').attr('src', 'data/server-icon.png');
-    } else {
+    if(!result.hasIcon) {
         $('#info #server-icon').hide();
     }
 });
 
 // Start
-mcstats.init();
 mcstats.showLoader();
 
 loader.start();

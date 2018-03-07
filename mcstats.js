@@ -2,7 +2,7 @@
 var mcstats = {
     loader: $('#loader'),
 
-    info: $('#info'),
+    infoBox: $('#info'),
     content: $('#content'),
     footer: $('#footer'),
 
@@ -13,6 +13,7 @@ var mcstats = {
     viewIcon: $('#view-icon'),
     viewContent: $('#view-content'),
 
+    info: {},
     awards: {},
     awardKeysByTitle: new Array(),
     players: {},
@@ -21,7 +22,7 @@ var mcstats = {
 
 // Initialize client
 mcstats.init = function() {
-    mcstats.info.css('display', 'block');
+    mcstats.infoBox.css('display', 'block');
     mcstats.content.css('display', 'block');
 }
 
