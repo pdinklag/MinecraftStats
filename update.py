@@ -85,7 +85,6 @@ if os.path.isfile(dbInfoFilename):
             last_info = json.load(dbInfoFile)
 
         last_update_time = last_info['updateTime']
-        print('last update was at: ' + str(last_update_time))
     except:
         print('error loading info file: ' + dbInfoFilename)
 
