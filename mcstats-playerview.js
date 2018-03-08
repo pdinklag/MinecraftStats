@@ -1,71 +1,43 @@
 mcstats.showPlayer = function(uuid) {
     load('data/playerdata/' + uuid + '.json', function(stats) {
         var player = mcstats.players[uuid];
-
-        mcstats.viewContent.empty();
+        var tbody = '';
 
         // list statistics
         mcstats.awardKeysByTitle.forEach(function(id) {
-            var award = mcstats.awards[id];
             var stat = stats[id];
-            if(stat) {
-                var value = mcstats.formatValue(stat.value, award.unit);
-                var rank;
-                if(stat.rank) {
-                    rank = `<span class="rank rank-${stat.rank}">#${stat.rank}</span>`;
-                    var medal, medalTitle;
-                    switch(stat.rank) {
-                        case 1:
-                            // gold
-                            medal = 'gold';
-                            medalTitle = 'Gold Medal';
-                            break;
 
-                        case 2:
-                            // silver
-                            medal = 'silver';
-                            medalTitle = 'Silver Medal';
-                            break;
+            var award = mcstats.awards[id];
+            var awardWidget = mcstats.awardWidget(id);
+            var value = mcstats.formatValue(stat ? stat.value : 0, award.unit);
+            var rankWidget = stat ? mcstats.rankWidget(stat.rank) : '';
 
-                        case 3:
-                            // bronze
-                            medal = 'bronze';
-                            medalTitle = 'Bronze Medal';
-                            break;
-
-                        default:
-                            medal = false;
-                    }
-
-                    if(medal) {
-                        rank = `
-                            <img class="img-textsize-1_5 align-top" title="${medalTitle}" src="img/fatcow/medal_award_${medal}.png"/>&nbsp;
-                        ` + rank;
-                    }
-                } else {
-                    rank = `<span class="rank">-</span>`;
-                }
-
-                mcstats.viewContent.append(`
-                    <div class="row p-1 mb-1 mcstats-entry">
-                        <div class="col-sm mr-1 p-1 round-box">
-                            <div class="d-flex">
-                                <div class="h5">
-                                    <img class="img-pixelated img-textsize mr-1 align-baseline" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
-                                    <a href="#award:${id}">${award.title}</a>
-                                </div>
-                                <div class="ml-auto">
-                                ${rank}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm mr-1 py-1 pl-2 round-box">
-                            ${award.desc}: ${value}
-                        </div>
-                    </div>
-                `);
-            }
+            tbody += `
+                <tr>
+                    <td class="text-right">${rankWidget}</td>
+                    <td>${awardWidget}</td>
+                    <td>
+                        <span class="text-muted">${award.desc}:</span>&nbsp;
+                        <span class="text-data">${value}</span>
+                    </td>
+                </tr>
+            `;
         });
+
+        mcstats.viewContent.html(`
+            <div class="mcstats-entry p-1">
+            <div class="round-box p-1">
+                <table class="table table-responsive-xs table-hover table-sm">
+                <thead>
+                    <th scope="col" class="text-right text-shadow">Rank</th>
+                    <th scope="col" class="text-shadow">Award</th>
+                    <th scope="col" class="text-shadow">Score</th>
+                </thead>
+                <tbody>${tbody}</tbody>
+                </table>
+            </div>
+            </div>
+        `);
 
         // show
         mcstats.showView(

@@ -47,6 +47,25 @@ a.nav-link:hover { text-decoration: underline; }
 .img-textsize-3 { height: 3em; }
 .img-textsize-8 { height: 8em; }
 
+/* Tables */
+.table {
+    margin-bottom: 0;
+}
+
+.table td, .table th {
+    border-top-style: dashed;
+    border-top-color: #666;
+}
+
+.table thead th {
+    border-top-width: 0;
+    border-bottom-color: #666;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.33);
+}
+
 /* Specials */
 .rank   { color: #888; }
 .rank-1 { color: #FC0; }

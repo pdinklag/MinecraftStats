@@ -67,6 +67,45 @@ mcstats.formatValue = function(value, unit) {
     return `<span class="text-data">${value}</span>`;
 };
 
+// Create a rank widget
+mcstats.rankWidget = function(rank) {
+    if(rank) {
+        var widget = `<span class="rank rank-${rank}">#${rank}</span>`;
+        var medal, medalTitle;
+        switch(rank) {
+            case 1:
+                // gold
+                medal = 'gold';
+                medalTitle = 'Gold Medal';
+                break;
+
+            case 2:
+                // silver
+                medal = 'silver';
+                medalTitle = 'Silver Medal';
+                break;
+
+            case 3:
+                // bronze
+                medal = 'bronze';
+                medalTitle = 'Bronze Medal';
+                break;
+
+            default:
+                medal = false;
+        }
+
+        if(medal) {
+            widget = `
+                <img class="img-textsize-1_5 mr-1 align-top" title="${medalTitle}" src="img/fatcow/medal_award_${medal}.png"/>
+            ` + widget;
+        }
+    } else {
+        widget = `<span class="rank">-</span>`;
+    }
+    return widget;
+};
+
 // Create a widget showing a player's last online time and activity
 mcstats.lastOnlineWidget = function(last) {
     var fmt = formatTime(last);
@@ -79,6 +118,15 @@ mcstats.lastOnlineWidget = function(last) {
             <span class="text-danger">${fmt}</span>
         `;
     }
+};
+
+// Create an award widget
+mcstats.awardWidget = function(id) {
+    var award = mcstats.awards[id];
+    return `
+        <img class="img-pixelated img-textsize mr-1 align-baseline" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
+        <a href="#award:${id}">${award.title}</a>
+    `;
 }
 
 // Create a player widget
