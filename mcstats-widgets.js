@@ -67,8 +67,15 @@ mcstats.formatValue = function(value, unit) {
     return `<span class="text-data">${value}</span>`;
 };
 
+// Award types
+mcstats.awardType = {
+    medal: {title: 'Medal', imgPrefix: 'fatcow/medal_award_'},
+    crown: {title: 'Crown', imgPrefix: 'fatcow/crown_'},
+};
+
 // Create a rank widget
-mcstats.rankWidget = function(rank) {
+mcstats.rankWidget = function(rank, type = 'medal') {
+    var awardType = mcstats.awardType[type];
     if(rank) {
         var widget = `<span class="rank rank-${rank}">#${rank}</span>`;
         var medal, medalTitle;
@@ -76,19 +83,19 @@ mcstats.rankWidget = function(rank) {
             case 1:
                 // gold
                 medal = 'gold';
-                medalTitle = 'Gold Medal';
+                medalTitle = 'Gold';
                 break;
 
             case 2:
                 // silver
                 medal = 'silver';
-                medalTitle = 'Silver Medal';
+                medalTitle = 'Silver';
                 break;
 
             case 3:
                 // bronze
                 medal = 'bronze';
-                medalTitle = 'Bronze Medal';
+                medalTitle = 'Bronze';
                 break;
 
             default:
@@ -97,7 +104,7 @@ mcstats.rankWidget = function(rank) {
 
         if(medal) {
             widget = `
-                <img class="img-textsize-1_5 mr-1 align-top" title="${medalTitle}" src="img/fatcow/medal_award_${medal}.png"/>
+                <img class="img-textsize-1_5 mr-1 align-top" title="${medalTitle} ${awardType.title}" src="img/${awardType.imgPrefix}${medal}.png"/>
             ` + widget;
         }
     } else {

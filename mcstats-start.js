@@ -17,6 +17,10 @@ loader.addRequest('data/awards.json', function(result) {
     });
 });
 
+loader.addRequest('data/hof.json', function(result) {
+    mcstats.hof = result;
+});
+
 loader.addRequest('data/players.json', function(result) {
     mcstats.players = result;
 
