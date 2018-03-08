@@ -27,6 +27,8 @@ parser.add_argument('--database', '-d', type=str, required=False, default='data'
                     help='path into which to store the MinecraftStats database (default: "data")')
 parser.add_argument('--skin-update-interval', type=int, required=False, default=24,
                     help='update player skins every this many hours (default 24)')
+parser.add_argument('--update-inactive', required=False, action='store_true',
+                    help='if set, skins of inactive players are updated as well')
 parser.add_argument('--inactive-days', type=int, required=False, default=7,
                     help='number of days after which a player is considered inactive (default 7)')
 
@@ -134,20 +136,21 @@ for uuid, player in players.items():
     inactive = ((now - last) > inactive_time)
 
     # update skin
-    if (not 'skin' in player) or (now - last_update_time > skin_update_interval):
-        try:
-            print('updating skin for ' + name + ' ...')
-
-            profile = mojang.get_player_profile(uuid)
+    if args.update_inactive or (not inactive):
+        if (not 'skin' in player) or (now - last_update_time > skin_update_interval):
             try:
-                # only store suffix of url, the prefix is always the base url
-                skin = profile['textures']['SKIN']['url'][38:]
-            except:
-                skin = False
+                print('updating skin for ' + name + ' ...')
 
-            player['skin'] = skin
-        except:
-            print('failed to update skin for ' + name)
+                profile = mojang.get_player_profile(uuid)
+                try:
+                    # only store suffix of url, the prefix is always the base url
+                    skin = profile['textures']['SKIN']['url'][38:]
+                except:
+                    skin = False
+
+                player['skin'] = skin
+            except:
+                print('failed to update skin for ' + name)
 
     # load data
     try:
