@@ -35,11 +35,13 @@ loader.addRequest('data/info.json', function(result) {
     mcstats.info = result;
 
     $('title').html(`${result.serverName} &ndash; Stats`);
-    $('#info #server-name').text(result.serverName);
-    $('#info #update-time').text(formatTime(result.updateTime));
+    $('#server-name').text(result.serverName);
+    $('#update-time').text(formatTime(result.updateTime));
 
     if(!result.hasIcon) {
         $('#info #server-icon').hide();
+    } else {
+        $('#info #server-icon').attr('title', result.serverName);
     }
 });
 

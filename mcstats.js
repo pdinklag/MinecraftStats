@@ -61,6 +61,11 @@ mcstats.showView = function(title, subtitle, desc, iconUrl) {
     mcstats.content.show();
 }
 
+// Collapse navbar when an item is clicked
+$('.nav-link').on('click', function() {
+    $('.collapse').collapse('hide');
+});
+
 // Register navigation event handler
 window.onhashchange = function() {
     window.scrollTo(0, 0);

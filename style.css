@@ -25,8 +25,20 @@ body {
 /* Links */
 a { color: #ACF; }
 a:hover { color: #ACF; }
-a.h6 { color: #ACF; }
-a.nav-link:hover { text-decoration: underline; }
+
+/* Nav */
+.navbar-dark .navbar-toggler {
+    background-color: rgba(0,0,0,0.5);
+    border-width: 1px;
+    border-color: #333;
+}
+
+.navbar-dark .navbar-nav .nav-link { color: #ACF; }
+.navbar-dark .navbar-nav .nav-link:focus { color: #ACF; }
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #ACF;
+    text-decoration: underline;
+}
 
 /* Text content types */
 .text-muted { color: #999 !important; }
@@ -41,11 +53,14 @@ a.nav-link:hover { text-decoration: underline; }
 
 /* Images */
 .img-pixelated { image-rendering: pixelated; }
+
 .img-textsize { height: 1em; }
 .img-textsize-1_5 { height: 1.5em; }
 .img-textsize-2 { height: 2em; }
 .img-textsize-3 { height: 3em; }
 .img-textsize-8 { height: 8em; }
+
+.img-left { margin-left: -1em; }
 
 /* Tables */
 .table {
@@ -82,6 +97,10 @@ a.nav-link:hover { text-decoration: underline; }
     border-radius: 0.75rem;
 
     background-image: url('img/bg/stonebrick.png');
+}
+
+#header {
+    height: 64px;
 }
 
 #footer {

@@ -11,22 +11,25 @@
         <title>Minecraft Stats</title>
     </head>
     <body>
-        <div class="d-flex">
-            <div>
-                <ul class="nav mt-3">
-                    <li class="nav-item mt-2 ml-2 text-shadow">
-                        <a class="nav-link round-box p-2" href="#awards">Awards</a>
+        <nav class="position-absolute navbar navbar-dark navbar-expand-sm ml-2 mt-4 p-1 round-box">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <ul class="navbar-nav">
+                    <li class="nav-item px-2">
+                        <a class="nav-link" href="#awards">Awards</a>
                     </li>
-                    <li class="nav-item mt-2 ml-2 text-shadow">
-                        <a class="nav-link round-box p-2" href="#players">Players</a>
+                    <li class="nav-item px-2">
+                        <a class="nav-link" href="#players">Players</a>
                     </li>
                 </ul>
             </div>
-            <div id="info" class="ml-auto mr-2 mt-4 p-2 round-box small text-right" style="display:none;">
-                <div>
-                    <img id="server-icon" class="mr-1 img-textsize-3 align-bottom" src="data/server-icon.png"/>
-                    <span id="server-name" class="text-shadow">(server name)</span>
-                </div>
+        </nav>
+        <div id="header" class="clearfix text-center">
+            <div id="info" class="float-right ml-auto mr-2 mt-4 p-2 round-box small text-right" style="display:none;">
+                <img id="server-icon" class="mr-1 img-textsize-3 align-bottom" title="" src="data/server-icon.png"/>
+                <span id="server-name" class="d-none d-sm-inline text-shadow">(server name)</span>
                 <div class="small text-muted">
                     Last update: <span id="update-time" class="text-info">(last update)</span>
                 </div>
@@ -38,8 +41,8 @@
         </div>
         <div id="content" style="display:none;">
             <div id="view" class="container mx-auto">
-                <div class="h1 my-3 text-center">
-                    <img id="view-icon" class="img-pixelated img-textsize align-baseline"/>
+                <div class="h1 my-4 text-center">
+                    <img id="view-icon" class="img-pixelated img-left img-textsize align-baseline"/>
                     <span id="view-title" class="text-underline text-shadow">(view title)</h1>
                 </div>
                 <h5 id="view-subtitle" class="text-center text-shadow">(view subtitle)</h5>
