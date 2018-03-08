@@ -24,7 +24,7 @@ mcstats.showHof = function() {
         <div class="round-box p-1">
             <table class="table table-responsive-xs table-hover table-sm">
             <thead>
-                <th scope="col" class="rankWidget text-shadow">Rank</th>
+                <th scope="col" class="text-right text-shadow">Rank</th>
                 <th scope="col" class="text-shadow">Player</th>
                 <th scope="col" class="text-center"><img class="img-textsize-2" title="Gold Medals" src="img/fatcow/medal_award_gold.png"/></th>
                 <th scope="col" class="text-center"><img class="img-textsize-2" title="Silver Medals" src="img/fatcow/medal_award_silver.png"/></th>
