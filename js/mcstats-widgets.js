@@ -12,7 +12,6 @@ formatTime = function(unixTime) {
     return date.toLocaleDateString('en-US', {day: 'numeric', month: 'short', year: 'numeric'}) +
         ' - ' +
         date.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: false});
-
 };
 
 // Format an award value
@@ -131,20 +130,49 @@ mcstats.lastOnlineWidget = function(last) {
 mcstats.awardWidget = function(id) {
     var award = mcstats.awards[id];
     return `
-        <img class="img-pixelated img-textsize mr-1 align-baseline" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
+        <img class="img-pixelated img-textsize-1_5 align-baseline" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
         <a href="#award:${id}">${award.title}</a>
     `;
 }
 
+// Get a player face widget
+function drawFace(img) {
+    var canvas = $(img).parent('canvas')[0];
+    var ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.drawImage(img, 8, 8, 8, 8, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 40, 8, 8, 8, 0, 0, canvas.width, canvas.height);
+}
+
+mcstats.faceWidget = function(skinUrl, css = '') {
+    return `
+        <canvas width="8" height="8" class="minecraft-face d-inline-block img-pixelated ${css}">
+            <img class="d-none" src="${skinUrl}" onload="drawFace(this);"/>
+        </canvas>`;
+}
+
 // Create a player widget
-mcstats.playerWidget = function(uuid) {
+mcstats.playerWidget = function(uuid, skinCss = 'textw-1_5 texth-1_5 align-baseline mr-1', asLink = true) {
     if(uuid) {
         var p = mcstats.players[uuid];
-        return `
-            <!-- TODO: face -->
-            <a href="#player:${uuid}">${p.name}</a>
 
-        `;
+        // get player's skin
+        if(p['skin']) {
+            // compile skin URL
+            skin = 'https://textures.minecraft.net/texture/' + p['skin'];
+        } else {
+            // default skin - find out whether it's Steve or Alex
+            var even = parseInt(uuid[ 7], 16) ^
+                       parseInt(uuid[15], 16) ^
+                       parseInt(uuid[23], 16) ^
+                       parseInt(uuid[31], 16);
+
+            skin = 'img/skins/' + (even ? 'alex' : 'steve') + '.png';
+        }
+
+        return mcstats.faceWidget(skin, skinCss) +
+            (asLink ? `<a href="#player:${uuid}">${p.name}</a>` : p.name);
     } else {
         return `<span class="text-muted">(nobody)</span>`;
     }

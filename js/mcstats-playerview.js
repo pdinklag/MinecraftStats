@@ -41,7 +41,7 @@ mcstats.showPlayer = function(uuid) {
 
         // show
         mcstats.showView(
-            player.name,
+            mcstats.playerWidget(uuid, 'textw texth align-baseline mr-2', false),
             'Player Statistics',
             'Last played: ' + mcstats.lastOnlineWidget(player.last),
             false);
