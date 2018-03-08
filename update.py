@@ -6,6 +6,9 @@ import re
 import shutil
 import time
 
+# get a fixed sense of "now"
+now = time.time()
+
 # import custom modules
 from mcstats import mcstats
 from mcstats.stats import *
@@ -103,7 +106,7 @@ for uuid, player in players.items():
     last = int(os.path.getmtime(dataFilename))
     player['last'] = last
 
-    inactive = ((time.time() - last) > 86400 * args.inactive_days)
+    inactive = ((now - last) > 86400 * args.inactive_days)
 
     # load data
     try:
@@ -226,7 +229,7 @@ else:
 info = {
     'hasIcon': has_icon,
     'serverName': args.server_name,
-    'updateTime': int(time.time()),
+    'updateTime': int(now),
     'inactiveDays': args.inactive_days
 }
 
