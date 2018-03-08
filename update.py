@@ -134,21 +134,20 @@ for uuid, player in players.items():
     inactive = ((now - last) > inactive_time)
 
     # update skin
-    if not inactive:
-        if (not 'skin' in player) or (now - last_update_time > skin_update_interval):
+    if (not 'skin' in player) or (now - last_update_time > skin_update_interval):
+        try:
+            print('updating skin for ' + name + ' ...')
+
+            profile = mojang.get_player_profile(uuid)
             try:
-                print('updating skin for ' + name + ' ...')
-
-                profile = mojang.get_player_profile(uuid)
-                try:
-                    # only store suffix of url, the prefix is always the base url
-                    skin = profile['textures']['SKIN']['url'][38:]
-                except:
-                    skin = False
-
-                player['skin'] = skin
+                # only store suffix of url, the prefix is always the base url
+                skin = profile['textures']['SKIN']['url'][38:]
             except:
-                print('failed to update skin for ' + name)
+                skin = False
+
+            player['skin'] = skin
+        except:
+            print('failed to update skin for ' + name)
 
     # load data
     try:
