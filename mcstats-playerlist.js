@@ -33,7 +33,7 @@ mcstats.showPlayerList = function() {
         'Player List',
         false,
         `
-            Players inactive for over ${mcstats.info.inactiveDays} days
+            Players who have not been online for over ${mcstats.info.inactiveDays} days
             are considered inactive and are not eligible for any awards.
         `,
         false);
