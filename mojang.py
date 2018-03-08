@@ -1,19 +1,16 @@
 import base64
 import json
-import requests
+import urllib.request
 
 profile_api_url = 'https://sessionserver.mojang.com/session/minecraft/profile/'
-
-def compact_uuid(uuid):
-    return uuid.replace('-', '')
 
 # get player profile via Mojang's API
 # the returned object is the first property ("textures") decoded
 # may raise an error on failure
 def get_player_profile(uuid):
-    profile = requests.get(profile_api_url + compact_uuid(uuid)).json()
-    if 'error' in profile:
-        raise Exception(profile['errorMessage'])
+    compact_uuid = uuid.replace('-', '')
+    with urllib.request.urlopen(profile_api_url + compact_uuid) as response:
+        profile = json.loads(response.read().decode())
 
     # FIXME: this is some heavy hardcoding right here, but what the API returns
     # does not seem to follow any reasonnable logic
