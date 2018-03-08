@@ -4,3 +4,4 @@
 /raw
 /skins
 __pycache__
+*.log
