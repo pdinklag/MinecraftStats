@@ -64,7 +64,7 @@ mcstats.formatValue = function(value, unit) {
             break;
     }
 
-    return `<span class="award-value">${value}</span>`;
+    return `<span class="text-data">${value}</span>`;
 };
 
 // Create a widget showing a player's last online time and activity
@@ -73,10 +73,10 @@ mcstats.lastOnlineWidget = function(last) {
 
     var daysSinceLast = (mcstats.info.updateTime - last) / 86400;
     if(daysSinceLast <= mcstats.info.inactiveDays) {
-        return `<span class="online-date">${fmt}</span>`;
+        return `<span class="text-success">${fmt}</span>`;
     } else {
         return `
-            <span class="online-date inactive">${fmt}</span>
+            <span class="text-danger">${fmt}</span>
         `;
     }
 }
@@ -91,6 +91,6 @@ mcstats.playerWidget = function(uuid) {
 
         `;
     } else {
-        return `<span class="disabled">(nobody)</span>`;
+        return `<span class="text-muted">(nobody)</span>`;
     }
 };

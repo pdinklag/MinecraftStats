@@ -14,17 +14,15 @@ mcstats.showAwardsList = function() {
             info = award.desc + ': ' + mcstats.formatValue(award.best.value, award.unit);
         } else {
             holder = mcstats.playerWidget(false);
-            info = `<span class="disabled">(${award.desc})</span>`;
+            info = `<span class="text-muted">(${award.desc})</span>`;
         }
 
         currentRow += `
             <div class="col-sm">
                 <div class="container p-1 mb-3 mcstats-entry">
-                    <div class="p-1 mb-1 round-box text-center">
-                        <img class="pixelated sz-1_5 vt" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
-                        <span class="h4 ml-1">
-                            <a href="#award:${id}">${award.title}</a>
-                        </span>
+                    <div class="h4 p-1 mb-1 round-box text-center">
+                        <img class="img-pixelated img-textsize align-baseline" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
+                        <a href="#award:${id}">${award.title}</a>
                     </div>
                     <div class="p-1 round-box text-center">
                         ${holder}

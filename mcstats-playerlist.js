@@ -13,8 +13,8 @@ mcstats.showPlayerList = function() {
                     <div class="">
                         ${widget}
                     </div>
-                    <div class="ml-auto">
-                        <span class="grey">Last online:</span> ${last}
+                    <div class="ml-auto text-muted">
+                        Last online: ${last}
                     </div>
                 </div>
             </div>

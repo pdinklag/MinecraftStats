@@ -39,7 +39,7 @@ mcstats.showPlayer = function(uuid) {
 
                     if(medal) {
                         rank = `
-                            <img class="sz-1_5" title="${medalTitle}" src="img/fatcow/medal_award_${medal}.png"/>&nbsp;
+                            <img class="img-textsize-1_5 align-top" title="${medalTitle}" src="img/fatcow/medal_award_${medal}.png"/>&nbsp;
                         ` + rank;
                     }
                 } else {
@@ -50,9 +50,9 @@ mcstats.showPlayer = function(uuid) {
                     <div class="row p-1 mb-1 mcstats-entry">
                         <div class="col-sm mr-1 p-1 round-box">
                             <div class="d-flex">
-                                <div>
-                                <img class="pixelated sz-1_5 vb mr-1" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
-                                <a class="h6" href="#award:${id}">${award.title}</a>
+                                <div class="h5">
+                                    <img class="img-pixelated img-textsize mr-1 align-baseline" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
+                                    <a href="#award:${id}">${award.title}</a>
                                 </div>
                                 <div class="ml-auto">
                                 ${rank}

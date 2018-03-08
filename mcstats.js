@@ -78,6 +78,8 @@ window.onhashchange = function() {
     } else if(hash == '#players') {
         // go to player list
         mcstats.showPlayerList();
+    } else if(hash == '#loader') {
+        // stick with loader - for debugging purposes
     } else {
         // go to awards list (default)
         mcstats.showAwardsList();
