@@ -7,9 +7,11 @@ import shutil
 import time
 
 # get a fixed sense of "now"
-now = time.time()
+now = int(time.time())
 
 # import custom modules
+import mojang
+
 from mcstats import mcstats
 from mcstats.stats import *
 
@@ -18,15 +20,20 @@ parser = argparse.ArgumentParser(description='Update Minecraft statistics')
 parser.add_argument('--server', '-s', type=str, required=True,
                     help='path to the Minecraft server')
 parser.add_argument('--world', '-w', type=str, required=False, default='world',
-                    help='name of the server\'s main world that contains the stats directory')
+                    help='name of the server\'s main world that contains the stats directory (default "world")')
 parser.add_argument('--server-name', type=str, required=False, default=None,
                     help='the server\'s display name (default: motd from server.properties)')
 parser.add_argument('--database', '-d', type=str, required=False, default='data',
-                    help='path into which to store the MinecraftStats database')
+                    help='path into which to store the MinecraftStats database (default: "data")')
+parser.add_argument('--skin-update-interval', type=int, required=False, default=24,
+                    help='update player skins every this many hours (default 24)')
 parser.add_argument('--inactive-days', type=int, required=False, default=7,
-                    help='number of days after which a player is considered inactive')
+                    help='number of days after which a player is considered inactive (default 7)')
 
 args = parser.parse_args()
+
+inactive_time = 86400 * args.inactive_days
+skin_update_interval = 3600 * args.skin_update_interval
 
 # paths
 mcUsercacheFilename = args.server + '/usercache.json'
@@ -60,19 +67,35 @@ if not args.server_name:
 
 # initialize database
 if not os.path.isdir(args.database):
-    os.mkdir(args.database);
+    os.mkdir(args.database)
 
 if not os.path.isdir(dbRankingsPath):
-    os.mkdir(dbRankingsPath);
+    os.mkdir(dbRankingsPath)
 
 if not os.path.isdir(dbPlayerDataPath):
-    os.mkdir(dbPlayerDataPath);
+    os.mkdir(dbPlayerDataPath)
+
+# load information about last update
+last_update_time = 0
+if os.path.isfile(dbInfoFilename):
+    try:
+        with open(dbInfoFilename) as dbInfoFile:
+            last_info = json.load(dbInfoFile)
+
+        last_update_time = last_info['updateTime']
+        print('last update was at: ' + str(last_update_time))
+    except:
+        print('error loading info file: ' + dbInfoFilename)
 
 # load player cache
-try:
-    with open(dbPlayersFilename) as dbPlayersFile:
-        players = json.load(dbPlayersFile)
-except:
+if os.path.isfile(dbPlayersFilename):
+    try:
+        with open(dbPlayersFilename) as dbPlayersFile:
+            players = json.load(dbPlayersFile)
+    except:
+        print('error loading players file: ' + dbPlayersFilename)
+        exit(1)
+else:
     players = dict()
 
 # read Minecraft user cache
@@ -86,7 +109,9 @@ except:
 # update player database using Minecraft user cache
 # while Minecraft user cache entries can expire, the database entries do not
 for mcUser in mcUsercache:
-    players[mcUser['uuid']] = {'name': mcUser['name']}
+    uuid = mcUser['uuid']
+    if not uuid in players:
+        players[uuid] = {'name': mcUser['name']}
 
 # update player data
 hof = mcstats.CrownScoreRanking()
@@ -106,7 +131,24 @@ for uuid, player in players.items():
     last = int(os.path.getmtime(dataFilename))
     player['last'] = last
 
-    inactive = ((now - last) > 86400 * args.inactive_days)
+    inactive = ((now - last) > inactive_time)
+
+    # update skin
+    if not inactive:
+        if (not 'skin' in player) or (now - last_update_time > skin_update_interval):
+            try:
+                print('updating skin for ' + name + ' ...')
+
+                profile = mojang.get_player_profile(uuid)
+                try:
+                    # only store suffix of url, the prefix is always the base url
+                    skin = profile['textures']['SKIN']['url'][38:]
+                except:
+                    skin = False
+
+                player['skin'] = skin
+            except:
+                print('failed to update skin for ' + name)
 
     # load data
     try:
@@ -128,13 +170,12 @@ for uuid, player in players.items():
             '(' + uuid + ')')
         continue
 
-    stats = data['stats']
-
     # init database data
     playerStats = dict()
     player['stats'] = playerStats
 
     # process stats
+    stats = data['stats']
     for mcstat in mcstats.registry:
         value = mcstat.read(stats)
         playerStats[mcstat.name] = {'value':value}
@@ -209,6 +250,9 @@ for uuid, player in players.items():
         'name': player['name'],
         'last': player['last'],
     }
+
+    if 'skin' in player:
+        playerCache[uuid]['skin'] = player['skin']
 
     if 'stats' in player:
         with open(dbPlayerDataPath + '/' + uuid + '.json', 'w') as dataFile:
