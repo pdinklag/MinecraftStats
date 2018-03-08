@@ -34,6 +34,7 @@ loader.addRequest('data/players.json', function(result) {
 loader.addRequest('data/info.json', function(result) {
     mcstats.info = result;
 
+    $('title').html(`${result.serverName} &ndash; Stats`);
     $('#info #server-name').text(result.serverName);
     $('#info #update-time').text(formatTime(result.updateTime));
 
