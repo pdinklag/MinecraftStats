@@ -12,9 +12,14 @@ A live demo of _MinecraftStats_ in action is available here: [DVG Snapshot Stats
 This section describes how to set up _MinecraftStats_ to work on your server.
 
 ### Compatibility
-Since version 2.0, _MinecraftStats_ is compatible only to Minecraft 1.13 or higher. This is because starting with the 1.13 snapshots, Minecraft stores statistics very differently from before. In the process of updating _MinecraftStats_ for 1.13, the complete infrastructure has been rewritten.
+Since version 2.0, ___MinecraftStats_ is compatible only to Minecraft 1.13 or later__ (more precisely: snapshot [17w47a][5] or later). This is because starting with the snapshot 17w47a, Minecraft stores statistics very differently from before. In the process of updating _MinecraftStats_ for 1.13, the complete infrastructure has been rewritten and is in no way compatible to older servers.
 
-If your server runs Minecraft 1.12.2 server or prior, please use [MinecraftStats 1.0][3] and do not follow this guide any further, but use the old guide.
+If your server runs Minecraft 1.12.2 or prior, please use [_MinecraftStats 1.0_][3] and do not follow this guide any further, but use the old guide.
+
+#### Migrating
+If you used _MinecraftStats_ 1.0 before, the only way to migrate is delete it and use this new version instead.
+
+Any customizations (awards or other extensions) won't be compatible and need to be ported manually, because _MinecraftStats_ 2.0 is a complete rewrite, much like the way Mojang apparently rewrote their statistics completely (more structured, but quite some stats have vanished).
 
 ### Requirements
 _Python 3.4_ or later is required to feed _MinecraftStats_ with your server's data.
@@ -94,3 +99,4 @@ In order to remove an award, find the corresponding module and delete or modify 
 [2]:http://mine3.dvgaming.com/
 [3]:https://github.com/pdinklag/MinecraftStats/releases/tag/1.0
 [4]:https://github.com/pdinklag/MinecraftStats/issues
+[5]:https://minecraft.gamepedia.com/17w47a
