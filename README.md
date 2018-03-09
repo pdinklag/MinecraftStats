@@ -1,71 +1,96 @@
 # MinecraftStats
 
-_MinecraftStats_ is a PHP-based browser for all those [stats][1] that Minecraft servers collect about players.
+_MinecraftStats_ is a web browser application for the [statisticss][1] that Minecraft servers collect about players.
 
-The presentation is done by giving __awards__ to players for certain achievements. For example, the player who cut the most trees in the game gets the _Woodcutter_ award. Every award has a viewable ranking associated to it with __medals__ - the award holder gets the gold medal, the second the silver medal and the third the bronze medal for the award. Each medal gives players a __crown score__ (1 for every bronze medal, 2 for every silver, 4 for every gold medal), the player with the highest crown score is declared __King__ of the server! (sorry girls, I would introduce a Queen, but Minecraft holds no gender information)
+The presentation is done by giving __awards__ to players for certain achievements. For example, the player who played on the server for the longest total time receives the _Addict_ award. Every award has a viewable ranking associated to it with __medals__ - the award holder gets the gold medal, the second the silver medal and the third the bronze medal for the award. Each medal gives players a __crown score__ (1 for every bronze medal, 2 for every silver, 4 for every gold medal), which is displayed in a server __hall of fame__.
 
-The system is highly customizable. All the awards are defined in a single huge PHP script that can be modified to fit your needs. Additionally to simply reading Minecraft's original stats, there are some awards that are combinations of various stats.
+The system is highly customizable. All the awards are defined in Python modules that can be altered, added or removed to fit your needs. Additionally to simply reading Minecraft's original statistics, there are some awards that are combinations of various statistics.
 
-A live demo of _MinecraftStats_ in action is here: [DVG Snapshot Stats][2]
+A live demo of _MinecraftStats_ in action is available here: [DVG Snapshot Stats][2]
 
 ## Setup Guide
+This section describes how to set up _MinecraftStats_ to work on your server.
+
+### Compatibility
+Since version 2.0, _MinecraftStats_ is compatible only to Minecraft 1.13 or higher. This is because starting with the 1.13 snapshots, Minecraft stores statistics very differently from before. In the process of updating _MinecraftStats_ for 1.13, the complete infrastructure has been rewritten.
+
+If your server runs Minecraft 1.12.2 server or prior, please use [MinecraftStats 1.0][3] and do not follow this guide any further, but use the old guide.
 
 ### Requirements
-
-You need a webserver that does PHP 5.4 or later. Make sure you enable [short open tags][3]. For updating the stat info from your Minecraft server (see below), I recommend the PHP CLI (Linux users install `php5-cli`, Windows users can simply use `php.exe`).
-
-Also note that _MinecraftStats_ was designed for Linux systems - because updating the stats info (see below) is easiest done using a cronjob. It will work fine in Windows, of course, but then it's your problem to find a way to invoke updates automatically and regularly. More info on this below.
+_Python 3.4_ or later is required to feed _MinecraftStats_ with your server's data.
 
 ### Installation
-Simply checkout this repository somewhere in your webserver's document root (e.g. `htdocs/MinecraftStats`). Create an empty directory named `data` and make sure the webserver has write rights on it. This is where _MinecraftStats_ will put its caches when updating.
+Simply copy all files (or check out this repository) somewhere under your webserver's document root (e.g. `htdocs/MinecraftStats`).
+
+The web application is simply `index.html` - so you'll simply need to point your players to the URL corresponding to the installation path.
 
 ### Feeding the data
-Minecraft stores its statistics in the many JSON files under `world/stats` (this is valid for vanilla servers, I cannot speak for Bukkit or other modded servers, but it should be similar). That's the only data source that _MinecraftStats_ needs. However, it is _not_ a live browser. Instead, the info is cached in a custom format so the site can be displayed efficiently. This means that _MinecraftStats_ needs to be fed with up-to-date data regularly.
+The heart of _MinecraftStats_ is the `update.py` script, which compiles the Minecraft server's statistics into a database that is used by the web application.
 
-First, create a directory named `raw` in your _MinecraftStats_ directory. The following steps are then used to update _MinecraftStats_' data:
+Simply change into the installation directory and pass the path to your Minecraft server to the update script like so:
+```python3 update.py -s /path/to/server```
 
-1. Copy `<Minecraft server dir>/usercache.json` and all the JSON files in `<Minecraft server dir>/world/stats` into the `raw` directory.
-2. Run `php update.php` in a command shell [*]. __Note:__ If you have an established server with many players, the initial update may take a long time. This is because _MinecraftStats_ is retrieving the players' skin URLs using Mojang's web API.
+You may encounter the following messages during the update:
+* `updating skin for <player> ...` - the updater needs to download the player's skin URL every so often using Mojang's web API ,so that the browser won't have to do it later and slow the web application down. __If this fails__, make sure that Python is able to open `https` connections to `sessionserver.mojang.com`.
+* `unsupported data version 0 for <player>` - this means that `<player>` has not logged into your server for a while and his data format is still from Minecraft 1.12.2 or earlier.
 
-Step one is necessary, because if we just used the original JSON files as the data source, they may change while the update is running. This might result in read/write conflicts as well as inconsistencies. So better just create a copy.
+In case you encounter any error messages and can't find an explanation, don't hesistate to [open an issue][4].
 
-This update procedure is best done regularly using a simple cronjob-controlled script (Windows users may try using the task scheduler). On my server, I do this every 10 minutes, which is fairly reasonable.
+After the update, you will have a `data` directory that contains everything the web application needs. Fore more information about what it contains exactly, see below.
 
-[*] _I recommend using the PHP CLI, but you can also just call up `update.php` in your browser. However, you will not get any progress information and if it takes longer, the browser may hang up because it thinks the site timed out. It's also bad if you need to do it manually all the time._
+#### Automatic updates
+_MinecraftStats_ does not include any means for automatic updates - you need to take care of this yourself. The most common way to do it on Linux servers is by creating a cronjob that starts the update script regularly, e.g., every 10 minutes.
 
-### General configuration
-Configuration is done in `config.php`. It contains a bunch of settings, some of which are explained below. Those that aren't explained are changed at your own risk.
+If you're using Windows to run your server... shame on you, figure something out!
 
-__General settings:__
-* `$title` - it's the title of the page. Best change this to your server's name.
-* `$inactiveTime` - the amount of time (in seconds) after which players are marked as _inactive_ if they do not log in during that time. Inactive players are not eligible to get any awards. Default is seven days.
-* `$itemsPerPage` - pretty much self-explanatory.
-* _Time Zone_ - change this to your server's time zone. This is merely for display on the bottom of the page, but it avoids confusion for people browsing the stats. Here's a list of time zones supported by PHP: [http://php.net/manual/en/timezones.php]
+#### Options
 
-__Hall of Fame settings:__
-* `$goldMedalScore` - the crown score amount gained for a gold medal.
-* `$silverMedalScore` - the crown score amount gained for a silver medal.
-* `$bronzeMedalScore` - the crown score amount gained for a bronze medal.
+The `update.py` script accepts the following command-line options (and some more unimportant ones, try passing `--help`):
 
-### Award configuration
-The huge `$stats` array defined at the end of `config-stats.php` determines what awards there are and how they work. I recommend giving a custom prefix (e.g. `custom.`, duh) to stats that you invented yourself. The `achievement.`, `minecraft.` and `stat.` stats come from Minecraft directly.
+* `-s <server>` - the path to your Minecraft server. This is the only __required__ option.
+* `-w <world>` - if your server's main world (the one that contains the `stats` directory) is not named "world", pass its alternate name here.
+* `-d <path>` - where to store the database ("data" per default). Note that the web application will only work if the database is in a directory called `data` next to `index.html`. You should not need this option unless you don't run the updater from within the web directory.
+* `--server-name <name>` - specify the server's name displayed in the web app's heading. By default, the updater will read your `server.properties` file and use the `motd` setting, i.e., the same name that players see in the game.
+* `--inactive-days <days>` - if a player does not join the server for more than `<days>` days (default: 7), then he is no longer eligible for any awards.
 
-Awards support the following fields:
-* `award` - the award's name displayed on the site.
-* `desc` - a short description of the award, which should follow a simple _<something> <performed action>_ pattern (e.g. _Tools crafted_, _Animals bred_, etc).
-* `icon` _[optional]_ - the path to the icon used for this award. This is always relative to the `img/icons` directory. If no icon is specified, a default question mark icon will be used.
-* `displayFunc` _[optional]_ - name of the PHP function to format the raw stat value for display. A good use case are the distance stats (e.g. _Distance walked_). Minecraft measures distances in centimeters, but we want to display something human readable, which the function `cmToDistance` takes care of in this case.
-* `provider` _[optional]_ - name of the PHP function that reads the stat value from the player's JSON. This is useful for custom stats like _Meat items eaten_: the provider function `eatMeatProvider` gathers multiple stats for eaten items and sums them up into one value. If no provider is given, the stat value is read directly from the JSON using the same array key as the award's key. Of course, this only works for the original stats.
+#### Database structure
+The `data` directory will contain the following:
+* `db.json.gz` - This is the database index used by the web application and for future updates. It is a simple JSON file compressed using `gzip` to reduce traffic by the web application. If you also need the uncompressed file for any reason, pass the `--store-uncompressed` option to the updater.
+* `server-icon.png` - if your server has an icon, this will be a copy of it. Otherwise, a default icon will be used.
+* `rankings` - this directory contains one JSON file for every award. These are dynamically loaded by the web application as needed.
+* `playerdata` - this directory contains one JSON file for every player. These are dynamically loaded by the web application as needed.
 
-A little tip: if you want to create your own combinated awards, have a look at a player's raw stat data using the _view raw data_ link on his profile page. It helps getting an idea of what data there is, and it's far easier to read than the raw JSON...
+# Customizing Awards
+I assume here that you have some very basic knowledge of Python, however, you may also get away without any.
 
-## The Suspect award
-The _Suspect_ award is a somewhat scientific attempt to find out if somebody may be griefing.
+`update.py` imports all modules from the `mcstats/stats` directory. Here you will find many `.py` files that define the awards in a pretty straightforward way.
 
-The `suspectProvider` function tests several statistics of a player in order to give him a score of suspiciousness. For example, if a player has placed an enchanting table, but he never mined any obsidian, that makes him suspicious. If he broke a lot more chests than he ever crafted, that makes him even more suspicious.
+The next time `update.py` is executed, changes here will be in effect.
 
-Of course, there is teamplay and the longer somebody has played on the server, the more obscure this score becomes. So a high suspect score does _not_ mean that somebody is griefing, hence the name _Suspect_. Therefore,  a little advice: handle with care! Use this award as a _hint_ to have a closer look at players, not as a _reason_ to ban players.
+## Adding new awards
+For adding a new award, follow these steps:
+
+1. Create a new module in `mcstats/stats` and register your `MinecraftStat` instances (see below).
+2. Place an icon for the award in `img/award-icons`. If your award ID is `my_award`, the icon's file name needs to be `my_award.png`.
+
+### The MinecraftStat class
+A `MinecraftStat` object consists of an _ID_, some _meta information_ (_title_, _description_ and a _unit_ for statistic values) and a _StatReader_.
+
+The _ID_ is simply the award's internal identifier. It is used for the database and the web application also uses it to locate the award icon (`img/award-icons/<id>.png`).
+
+The _meta information_ is for display in the web application. The following units are supported:
+* `int` - a simple integer number with no unit.
+* `ticks` - time statistics are usually measured in ticks. The web application will convert this into a human readable duration (seconds, minutes, hours, ...).
+* `cm` - Minecraft measures distances in centimeters. The web application will convert this to a suitable metric unit.
+
+The _StatReader_ is responsible for calculating the displayed and ranked statistic value. Most commonly, this simply reads one single entry from a player's statistics JSON, but more complex calculations are possible (e.g., summing up various statistics like for the `mine_stone`.
+
+There are various readers, the usage of which is best explained by having a close look to the existing awards. If you require new types of calculations, dig in the `mcstats/mcstats.py` file and expand upon what's there.
+
+## Removing awards
+In order to remove an award, find the corresponding module and delete or modify it to suit your needs.
 
 [1]:http://minecraft.gamepedia.com/Statistics
-[2]:http://dvgaming.com/mcstats/snapshot/
-[3]:http://php.net/manual/de/ini.core.php#ini.short-open-tag
+[2]:http://mine3.dvgaming.com/
+[3]:https://github.com/pdinklag/MinecraftStats/releases/tag/1.0
+[4]:https://github.com/pdinklag/MinecraftStats/issues
