@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import gzip
 import json
 import os
 import re
@@ -31,6 +32,8 @@ parser.add_argument('--update-inactive', required=False, action='store_true',
                     help='if set, skins of inactive players are updated as well')
 parser.add_argument('--inactive-days', type=int, required=False, default=7,
                     help='number of days after which a player is considered inactive (default 7)')
+parser.add_argument('--store-uncompressed', required=False, action='store_true',
+                    help='if set, the database will also be stored in an uncompressed JSON form')
 
 args = parser.parse_args()
 
@@ -50,10 +53,8 @@ if not os.path.isdir(mcStatsDir):
     print('no valid stat directory: ' + mcStatsDir)
     exit(1)
 
-dbInfoFilename = args.database + '/info.json'
-dbPlayersFilename = args.database + '/players.json'
-dbAwardsFilename = args.database + '/awards.json'
-dbHofFilename = args.database + '/hof.json'
+dbFilename = args.database + '/db.json'
+dbCompressedFilename = args.database + '/db.json.gz'
 dbRankingsPath = args.database + '/rankings'
 dbPlayerDataPath = args.database + '/playerdata'
 
@@ -77,26 +78,19 @@ if not os.path.isdir(dbRankingsPath):
 if not os.path.isdir(dbPlayerDataPath):
     os.mkdir(dbPlayerDataPath)
 
-# load information about last update
-last_update_time = 0
-if os.path.isfile(dbInfoFilename):
+# load information from previous update
+if os.path.isfile(dbCompressedFilename):
     try:
-        with open(dbInfoFilename) as dbInfoFile:
-            last_info = json.load(dbInfoFile)
+        with gzip.open(dbCompressedFilename) as dbFile:
+            prev_db = json.loads(dbFile.read().decode())
 
-        last_update_time = last_info['updateTime']
+        players = prev_db['players']
+        last_update_time = prev_db['info']['updateTime']
     except:
-        print('error loading info file: ' + dbInfoFilename)
-
-# load player cache
-if os.path.isfile(dbPlayersFilename):
-    try:
-        with open(dbPlayersFilename) as dbPlayersFile:
-            players = json.load(dbPlayersFile)
-    except:
-        print('error loading players file: ' + dbPlayersFilename)
+        print('error loading previous database: ' + dbCompressedFilename)
         exit(1)
 else:
+    last_update_time = 0
     players = dict()
 
 # read Minecraft user cache
@@ -227,10 +221,6 @@ for mcstat in mcstats.registry:
     # add to award info list
     awards[mcstat.name] = award
 
-# write award info
-with open(dbAwardsFilename, 'w') as awardsFile:
-    json.dump(awards, awardsFile)
-
 # compute and write hall of fame
 hof.sort()
 outHallOfFame = []
@@ -240,10 +230,7 @@ for (id, crown) in hof.ranking:
 
     outHallOfFame.append({'uuid':id,'value':crown.score})
 
-with open(dbHofFilename, 'w') as hofFile:
-    json.dump(outHallOfFame, hofFile)
-
-# write player data
+# write player data and construct player cache
 playerCache = dict()
 
 for uuid, player in players.items():
@@ -259,10 +246,6 @@ for uuid, player in players.items():
         with open(dbPlayerDataPath + '/' + uuid + '.json', 'w') as dataFile:
             json.dump(player['stats'], dataFile)
 
-# write player cache
-with open(dbPlayersFilename, 'w') as dbPlayersFile:
-    json.dump(playerCache, dbPlayersFile)
-
 # copy server icon if available
 if os.path.isfile(args.server + '/server-icon.png'):
     has_icon = True
@@ -270,7 +253,7 @@ if os.path.isfile(args.server + '/server-icon.png'):
 else:
     has_icon = False
 
-# write info file
+# construct update info
 info = {
     'hasIcon': has_icon,
     'serverName': args.server_name,
@@ -278,5 +261,19 @@ info = {
     'inactiveDays': args.inactive_days
 }
 
-with open(dbInfoFilename, 'w') as dbInfoFile:
-    json.dump(info, dbInfoFile)
+# compile database
+db = {
+    'info': info,
+    'awards': awards,
+    'players': playerCache,
+    'hof': outHallOfFame
+}
+
+# write compressed database (for client)
+with gzip.open(dbCompressedFilename, 'wb') as dbFile:
+    dbFile.write(json.dumps(db).encode())
+
+# write uncompressed database
+if args.store_uncompressed:
+    with open(dbFilename, 'w') as dbFile:
+        json.dump(db, dbFile)

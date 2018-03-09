@@ -1,5 +1,5 @@
 mcstats.showPlayer = function(uuid) {
-    load('data/playerdata/' + uuid + '.json', function(stats) {
+    loadJson('data/playerdata/' + uuid + '.json', function(stats) {
         var player = mcstats.players[uuid];
         var tbody = '';
 

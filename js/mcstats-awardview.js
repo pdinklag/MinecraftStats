@@ -1,5 +1,5 @@
 mcstats.showAward = function(id) {
-    load('data/rankings/' + id + '.json', function(ranking) {
+    loadJson('data/rankings/' + id + '.json', function(ranking) {
         var award = mcstats.awards[id];
         var tbody = '';
         var rank = 1;

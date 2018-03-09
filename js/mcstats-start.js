@@ -3,8 +3,12 @@ var loader = new Loader(function() {
     window.onhashchange(); // navigate
 });
 
-loader.addRequest('data/awards.json', function(result) {
-    mcstats.awards = result;
+loader.addRequest('data/db.json.gz', function(db) {
+    // load db
+    mcstats.info = db.info;
+    mcstats.players = db.players;
+    mcstats.awards = db.awards;
+    mcstats.hof = db.hof;
 
     // sort award keys by award title
     for(var key in mcstats.awards) {
@@ -15,14 +19,6 @@ loader.addRequest('data/awards.json', function(result) {
         return mcstats.awards[a].title.localeCompare(
             mcstats.awards[b].title);
     });
-});
-
-loader.addRequest('data/hof.json', function(result) {
-    mcstats.hof = result;
-});
-
-loader.addRequest('data/players.json', function(result) {
-    mcstats.players = result;
 
     // sort player UUIDs by player name
     for(var uuid in mcstats.players) {
@@ -33,21 +29,7 @@ loader.addRequest('data/players.json', function(result) {
         return mcstats.players[a].name.localeCompare(
             mcstats.players[b].name);
     });
-});
-
-loader.addRequest('data/info.json', function(result) {
-    mcstats.info = result;
-
-    $('title').html(`${result.serverName} &ndash; Stats`);
-    $('#server-name').text(result.serverName);
-    $('#update-time').text(formatTime(result.updateTime));
-
-    if(!result.hasIcon) {
-        $('#info #server-icon').hide();
-    } else {
-        $('#info #server-icon').attr('title', result.serverName);
-    }
-});
+}, true); // compressed!
 
 // Start
 mcstats.showLoader();
