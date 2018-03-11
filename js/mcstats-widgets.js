@@ -112,12 +112,16 @@ mcstats.rankWidget = function(rank, type = 'medal') {
     return widget;
 };
 
+// Test whether a timestamp is within the "active" threshold
+mcstats.isActive = function(last) {
+    var daysSinceLast = (mcstats.info.updateTime - last) / 86400;
+    return (daysSinceLast <= mcstats.info.inactiveDays);
+}
+
 // Create a widget showing a player's last online time and activity
 mcstats.lastOnlineWidget = function(last) {
     var fmt = formatTime(last);
-
-    var daysSinceLast = (mcstats.info.updateTime - last) / 86400;
-    if(daysSinceLast <= mcstats.info.inactiveDays) {
+    if(mcstats.isActive(last)) {
         return `<span class="text-success">${fmt}</span>`;
     } else {
         return `
