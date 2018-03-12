@@ -6,7 +6,7 @@ def create_score_stat(mobId, title, mobText):
             'score_' + mobId,
             {
                 'title': title,
-                'desc': 'Score against ' + mobText,
+                'desc': 'Score vs ' + mobText,
                 'unit': 'int',
             },
             mcstats.StatDiffReader(
@@ -75,7 +75,7 @@ mcstats.registry.append(
         'score_zombie',
         {
             'title': 'Zombie Grinder',
-            'desc': 'Score against Zombies and Husks',
+            'desc': 'Score vs Zombies/Husks',
             'unit': 'int',
         },
         mcstats.StatDiffReader(
@@ -97,7 +97,7 @@ mcstats.registry.append(
         'score_skeleton',
         {
             'title': 'Bone Collector',
-            'desc': 'Score against Skeletons and Strays',
+            'desc': 'Score vs Skeletons/Strays',
             'unit': 'int',
         },
         mcstats.StatDiffReader(
@@ -117,7 +117,7 @@ mcstats.registry.append(
         'score_spider',
         {
             'title': 'Arachnophobia',
-            'desc': 'Score against Spiders',
+            'desc': 'Score vs Spiders',
             'unit': 'int',
         },
         mcstats.StatDiffReader(
@@ -137,7 +137,7 @@ mcstats.registry.append(
         'score_guardian',
         {
             'title': 'Underwater Raider',
-            'desc': 'Score against Guardians',
+            'desc': 'Score vs Guardians',
             'unit': 'int',
         },
         mcstats.StatDiffReader(
@@ -157,7 +157,7 @@ mcstats.registry.append(
         'score_illagers',
         {
             'title': 'Cleanser',
-            'desc': 'Score against Illagers',
+            'desc': 'Score vs Illagers',
             'unit': 'int',
         },
         mcstats.StatDiffReader(

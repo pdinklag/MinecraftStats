@@ -5,7 +5,7 @@ mcstats.registry.append(
         'mine_dimensional',
         {
             'title': 'Terraformer',
-            'desc': 'Netherrack and end stone mined',
+            'desc': 'Netherrack/End stone mined',
             'unit': 'int',
         },
         mcstats.StatSumReader([
