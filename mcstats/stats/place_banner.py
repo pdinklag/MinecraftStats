@@ -15,5 +15,5 @@ mcstats.registry.append(
                 ['minecraft:.*banner']),
             mcstats.StatSumMatchReader(
                 ['minecraft:mined'],
-                ['minecraft:.*sapling'])),
+                ['minecraft:.*banner'])),
     ))
