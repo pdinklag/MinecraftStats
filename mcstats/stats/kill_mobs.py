@@ -50,7 +50,7 @@ create_score_stat('witch','Witch Hunter','Witches')
 # Neutrals
 create_score_stat('llama','Caravan Bandit','Llamas')
 create_score_stat('enderman','Enderman Ender','Endermen')
-create_score_stat('polar_bear','Eskimo','Polar Bears')
+create_score_stat('polar_bear','Polar Hunter','Polar Bears')
 create_score_stat('zombie_pigman','Nether Gang War','Zombie Pigmen')
 
 # Passives
