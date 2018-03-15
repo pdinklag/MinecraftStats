@@ -52,7 +52,12 @@ a:hover { color: #ACF; }
 .text-underline { text-decoration: underline; }
 
 /* Images */
-.img-pixelated { image-rendering: pixelated; }
+.img-pixelated {
+    /* "official" proposal */
+    image-rendering: pixelated;
+    /* Firefox (and others?) */
+    image-rendering: optimizeSpeed;
+}
 
 .img-textsize { height: 1em; }
 .img-textsize-1_5 { height: 1.5em; }
