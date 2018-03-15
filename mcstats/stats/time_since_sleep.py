@@ -8,5 +8,5 @@ mcstats.registry.append(
             'desc': 'Time since last sleep',
             'unit': 'ticks',
         },
-        mcstats.StatReader(['minecraft:custom','minecraft:time_since_sleep'])
+        mcstats.StatReader(['minecraft:custom','minecraft:time_since_rest'])
     ))
