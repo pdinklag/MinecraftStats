@@ -234,6 +234,9 @@ for (id, crown) in hof.ranking:
 playerCache = dict()
 
 for uuid, player in players.items():
+    # skip players with no data
+    if 'last' not in player:
+        continue
     playerCache[uuid] = {
         'name': player['name'],
         'last': player['last'],
