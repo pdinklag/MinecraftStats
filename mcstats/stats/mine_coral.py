@@ -9,7 +9,10 @@ mcstats.registry.append(
             'unit': 'int',
         },
         mcstats.StatSumMatchReader(
-            ['minecraft:mined'],
-            ['minecraft:.+_coral','minecraft:.+_coral_plant']
+            ['minecraft:mined'],[
+                'minecraft:.+_coral',
+                'minecraft:.+_coral_block',
+                'minecraft:.+_coral_fan',
+            ]
         )
     ))
