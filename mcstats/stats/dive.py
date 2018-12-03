@@ -8,5 +8,5 @@ mcstats.registry.append(
             'desc': 'Distance dived',
             'unit': 'cm',
         },
-        mcstats.StatReader(['minecraft:custom','minecraft:dive_one_cm'])
+        mcstats.StatReader(['minecraft:custom','minecraft:walk_under_water_one_cm'])
     ))
