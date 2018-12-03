@@ -10,6 +10,9 @@ mcstats.registry.append(
         },
         # subtract mined from used
         mcstats.StatDiffReader(
-            mcstats.StatReader(['minecraft:used','minecraft:sign']),
-            mcstats.StatReader(['minecraft:mined','minecraft:sign']))
+            mcstats.StatSumMatchReader(
+                ['minecraft:used'],['minecraft:.+_sign']),
+            mcstats.StatSumMatchReader(
+                ['minecraft:mined'],['minecraft:.+_sign'])
+        )
     ))
