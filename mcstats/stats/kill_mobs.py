@@ -162,12 +162,18 @@ mcstats.registry.append(
         },
         mcstats.StatDiffReader(
             mcstats.StatSumReader([
-                mcstats.StatReader(['minecraft:killed','minecraft:evocation_illager']),
-                mcstats.StatReader(['minecraft:killed','minecraft:vindication_illager']),
+                mcstats.StatReader(['minecraft:killed','minecraft:evoker']),
+                mcstats.StatReader(['minecraft:killed','minecraft:vindicator']),
+                mcstats.StatReader(['minecraft:killed','minecraft:pillager']),
+                mcstats.StatReader(['minecraft:killed','minecraft:illusioner']),
+                mcstats.StatReader(['minecraft:killed','minecraft:illager_beast']),
             ]),
             mcstats.StatSumReader([
-                mcstats.StatReader(['minecraft:killed_by','minecraft:evocation_illager']),
-                mcstats.StatReader(['minecraft:killed_by','minecraft:vindication_illager']),
+                mcstats.StatReader(['minecraft:killed_by','minecraft:evoker']),
+                mcstats.StatReader(['minecraft:killed_by','minecraft:vindicator']),
+                mcstats.StatReader(['minecraft:killed_by','minecraft:pillager']),
+                mcstats.StatReader(['minecraft:killed_by','minecraft:illusioner']),
+                mcstats.StatReader(['minecraft:killed_by','minecraft:illager_beast']),
             ]))
     ))
 
