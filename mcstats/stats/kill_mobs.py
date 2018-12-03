@@ -32,7 +32,7 @@ def create_kill_stat(mobId, title, mobText):
 # - Illusioners
 # - Iron Golems
 # - Snow Golems
-# - Wither Skeletons
+# - Vexes
 
 # Hostiles
 create_score_stat('blaze','Extinguisher','Blazes')
@@ -44,12 +44,14 @@ create_score_stat('phantom','Phantom Shooter','Phantoms')
 create_score_stat('shulker','Shulker Cracker','Shulkers')
 create_score_stat('silverfish','Nasty Little...','Silverfish')
 create_score_stat('slime','Swamp Lurker','Slimes')
-create_score_stat('vex','Vex Hunter','Vexes')
 create_score_stat('witch','Witch Hunter','Witches')
+create_score_stat('wither_skeleton','Wither Or Not','Wither Skeletons')
 
 # Neutrals
+create_score_stat('dolphin','Dolphin Hunter','Dolphins')
 create_score_stat('llama','Caravan Bandit','Llamas')
 create_score_stat('enderman','Enderman Ender','Endermen')
+create_score_stat('panda','Kung FU! Panda','Pandas')
 create_score_stat('polar_bear','Polar Hunter','Polar Bears')
 create_score_stat('zombie_pigman','Nether Gang War','Zombie Pigmen')
 
@@ -75,17 +77,19 @@ mcstats.registry.append(
         'score_zombie',
         {
             'title': 'Zombie Grinder',
-            'desc': 'Score vs Zombies/Husks',
+            'desc': 'Score vs Zombies/Husks/Drowned',
             'unit': 'int',
         },
         mcstats.StatDiffReader(
             mcstats.StatSumReader([
                 mcstats.StatReader(['minecraft:killed','minecraft:husk']),
+                mcstats.StatReader(['minecraft:killed','minecraft:drowned']),
                 mcstats.StatReader(['minecraft:killed','minecraft:zombie']),
                 mcstats.StatReader(['minecraft:killed','minecraft:zombie_villager']),
             ]),
             mcstats.StatSumReader([
                 mcstats.StatReader(['minecraft:killed_by','minecraft:husk']),
+                mcstats.StatReader(['minecraft:killed_by','minecraft:drowned']),
                 mcstats.StatReader(['minecraft:killed_by','minecraft:zombie']),
                 mcstats.StatReader(['minecraft:killed_by','minecraft:zombie_villager']),
             ]))
@@ -187,8 +191,8 @@ mcstats.registry.append(
             'unit': 'int',
         },
         mcstats.StatSumReader([
-            mcstats.StatReader(['minecraft:killed','minecraft:cod_mob']),
-            mcstats.StatReader(['minecraft:killed','minecraft:salmon_mob']),
+            mcstats.StatReader(['minecraft:killed','minecraft:cod']),
+            mcstats.StatReader(['minecraft:killed','minecraft:salmon']),
             mcstats.StatReader(['minecraft:killed','minecraft:puffer_fish']),
             mcstats.StatReader(['minecraft:killed','minecraft:tropical_fish']),
         ]),
