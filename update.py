@@ -32,12 +32,15 @@ parser.add_argument('--update-inactive', required=False, action='store_true',
                     help='if set, skins of inactive players are updated as well')
 parser.add_argument('--inactive-days', type=int, required=False, default=7,
                     help='number of days after which a player is considered inactive (default 7)')
+parser.add_argument('--min-playtime', type=int, required=False, default=0,
+                    help='number of minutes a player needs to have played before being eligible for any awards (default 0)')
 parser.add_argument('--store-uncompressed', required=False, action='store_true',
                     help='if set, the database will also be stored in an uncompressed JSON form')
 
 args = parser.parse_args()
 
 inactive_time = 86400 * args.inactive_days
+min_playtime = args.min_playtime
 skin_update_interval = 3600 * args.skin_update_interval
 
 # paths
@@ -168,12 +171,18 @@ for uuid, player in players.items():
             '(' + uuid + ')')
         continue
 
+    # collapse stats
+    stats = data['stats']
+
+    # get amount of time played
+    playtimeTicks = stats['minecraft:custom']['minecraft:play_one_minute'];
+    playtimeMinutes = playtimeTicks / (20 * 60);
+    if playtimeMinutes < min_playtime:
+        continue
+
     # init database data
     playerStats = dict()
     player['stats'] = playerStats
-
-    # collapse stats
-    stats = data['stats']
 
     # try and load advancements into stats
     advFilename = mcAdvancementsDir + '/' + uuid + '.json'

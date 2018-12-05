@@ -57,6 +57,7 @@ The `update.py` script accepts the following command-line options (and some more
 * `-d <path>` - where to store the database ("data" per default). Note that the web application will only work if the database is in a directory called `data` next to `index.html`. You should not need this option unless you don't run the updater from within the web directory.
 * `--server-name <name>` - specify the server's name displayed in the web app's heading. By default, the updater will read your `server.properties` file and use the `motd` setting, i.e., the same name that players see in the game.
 * `--inactive-days <days>` - if a player does not join the server for more than `<days>` days (default: 7), then he is no longer eligible for any awards.
+* `--min-playtime <minutes>` - only players who have played at least `<minutes>` minues (default: 0) on the server are eligible for awards.
 
 #### Database structure
 The `data` directory will contain the following:
