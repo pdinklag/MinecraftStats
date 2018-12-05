@@ -193,7 +193,7 @@ mcstats.registry.append(
         mcstats.StatSumReader([
             mcstats.StatReader(['minecraft:killed','minecraft:cod']),
             mcstats.StatReader(['minecraft:killed','minecraft:salmon']),
-            mcstats.StatReader(['minecraft:killed','minecraft:puffer_fish']),
+            mcstats.StatReader(['minecraft:killed','minecraft:pufferfish']),
             mcstats.StatReader(['minecraft:killed','minecraft:tropical_fish']),
         ]),
     ))
