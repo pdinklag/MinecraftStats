@@ -42,7 +42,10 @@ skin_update_interval = 3600 * args.skin_update_interval
 
 # paths
 mcUsercacheFilename = args.server + '/usercache.json'
-mcStatsDir = args.server + '/' + args.world + '/stats'
+
+mcWorldDir = args.server + '/' + args.world;
+mcStatsDir = mcWorldDir + '/stats'
+mcAdvancementsDir = mcWorldDir + '/advancements'
 
 # sanity checks
 if not os.path.isdir(args.server):
@@ -169,8 +172,18 @@ for uuid, player in players.items():
     playerStats = dict()
     player['stats'] = playerStats
 
-    # process stats
+    # collapse stats
     stats = data['stats']
+
+    # try and load advancements into stats
+    advFilename = mcAdvancementsDir + '/' + uuid + '.json'
+    try:
+        with open(advFilename) as advFile:
+            stats['advancements'] = json.load(advFile)
+    except:
+        stats['advancements'] = dict()
+
+    # process stats
     for mcstat in mcstats.registry:
         value = mcstat.read(stats)
         playerStats[mcstat.name] = {'value':value}

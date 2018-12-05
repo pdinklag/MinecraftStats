@@ -60,6 +60,15 @@ class StatSumMatchReader:
 
         return sum
 
+# Reader that counts the amount of entries of a list
+class StatListLengthReader:
+    def __init__(self, path):
+        self.path = path
+
+    # read from stats
+    def read(self, stats):
+        return len(read(stats, self.path, []))
+
 # Rankings
 class Ranking:
     def __init__(self):
