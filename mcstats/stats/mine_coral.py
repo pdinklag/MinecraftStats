@@ -13,6 +13,7 @@ mcstats.registry.append(
                 'minecraft:.+_coral',
                 'minecraft:.+_coral_block',
                 'minecraft:.+_coral_fan',
+                'minecraft:.+_coral_wall_fan',
             ]
         )
     ))
