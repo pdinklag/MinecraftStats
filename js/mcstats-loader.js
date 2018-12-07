@@ -16,7 +16,7 @@ loadJson = function(url, successFunc, compressed = false) {
         req.send();
     } else {
         // simple AJAX request
-        $.ajax({url: url, success: successFunc});
+        $.getJSON({url: url, success: successFunc});
     }
 };
 
