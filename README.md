@@ -1,6 +1,6 @@
 # MinecraftStats
 
-_MinecraftStats_ is a web browser application for the [statisticss][1] that Minecraft servers collect about players.
+_MinecraftStats_ is a web browser application for the [statistics][1] that Minecraft servers collect about players.
 
 The presentation is done by giving __awards__ to players for certain achievements. For example, the player who played on the server for the longest total time receives the _Addict_ award. Every award has a viewable ranking associated to it with __medals__ - the award holder gets the gold medal, the second the silver medal and the third the bronze medal for the award. Each medal gives players a __crown score__ (1 for every bronze medal, 2 for every silver, 4 for every gold medal), which is displayed in a server __hall of fame__.
 
@@ -12,9 +12,11 @@ A live demo of _MinecraftStats_ in action is available here: [DVG Snapshot Stats
 This section describes how to set up _MinecraftStats_ to work on your server.
 
 ### Compatibility
-Since version 2.0, ___MinecraftStats_ is compatible only to Minecraft 1.13 or later__ (more precisely: snapshot [17w47a][5] or later). This is because starting with the snapshot 17w47a, Minecraft stores statistics very differently from before. In the process of updating _MinecraftStats_ for 1.13, the complete infrastructure has been rewritten and is in no way compatible to older servers.
+Since version 2.0, ___MinecraftStats_ is compatible only to Minecraft 1.13 or later__ (more precisely: snapshot [17w47a][5] or later). This is because starting with snapshot 17w47a, Minecraft stores statistics very differently from before. In the process of updating _MinecraftStats_ for 1.13, the complete infrastructure has been rewritten and is in no way compatible to older servers.
 
 If your server runs Minecraft 1.12.2 or prior, please use [_MinecraftStats 1.0_][3] and do not follow this guide any further, but use the old guide.
+
+I am trying to keep the statistics up to date with Minecraft snapshots. Since Mojang often decide to rename entity IDs, this may mean that compatibility to a prior release version of Minecraft breaks. If you notice such a case, please don't hesitate to [open an issue][4] about that!
 
 #### Migrating
 If you used _MinecraftStats_ 1.0 before, the only way to migrate is delete it and use this new version instead.
@@ -47,6 +49,9 @@ After the update, you will have a `data` directory that contains everything the 
 _MinecraftStats_ does not include any means for automatic updates - you need to take care of this yourself. The most common way to do it on Linux servers is by creating a cronjob that starts the update script regularly, e.g., every 10 minutes.
 
 If you're using Windows to run your server... shame on you, figure something out!
+
+#### FTP
+In case you use FTP to transfer the JSON files to another machine before updating, please note that _MinecraftStats_ uses a JSON file's last modified date in order to determine a player's last play time. Therefore, in order for it to function correctly, the last modified timestamps of the files need to be retained.
 
 #### Options
 
