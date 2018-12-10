@@ -122,7 +122,7 @@ mcstats.registry.append(
 # Illagers (all types)
 mcstats.registry.append(
     mcstats.MinecraftStat(
-        'score_illagers',
+        'kill_illagers',
         {
             'title': 'Cleanser',
             'desc': 'Illagers killed',
