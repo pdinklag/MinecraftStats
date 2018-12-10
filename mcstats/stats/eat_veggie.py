@@ -24,5 +24,6 @@ mcstats.registry.append(
             mcstats.StatReader(['minecraft:used','minecraft:bread']),
             mcstats.StatReader(['minecraft:used','minecraft:mushroom_stew']),
             mcstats.StatReader(['minecraft:used','minecraft:beetroot_soup']),
+            mcstats.StatReader(['minecraft:used','minecraft:sweet_berries']),
         ])
     ))
