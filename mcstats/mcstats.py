@@ -1,3 +1,4 @@
+import functools
 import json
 import re
 
@@ -112,9 +113,23 @@ class CrownScore:
         self.score[0] = 4*self.score[1] + 2*self.score[2] + self.score[3]
 
 class CrownScoreRanking(Ranking):
+    def compare(a, b):
+        a = a[1].score
+        b = b[1].score
+        if a[0] != b[0]: # crown score first
+            return a[0] - b[0]
+        if a[1] != b[1]: # gold medals second
+            return a[1] - b[1]
+        elif a[2] != b[2]: # silver medals third
+            return a[2] - b[2]
+        else: # bronze medals finally
+            return a[3] - b[3]
+
     def sort(self):
         self.ranking = sorted(
-            self.ranking, key = lambda x : x[1].score[0], reverse = True)
+            self.ranking,
+            key = functools.cmp_to_key(CrownScoreRanking.compare),
+            reverse = True)
 
 # the global registry
 registry = []
