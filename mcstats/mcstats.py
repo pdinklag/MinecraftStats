@@ -70,6 +70,33 @@ class StatListLengthReader:
     def read(self, stats):
         return len(read(stats, self.path, []))
 
+# Ranking entries
+class RankingEntry:
+    def __init__(self, id, value):
+        self.id = id
+        self.value = value
+
+    def __eq__(self, other):
+        return self.id == other.id and self.value == other.value
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        if self.value != other.value:
+            return self.value < other.value
+        else: # use player ID as fallback to keep things deterministic
+            return self.id < other.id
+
+    def __gt__(self, other):
+        return not self.__eq__(other) and not self.__lt__(other)
+
+    def __le__(self, other):
+        return self.__eq__(other) or self.__lt__(other)
+
+    def __ge__(self, other):
+        return self.__eq__(other) or self.__gt__(other)
+
 # Rankings
 class Ranking:
     def __init__(self):
@@ -77,13 +104,11 @@ class Ranking:
 
     # enter the player with id and value into the ranking
     def enter(self, id, value):
-        self.ranking.append((id, value))
+        self.ranking.append(RankingEntry(id, value))
 
-    # sort ranking and return
+    # sort ranking
     def sort(self):
-        # by default, sort values directly and in descending order
-        self.ranking = sorted(
-            self.ranking, key = lambda x : x[1], reverse = True)
+        self.ranking.sort(reverse=True)
 
 # Base for all minecraft stats
 class MinecraftStat(Ranking):
@@ -108,28 +133,34 @@ class CrownScore:
     def __init__(self):
         self.score = [0,0,0,0]
 
+    def __eq__(self, other):
+        return self.score == other.score
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        if self.score[0] != other.score[0]: # crown score
+            return self.score[0] < other.score[0]
+        elif self.score[1] != other.score[1]: # gold medals
+            return self.score[1] < other.score[1]
+        elif self.score[2] != other.score[2]: # silver medals
+            return self.score[2] < other.score[2]
+        else: # bronze medals
+            return self.score[3] < other.score[3]
+
+    def __gt__(self, other):
+        return not self.__eq__(other) and not self.__lt__(other)
+
+    def __le__(self, other):
+        return self.__eq__(other) or self.__lt__(other)
+
+    def __ge__(self, other):
+        return self.__eq__(other) or self.__gt__(other)
+
     def increase(self, i):
         self.score[i+1] += 1
         self.score[0] = 4*self.score[1] + 2*self.score[2] + self.score[3]
-
-class CrownScoreRanking(Ranking):
-    def compare(a, b):
-        a = a[1].score
-        b = b[1].score
-        if a[0] != b[0]: # crown score first
-            return a[0] - b[0]
-        if a[1] != b[1]: # gold medals second
-            return a[1] - b[1]
-        elif a[2] != b[2]: # silver medals third
-            return a[2] - b[2]
-        else: # bronze medals finally
-            return a[3] - b[3]
-
-    def sort(self):
-        self.ranking = sorted(
-            self.ranking,
-            key = functools.cmp_to_key(CrownScoreRanking.compare),
-            reverse = True)
 
 # the global registry
 registry = []

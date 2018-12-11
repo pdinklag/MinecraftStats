@@ -115,7 +115,7 @@ for mcUser in mcUsercache:
         players[uuid] = {'name': mcUser['name']}
 
 # update player data
-hof = mcstats.CrownScoreRanking()
+hof = mcstats.Ranking()
 
 for uuid, player in players.items():
     # cache name
@@ -219,8 +219,8 @@ for mcstat in mcstats.registry:
 
     # process crown score points
     for i in range(0, len(mcstat.ranking)):
-        (id, ranking) = mcstat.ranking[i]
-        player = players[id]
+        entry = mcstat.ranking[i]
+        player = players[entry.id]
         player['stats'][mcstat.name]['rank'] = i+1
 
         if i < 3:
@@ -228,8 +228,8 @@ for mcstat in mcstats.registry:
 
     # write ranking
     outRanking = []
-    for (id, value) in mcstat.ranking:
-        outRanking.append({'uuid':id,'value':value})
+    for entry in mcstat.ranking:
+        outRanking.append({'uuid':entry.id,'value':entry.value})
 
     with open(dbRankingsPath + '/' + mcstat.name + '.json', 'w') as rankingFile:
         json.dump(outRanking, rankingFile)
@@ -237,8 +237,8 @@ for mcstat in mcstats.registry:
     # set first rank in award info
     award = mcstat.meta
     if(len(mcstat.ranking) > 0):
-        (id, value) = mcstat.ranking[0]
-        award['best'] = {'uuid':id,'value':value}
+        best = mcstat.ranking[0]
+        award['best'] = {'uuid':best.id,'value':best.value}
 
     # add to award info list
     awards[mcstat.name] = award
@@ -246,11 +246,11 @@ for mcstat in mcstats.registry:
 # compute and write hall of fame
 hof.sort()
 outHallOfFame = []
-for (id, crown) in hof.ranking:
-    if crown.score[0] == 0:
+for entry in hof.ranking:
+    if entry.value.score[0] == 0:
         break
 
-    outHallOfFame.append({'uuid':id,'value':crown.score})
+    outHallOfFame.append({'uuid':entry.id,'value':entry.value.score})
 
 # write player data and construct player cache
 playerCache = dict()
