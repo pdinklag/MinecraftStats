@@ -2,7 +2,7 @@ from mcstats import mcstats
 
 mcstats.registry.append(
     mcstats.MinecraftStat(
-        'mine_tall_grass',
+        'mine_grass',
         {
             'title': 'Lawnmower',
             'desc': 'Grass removed',
