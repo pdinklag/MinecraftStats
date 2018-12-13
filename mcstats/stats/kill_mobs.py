@@ -1,5 +1,16 @@
 from mcstats import mcstats
 
+mcstats.registry.append(
+    mcstats.MinecraftStat(
+        'kill_any',
+        {
+            'title': 'Killing Spree!',
+            'desc': 'Total mobs killed',
+            'unit': 'int',
+        },
+        mcstats.StatReader(['minecraft:custom','minecraft:mob_kills'])
+    ))
+
 def create_kill_stat(mobId, title, mobText):
     mcstats.registry.append(
         mcstats.MinecraftStat(
@@ -12,14 +23,6 @@ def create_kill_stat(mobId, title, mobText):
             mcstats.StatReader(['minecraft:killed','minecraft:' + mobId])
         ))
 
-# According to MC-33710, the following mobs are not tracked and therefore
-# there are no stats for them:
-# - Ender Dragon
-# - Illusioners
-# - Iron Golems
-# - Snow Golems
-# - Vexes
-
 # Hostiles
 create_kill_stat('blaze','Extinguisher','Blazes')
 create_kill_stat('creeper','Creeper Creep','Creepers')
@@ -30,6 +33,7 @@ create_kill_stat('phantom','Phantom Shooter','Phantoms')
 create_kill_stat('shulker','Shulker Cracker','Shulkers')
 create_kill_stat('silverfish','Nasty Little...','Silverfish')
 create_kill_stat('slime','Swamp Lurker','Slimes')
+create_kill_stat('vex','Vex Hunter','Vexes')
 create_kill_stat('witch','Witch Hunter','Witches')
 create_kill_stat('wither_skeleton','Wither Or Not','Wither Skeletons')
 
@@ -37,8 +41,10 @@ create_kill_stat('wither_skeleton','Wither Or Not','Wither Skeletons')
 create_kill_stat('dolphin','Dolphin Hunter','Dolphins')
 create_kill_stat('llama','Caravan Bandit','Llamas')
 create_kill_stat('enderman','Enderman Ender','Endermen')
+create_kill_stat('iron_golem','Defense Down!','Iron Golems')
 create_kill_stat('panda','Kung FU! Panda','Pandas')
 create_kill_stat('polar_bear','Polar Hunter','Polar Bears')
+create_kill_stat('snow_golem','AntiFrosty','Snow Golems')
 create_kill_stat('zombie_pigman','Nether Gang War','Zombie Pigmen')
 
 # Passives
