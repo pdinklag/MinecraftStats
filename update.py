@@ -124,8 +124,7 @@ for uuid, player in players.items():
     # check if data file is available
     dataFilename = mcStatsDir + '/' + uuid + '.json'
     if not os.path.isfile(dataFilename):
-        print('no player data available for ' + name +
-            '(' + uuid + ')')
+        # got no data for this dude
         continue
 
     # get last play time and determine activity
@@ -157,7 +156,7 @@ for uuid, player in players.items():
             data = json.load(dataFile)
     except:
         print('failed to update player data for ' + name +
-            '(' + uuid + ')')
+            ' (' + uuid + ')')
         continue
 
     # check data version
@@ -166,9 +165,9 @@ for uuid, player in players.items():
     else:
         version = 0
 
-    if version < 1452:
+    if version < 1451: # 17w47a is the absolute minimum
         print('unsupported data version ' + str(version) + ' for ' + name +
-            '(' + uuid + ')')
+            ' (' + uuid + ')')
         continue
 
     # collapse stats
@@ -194,11 +193,12 @@ for uuid, player in players.items():
 
     # process stats
     for mcstat in mcstats.registry:
-        value = mcstat.read(stats)
-        playerStats[mcstat.name] = {'value':value}
+        if version >= mcstat.minVersion and version <= mcstat.maxVersion:
+            value = mcstat.read(stats)
+            playerStats[mcstat.name] = {'value':value}
 
-        if not inactive:
-            mcstat.enter(uuid, value)
+            if not inactive:
+                mcstat.enter(uuid, value)
 
     # init crown score
     if not inactive:
@@ -210,6 +210,10 @@ for uuid, player in players.items():
 awards = dict()
 
 for mcstat in mcstats.registry:
+    if not isinstance(mcstat, mcstats.Ranking):
+        # this may be a legacy stat that doesn't have its own ranking
+        continue
+
     if mcstat.name in awards:
         print('WARNING: stat name "' + mcstat.name + '" already in use')
         continue
