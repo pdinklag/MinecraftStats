@@ -116,12 +116,31 @@ class MinecraftStat(Ranking):
         self.name = name
         self.meta = meta
         self.reader = reader
+        self.minVersion = 1451 # 17w47a is the absolute minimum
+        self.maxVersion = float("inf")
 
     # enter the player with id and value into the ranking
     def enter(self, id, value):
         # only if greater than zero
         if value > 0:
             Ranking.enter(self, id, value)
+
+    # read the statistic value from the player stats
+    def read(self, stats):
+        return self.reader.read(stats)
+
+# Legacy statistics for supporting older data versions
+class LegacyStat:
+    def __init__(self, link, minVersion, maxVersion, reader):
+        self.link = link
+        self.name = link.name
+        self.minVersion = minVersion
+        self.maxVersion = maxVersion
+        self.reader = reader
+
+    # enter the player with id and value into the linked ranking
+    def enter(self, id, value):
+        self.link.enter(id, value)
 
     # read the statistic value from the player stats
     def read(self, stats):
