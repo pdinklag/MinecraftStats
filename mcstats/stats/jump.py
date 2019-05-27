@@ -8,5 +8,5 @@ mcstats.registry.append(
             'desc': 'Times jumped',
             'unit': 'int',
         },
-        mcstats.StatReader(['minecraft:custom','minecraft:fall_one_cm'])
+        mcstats.StatReader(['minecraft:custom','minecraft:jump'])
     ))
