@@ -9,6 +9,7 @@ mcstats.registry.append(
             'unit': 'int',
         },
         mcstats.StatSumReader([
+            mcstats.StatReader(['minecraft:used','minecraft:lingering_potion']),
             mcstats.StatReader(['minecraft:used','minecraft:potion']),
             mcstats.StatReader(['minecraft:used','minecraft:splash_potion'])
         ])
