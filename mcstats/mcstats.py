@@ -48,7 +48,7 @@ class StatSumMatchReader:
         self.path = path
         self.progs = []
         for p in patterns:
-            self.progs.append(re.compile(p))
+            self.progs.append(re.compile('^{}$'.format(p)))
 
     def read(self, stats):
         sum = 0
