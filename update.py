@@ -39,6 +39,11 @@ parser.add_argument('--store-uncompressed', required=False, action='store_true',
 
 args = parser.parse_args()
 
+def handle_error(e, die = False):
+    print(str(e))
+    if die:
+        exit(1)
+
 inactive_time = 86400 * args.inactive_days
 min_playtime = args.min_playtime
 skin_update_interval = 3600 * args.skin_update_interval
@@ -52,12 +57,10 @@ mcAdvancementsDir = mcWorldDir + '/advancements'
 
 # sanity checks
 if not os.path.isdir(args.server):
-    print('not a directory: ' + args.server)
-    exit(1)
+    handle_error('not a directory: ' + args.server, True)
 
 if not os.path.isdir(mcStatsDir):
-    print('no valid stat directory: ' + mcStatsDir)
-    exit(1)
+    handle_error('no valid stat directory: ' + mcStatsDir, True)
 
 dbFilename = args.database + '/db.json'
 dbCompressedFilename = args.database + '/db.json.gz'
@@ -92,9 +95,9 @@ if os.path.isfile(dbCompressedFilename):
 
         players = prev_db['players']
         last_update_time = prev_db['info']['updateTime']
-    except:
+    except Exception as e:
         print('error loading previous database: ' + dbCompressedFilename)
-        exit(1)
+        handle_error(e, True)
 else:
     last_update_time = 0
     players = dict()
@@ -103,9 +106,9 @@ else:
 try:
     with open(mcUsercacheFilename) as usercacheFile:
         mcUsercache = json.load(usercacheFile)
-except:
+except Exception as e:
     print('failed to read Minecraft user cache: ' + args.usercache)
-    exit(1)
+    handle_error(e, True)
 
 # update player database using Minecraft user cache
 # while Minecraft user cache entries can expire, the database entries do not
@@ -147,16 +150,18 @@ for uuid, player in players.items():
                     skin = False
 
                 player['skin'] = skin
-            except:
+            except Exception as e:
                 print('failed to update skin for ' + name)
+                handle_error(e)
 
     # load data
     try:
         with open(dataFilename) as dataFile:
             data = json.load(dataFile)
-    except:
+    except Exception as e:
         print('failed to update player data for ' + name +
             ' (' + uuid + ')')
+        handle_error(e)
         continue
 
     # check data version
