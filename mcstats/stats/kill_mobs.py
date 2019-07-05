@@ -40,7 +40,6 @@ create_kill_stat('wither_skeleton','Wither Or Not','Wither Skeletons')
 
 # Neutrals
 create_kill_stat('dolphin','Dolphin Hunter','Dolphins')
-create_kill_stat('llama','Caravan Bandit','Llamas')
 create_kill_stat('enderman','Enderman Ender','Endermen')
 create_kill_stat('iron_golem','Defense Down!','Iron Golems')
 create_kill_stat('panda','Kung FU! Panda','Pandas')
@@ -65,6 +64,21 @@ create_kill_stat('turtle','Super Mario','Turtles')
 create_kill_stat('villager','Bully','Villagers')
 create_kill_stat('wandering_trader','Trade Sanctions','Wandering Traders')
 create_kill_stat('wolf','Bad Dog!','Wolves and Dogs')
+
+# Llamas (including trader llamas)
+mcstats.registry.append(
+    mcstats.MinecraftStat(
+        'kill_llama',
+        {
+            'title': 'Caravan Bandit',
+            'desc': 'LLamas killed',
+            'unit': 'int',
+        },
+        mcstats.StatSumReader([
+            mcstats.StatReader(['minecraft:killed','minecraft:llama']),
+            mcstats.StatReader(['minecraft:killed','minecraft:trader_llama']),
+        ])
+    ))
 
 # Zombies (including Husks and Zombie Villagers)
 mcstats.registry.append(
