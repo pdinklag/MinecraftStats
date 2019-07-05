@@ -26,8 +26,8 @@ parser.add_argument('--server-name', type=str, required=False, default=None,
                     help='the server\'s display name (default: motd from server.properties)')
 parser.add_argument('--database', '-d', type=str, required=False, default='data',
                     help='path into which to store the MinecraftStats database (default: "data")')
-parser.add_argument('--skin-update-interval', type=int, required=False, default=24,
-                    help='update player skins every this many hours (default 24)')
+parser.add_argument('--profile-update-interval', type=int, required=False, default=3,
+                    help='update player skins and names every this many days (default 3)')
 parser.add_argument('--update-inactive', required=False, action='store_true',
                     help='if set, skins of inactive players are updated as well')
 parser.add_argument('--inactive-days', type=int, required=False, default=7,
@@ -46,7 +46,7 @@ def handle_error(e, die = False):
 
 inactive_time = 86400 * args.inactive_days
 min_playtime = args.min_playtime
-skin_update_interval = 3600 * args.skin_update_interval
+profile_update_interval = 86400 * args.profile_update_interval
 
 # paths
 mcUsercacheFilename = args.server + '/usercache.json'
@@ -121,9 +121,6 @@ for mcUser in mcUsercache:
 hof = mcstats.Ranking()
 
 for uuid, player in players.items():
-    # cache name
-    name = player['name']
-
     # check if data file is available
     dataFilename = mcStatsDir + '/' + uuid + '.json'
     if not os.path.isfile(dataFilename):
@@ -138,29 +135,45 @@ for uuid, player in players.items():
 
     # update skin
     if args.update_inactive or (not inactive):
-        if (not 'skin' in player) or (now - last_update_time > skin_update_interval):
+        if 'profile_time' in player:
+            profile_time = player['profile_time']
+        else:
+            profile_time = 0
+
+        if (not 'skin' in player) or (now - profile_time > profile_update_interval):
             try:
-                print('updating skin for ' + name + ' ...')
+                print('updating profile for ' + player['name'] + ' ...')
 
                 profile = mojang.get_player_profile(uuid)
                 try:
+                    # get name
+                    player['name'] = profile['profileName']
+
+                    # get skin
                     # only store suffix of url, the prefix is always the base url
                     skin = profile['textures']['SKIN']['url'][38:]
+
                 except:
                     skin = False
 
                 player['skin'] = skin
+
+                # profile updated
+                player['profile_time'] = now
+
             except Exception as e:
-                print('failed to update skin for ' + name)
+                print('failed to update profile for ' + player['name'])
                 handle_error(e)
+
+    # cache name
+    name = player['name']
 
     # load data
     try:
         with open(dataFilename) as dataFile:
             data = json.load(dataFile)
     except Exception as e:
-        print('failed to update player data for ' + name +
-            ' (' + uuid + ')')
+        print('failed to update player data for ' + name + ' (' + uuid + ')')
         handle_error(e)
         continue
 
@@ -268,10 +281,14 @@ for uuid, player in players.items():
     # skip players with no data
     if 'last' not in player:
         continue
+
     playerCache[uuid] = {
-        'name': player['name'],
-        'last': player['last'],
+        'name':         player['name'],
+        'last':         player['last'],
     }
+
+    if 'profile_time' in player:
+        playerCache[uuid]['profile_time'] = player['profile_time']
 
     if 'skin' in player:
         playerCache[uuid]['skin'] = player['skin']

@@ -38,7 +38,7 @@ Simply change into the installation directory and pass the path to your Minecraf
 ```python3 update.py -s /path/to/server```
 
 You may encounter the following messages during the update:
-* `updating skin for <player> ...` - the updater needs to download the player's skin URL every so often using Mojang's web API ,so that the browser won't have to do it later and slow the web application down. __If this fails__, make sure that Python is able to open `https` connections to `sessionserver.mojang.com`.
+* `updating profile for <player> ...` - the updater needs to download the player's skin URL every so often using Mojang's web API ,so that the browser won't have to do it later and slow the web application down. __If this fails__, make sure that Python is able to open `https` connections to `sessionserver.mojang.com`.
 * `unsupported data version 0 for <player>` - this means that `<player>` has not logged into your server for a while and his data format is still from Minecraft 1.12.2 or earlier.
 
 In case you encounter any error messages and can't find an explanation, don't hesistate to [open an issue][4].
