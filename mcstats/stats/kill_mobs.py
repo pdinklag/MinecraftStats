@@ -54,7 +54,6 @@ create_kill_stat('cow','Cow Tipper','Cows')
 create_kill_stat('horse','Horse Hater','Horses')
 create_kill_stat('fox','What Does The Fox Say?','Foxes')
 create_kill_stat('mooshroom','Mycelium Cowboy','Mooshrooms')
-create_kill_stat('ocelot','Kitty Killer','Ocelots and Cats')
 create_kill_stat('parrot','Stupid Bird!','Parrots')
 create_kill_stat('pig','Pork Chopper','Pigs')
 create_kill_stat('rabbit','Bunny Killer :(','Rabbits')
@@ -64,6 +63,21 @@ create_kill_stat('turtle','Super Mario','Turtles')
 create_kill_stat('villager','Bully','Villagers')
 create_kill_stat('wandering_trader','Trade Sanctions','Wandering Traders')
 create_kill_stat('wolf','Bad Dog!','Wolves and Dogs')
+
+# Cats (including ozelots)
+mcstats.registry.append(
+    mcstats.MinecraftStat(
+        'kill_ocelot',
+        {
+            'title': 'Kitty Killer',
+            'desc': 'Ocelots and Cats killed',
+            'unit': 'int',
+        },
+        mcstats.StatSumReader([
+            mcstats.StatReader(['minecraft:killed','minecraft:cat']),
+            mcstats.StatReader(['minecraft:killed','minecraft:ocelot']),
+        ])
+    ))
 
 # Llamas (including trader llamas)
 mcstats.registry.append(
