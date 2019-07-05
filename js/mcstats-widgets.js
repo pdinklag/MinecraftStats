@@ -144,7 +144,6 @@ function drawFace(img) {
     var canvas = $(img).parent('canvas')[0];
     var ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
-    ctx.mozImageSmoothingEnabled = false;
     ctx.drawImage(img, 8, 8, 8, 8, 0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 40, 8, 8, 8, 0, 0, canvas.width, canvas.height);
 }
