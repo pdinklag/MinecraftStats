@@ -49,8 +49,6 @@ min_playtime = args.min_playtime
 profile_update_interval = 86400 * args.profile_update_interval
 
 # paths
-mcUsercacheFilename = args.server + '/usercache.json'
-
 mcWorldDir = args.server + '/' + args.world;
 mcStatsDir = mcWorldDir + '/stats'
 mcAdvancementsDir = mcWorldDir + '/advancements'
@@ -102,20 +100,16 @@ else:
     last_update_time = 0
     players = dict()
 
-# read Minecraft user cache
+# find available player IDs in stats dir
 try:
-    with open(mcUsercacheFilename) as usercacheFile:
-        mcUsercache = json.load(usercacheFile)
+    for file in os.listdir(mcStatsDir):
+        if file.endswith('.json'):
+            uuid = file[:-5] # cut off '.json' extension
+            if not uuid in players:
+                players[uuid] = {}
 except Exception as e:
-    print('failed to read Minecraft user cache: ' + args.usercache)
+    print('failed to read player data directory: ' + args.mcStatsDir)
     handle_error(e, True)
-
-# update player database using Minecraft user cache
-# while Minecraft user cache entries can expire, the database entries do not
-for mcUser in mcUsercache:
-    uuid = mcUser['uuid']
-    if not uuid in players:
-        players[uuid] = {'name': mcUser['name']}
 
 # update player data
 hof = mcstats.Ranking()
@@ -134,7 +128,7 @@ for uuid, player in players.items():
     inactive = ((now - last) > inactive_time)
 
     # update skin
-    if args.update_inactive or (not inactive):
+    if (not 'name' in player) or args.update_inactive or (not inactive):
         if 'profile_time' in player:
             profile_time = player['profile_time']
         else:
@@ -142,7 +136,7 @@ for uuid, player in players.items():
 
         if (not 'skin' in player) or (now - profile_time > profile_update_interval):
             try:
-                print('updating profile for ' + player['name'] + ' ...')
+                print('updating profile for ' + uuid + ' ...')
 
                 profile = mojang.get_player_profile(uuid)
                 try:
@@ -162,7 +156,7 @@ for uuid, player in players.items():
                 player['profile_time'] = now
 
             except Exception as e:
-                print('failed to update profile for ' + player['name'])
+                print('failed to update profile for ' + player['name'] + ' (' + uuid + ')')
                 handle_error(e)
 
     # cache name
