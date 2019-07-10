@@ -1,14 +1,13 @@
 from mcstats import mcstats
-
 mcstats.registry.append(
     mcstats.MinecraftStat(
-        'place_glass',
+        'break_glass',
         {
-            'title': 'Glassworker',
-            'desc': 'Glass placed',
+            'title': 'Glassbreaker',
+            'desc': 'Glass broken',
             'unit': 'int',
         },
         mcstats.StatSumMatchReader(
-            ['minecraft:used'],
+            ['minecraft:mined'],
             ['minecraft:glass','minecraft:.*glass_pane','minecraft:.*stained_glass']),
     ))
