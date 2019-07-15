@@ -278,7 +278,7 @@ playerCache = dict()
 
 for uuid, player in players.items():
     # skip players with no data
-    if 'last' not in player:
+    if ('last' not in player) or ('name' not in player):
         continue
 
     playerCache[uuid] = {
