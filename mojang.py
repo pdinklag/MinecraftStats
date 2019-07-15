@@ -9,10 +9,17 @@ profile_api_url = 'https://sessionserver.mojang.com/session/minecraft/profile/'
 # may raise an error on failure
 def get_player_profile(uuid):
     compact_uuid = uuid.replace('-', '')
-    with urllib.request.urlopen(profile_api_url + compact_uuid) as response:
-        profile = json.loads(response.read().decode())
 
-    # FIXME: this is some heavy hardcoding right here, but what the API returns
-    # does not seem to follow any reasonnable logic
-    return json.loads(
-        base64.b64decode(profile['properties'][0]['value']).decode())
+    response_str = False
+    with urllib.request.urlopen(profile_api_url + compact_uuid) as response:
+        response_str = response.read().decode()
+
+    if response_str:
+        profile = json.loads(response_str)
+
+        # FIXME: this is some heavy hardcoding right here, but what the API returns
+        # does not seem to follow any reasonnable logic
+        return json.loads(
+            base64.b64decode(profile['properties'][0]['value']).decode())
+    else:
+        return False

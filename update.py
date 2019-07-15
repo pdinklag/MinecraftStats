@@ -137,9 +137,14 @@ for uuid, player in players.items():
         if (not 'skin' in player) or (now - profile_time > profile_update_interval):
             try:
                 print('updating profile for ' + uuid + ' ...')
-
-                profile = mojang.get_player_profile(uuid)
                 try:
+                    # try to get profile via Mojang API
+                    profile = mojang.get_player_profile(uuid)
+
+                    if not profile:
+                        # unavailable, maybe the account was deleted
+                        continue
+
                     # get name
                     player['name'] = profile['profileName']
 
