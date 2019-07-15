@@ -1,9 +1,20 @@
 mcstats.showPlayerList = function() {
     var tbody = '';
+
+    var numActive = 0;
+    var numInactive = 0;
+
     mcstats.playerIdsByName.forEach(function(uuid) {
         var player = mcstats.players[uuid];
 
-        var rowClass = mcstats.isActive(player.last) ? '' : 'inactive';
+        var active = mcstats.isActive(player.last);
+        if(active) {
+            ++numActive;
+        } else {
+            ++numInactive;
+        }
+
+        var rowClass = active ? '' : 'inactive';
         var widget = mcstats.playerWidget(uuid);
         var last = mcstats.lastOnlineWidget(player.last);
 
@@ -39,12 +50,25 @@ mcstats.showPlayerList = function() {
     // click event for checkbox
     $('#show-inactive').click(function() {
         $('.inactive').toggle(this.checked);
+        if(this.checked) {
+            $('#view-subtitle').html(`
+                Showing
+                <span class="text-data">${numActive+numInactive}</span>
+                players
+                ( <span class="text-success">${numActive}</span> active,
+                <span class="text-danger">${numInactive}</span> inactive).
+            `);
+        } else {
+            $('#view-subtitle').html(`Showing <span class="text-data">${numActive}</span> players.`);
+        }
     });
 
     // show
     mcstats.showView(
         'Player List',
-        false,
+        `
+            Showing <span class="text-data">${numActive}</span> players.
+        `,
         `
             Players who have not been online for over ${mcstats.info.inactiveDays} days
             are considered inactive and are not eligible for any awards.
