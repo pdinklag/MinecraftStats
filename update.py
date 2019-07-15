@@ -23,7 +23,7 @@ parser.add_argument('--server', '-s', type=str, required=True,
 parser.add_argument('--world', '-w', type=str, required=False, default='world',
                     help='name of the server\'s main world that contains the stats directory (default "world")')
 parser.add_argument('--server-name', type=str, required=False, default=None,
-                    help='the server\'s display name (default: motd from server.properties)')
+                    help='the server\'s display name - supports Minecraft color codes (default: motd from server.properties)')
 parser.add_argument('--database', '-d', type=str, required=False, default='data',
                     help='path into which to store the MinecraftStats database (default: "data")')
 parser.add_argument('--profile-update-interval', type=int, required=False, default=3,

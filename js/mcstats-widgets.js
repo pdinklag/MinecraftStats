@@ -180,3 +180,45 @@ mcstats.playerWidget = function(uuid, skinCss = 'textw-1_5 texth-1_5 align-basel
         return `<span class="text-muted">(nobody)</span>`;
     }
 };
+
+// Remove color codes from a color coded string
+mcstats.removeColorCodes = function(str) {
+    nofmt = ''
+    for(i = 0; i < str.length; i++) {
+        if(str.charCodeAt(i) == 167) {
+            ++i; // skip color code
+        } else {
+            nofmt += str[i];
+        }
+    }
+    return nofmt;
+}
+
+// Create HTML for a color coded string (e.g. server MOTD)
+mcstats.formatColorCode = function(str) {
+    html = '';
+
+    color = false;
+    level = 0;
+
+    for(i = 0; i < str.length; i++) {
+        if(str.charCodeAt(i) == 167) {
+            code = str[i+1];
+            if(code == 'r') {
+                // reset
+                html += `</span>`.repeat(level);
+                level = 0;
+            } else {
+                // style
+                html += `<span class="mc-text-${code}">`;
+                ++level;
+            }
+            ++i;
+        } else {
+            html += str[i];
+        }
+    }
+
+    html += `</span>`.repeat(level);
+    return html;
+};

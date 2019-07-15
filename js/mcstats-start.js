@@ -11,14 +11,17 @@ loader.addRequest('data/db.json.gz', function(db) {
     mcstats.hof = db.hof;
 
     // fill server info
-    $('title').html(`${mcstats.info.serverName} &ndash; Stats`);
-    $('#server-name').text(mcstats.info.serverName);
+    serverName = JSON.parse('"' + mcstats.info.serverName + '"');
+    serverNameNoFmt = mcstats.removeColorCodes(serverName);
+
+    $('title').html(`${serverNameNoFmt} &ndash; Stats`);
+    $('#server-name').html(mcstats.formatColorCode(serverName));
     $('#update-time').text(formatTime(mcstats.info.updateTime));
 
     if(!mcstats.info.hasIcon) {
         $('#info #server-icon').hide();
     } else {
-        $('#info #server-icon').attr('title', mcstats.info.serverName);
+        $('#info #server-icon').attr('title', serverNameNoFmt);
     }
 
     // sort award keys by award title

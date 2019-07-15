@@ -60,7 +60,7 @@ The `update.py` script accepts the following command-line options (and some more
 * `-s <server>` - the path to your Minecraft server. This is the only __required__ option.
 * `-w <world>` - if your server's main world (the one that contains the `stats` directory) is not named "world", pass its alternate name here.
 * `-d <path>` - where to store the database ("data" per default). Note that the web application will only work if the database is in a directory called `data` next to `index.html`. You should not need this option unless you don't run the updater from within the web directory.
-* `--server-name <name>` - specify the server's name displayed in the web app's heading. By default, the updater will read your `server.properties` file and use the `motd` setting, i.e., the same name that players see in the game.
+* `--server-name <name>` - specify the server's name displayed in the web app's heading. Minecraft color codes are supported! By default, the updater will read your `server.properties` file and use the `motd` setting, i.e., the same name that players see in the game's server browser.
 * `--inactive-days <days>` - if a player does not join the server for more than `<days>` days (default: 7), then he is no longer eligible for any awards.
 * `--min-playtime <minutes>` - only players who have played at least `<minutes>` minues (default: 0) on the server are eligible for awards.
 

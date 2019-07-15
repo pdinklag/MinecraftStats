@@ -123,3 +123,30 @@ a:hover { color: #ACF; }
     background-position: top left;
     background-repeat: repeat;
 }
+
+/* Minecraft text formattings */
+.mc-text-0 { color: #000000; } /* black */
+.mc-text-1 { color: #0000AA; } /* dark_blue */
+.mc-text-2 { color: #00AA00; } /* dark_green */
+.mc-text-3 { color: #00AAAA; } /* dark_aqua */
+.mc-text-4 { color: #AA0000; } /* dark_red */
+.mc-text-5 { color: #AA00AA; } /* dark_purple */
+.mc-text-6 { color: #FFAA00; } /* gold */
+.mc-text-7 { color: #AAAAAA; } /* gray */
+.mc-text-8 { color: #555555; } /* dark_gray */
+.mc-text-9 { color: #5555FF; } /* blue */
+.mc-text-a { color: #55FF55; } /* green */
+.mc-text-b { color: #55FFFF; } /* aqua */
+.mc-text-c { color: #FF5555; } /* red */
+.mc-text-d { color: #FF55FF; } /* light_purple */
+.mc-text-e { color: #FFFF55; } /* yellow */
+.mc-text-f { color: #FFFFFF; } /* white */
+.mc-text-k { /* obfuscated */
+        transform: scale(1, -1) translateY(-1px);
+        text-shadow: -1.5px 1.5px;
+        display: inline-block;
+}
+.mc-text-l { font-weight: bold; } /* bold */
+.mc-text-m { text-decoration: line-through; } /* strikethrough */
+.mc-text-n { text-decoration: underline; } /* underline */
+.mc-text-o { font-style: italic; } /* underline */
