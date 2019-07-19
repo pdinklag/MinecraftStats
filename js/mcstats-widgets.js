@@ -155,27 +155,40 @@ mcstats.faceWidget = function(skinUrl, css = '') {
         </canvas>`;
 }
 
-// Create a player widget
+// Player widget
+mcstats.makePlayerWidget = function(uuid, skinCss, asLink) {
+    // get player
+    p = mcstats.players[uuid];
+
+    // get player's skin
+    if(p['skin']) {
+        // compile skin URL
+        skin = 'https://textures.minecraft.net/texture/' + p['skin'];
+    } else {
+        // default skin - find out whether it's Steve or Alex
+        var even = parseInt(uuid[ 7], 16) ^
+                   parseInt(uuid[15], 16) ^
+                   parseInt(uuid[23], 16) ^
+                   parseInt(uuid[31], 16);
+
+        skin = 'img/skins/' + (even ? 'alex' : 'steve') + '.png';
+    }
+
+    return mcstats.faceWidget(skin, skinCss) +
+        (asLink ? `<a href="#player:${uuid}">${p.name}</a>` : p.name);
+}
+
 mcstats.playerWidget = function(uuid, skinCss = 'textw-1_5 texth-1_5 align-baseline mr-1', asLink = true) {
     if(uuid) {
-        var p = mcstats.players[uuid];
-
-        // get player's skin
-        if(p['skin']) {
-            // compile skin URL
-            skin = 'https://textures.minecraft.net/texture/' + p['skin'];
+        if(uuid in mcstats.players) {
+            return mcstats.makePlayerWidget(uuid, skinCss, asLink);
         } else {
-            // default skin - find out whether it's Steve or Alex
-            var even = parseInt(uuid[ 7], 16) ^
-                       parseInt(uuid[15], 16) ^
-                       parseInt(uuid[23], 16) ^
-                       parseInt(uuid[31], 16);
-
-            skin = 'img/skins/' + (even ? 'alex' : 'steve') + '.png';
+            mcstats.cachePlayer(uuid, function(){
+                $('#' + uuid).html(
+                    mcstats.makePlayerWidget(uuid, skinCss, asLink));
+            });
+            return `<span id=${uuid}>${uuid}</span>`;
         }
-
-        return mcstats.faceWidget(skin, skinCss) +
-            (asLink ? `<a href="#player:${uuid}">${p.name}</a>` : p.name);
     } else {
         return `<span class="text-muted">(nobody)</span>`;
     }
