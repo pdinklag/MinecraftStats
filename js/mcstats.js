@@ -17,13 +17,34 @@ var mcstats = {
     awards: {},
     awardKeysByTitle: new Array(),
     players: {},
-    playerIdsByName: new Array(),
 };
 
 // Initialize client
 mcstats.init = function() {
     mcstats.infoBox.css('display', 'block');
     mcstats.content.css('display', 'block');
+}
+
+// Make sure a certain player is cached
+mcstats.cachePlayer = function(uuid, successFunc) {
+    // already cached, call success right away
+    if(uuid in mcstats.players) {
+        setTimeout(successFunc, 0);
+    } else {
+        // load from server
+        var key = uuid.substring(0, mcstats.info.cacheQ);
+        loadJson('data/playercache/' + key + '.json', function(cache) {
+            cache.forEach(function(entry) {
+                mcstats.players[entry['uuid']] = {
+                    'name': entry['name'],
+                    'skin': entry['skin']
+                };
+            });
+
+            // cached now, call success func
+            successFunc();
+        });
+    }
 }
 
 // Show loader and nothing else

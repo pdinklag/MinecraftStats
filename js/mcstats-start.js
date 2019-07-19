@@ -33,16 +33,6 @@ loader.addRequest('data/summary.json.gz', function(summary) {
         return mcstats.awards[a].title.localeCompare(
             mcstats.awards[b].title);
     });
-
-    // sort player UUIDs by player name
-    for(var uuid in mcstats.players) {
-        mcstats.playerIdsByName.push(uuid);
-    }
-
-    mcstats.playerIdsByName.sort(function(a,b) {
-        return mcstats.players[a].name.localeCompare(
-            mcstats.players[b].name);
-    });
 }, true); // compressed!
 
 // Start
