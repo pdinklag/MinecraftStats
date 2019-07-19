@@ -3,12 +3,12 @@ var loader = new Loader(function() {
     window.onhashchange(); // navigate
 });
 
-loader.addRequest('data/db.json.gz', function(db) {
+loader.addRequest('data/summary.json.gz', function(summary) {
     // load db
-    mcstats.info = db.info;
-    mcstats.players = db.players;
-    mcstats.awards = db.awards;
-    mcstats.hof = db.hof;
+    mcstats.info = summary.info;
+    mcstats.players = summary.players;
+    mcstats.awards = summary.awards;
+    mcstats.hof = summary.hof;
 
     // fill server info
     serverName = JSON.parse('"' + mcstats.info.serverName + '"');
