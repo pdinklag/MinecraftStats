@@ -333,6 +333,7 @@ for uuid in summaryPlayerIds:
     summaryPlayers[uuid] = {
         'name': player['name'],
         'skin': player['skin'] if ('skin' in player) else False,
+        'last': player['last'],
     }
 
 # write summary for client
@@ -357,6 +358,7 @@ for uuid, player in players.items():
         'uuid': uuid,
         'name': player['name'],
         'skin': player['skin'] if ('skin' in player) else False,
+        'last': player['last']
     })
 
 for key, cache in playercache.items():
