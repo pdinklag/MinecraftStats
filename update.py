@@ -346,6 +346,7 @@ info = {
     'serverName': args.server_name,
     'updateTime': int(now),
     'inactiveDays': args.inactive_days,
+    'minPlayTime': min_playtime,
     'cacheQ': playerCacheQ,
     'numPlayers': len(playerlist),
     'numActive': numActivePlayers,

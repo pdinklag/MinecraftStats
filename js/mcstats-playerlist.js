@@ -92,6 +92,12 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
                 </table>
             </div>
             </div>
+            <div class="mt-2 text-muted text-center text-shadow">
+                Players need to have played at least ${mcstats.info.minPlayTime} minutes
+                in order to appear in the statistics.<br/>
+                Players who have not been online for over ${mcstats.info.inactiveDays} days
+                are considered inactive and are not eligible for any awards.
+            </div>
             <div class="text-center mt-3">
                 <ul class="pagination justify-content-center">${paginator}</ul>
             </div>
@@ -116,8 +122,6 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
             `,
             `
                 Showing ${numPerPage} players per page.<br/>
-                Players who have not been online for over ${mcstats.info.inactiveDays} days
-                are considered inactive and are not eligible for any awards.
             `,
             false);
     }, true);
