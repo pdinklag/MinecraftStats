@@ -159,6 +159,15 @@ for uuid, player in players.items():
         print('unsupported data version ' + str(version) + ' for ' + uuid)
         continue
 
+    # collapse stats
+    stats = data['stats']
+
+    # get amount of time played
+    playtimeTicks = stats['minecraft:custom']['minecraft:play_one_minute'];
+    playtimeMinutes = playtimeTicks / (20 * 60);
+    if playtimeMinutes < min_playtime:
+        continue
+
     # get last play time and determine activity
     last = int(os.path.getmtime(dataFilename))
     player['last'] = last
@@ -205,15 +214,6 @@ for uuid, player in players.items():
 
     # cache name
     name = player['name']
-
-    # collapse stats
-    stats = data['stats']
-
-    # get amount of time played
-    playtimeTicks = stats['minecraft:custom']['minecraft:play_one_minute'];
-    playtimeMinutes = playtimeTicks / (20 * 60);
-    if playtimeMinutes < min_playtime:
-        continue
 
     # init database data
     playerStats = dict()
@@ -319,9 +319,8 @@ for uuid, player in players.items():
         if is_active(last):
             numActivePlayers += 1
 
-        if 'stats' in player:
-            with open(dbPlayerDataPath + '/' + uuid + '.json', 'w') as dataFile:
-                json.dump(player['stats'], dataFile)
+        with open(dbPlayerDataPath + '/' + uuid + '.json', 'w') as dataFile:
+            json.dump(player['stats'], dataFile)
 
 players = validPlayers
 
