@@ -102,9 +102,22 @@ window.onhashchange = function() {
         // open player view
         var uuid = hash.substr(8);
         mcstats.showPlayer(uuid);
-    } else if(hash == '#players') {
-        // go to player list
-        mcstats.showPlayerList();
+    } else if(hash.startsWith('#players')) {
+        // go to player list, showing only active
+        var page = 1;
+        var x = hash.indexOf(':');
+        if(x >= 0) {
+            page = parseInt(hash.substring(x+1));
+        }
+        mcstats.showPlayerList(page, false);
+    } else if(hash.startsWith('#allplayers')) {
+        // go to player list, showing only active
+        var page = 1;
+        var x = hash.indexOf(':');
+        if(x >= 0) {
+            page = parseInt(hash.substring(x+1));
+        }
+        mcstats.showPlayerList(page, true);
     } else if(hash == '#hof') {
         // go to hall of fame
         mcstats.showHof();
