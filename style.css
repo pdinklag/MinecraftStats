@@ -93,6 +93,32 @@ a:hover { color: #ACF; }
     background-color: rgba(0, 0, 0, 0.33);
 }
 
+/* Pagination */
+.page-link {
+    border-color: #888;
+    background-color: rgba(0, 0, 0, 0.33);
+    color: #FFF;
+}
+
+.page-link:hover {
+    border-color: #ACF;
+    background-color: rgba(0, 0, 0, 0.33);
+    color: #ACF;
+}
+
+.page-item.active .page-link {
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.33);
+    border-color: #FA4;
+    color: #FE0;
+}
+
+.page-item.disabled .page-link {
+    background-color: rgba(0, 0, 0, 0.33);
+    border-color: #888;
+    color: #888;
+}
+
 /* Specials */
 .rank   { color: #888; }
 .rank-1 { color: #FC0; }

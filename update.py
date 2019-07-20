@@ -2,6 +2,7 @@
 import argparse
 import gzip
 import json
+import math
 import os
 import re
 import shutil
@@ -34,6 +35,10 @@ parser.add_argument('--inactive-days', type=int, required=False, default=7,
                     help='number of days after which a player is considered inactive (default 7)')
 parser.add_argument('--min-playtime', type=int, required=False, default=0,
                     help='number of minutes a player needs to have played before being eligible for any awards (default 0)')
+parser.add_argument('--players-per-page', type=int, required=False, default=100,
+                    help='the number of players displayed on one page of the player list (default 100)')
+parser.add_argument('--player-cache-q', type=int, required=False, default=2,
+                    help='the UUID prefix length to build the playercache (default 2)')
 
 args = parser.parse_args()
 
@@ -43,6 +48,11 @@ def handle_error(e, die = False):
         exit(1)
 
 inactive_time = 86400 * args.inactive_days
+
+def is_active(last):
+    global inactive_time, now
+    return ((now - last) <= inactive_time)
+
 min_playtime = args.min_playtime
 profile_update_interval = 86400 * args.profile_update_interval
 
@@ -62,10 +72,15 @@ dbRankingsPath = args.database + '/rankings'
 dbPlayerDataPath = args.database + '/playerdata'
 dbPlayerCachePath = args.database + '/playercache'
 
-playerCacheQ = 2 # TODO: make parameter?
+playerCacheQ = args.player_cache_q
+playersPerPage = args.players_per_page
 
 dbPlayersFilename = args.database + '/players.json'
 dbSummaryFilename = args.database + '/summary.json.gz'
+
+dbPlayerListPath = args.database + '/playerlist'
+dbPlayerListAllFilename = dbPlayerListPath + '/all{}.json.gz'
+dbPlayerListActiveFilename = dbPlayerListPath + '/active{}.json.gz'
 
 # get server.properties motd if no server name is set
 if not args.server_name:
@@ -89,6 +104,9 @@ if not os.path.isdir(dbPlayerDataPath):
 
 if not os.path.isdir(dbPlayerCachePath):
     os.mkdir(dbPlayerCachePath)
+
+if not os.path.isdir(dbPlayerListPath):
+    os.mkdir(dbPlayerListPath)
 
 # load information from previous update
 if os.path.isfile(dbPlayersFilename):
@@ -145,10 +163,10 @@ for uuid, player in players.items():
     last = int(os.path.getmtime(dataFilename))
     player['last'] = last
 
-    inactive = ((now - last) > inactive_time)
+    active = is_active(last)
 
     # update skin
-    if (not 'name' in player) or args.update_inactive or (not inactive):
+    if (not 'name' in player) or args.update_inactive or active:
         if 'update' in player:
             update_time = player['update']
         else:
@@ -220,11 +238,11 @@ for uuid, player in players.items():
             value = mcstat.read(stats)
             playerStats[mcstat.name] = {'value':value}
 
-            if not inactive:
+            if active:
                 mcstat.enter(uuid, value)
 
     # init crown score
-    if not inactive:
+    if active:
         crown = mcstats.CrownScore()
         player['crown'] = crown
         hof.enter(uuid, crown)
@@ -276,15 +294,35 @@ for mcstat in mcstats.registry:
 validPlayers = dict()
 serverPlayers = dict()
 
+playerlist = []
+numActivePlayers = 0
+
 for uuid, player in players.items():
     if ('last' in player) and ('name' in player):
         validPlayers[uuid] = player
+
+        name = player['name']
+        skin = player['skin']
+        last = player['last']
+
         serverPlayers[uuid] = {
-            'name': player['name'],
-            'skin': player['skin'],
-            'last': player['last'],
+            'name': name,
+            'skin': skin,
+            'last': last,
             'update': player['update']
         }
+
+        clientInfo = {
+            'uuid': uuid,
+            'name': name,
+            'skin': skin,
+            'last': last,
+        }
+
+        playerlist.append(clientInfo)
+
+        if is_active(last):
+            numActivePlayers += 1
 
         if 'stats' in player:
             with open(dbPlayerDataPath + '/' + uuid + '.json', 'w') as dataFile:
@@ -309,7 +347,10 @@ info = {
     'serverName': args.server_name,
     'updateTime': int(now),
     'inactiveDays': args.inactive_days,
-    'cacheQ': playerCacheQ
+    'cacheQ': playerCacheQ,
+    'numPlayers': len(playerlist),
+    'numActive': numActivePlayers,
+    'playersPerPage': playersPerPage,
 }
 
 # write hall of fame for client
@@ -364,3 +405,19 @@ for uuid, player in players.items():
 for key, cache in playercache.items():
     with open(dbPlayerCachePath + '/' + key + '.json', 'w') as cacheFile:
         json.dump(cache, cacheFile)
+
+# write player list (all players)
+playerlist = sorted(playerlist, key=lambda x: x['name'].lower())
+for i in range(0, len(playerlist), playersPerPage):
+    page = int(i / playersPerPage)
+    with gzip.open(dbPlayerListAllFilename.format(page + 1), 'wb') as f:
+        f.write(json.dumps(
+            playerlist[i : i + playersPerPage]).encode())
+
+# write active player list
+playerlist = list(filter(lambda x: is_active(x['last']), playerlist))
+for i in range(0, len(playerlist), playersPerPage):
+    page = int(i / playersPerPage)
+    with gzip.open(dbPlayerListActiveFilename.format(page + 1), 'wb') as f:
+        f.write(json.dumps(
+            playerlist[i : i + playersPerPage]).encode())
