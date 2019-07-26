@@ -171,6 +171,9 @@ for uuid, player in players.items():
 
     playtimeMinutes = playtimeTicks / (20 * 60);
     if playtimeMinutes < min_playtime:
+        # invalidate player and continue
+        player.pop('name', None)
+        player.pop('last', None)
         continue
 
     # get last play time and determine activity
