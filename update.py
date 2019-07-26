@@ -191,7 +191,12 @@ for uuid, player in players.items():
     stats = data['stats']
 
     # get amount of time played
-    playtimeTicks = stats['minecraft:custom']['minecraft:play_one_minute'];
+    playtimeTicks = 0
+    if 'minecraft:custom' in stats:
+        custom = stats['minecraft:custom']
+        if 'minecraft:play_one_minute' in custom:
+            playtimeTicks = custom['minecraft:play_one_minute']
+
     playtimeMinutes = playtimeTicks / (20 * 60);
     if playtimeMinutes < min_playtime:
         continue
