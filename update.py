@@ -82,6 +82,12 @@ dbPlayerListPath = args.database + '/playerlist'
 dbPlayerListAllFilename = dbPlayerListPath + '/all{}.json.gz'
 dbPlayerListActiveFilename = dbPlayerListPath + '/active{}.json.gz'
 
+# clean old format database
+oldDbFilename = args.database + '/db.json.gz'
+if os.path.isfile(oldDbFilename):
+    print('Removing deprecated database file: ' + oldDbFilename)
+    os.remove(oldDbFilename)
+
 # get server.properties motd if no server name is set
 if not args.server_name:
     p = re.compile('^motd=(.+)$')
