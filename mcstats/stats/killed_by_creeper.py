@@ -4,7 +4,7 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'killed_by_creeper',
         {
-            'title': 'Look Behind You',
+            'title': 'Keboom!',
             'desc': 'Times Killed by Creepers',
             'unit': 'int',
         },

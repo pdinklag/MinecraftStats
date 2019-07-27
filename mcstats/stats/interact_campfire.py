@@ -2,10 +2,10 @@ from mcstats import mcstats
 
 mcstats.registry.append(
     mcstats.MinecraftStat(
-        'interact_camp_fire',
+        'interact_campfire',
         {
             'title': 'Primitive Technology',
-            'desc': 'Cap fire interactions',
+            'desc': 'Campfire interactions',
             'unit': 'int',
         },
         mcstats.StatReader(['minecraft:custom','minecraft:interact_with_campfire']),
