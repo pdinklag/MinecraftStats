@@ -11,7 +11,7 @@ mcstats.registry.append(
         mcstats.StatReader(['minecraft:custom','minecraft:mob_kills'])
     ))
 
-def create_kill_stat(mobId, title, mobText):
+def create_kill_stat(mobId, title, mobText, minVersion = 0):
     mcstats.registry.append(
         mcstats.MinecraftStat(
             'kill_' + mobId,
@@ -20,7 +20,8 @@ def create_kill_stat(mobId, title, mobText):
                 'desc': mobText + ' killed',
                 'unit': 'int',
             },
-            mcstats.StatReader(['minecraft:killed','minecraft:' + mobId])
+            mcstats.StatReader(['minecraft:killed','minecraft:' + mobId]),
+            minVersion
         ))
 
 # Hostiles
@@ -29,8 +30,10 @@ create_kill_stat('creeper','Creeper Creep','Creepers')
 create_kill_stat('endermite','End Ratter','Endermite')
 create_kill_stat('ghast','Tear Drinker','Ghasts')
 create_kill_stat('magma_cube','Magma Cream','Magma Cubes')
-create_kill_stat('phantom','Phantom Shooter','Phantoms')
-create_kill_stat('ravager','Ravaging!','Ravagers')
+create_kill_stat('phantom','Phantom Shooter','Phantoms',1467) # added in 18w07a
+# Note: Ravagers had been added as Illager Beats in 18w43a (1901)
+# support for that snapshot may be added on demand
+create_kill_stat('ravager','Ravaging!','Ravagers',1930) # changed in 19w05a
 create_kill_stat('shulker','Shulker Cracker','Shulkers')
 create_kill_stat('silverfish','Nasty Little...','Silverfish')
 create_kill_stat('slime','Swamp Lurker','Slimes')
@@ -39,10 +42,10 @@ create_kill_stat('witch','Witch Hunter','Witches')
 create_kill_stat('wither_skeleton','Wither Or Not','Wither Skeletons')
 
 # Neutrals
-create_kill_stat('dolphin','Dolphin Hunter','Dolphins')
+create_kill_stat('dolphin','Dolphin Hunter','Dolphins',1482) # added in 18w15a
 create_kill_stat('enderman','Enderman Ender','Endermen')
 create_kill_stat('iron_golem','Defense Down!','Iron Golems')
-create_kill_stat('panda','Kung FU! Panda','Pandas')
+create_kill_stat('panda','Kung FU! Panda','Pandas',1901) # added in 18w43a
 create_kill_stat('polar_bear','Polar Hunter','Polar Bears')
 create_kill_stat('snow_golem','AntiFrosty','Snow Golems')
 create_kill_stat('zombie_pigman','Nether Gang War','Zombie Pigmen')
@@ -52,16 +55,16 @@ create_kill_stat('bat','Bat Flap','Bats')
 create_kill_stat('chicken','Chicken Griller','Chickens')
 create_kill_stat('cow','Cow Tipper','Cows')
 create_kill_stat('horse','Horse Hater','Horses')
-create_kill_stat('fox','What Does The Fox Say?','Foxes')
+create_kill_stat('fox','What Does The Fox Say?','Foxes',1932) # added in 19w07a
 create_kill_stat('mooshroom','Mycelium Cowboy','Mooshrooms')
 create_kill_stat('parrot','Stupid Bird!','Parrots')
 create_kill_stat('pig','Pork Chopper','Pigs')
 create_kill_stat('rabbit','Bunny Killer :(','Rabbits')
 create_kill_stat('sheep','Big Bad Wolf','Sheep')
 create_kill_stat('squid','Pool Cleaner','Squids')
-create_kill_stat('turtle','Super Mario','Turtles')
+create_kill_stat('turtle','Super Mario','Turtles',1467) # added in 18w07a
 create_kill_stat('villager','Bully','Villagers')
-create_kill_stat('wandering_trader','Trade Sanctions','Wandering Traders')
+create_kill_stat('wandering_trader','Trade Sanctions','Wandering Traders',1930) # added in 19w05a
 create_kill_stat('wolf','Bad Dog!','Wolves and Dogs')
 
 # Cats (including ozelots)
@@ -189,4 +192,5 @@ mcstats.registry.append(
             mcstats.StatReader(['minecraft:killed','minecraft:pufferfish']),
             mcstats.StatReader(['minecraft:killed','minecraft:tropical_fish']),
         ]),
+        1471 # fish mobs added in 18w08b
     ))

@@ -111,13 +111,13 @@ class Ranking:
 
 # Base for all minecraft stats
 class MinecraftStat(Ranking):
-    def __init__(self, name, meta, reader):
+    def __init__(self, name, meta, reader, minVersion = 1451, maxVersion = float("inf")):
         Ranking.__init__(self)
         self.name = name
         self.meta = meta
         self.reader = reader
-        self.minVersion = 1451 # 17w47a is the absolute minimum
-        self.maxVersion = float("inf")
+        self.minVersion = max(minVersion, 1451) # 1451 = 17w47a is the absolute minimum
+        self.maxVersion = maxVersion
 
     # enter the player with id and value into the ranking
     def enter(self, id, value):

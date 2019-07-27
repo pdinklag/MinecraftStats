@@ -8,5 +8,6 @@ mcstats.registry.append(
             'desc': 'Bells rung',
             'unit': 'int',
         },
-        mcstats.StatReader(['minecraft:custom','minecraft:bell_ring'])
+        mcstats.StatReader(['minecraft:custom','minecraft:bell_ring']),
+        1907 # bells added in 18w44a
     ))

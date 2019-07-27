@@ -15,5 +15,6 @@ mcstats.registry.append(
                 'minecraft:.+_coral_fan',
                 'minecraft:.+_coral_wall_fan',
             ]
-        )
+        ),
+        1473 # corals added in 18w10a
     ))

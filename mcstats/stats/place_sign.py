@@ -1,22 +1,22 @@
 from mcstats import mcstats
 
 mainStat = mcstats.MinecraftStat(
-    'place_sign',
-    {
-        'title': 'README.TXT',
-        'desc': 'Signs placed',
-        'unit': 'int',
-    },
-    # subtract mined from used
-    mcstats.StatDiffReader(
-        mcstats.StatSumMatchReader(
-            ['minecraft:used'],['minecraft:.+_sign']),
-        mcstats.StatSumMatchReader(
-            ['minecraft:mined'],['minecraft:.+_sign'])
+        'place_sign',
+        {
+            'title': 'README.TXT',
+            'desc': 'Signs placed',
+            'unit': 'int',
+        },
+        # subtract mined from used
+        mcstats.StatDiffReader(
+            mcstats.StatSumMatchReader(
+                ['minecraft:used'],['minecraft:.+_sign']),
+            mcstats.StatSumMatchReader(
+                ['minecraft:mined'],['minecraft:.+_sign'])
+        ),
+        1901 # signs were updated in 18w43a
     )
-)
 
-mainStat.minVersion = 1901 # signs were updated in 18w43a
 mcstats.registry.append(mainStat)
 
 # Support for 1.13
