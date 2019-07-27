@@ -141,7 +141,7 @@ mcstats.awardWidget = function(id) {
 
 // Get a player face widget
 function drawFace(img) {
-    var canvas = $(img).parent('canvas')[0];
+    var canvas = img.parentNode;
     var ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
     ctx.drawImage(img, 8, 8, 8, 8, 0, 0, canvas.width, canvas.height);
@@ -184,8 +184,8 @@ mcstats.playerWidget = function(uuid, skinCss = 'textw-1_5 texth-1_5 align-basel
             return mcstats.makePlayerWidget(uuid, skinCss, asLink);
         } else {
             mcstats.cachePlayer(uuid, function(){
-                $('#' + uuid).html(
-                    mcstats.makePlayerWidget(uuid, skinCss, asLink));
+                document.getElementById(uuid).innerHTML =
+                    mcstats.makePlayerWidget(uuid, skinCss, asLink);
             });
             return `<span id=${uuid}>${uuid}</span>`;
         }

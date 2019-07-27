@@ -14,14 +14,15 @@ loader.addRequest('data/summary.json.gz', function(summary) {
     serverName = JSON.parse('"' + mcstats.info.serverName + '"');
     serverNameNoFmt = mcstats.removeColorCodes(serverName);
 
-    $('title').html(`${serverNameNoFmt} &ndash; Stats`);
-    $('#server-name').html(mcstats.formatColorCode(serverName));
-    $('#update-time').text(formatTime(mcstats.info.updateTime));
+    document.title.innerHTML = `${serverNameNoFmt} &ndash; Stats`;
+    document.getElementById('server-name').innerHTML = mcstats.formatColorCode(serverName);
+    document.getElementById('update-time').textContent = formatTime(mcstats.info.updateTime);
 
+    var serverIcon = document.getElementById('server-icon');
     if(!mcstats.info.hasIcon) {
-        $('#info #server-icon').hide();
+        serverIcon.style.display = 'none';
     } else {
-        $('#info #server-icon').attr('title', serverNameNoFmt);
+        serverIcon.setAttribute('title', serverNameNoFmt);
     }
 
     // sort award keys by award title

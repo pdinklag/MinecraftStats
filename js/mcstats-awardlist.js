@@ -1,5 +1,5 @@
 mcstats.showAwardsList = function() {
-    mcstats.viewContent.empty();
+    viewHTML = '';
 
     var numPerRow = 3;
     var counter = 0;
@@ -34,7 +34,7 @@ mcstats.showAwardsList = function() {
         `;
 
         if(++counter >= numPerRow) {
-            mcstats.viewContent.append(`<div class="row">${currentRow}</div>`);
+            viewHTML += `<div class="row">${currentRow}</div>`;
             currentRow = '';
             counter = 0;
         }
@@ -44,9 +44,10 @@ mcstats.showAwardsList = function() {
         for(var i = counter; i < numPerRow; i++) {
             currentRow += `<div class="col-sm"></div>`;
         }
-        mcstats.viewContent.append(`<div class="row">${currentRow}</div>`);
+        viewHTML += `<div class="row">${currentRow}</div>`;
     }
 
     // show
+    mcstats.viewContent.innerHTML = viewHTML;
     mcstats.showView('Award Overview', false, false, false);
 };

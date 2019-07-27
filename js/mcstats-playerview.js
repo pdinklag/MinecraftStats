@@ -25,7 +25,7 @@ mcstats.showPlayer = function(uuid) {
                 `;
             });
 
-            mcstats.viewContent.html(`
+            mcstats.viewContent.innerHTML = `
                 <div class="mcstats-entry p-1">
                 <div class="round-box p-1">
                     <table class="table table-responsive-xs table-hover table-sm">
@@ -38,7 +38,7 @@ mcstats.showPlayer = function(uuid) {
                     </table>
                 </div>
                 </div>
-            `);
+            `;
 
             // show
             mcstats.showView(

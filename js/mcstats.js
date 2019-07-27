@@ -1,17 +1,15 @@
 // Initialize
 var mcstats = {
-    loader: $('#loader'),
+    loader: document.getElementById('loader'),
 
-    infoBox: $('#info'),
-    content: $('#content'),
-    footer: $('#footer'),
+    infoBox: document.getElementById('info'),
+    content: document.getElementById('content'),
 
-    view: $('#view'),
-    viewTitle: $('#view-title'),
-    viewSubtitle: $('#view-subtitle'),
-    viewDesc: $('#view-desc'),
-    viewIcon: $('#view-icon'),
-    viewContent: $('#view-content'),
+    viewTitle: document.getElementById('view-title'),
+    viewSubtitle: document.getElementById('view-subtitle'),
+    viewDesc: document.getElementById('view-desc'),
+    viewIcon: document.getElementById('view-icon'),
+    viewContent: document.getElementById('view-content'),
 
     info: {},
     awards: {},
@@ -21,8 +19,8 @@ var mcstats = {
 
 // Initialize client
 mcstats.init = function() {
-    mcstats.infoBox.css('display', 'block');
-    mcstats.content.css('display', 'block');
+    mcstats.infoBox.style.display = 'block';
+    mcstats.content.style.display = 'block';
 }
 
 // Make sure a certain player is cached
@@ -50,43 +48,49 @@ mcstats.cachePlayer = function(uuid, successFunc) {
 
 // Show loader and nothing else
 mcstats.showLoader = function() {
-    mcstats.content.hide();
-    mcstats.loader.show();
+    mcstats.content.style.display = 'none';
+    mcstats.loader.style.display = '';
 }
 
 // Show view - content shall be prepared before calling this
 mcstats.showView = function(title, subtitle, desc, iconUrl) {
-    mcstats.viewTitle.html(title);
+    mcstats.viewTitle.innerHTML = title;
 
     if(subtitle) {
-        mcstats.viewSubtitle.html(subtitle);
-        mcstats.viewSubtitle.show();
+        mcstats.viewSubtitle.innerHTML = subtitle;
+        mcstats.viewSubtitle.style.display = '';
     } else {
-        mcstats.viewSubtitle.hide();
+        mcstats.viewSubtitle.style.display = 'none';
     }
 
     if(desc) {
-        mcstats.viewDesc.html(desc);
-        mcstats.viewDesc.show();
+        mcstats.viewDesc.innerHTML = desc;
+        mcstats.viewDesc.style.display = '';
     } else {
-        mcstats.viewDesc.hide();
+        mcstats.viewDesc.style.display = 'none';
     }
 
     if(iconUrl) {
-        mcstats.viewIcon.attr('src', iconUrl);
-        mcstats.viewIcon.show();
+        mcstats.viewIcon.setAttribute('src', iconUrl);
+        mcstats.viewIcon.style.display = '';
     } else {
-        mcstats.viewIcon.hide();
+        mcstats.viewIcon.style.display = 'none';
     }
 
-    mcstats.loader.hide();
-    mcstats.content.show();
+    mcstats.loader.style.display = 'none';
+    mcstats.content.style.display = 'block';
 }
 
 // Collapse navbar when an item is clicked
-$('.nav-link').on('click', function() {
-    $('.collapse').collapse('hide');
-});
+var collapseNavbar = function() {
+    var collapse = document.getElementsByClassName('collapse')[0];
+    $(collapse).collapse('hide'); // explicit jQuery as long as Bootstrap requires it
+}
+
+var navlinks = document.getElementsByClassName('nav-link');
+for(var i = 0; i < navlinks.length; i++) {
+    navlinks[i].onclick = collapseNavbar;
+}
 
 // Register navigation event handler
 window.onhashchange = function() {

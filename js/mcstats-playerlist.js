@@ -73,7 +73,7 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
                 </li>`;
         }
 
-        mcstats.viewContent.html(`
+        mcstats.viewContent.innerHTML = `
             <div class="text-center mt-3">
                 <input id="show-inactive" type="checkbox" ${inactive ? 'checked' : ''}/>
                 <label for="show-inactive">Show inactive players</label>
@@ -101,15 +101,12 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
             <div class="text-center mt-3">
                 <ul class="pagination justify-content-center">${paginator}</ul>
             </div>
-        `);
-
-        // hide inactive by default
-        //$('.inactive').hide();
+        `;
 
         // click event for checkbox
-        $('#show-inactive').click(function() {
+        document.getElementById('show-inactive').onclick = function() {
             window.location.hash = (inactive ? '#players' : '#allplayers');
-        });
+        };
 
         // show
         mcstats.showView(
