@@ -17,6 +17,9 @@ mcstats.registry.append(
                 'minecraft:daylight_detector.*',
                 'minecraft:detector_rail',
                 'minecraft:lever',
+                'minecraft:observer',
+                'minecraft:comparator',
+                'minecraft:repeater',
                 'minecraft:.+_pressure_plate',
                 ]),
             mcstats.StatSumMatchReader(['minecraft:mined'],[
@@ -26,6 +29,9 @@ mcstats.registry.append(
                 'minecraft:daylight_detector.*',
                 'minecraft:detector_rail',
                 'minecraft:lever',
+                'minecraft:observer',
+                'minecraft:comparator',
+                'minecraft:repeater',
                 'minecraft:.+_pressure_plate',
                 ]),
         )
