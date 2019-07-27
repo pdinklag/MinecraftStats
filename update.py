@@ -137,6 +137,7 @@ except Exception as e:
     handle_error(e, True)
 
 # update player data
+serverVersion = 0
 hof = mcstats.Ranking()
 
 for uuid, player in players.items():
@@ -164,6 +165,8 @@ for uuid, player in players.items():
     if version < 1451: # 17w47a is the absolute minimum
         print('unsupported data version ' + str(version) + ' for ' + uuid)
         continue
+
+    serverVersion = max(serverVersion, version)
 
     # collapse stats
     stats = data['stats']
@@ -263,6 +266,11 @@ awards = dict()
 for mcstat in mcstats.registry:
     if not isinstance(mcstat, mcstats.Ranking):
         # this may be a legacy stat that doesn't have its own ranking
+        continue
+
+    if serverVersion < mcstat.minVersion:
+        print('stat "' + mcstat.name + '" is not supported by server version '
+              + str(serverVersion) + ' (required: ' + str(mcstat.minVersion) + ')')
         continue
 
     if mcstat.name in awards:
