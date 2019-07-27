@@ -4,7 +4,7 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'use_totem',
         {
-            'title': '9 lives',
+            'title': '9 Lives',
             'desc': 'Totems of Undying used',
             'unit': 'int',
         },
