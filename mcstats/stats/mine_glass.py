@@ -1,7 +1,7 @@
 from mcstats import mcstats
 mcstats.registry.append(
     mcstats.MinecraftStat(
-        'break_glass',
+        'mine_glass',
         {
             'title': 'Glassbreaker',
             'desc': 'Glass broken',
