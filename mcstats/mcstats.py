@@ -124,6 +124,8 @@ class MinecraftStat(Ranking):
         # only if greater than zero
         if value > 0:
             Ranking.enter(self, id, value)
+        #elif value < 0:
+        #    print('Negative value (' + str(value) + ') for stat ' + self.name)
 
     # read the statistic value from the player stats
     def read(self, stats):
