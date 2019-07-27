@@ -8,9 +8,6 @@ mcstats.registry.append(
             'desc': 'Bamboo harvested',
             'unit': 'int',
         },
-        mcstats.StatDiffReader(
-            mcstats.StatReader(['minecraft:picked_up','minecraft:bamboo']),
-            mcstats.StatReader(['minecraft:used','minecraft:bamboo'])
-        ),
+        mcstats.StatReader(['minecraft:picked_up','minecraft:bamboo']),
         1901 # bamboo added in 18w43a
     ))
