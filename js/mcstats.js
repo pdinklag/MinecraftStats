@@ -42,7 +42,7 @@ mcstats.cachePlayer = function(uuid, successFunc) {
 
             // cached now, call success func
             successFunc();
-        });
+        }, false, true);
     }
 }
 

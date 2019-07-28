@@ -1,8 +1,12 @@
 // Load a JSON file from an URL
-loadJson = function(url, successFunc, compressed = false) {
+loadJson = function(url, successFunc, compressed = false, allowCache = false) {
     // load zlib-compressed JSON as byte sequence, then decompress
     var req = new XMLHttpRequest();
     req.open('GET', url, true);
+
+    if(!allowCache) {
+        req.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    }
 
     if(compressed) {
         req.responseType = 'arraybuffer';
