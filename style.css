@@ -85,6 +85,7 @@ a:hover { color: #ACF; }
 }
 
 .table thead th {
+    color: #FFF;
     border-top-width: 0;
     border-bottom-color: #666;
 }
