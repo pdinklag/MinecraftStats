@@ -96,8 +96,16 @@ There are various readers, the usage of which is best explained by having a clos
 ## Removing awards
 In order to remove an award, find the corresponding module and delete or modify it to suit your needs.
 
+## License and Attribution
+
+_MinecraftStats_ is released under the [Creative Commons BY-SA 4.0][6] license. This means you can pretty much use and modify it freely, with the only requirements being attribution and not putting it under restrictive (e.g., commercial) licenses if modified.
+
+Concerning the _attribution_ part, the only requirement is that you provide a visible link to [this original repository][7] in your installment. The easiest way to do this is by not removing it from the `index.html` footer, where you will also find a reminder about this.
+
 [1]:http://minecraft.gamepedia.com/Statistics
 [2]:http://mine3.dvgaming.com/
 [3]:https://github.com/pdinklag/MinecraftStats/releases/tag/1.0
 [4]:https://github.com/pdinklag/MinecraftStats/issues
 [5]:https://minecraft.gamepedia.com/17w47a
+[6]:https://creativecommons.org/licenses/by-sa/4.0/
+[7]:https://github.com/pdinklag/MinecraftStats
