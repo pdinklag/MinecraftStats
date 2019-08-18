@@ -98,6 +98,15 @@ if not args.server_name:
                 args.server_name = m.group(1)
                 break
 
+# try and load usercache
+usercache = dict()
+try:
+    with open(args.server + '/usercache.json') as f:
+        for entry in json.load(f):
+            usercache[entry['uuid']] = entry['name']
+except:
+    print('Cannot use usercache.json for offline player lookup')
+
 # initialize database
 if not os.path.isdir(args.database):
     os.mkdir(args.database)
@@ -206,15 +215,21 @@ for uuid, player in players.items():
                     profile = mojang.get_player_profile(uuid)
 
                     if not profile:
-                        # unavailable, maybe the account was deleted
-                        continue
+                        # no profile available
+                        if uuid in usercache:
+                            # available in usercache, maybe an offline player
+                            player['name'] = usercache[uuid]
+                            skin = False
+                        else:
+                            # or maybe the account was deleted
+                            continue
+                    else:
+                        # get name
+                        player['name'] = profile['profileName']
 
-                    # get name
-                    player['name'] = profile['profileName']
-
-                    # get skin
-                    # only store suffix of url, the prefix is always the base url
-                    skin = profile['textures']['SKIN']['url'][38:]
+                        # get skin
+                        # only store suffix of url, the prefix is always the base url
+                        skin = profile['textures']['SKIN']['url'][38:]
 
                 except:
                     skin = False
