@@ -42,6 +42,7 @@ create_kill_stat('witch','Witch Hunter','Witches')
 create_kill_stat('wither_skeleton','Wither Or Not','Wither Skeletons')
 
 # Neutrals
+create_kill_stat('bee','Beegone!','Bees',2200) # added in 19w34a
 create_kill_stat('dolphin','Dolphin Hunter','Dolphins',1482) # added in 18w15a
 create_kill_stat('enderman','Enderman Ender','Endermen')
 create_kill_stat('iron_golem','Defense Down!','Iron Golems')
