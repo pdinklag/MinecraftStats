@@ -28,6 +28,7 @@ def create_kill_stat(mobId, title, mobText, minVersion = 0):
 create_kill_stat('blaze','Extinguisher','Blazes')
 create_kill_stat('creeper','Creeper Creep','Creepers')
 create_kill_stat('endermite','End Ratter','Endermite')
+create_kill_stat('ender_dragon','Dragon Hunter','Ender Dragons')
 create_kill_stat('ghast','Tear Drinker','Ghasts')
 create_kill_stat('magma_cube','Magma Cream','Magma Cubes')
 create_kill_stat('phantom','Phantom Shooter','Phantoms',1467) # added in 18w07a
