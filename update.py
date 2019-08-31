@@ -12,6 +12,7 @@ import time
 now = int(time.time())
 
 # import custom modules
+import javaproperties
 import mojang
 
 from mcstats import mcstats
@@ -91,11 +92,11 @@ if os.path.isfile(oldDbFilename):
 # get server.properties motd if no server name is set
 if not args.server_name:
     p = re.compile('^motd=(.+)$')
-    with open(args.server + '/server.properties') as f:
+    with open(args.server + '/server.properties', encoding='utf-8') as f:
         for line in f:
             m = p.match(line)
             if m:
-                args.server_name = m.group(1)
+                args.server_name = javaproperties.unescape(m.group(1))
                 break
 
 # try and load usercache
