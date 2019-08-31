@@ -11,7 +11,7 @@ mcstats.showAwardsList = function() {
 
         if(award.best) {
             holder = mcstats.playerWidget(award.best.uuid);
-            info = award.desc + ': ' + mcstats.formatValue(award.best.value, award.unit);
+            info = award.desc + ': ' + mcstats.formatValue(award.best.value, award.unit, true);
         } else {
             holder = mcstats.playerWidget(false);
             info = `<span class="text-muted">(${award.desc})</span>`;

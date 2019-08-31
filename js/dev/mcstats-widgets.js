@@ -34,7 +34,7 @@ wordSmallInt = function(x) {
 };
 
 // Format an award value
-mcstats.formatValue = function(value, unit) {
+mcstats.formatValue = function(value, unit, compact = false) {
     switch(unit) {
         case 'cm':
             if(value >= 100000) {
@@ -50,27 +50,67 @@ mcstats.formatValue = function(value, unit) {
 
         case 'ticks':
             seconds = value / 20; // ticks per second
-            value = '';
-            var higher = false;
+            if(compact) {
+                // small text-based view
+                value = '';
+                var higher = false;
 
-            if(seconds > 86400) {
-                value += Math.floor(seconds / 86400) + 'd ';
-                seconds %= 86400;
-                higher = true;
+                if(seconds > 86400) {
+                    value += Math.floor(seconds / 86400) + 'd ';
+                    seconds %= 86400;
+                    higher = true;
+                }
+
+                if(higher || seconds > 3600) {
+                    value += Math.floor(seconds / 3600) + 'h ';
+                    seconds %= 3600;
+                    higher = true;
+                }
+
+                if(higher || seconds > 60) {
+                    value += Math.floor(seconds / 60) + 'min ';
+                    seconds %= 60;
+                }
+
+                value += Math.floor(seconds) + 's';
+            } else {
+                // aligned tabular view
+                var table = `<table class="time-data"><tbody><tr>`
+                var higher = false;
+
+                if(seconds > 86400) {
+                    var days = Math.floor(seconds / 86400);
+                    table += `<td class="days">${days}d</td>`
+
+                    seconds %= 86400;
+                    higher = true;
+                } else {
+                    table += `<td class="days"></td>`
+                }
+
+                if(higher || seconds > 3600) {
+                    var hours = Math.floor(seconds / 3600);
+                    table += `<td class="hours">${hours}h</td>`
+                    seconds %= 3600;
+                    higher = true;
+                } else {
+                    table += `<td class="hours"></td>`
+                }
+
+                if(higher || seconds > 60) {
+                    var minutes = Math.floor(seconds / 60);
+                    table += `<td class="minutes">${minutes}min</td>`
+
+                    seconds %= 60;
+                } else {
+                    table += `<td class="minutes"></td>`
+                }
+
+                seconds = Math.floor(seconds);
+                table += `<td class="seconds">${seconds}s</td>`;
+                table += `</tbody></table>`;
+                return table;
             }
-
-            if(higher || seconds > 3600) {
-                value += Math.floor(seconds / 3600) + 'h ';
-                seconds %= 3600;
-                higher = true;
-            }
-
-            if(higher || seconds > 60) {
-                value += Math.floor(seconds / 60) + 'min ';
-                seconds %= 60;
-            }
-
-            value += Math.floor(seconds) + 's';
             break;
 
         case 'int':

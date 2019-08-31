@@ -47,6 +47,30 @@ a:hover { color: #ACF; }
 .text-info { color: #CCF !important; }
 .text-data { color: #FFA !important; }
 
+/* Time data */
+.time-data {
+    display: inline-block;
+    margin: 0;
+    border-spacing: 0;
+}
+
+.time-data td {
+    border: none;
+    text-align: right;
+    color: #FFA;
+    padding: 0;
+    margin: 0;
+}
+
+.time-data tr:hover {
+    background-color: transparent !important;
+}
+
+.time-data .days    { width: 3em; }
+.time-data .hours   { width: 2.75em; }
+.time-data .minutes { width: 3.75em; }
+.time-data .seconds { width: 2.75em; }
+
 /* Text styles */
 .text-shadow { text-shadow: 2px 2px rgba(0,0,0,0.5); }
 .text-underline { text-decoration: underline; }

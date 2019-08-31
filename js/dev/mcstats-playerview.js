@@ -10,7 +10,7 @@ mcstats.showPlayer = function(uuid) {
 
                 var award = mcstats.awards[id];
                 var awardWidget = mcstats.awardWidget(id);
-                var value = mcstats.formatValue(stat ? stat.value : 0, award.unit);
+                var value = mcstats.formatValue(stat ? stat.value : 0, award.unit, true);
                 var rankWidget = stat ? mcstats.rankWidget(stat.rank) : '';
 
                 tbody += `
