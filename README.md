@@ -48,7 +48,7 @@ In case you use FTP to transfer the JSON files to another machine before updatin
 
 #### Options
 
-The `update.py` script accepts the following command-line options (and some more unimportant ones, try passing `--help`):
+The `update.py` script accepts the following command-line options (and some less important ones, check `--help`):
 
 * `-s <server>` - the path to your Minecraft server. This is the only __required__ option.
 * `-w <world>` - if your server's main world (the one that contains the `stats` directory) is not named "world", pass its alternate name here.
@@ -56,6 +56,9 @@ The `update.py` script accepts the following command-line options (and some more
 * `--server-name <name>` - specify the server's name displayed in the web app's heading. Minecraft color codes are supported! By default, the updater will read your `server.properties` file and use the `motd` setting, i.e., the same name that players see in the game's server browser.
 * `--inactive-days <days>` - if a player does not join the server for more than `<days>` days (default: 7), then he is no longer eligible for any awards.
 * `--min-playtime <minutes>` - only players who have played at least `<minutes>` minues (default: 0) on the server are eligible for awards.
+* `--crown-gold <score>` - worth of a gold medal against the crown score (default: 4).
+* `--crown-silver <score>` - worth of a silver medal against the crown score (default: 2).
+* `--crown-bronze <score>` - worth of a bronze medal against the crown score (default: 1).
 
 #### Database structure
 The `data` directory will contain the following after running an update:

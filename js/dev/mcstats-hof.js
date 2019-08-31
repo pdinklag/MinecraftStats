@@ -37,14 +37,21 @@ mcstats.showHof = function() {
         </div>
     `;
 
+    var crown = mcstats.info.crown;
+    var formatCrown = function(x) {
+        return wordSmallInt(x) + ' point' + ((x > 1) ? 's' : '');
+    };
+
     // show
     mcstats.showView(
         'Hall of Fame',
         'Crown Score Ranking',
         `
             The crown score is calculated by the amount of medals a player
-            holds.<br/>A gold medal is worth four points, a silver medal is worth
-            two points and a bronze medal is worth one point.
+            holds.<br/>
+            A gold medal is worth <span class="rank-1">${formatCrown(crown[0])}</span>,
+            a silver medal is worth <span class="rank-2">${formatCrown(crown[1])}</span> and
+            a bronze medal is worth <span class="rank-3">${formatCrown(crown[2])}</span>.
         `,
         false);
 }

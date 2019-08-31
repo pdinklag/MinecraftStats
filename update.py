@@ -36,12 +36,22 @@ parser.add_argument('--inactive-days', type=int, required=False, default=7,
                     help='number of days after which a player is considered inactive (default 7)')
 parser.add_argument('--min-playtime', type=int, required=False, default=0,
                     help='number of minutes a player needs to have played before being eligible for any awards (default 0)')
+parser.add_argument('--crown-gold', type=int, required=False, default=4,
+                    help='the worth of a gold medal against the crown score (default 4)')
+parser.add_argument('--crown-silver', type=int, required=False, default=2,
+                    help='the worth of a silver medal against the crown score (default 2)')
+parser.add_argument('--crown-bronze', type=int, required=False, default=1,
+                    help='the worth of a bronze medal against the crown score (default 1)')
 parser.add_argument('--players-per-page', type=int, required=False, default=100,
                     help='the number of players displayed on one page of the player list (default 100)')
 parser.add_argument('--player-cache-q', type=int, required=False, default=2,
                     help='the UUID prefix length to build the playercache (default 2)')
 
 args = parser.parse_args()
+
+mcstats.CrownScore.gold = args.crown_gold
+mcstats.CrownScore.silver = args.crown_silver
+mcstats.CrownScore.bronze = args.crown_bronze
 
 def handle_error(e, die = False):
     print(str(e))
@@ -380,6 +390,7 @@ info = {
     'updateTime': int(now),
     'inactiveDays': args.inactive_days,
     'minPlayTime': min_playtime,
+    'crown': [args.crown_gold, args.crown_silver, args.crown_bronze],
     'cacheQ': playerCacheQ,
     'numPlayers': len(playerlist),
     'numActive': numActivePlayers,

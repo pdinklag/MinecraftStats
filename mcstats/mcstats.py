@@ -150,6 +150,14 @@ class LegacyStat:
 
 # Crown score (a meta statistic)
 class CrownScore:
+    # worth of medals
+    gold   = 4
+    silver = 2
+    bronze = 1
+
+    def compute(g, s, b):
+        return CrownScore.gold * g + CrownScore.silver * s + CrownScore.bronze * b
+
     def __init__(self):
         self.score = [0,0,0,0]
 
@@ -180,7 +188,7 @@ class CrownScore:
 
     def increase(self, i):
         self.score[i+1] += 1
-        self.score[0] = 4*self.score[1] + 2*self.score[2] + self.score[3]
+        self.score[0] = CrownScore.compute(self.score[1], self.score[2], self.score[3])
 
 # the global registry
 registry = []
