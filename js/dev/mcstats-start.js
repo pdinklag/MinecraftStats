@@ -14,7 +14,7 @@ loader.addRequest('data/summary.json.gz', function(summary) {
     serverName = JSON.parse('"' + mcstats.info.serverName + '"');
     serverNameNoFmt = mcstats.removeColorCodes(serverName);
 
-    document.title.innerHTML = `${serverNameNoFmt} &ndash; Stats`;
+    document.title = `${serverNameNoFmt} \u2013 Stats`;
     document.getElementById('server-name').innerHTML = mcstats.formatColorCode(serverName);
     document.getElementById('update-time').textContent = formatTime(mcstats.info.updateTime);
 
