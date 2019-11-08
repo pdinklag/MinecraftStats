@@ -18,6 +18,10 @@ import mojang
 from mcstats import mcstats
 from mcstats.stats import *
 
+statByName = dict()
+for mcstat in mcstats.registry:
+    statByName[mcstat.name] = mcstat
+
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description='Update Minecraft statistics')
 parser.add_argument('--server', '-s', type=str, required=True,
@@ -46,6 +50,16 @@ parser.add_argument('--players-per-page', type=int, required=False, default=100,
                     help='the number of players displayed on one page of the player list (default 100)')
 parser.add_argument('--player-cache-q', type=int, required=False, default=2,
                     help='the UUID prefix length to build the playercache (default 2)')
+parser.add_argument('--start-event', type=str, required=False, default=None,
+                    help='starts an event with the given ID')
+parser.add_argument('--event-name', type=str, required=False, default=None,
+                    help='the name of the event')
+parser.add_argument('--event-stat', type=str, required=False, default=None,
+                    help='the stat to use for the event')
+parser.add_argument('--stop-event', type=str, required=False, default=None,
+                    help='stops the event with the given ID')
+parser.add_argument('--delete-event', type=str, required=False, default=None,
+                    help='completely deletes the event with the given ID')
 
 args = parser.parse_args()
 
@@ -79,9 +93,20 @@ if not os.path.isdir(args.server):
 if not os.path.isdir(mcStatsDir):
     handle_error('no valid stat directory: ' + mcStatsDir, True)
 
+if args.start_event:
+    if not args.event_name:
+        handle_error('no event name given', True)
+
+    if not args.event_stat:
+        handle_error('no event stat given', True)
+
+    if not (args.event_stat in statByName):
+        handle_error('no such stat for event: ' + args.event_stat, True)
+
 dbRankingsPath = args.database + '/rankings'
 dbPlayerDataPath = args.database + '/playerdata'
 dbPlayerCachePath = args.database + '/playercache'
+dbEventsPath = args.database + '/events'
 
 playerCacheQ = args.player_cache_q
 playersPerPage = args.players_per_page
@@ -125,6 +150,9 @@ if not os.path.isdir(args.database):
 if not os.path.isdir(dbRankingsPath):
     os.mkdir(dbRankingsPath)
 
+if not os.path.isdir(dbEventsPath):
+    os.mkdir(dbEventsPath)
+
 if not os.path.isdir(dbPlayerDataPath):
     os.mkdir(dbPlayerDataPath)
 
@@ -155,6 +183,18 @@ try:
 except Exception as e:
     print('failed to read player data directory: ' + args.mcStatsDir)
     handle_error(e, True)
+
+# delete event
+if args.delete_event:
+    # TODO: make sure event exists
+    # TODO: delete event stat
+    print('delete event: ' + args.delete_event)
+
+# start new event
+if args.start_event:
+    # TODO: check that no event with that ID already exists
+    # TODO: register event stat
+    print('start event: ' + args.event_name + ' (' + args.start_event + ')')
 
 # update player data
 serverVersion = 0
@@ -279,6 +319,8 @@ for uuid, player in players.items():
             if active:
                 mcstat.enter(uuid, value)
 
+    # TODO: process event stats
+
     # init crown score
     if active:
         crown = mcstats.CrownScore()
@@ -293,6 +335,8 @@ for mcstat in mcstats.registry:
     if not isinstance(mcstat, mcstats.Ranking):
         # this may be a legacy stat that doesn't have its own ranking
         continue
+
+    # TODO: special handling for event stats
 
     if serverVersion < mcstat.minVersion:
         print('stat "' + mcstat.name + '" is not supported by server version '
@@ -371,6 +415,11 @@ for uuid, player in players.items():
             json.dump(player['stats'], dataFile)
 
 players = validPlayers
+
+if args.stop_event:
+    # TODO: make sure event exists and is running
+    # TODO: stop event
+    print('stop event: ' + args.stop_event)
 
 # write players for next server update
 with open(dbPlayersFilename, 'w') as playersFile:
