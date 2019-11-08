@@ -5,3 +5,5 @@
 /skins
 __pycache__
 *.log
+update.sh
+update.bat
