@@ -6,10 +6,6 @@ import math
 import os
 import re
 import shutil
-import time
-
-# get a fixed sense of "now"
-now = int(time.time())
 
 # import custom modules
 import javaproperties
@@ -18,6 +14,7 @@ import mojang
 from mcstats import mcstats
 from mcstats.stats import *
 
+# name->stat
 statByName = dict()
 for mcstat in mcstats.registry:
     statByName[mcstat.name] = mcstat
@@ -75,8 +72,8 @@ def handle_error(e, die = False):
 inactive_time = 86400 * args.inactive_days
 
 def is_active(last):
-    global inactive_time, now
-    return ((now - last) <= inactive_time)
+    global inactive_time
+    return ((mcstats.now - last) <= inactive_time)
 
 min_playtime = args.min_playtime
 profile_update_interval = 86400 * args.profile_update_interval
@@ -184,17 +181,66 @@ except Exception as e:
     print('failed to read player data directory: ' + args.mcStatsDir)
     handle_error(e, True)
 
+# init events
+eventStats = []
+eventStatByName = dict()
+activeEvents = set()
+
+try:
+    for file in os.listdir(dbEventsPath):
+        if file.endswith('.json'):
+            with open(dbEventsPath + '/' + file) as eventDataFile:
+                e = mcstats.EventStat.deserialize(
+                    json.load(eventDataFile), statByName)
+                eventStats.append(e)
+                eventStatByName[e.name] = e
+
+                if e.active:
+                    activeEvents.add(e.name)
+
+except Exception as e:
+    print('failed to read event data directory: ' + dbEventsPath)
+    handle_error(e, True)
+
 # delete event
 if args.delete_event:
-    # TODO: make sure event exists
-    # TODO: delete event stat
-    print('delete event: ' + args.delete_event)
+    ename = args.delete_event
+    if not ename in eventStatByName:
+        handle_error('no such event to delete: ' + ename, True)
+
+    eventStatByName.pop(ename)
+    eventStats = list(filter(lambda x: x.name != ename, eventStats))
+
+    if ename in activeEvents:
+        activeEvents.discard(ename)
+
+    os.remove(dbEventsPath + '/' + ename + '.json')
+    print('deleted event: ' + ename)
+
+# do sanity check for stop event
+if args.stop_event:
+    ename = args.stop_event
+    if not ename in eventStatByName:
+        handle_error('no such event to stop: ' + ename, True)
+    elif not eventStatByName[ename].active:
+        handle_error('event already stopped: ' + ename, True)
 
 # start new event
 if args.start_event:
-    # TODO: check that no event with that ID already exists
-    # TODO: register event stat
-    print('start event: ' + args.event_name + ' (' + args.start_event + ')')
+    ename = args.start_event
+    if ename in eventStatByName:
+        handle_error('cannot restart existing event: ' + ename, True)
+
+    # register
+    # all sanity checks (event stat exists, etc.) have been done before
+    e = mcstats.EventStat(
+        args.start_event, ename, statByName[args.event_stat])
+
+    eventStats.append(e)
+    eventStatByName[ename] = e
+    activeEvents.add(ename)
+
+    print('started event: ' + args.event_name + ' (' + ename + ')')
 
 # update player data
 serverVersion = 0
@@ -258,7 +304,7 @@ for uuid, player in players.items():
         else:
             update_time = 0
 
-        if (not 'skin' in player) or (now - update_time > profile_update_interval):
+        if (not 'skin' in player) or (mcstats.now - update_time > profile_update_interval):
             try:
                 print('updating profile for ' + uuid + ' ...')
                 try:
@@ -288,7 +334,7 @@ for uuid, player in players.items():
                 player['skin'] = skin
 
                 # profile updated
-                player['update'] = now
+                player['update'] = mcstats.now
 
             except Exception as e:
                 print('failed to update profile for ' + player['name'] + ' (' + uuid + ')')
@@ -310,16 +356,16 @@ for uuid, player in players.items():
     except:
         stats['advancements'] = dict()
 
-    # process stats
-    for mcstat in mcstats.registry:
-        if version >= mcstat.minVersion and version <= mcstat.maxVersion:
+    # process registry and event stats
+    for mcstat in mcstats.registry + eventStats:
+        if mcstat.isEligible(version):
             value = mcstat.read(stats)
-            playerStats[mcstat.name] = {'value':value}
+
+            if mcstat.playerStatRelevant:
+                playerStats[mcstat.name] = {'value':value}
 
             if active:
                 mcstat.enter(uuid, value)
-
-    # TODO: process event stats
 
     # init crown score
     if active:
@@ -332,11 +378,8 @@ summaryPlayerIds = set()
 awards = dict()
 
 for mcstat in mcstats.registry:
-    if not isinstance(mcstat, mcstats.Ranking):
-        # this may be a legacy stat that doesn't have its own ranking
+    if not mcstat.crownRelevant:
         continue
-
-    # TODO: special handling for event stats
 
     if serverVersion < mcstat.minVersion:
         print('stat "' + mcstat.name + '" is not supported by server version '
@@ -416,14 +459,21 @@ for uuid, player in players.items():
 
 players = validPlayers
 
+# stop an event
 if args.stop_event:
-    # TODO: make sure event exists and is running
-    # TODO: stop event
-    print('stop event: ' + args.stop_event)
+    # sanity checks have been done earlier
+    # deactivate
+    # do NOT exclude from activeEvents set, though - we still need to save it!
+    eventStatByName[args.stop_event].active = False
 
 # write players for next server update
 with open(dbPlayersFilename, 'w') as playersFile:
     json.dump(serverPlayers, playersFile)
+
+# write event data
+for ename in activeEvents:
+    with open(dbEventsPath + '/' + ename + '.json', 'w') as dataFile:
+        json.dump(eventStatByName[ename].serialize(), dataFile)
 
 # copy server icon if available
 if os.path.isfile(args.server + '/server-icon.png'):
@@ -436,7 +486,7 @@ else:
 info = {
     'hasIcon': has_icon,
     'serverName': args.server_name,
-    'updateTime': int(now),
+    'updateTime': int(mcstats.now),
     'inactiveDays': args.inactive_days,
     'minPlayTime': min_playtime,
     'crown': [args.crown_gold, args.crown_silver, args.crown_bronze],
@@ -469,6 +519,8 @@ for uuid in summaryPlayerIds:
         'skin': player['skin'] if ('skin' in player) else False,
         'last': player['last'],
     }
+
+# TODO: summarize events (id, display name, current best)
 
 # write summary for client
 summary = {

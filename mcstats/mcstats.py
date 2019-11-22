@@ -1,5 +1,9 @@
 import json
 import re
+import time
+
+# get a fixed sense of "now"
+now = int(time.time())
 
 # basic path reading function
 def read(stats, path, default):
@@ -118,6 +122,8 @@ class MinecraftStat(Ranking):
         self.reader = reader
         self.minVersion = max(minVersion, 1451) # 1451 = 17w47a is the absolute minimum
         self.maxVersion = maxVersion
+        self.crownRelevant = True
+        self.playerStatRelevant = True
 
     # enter the player with id and value into the ranking
     def enter(self, id, value):
@@ -131,6 +137,10 @@ class MinecraftStat(Ranking):
     def read(self, stats):
         return self.reader.read(stats)
 
+    # test if this stat can be used right now
+    def isEligible(self, version):
+        return (version >= self.minVersion and version <= self.maxVersion)
+
 # Legacy statistics for supporting older data versions
 class LegacyStat:
     def __init__(self, link, minVersion, maxVersion, reader):
@@ -139,6 +149,8 @@ class LegacyStat:
         self.minVersion = minVersion
         self.maxVersion = maxVersion
         self.reader = reader
+        self.crownRelevant = False # linked stat will be used
+        self.playerStatRelevant = True
 
     # enter the player with id and value into the linked ranking
     def enter(self, id, value):
@@ -147,6 +159,84 @@ class LegacyStat:
     # read the statistic value from the player stats
     def read(self, stats):
         return self.reader.read(stats)
+
+    # test if this stat can be used right now
+    def isEligible(self, version):
+        return MinecraftStat.isEligible(self, version);
+
+# Event statistics for temporary events
+# similar to event stats in some ways
+class EventStat(Ranking):
+    def __init__(self, name, displayName, link, startTime = None, initialRanking = dict(), ranking = [], active = True):
+        global now
+
+        self.name = name
+        self.displayName = displayName
+        self.link = link
+        self.minVersion = link.minVersion
+        self.maxVersion = link.maxVersion
+        self.startTime = now if startTime is None else startTime
+        self.initialRanking = initialRanking
+        self.ranking = ranking
+        self.active = active
+        self.crownRelevant = False # events cannot add to crowns
+        self.playerStatRelevant = False
+
+    # enter the player with id and value delta into the ranking
+    def enter(self, id, value):
+        global now
+
+        if now > self.startTime:
+            # subtract initial value and enter
+            if id in self.initialRanking:
+                initial = self.initialRanking[id]
+            else:
+                initial = 0
+
+            MinecraftStat.enter(self, id, value - initial)
+        else:
+            # first time we are entering somebody
+            # do not really enter, but only save the initial score
+            self.initialRanking[id] = value
+
+    # read the statistic value from the player stats via the linked stat
+    def read(self, stats):
+        return self.link.read(stats)
+
+    # test if this stat can be used right now
+    def isEligible(self, version):
+        return MinecraftStat.isEligible(self, version) if self.active else False
+
+    # serializes the event stat to a dictionary
+    def serialize(self):
+        ranking = dict()
+        for entry in self.ranking:
+            ranking[entry.id] = entry.value
+
+        return {
+            'name':           self.name,
+            'displayName':    self.displayName,
+            'link':           self.link.name,
+            'startTime':      self.startTime,
+            'initialRanking': self.initialRanking,
+            'ranking':        ranking,
+            'active':         self.active
+        }
+
+    # deserializes an event stat from a dictionary
+    def deserialize(data, registry):
+        ranking = []
+        for id, value in data['ranking'].items():
+            ranking.append(RankingEntry(id, value))
+
+        return EventStat(
+            data['name'],
+            data['displayName'],
+            registry[data['link']],
+            data['startTime'],
+            data['initialRanking'],
+            ranking,
+            data['active'])
 
 # Crown score (a meta statistic)
 class CrownScore:
