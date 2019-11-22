@@ -122,7 +122,7 @@ class MinecraftStat(Ranking):
         self.reader = reader
         self.minVersion = max(minVersion, 1451) # 1451 = 17w47a is the absolute minimum
         self.maxVersion = maxVersion
-        self.crownRelevant = True
+        self.linkedStat = False
         self.playerStatRelevant = True
 
     # enter the player with id and value into the ranking
@@ -149,7 +149,7 @@ class LegacyStat:
         self.minVersion = minVersion
         self.maxVersion = maxVersion
         self.reader = reader
-        self.crownRelevant = False # linked stat will be used
+        self.linkedStat = True
         self.playerStatRelevant = True
 
     # enter the player with id and value into the linked ranking
@@ -179,7 +179,7 @@ class EventStat(Ranking):
         self.initialRanking = initialRanking
         self.ranking = ranking
         self.active = active
-        self.crownRelevant = False # events cannot add to crowns
+        self.linkedStat = True
         self.playerStatRelevant = False
 
     # enter the player with id and value delta into the ranking

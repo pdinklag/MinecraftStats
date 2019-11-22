@@ -378,7 +378,7 @@ summaryPlayerIds = set()
 awards = dict()
 
 for mcstat in mcstats.registry:
-    if not mcstat.crownRelevant:
+    if mcstat.linkedStat:
         continue
 
     if serverVersion < mcstat.minVersion:
@@ -390,7 +390,7 @@ for mcstat in mcstats.registry:
         print('WARNING: stat name "' + mcstat.name + '" already in use')
         continue
 
-    # sort
+    # sort ranking
     mcstat.sort()
 
     # process crown score points
@@ -419,6 +419,34 @@ for mcstat in mcstats.registry:
 
     # add to award info list
     awards[mcstat.name] = award
+
+# process events
+summaryEvents = dict()
+
+for event in eventStats:
+    # check version
+    if serverVersion < mcstat.minVersion:
+        print('event "' + event.name + '" is not supported by server version '
+              + str(serverVersion) + ' (required: ' + str(event.minVersion) + ')')
+        continue
+
+    # sort ranking
+    event.sort()
+
+    # create summary
+    esummary = {
+        'displayName': event.displayName,
+        'link':        event.link.name,
+        'startTime':   event.startTime,
+        'active':      event.active,
+    }
+
+    if(len(event.ranking) > 0):
+        best = event.ranking[0]
+        esummary['best'] = {'uuid': best.id, 'value': best.value}
+        summaryPlayerIds.add(best.id)
+
+    summaryEvents[event.name] = esummary
 
 # filter valid players
 validPlayers = dict()
@@ -527,6 +555,7 @@ summary = {
     'info': info,
     'players': summaryPlayers,
     'awards': awards,
+    'events': summaryEvents,
     'hof': outHof,
 }
 
