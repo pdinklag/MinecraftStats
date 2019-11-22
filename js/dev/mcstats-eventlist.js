@@ -11,14 +11,16 @@ mcstats.showEventList = function() {
             eventWidget += `<span class="text-success ml-2">[LIVE]</span>`;
         }
 
-        var holder, info;
+        var eventWinner;
 
         if(e.best) {
-            holder = mcstats.playerWidget(e.best.uuid);
-            info = award.desc + ': ' + mcstats.formatValue(e.best.value, award.unit, true);
+            var holder = mcstats.playerWidget(e.best.uuid);
+            var info = award.desc + ': ' + mcstats.formatValue(e.best.value, award.unit, true);
+            eventWinner = holder + ' (' + info + ')';
         } else {
-            holder = mcstats.playerWidget(false);
-            info = `<span class="text-muted">(${award.desc})</span>`;
+            var holder = mcstats.playerWidget(false);
+            var info = `<span class="text-muted">(${award.desc})</span>`;
+            eventWinner = holder + ' ' + info;
         }
 
         var eventTime = formatTime(e.startTime);
@@ -27,7 +29,7 @@ mcstats.showEventList = function() {
             <tr>
                 <td>${eventWidget}</td>
                 <td>${eventTime}</td>
-                <td>${holder} (${info})</td>
+                <td>${eventWinner}</td>
             </tr>
         `;
     });
