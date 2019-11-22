@@ -13,7 +13,9 @@ var mcstats = {
 
     info: {},
     awards: {},
+    events: {},
     awardKeysByTitle: new Array(),
+    eventKeysByDate: new Array(),
     players: {},
 };
 
@@ -125,6 +127,13 @@ window.onhashchange = function() {
     } else if(hash == '#hof') {
         // go to hall of fame
         mcstats.showHof();
+    } else if(hash == '#events') {
+        // go to event list
+        mcstats.showEventList();
+    } else if(hash.startsWith('#event:')) {
+        // open event view
+        var id = hash.substr(7);
+        mcstats.showEvent(id);
     } else if(hash == '#loader') {
         // stick with loader - for debugging purposes
     } else {

@@ -101,6 +101,7 @@ a:hover { color: #ACF; }
 /* Tables */
 .table {
     margin-bottom: 0;
+    color: #EEE;
 }
 
 .table td, .table th {
@@ -112,6 +113,10 @@ a:hover { color: #ACF; }
     color: #FFF;
     border-top-width: 0;
     border-bottom-color: #666;
+}
+
+.table tbody tr:hover {
+    color: #EEE;
 }
 
 .table-hover tbody tr:hover {

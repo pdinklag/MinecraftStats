@@ -167,11 +167,11 @@ class LegacyStat:
 # Event statistics for temporary events
 # similar to event stats in some ways
 class EventStat(Ranking):
-    def __init__(self, name, displayName, link, startTime = None, initialRanking = dict(), ranking = [], active = True):
+    def __init__(self, name, title, link, startTime = None, initialRanking = dict(), ranking = [], active = True):
         global now
 
         self.name = name
-        self.displayName = displayName
+        self.title = title
         self.link = link
         self.minVersion = link.minVersion
         self.maxVersion = link.maxVersion
@@ -209,13 +209,13 @@ class EventStat(Ranking):
 
     # serializes the event stat to a dictionary
     def serialize(self):
-        ranking = dict()
+        ranking = []
         for entry in self.ranking:
-            ranking[entry.id] = entry.value
+            ranking.append({'uuid':entry.id,'value':entry.value})
 
         return {
             'name':           self.name,
-            'displayName':    self.displayName,
+            'title':          self.title,
             'link':           self.link.name,
             'startTime':      self.startTime,
             'initialRanking': self.initialRanking,
@@ -226,12 +226,12 @@ class EventStat(Ranking):
     # deserializes an event stat from a dictionary
     def deserialize(data, registry):
         ranking = []
-        for id, value in data['ranking'].items():
-            ranking.append(RankingEntry(id, value))
+        for entry in data['ranking']:
+            ranking.append(RankingEntry(entry['uuid'], entry['value']))
 
         return EventStat(
             data['name'],
-            data['displayName'],
+            data['title'],
             registry[data['link']],
             data['startTime'],
             data['initialRanking'],

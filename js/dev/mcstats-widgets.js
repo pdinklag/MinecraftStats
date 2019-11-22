@@ -198,6 +198,17 @@ mcstats.awardWidget = function(id) {
     `;
 }
 
+// Create an event widget
+mcstats.eventWidget = function(id) {
+    var e = mcstats.events[id];
+    var awardId = e.link;
+    var award = mcstats.awards[id];
+    return `
+        <img class="img-pixelated img-textsize-1_5 align-baseline" src="img/award-icons/${awardId}.png" alt="${id}" title="${e.title}"/>
+        <a href="#event:${id}">${e.title}</a>
+    `;
+}
+
 // Get a player face widget
 function drawFace(img) {
     var canvas = img.parentNode;

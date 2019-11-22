@@ -49,8 +49,8 @@ parser.add_argument('--player-cache-q', type=int, required=False, default=2,
                     help='the UUID prefix length to build the playercache (default 2)')
 parser.add_argument('--start-event', type=str, required=False, default=None,
                     help='starts an event with the given ID')
-parser.add_argument('--event-name', type=str, required=False, default=None,
-                    help='the name of the event')
+parser.add_argument('--event-title', type=str, required=False, default=None,
+                    help='the title of the event')
 parser.add_argument('--event-stat', type=str, required=False, default=None,
                     help='the stat to use for the event')
 parser.add_argument('--stop-event', type=str, required=False, default=None,
@@ -91,7 +91,7 @@ if not os.path.isdir(mcStatsDir):
     handle_error('no valid stat directory: ' + mcStatsDir, True)
 
 if args.start_event:
-    if not args.event_name:
+    if not args.event_title:
         handle_error('no event name given', True)
 
     if not args.event_stat:
@@ -192,6 +192,7 @@ try:
             with open(dbEventsPath + '/' + file) as eventDataFile:
                 e = mcstats.EventStat.deserialize(
                     json.load(eventDataFile), statByName)
+                e.ranking = [] # clear
                 eventStats.append(e)
                 eventStatByName[e.name] = e
 
@@ -234,13 +235,13 @@ if args.start_event:
     # register
     # all sanity checks (event stat exists, etc.) have been done before
     e = mcstats.EventStat(
-        args.start_event, ename, statByName[args.event_stat])
+        ename, args.event_title, statByName[args.event_stat])
 
     eventStats.append(e)
     eventStatByName[ename] = e
     activeEvents.add(ename)
 
-    print('started event: ' + args.event_name + ' (' + ename + ')')
+    print('started event: ' + args.event_title + ' (' + ename + ')')
 
 # update player data
 serverVersion = 0
@@ -435,10 +436,10 @@ for event in eventStats:
 
     # create summary
     esummary = {
-        'displayName': event.displayName,
-        'link':        event.link.name,
-        'startTime':   event.startTime,
-        'active':      event.active,
+        'title':     event.title,
+        'link':      event.link.name,
+        'startTime': event.startTime,
+        'active':    event.active,
     }
 
     if(len(event.ranking) > 0):

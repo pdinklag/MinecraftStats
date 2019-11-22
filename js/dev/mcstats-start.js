@@ -8,6 +8,7 @@ loader.addRequest('data/summary.json.gz', function(summary) {
     mcstats.info = summary.info;
     mcstats.players = summary.players;
     mcstats.awards = summary.awards;
+    mcstats.events = summary.events;
     mcstats.hof = summary.hof;
 
     // fill server info
@@ -34,6 +35,16 @@ loader.addRequest('data/summary.json.gz', function(summary) {
         return mcstats.awards[a].title.localeCompare(
             mcstats.awards[b].title);
     });
+
+    // sort event keys by start time
+    for(var key in mcstats.events) {
+        mcstats.eventKeysByDate.push(key);
+    }
+
+    mcstats.eventKeysByDate.sort(function(a,b) {
+        return mcstats.events[b].startTime - mcstats.events[a].startTime;
+    });
+
 }, true); // compressed!
 
 // Start
