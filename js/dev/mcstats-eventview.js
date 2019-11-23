@@ -1,7 +1,5 @@
 mcstats.showEvent = function(id) {
     loadJson('data/events/' + id + '.json', function(eventData) {
-        console.log(eventData);
-
         var e = mcstats.events[id];
         var awardId = e.link;
         var award = mcstats.awards[awardId];
@@ -21,6 +19,19 @@ mcstats.showEvent = function(id) {
             `;
         });
 
+        var eventTime;
+        if(e.active) {
+            eventTime = `
+            This event is <span class="text-success">LIVE</span>
+            since <span class="text-info">${formatTime(e.startTime)}!</span>`;
+        } else {
+            eventTime = `
+                This event went from
+                <span class="text-info">${formatTime(e.startTime)}</span>
+                to <span class="text-info">${formatTime(e.stopTime)}</span>
+                and has already <span class="text-danger">finished</span>.`;
+        }
+
         mcstats.viewContent.innerHTML = `
             <div class="mcstats-entry p-1">
             <div class="round-box p-1">
@@ -39,8 +50,8 @@ mcstats.showEvent = function(id) {
         // show
         mcstats.showView(
             e.title,
-            'Event Ranking',
-            false,
+            e.active ? 'Event Leaderboard' : 'Event Ranking',
+            eventTime,
             'img/award-icons/' + awardId + '.png');
     });
 };

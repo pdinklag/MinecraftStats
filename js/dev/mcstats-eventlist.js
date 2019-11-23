@@ -67,13 +67,11 @@ mcstats.showEventList = function() {
     // show
     mcstats.viewContent.innerHTML = `
         <div class="text-center mb-2">
-            <div class="h5 text-shadow"><span class="text-success">LIVE</span> Events</div>
-            <div class="text-muted text-shadow">These events are currently running. Get in to win!</div>
+            <div class="h5 text-shadow">Ongoing Events</div>
         </div>
         ${eventsLive}
         <div class="text-center mb-2 mt-4">
-            <div class="h5 text-shadow"><span class="text-danger">Finished</span> Events</div>
-            <div class="text-muted text-shadow">These events are already finished. Congratulations to the winners!</div>
+            <div class="h5 text-shadow">Finished Events</div>
         </div>
         ${eventsFinished}
     `;
