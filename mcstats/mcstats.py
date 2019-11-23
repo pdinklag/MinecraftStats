@@ -167,7 +167,7 @@ class LegacyStat:
 # Event statistics for temporary events
 # similar to event stats in some ways
 class EventStat(Ranking):
-    def __init__(self, name, title, link, startTime = None, initialRanking = dict(), ranking = [], active = True):
+    def __init__(self, name, title, link, startTime = None, stopTime = None, initialRanking = dict(), ranking = [], active = True):
         global now
 
         self.name = name
@@ -176,6 +176,7 @@ class EventStat(Ranking):
         self.minVersion = link.minVersion
         self.maxVersion = link.maxVersion
         self.startTime = now if startTime is None else startTime
+        self.stopTime = stopTime
         self.initialRanking = initialRanking
         self.ranking = ranking
         self.active = active
@@ -218,6 +219,7 @@ class EventStat(Ranking):
             'title':          self.title,
             'link':           self.link.name,
             'startTime':      self.startTime,
+            'stopTime':       self.stopTime,
             'initialRanking': self.initialRanking,
             'ranking':        ranking,
             'active':         self.active
@@ -234,6 +236,7 @@ class EventStat(Ranking):
             data['title'],
             registry[data['link']],
             data['startTime'],
+            data['stopTime'],
             data['initialRanking'],
             ranking,
             data['active'])

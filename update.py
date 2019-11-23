@@ -421,6 +421,15 @@ for mcstat in mcstats.registry:
     # add to award info list
     awards[mcstat.name] = award
 
+# stop an event
+if args.stop_event:
+    # sanity checks have been done earlier
+    # deactivate
+    # do NOT exclude from activeEvents - we still need to save it!
+    e = eventStatByName[args.stop_event]
+    e.active = False
+    e.stopTime = mcstats.now
+
 # process events
 summaryEvents = dict()
 
@@ -439,6 +448,7 @@ for event in eventStats:
         'title':     event.title,
         'link':      event.link.name,
         'startTime': event.startTime,
+        'stopTime':  event.stopTime,
         'active':    event.active,
     }
 
@@ -487,13 +497,6 @@ for uuid, player in players.items():
             json.dump(player['stats'], dataFile)
 
 players = validPlayers
-
-# stop an event
-if args.stop_event:
-    # sanity checks have been done earlier
-    # deactivate
-    # do NOT exclude from activeEvents set, though - we still need to save it!
-    eventStatByName[args.stop_event].active = False
 
 # write players for next server update
 with open(dbPlayersFilename, 'w') as playersFile:
