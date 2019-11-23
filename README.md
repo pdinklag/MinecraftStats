@@ -59,6 +59,9 @@ The `update.py` script accepts the following command-line options (and some less
 * `--crown-gold <score>` - worth of a gold medal against the crown score (default: 4).
 * `--crown-silver <score>` - worth of a silver medal against the crown score (default: 2).
 * `--crown-bronze <score>` - worth of a bronze medal against the crown score (default: 1).
+* `--start-event <id>` - see below.
+* `--stop-event <id>` - see below.
+* `--delete-event <id>` - see below.
 
 #### Database structure
 The `data` directory will contain the following after running an update:
@@ -68,6 +71,32 @@ The `data` directory will contain the following after running an update:
 * `playerdata` - contains one JSON file for every player, containing information displayed in the player view.
 * `playerlist` - contains an index for player information used by the player list.
 * `rankings` - contains one JSON file for every award containing player rankings.
+
+## Events
+Events allow you to track a specific award stat for a limited amount of time. For example, let's consider a Halloween-themed event called "Skeleton Hunt" that tracks how many skeletons people kill between October 30 and November 1.
+
+#### Starting an event
+An event can be started by passing `--start-event <id>` to the updater, where `<id>` is a _unique_ identifier for the event. You cannot have multilple events with the same ID. Additionally, you require to pass the following two parameters:
+* `--event-title <title>` - sets the title of the event displayed in the browser.
+* `--event-stat <id>` - sets the stat to be tracked in the event according to the given award ID.
+
+To set up our example Skeleton Hunt event, we would use this:
+```
+update.py [...] --start-event halloween2019 --event-title "Skeleton Hunt" --event-stat kill_skeleton
+```
+Note the `[...]` - you will have to pass all parameters that you usually pass for an update, which will be changed in the future (see [issue #85][8]).
+
+#### Stopping and deleting events
+To stop an event, use `--stop-event <id>`, with `<id>` being the identifier of the event to stop. Note that a stopped event **cannot be restarted**. So in our example,
+```
+update.py [...] --stop-event halloween2019
+```
+would stop the Halloween event. Again, `[...]` means that this is a normal update and all the other parameters have to be passed.
+
+Using `--delete-event <id>`, the event with identifier `<id>` is deleted completely. This **cannot be undone**.
+
+#### Automatic event scheduling
+Like with automatic updates, _MinecraftStats_ provides no such concept of its own. Automatic event schedules can also be done using cronjobs that run exactly once - one for starting and a second one for stopping.
 
 # Customizing Awards
 I assume here that you have some very basic knowledge of Python, however, you may also get away without any.
@@ -112,3 +141,4 @@ Concerning the _attribution_ part, the only requirement is that you provide a vi
 [5]:https://minecraft.gamepedia.com/17w47a
 [6]:https://creativecommons.org/licenses/by-sa/4.0/
 [7]:https://github.com/pdinklag/MinecraftStats
+[8]:https://github.com/pdinklag/MinecraftStats/issues/85
