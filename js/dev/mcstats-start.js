@@ -38,10 +38,17 @@ loader.addRequest('data/summary.json.gz', function(summary) {
 
     // sort event keys by start time
     for(var key in mcstats.events) {
-        mcstats.eventKeysByDate.push(key);
+        if(mcstats.events[key].active) {
+            mcstats.liveEventKeysByDate.push(key);
+        } else {
+            mcstats.finishedEventKeysByDate.push(key);
+        }
     }
 
-    mcstats.eventKeysByDate.sort(function(a,b) {
+    mcstats.liveEventKeysByDate.sort(function(a,b) {
+        return mcstats.events[b].startTime - mcstats.events[a].startTime;
+    });
+    mcstats.finishedEventKeysByDate.sort(function(a,b) {
         return mcstats.events[b].startTime - mcstats.events[a].startTime;
     });
 

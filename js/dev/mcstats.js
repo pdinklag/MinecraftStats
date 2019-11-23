@@ -15,7 +15,8 @@ var mcstats = {
     awards: {},
     events: {},
     awardKeysByTitle: new Array(),
-    eventKeysByDate: new Array(),
+    liveEventKeysByDate: new Array(),
+    finishedEventKeysByDate: new Array(),
     players: {},
 };
 

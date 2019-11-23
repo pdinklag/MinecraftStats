@@ -5,6 +5,13 @@ formatFloat = function(value) {
     return (value != parseInt(value)) ? value.toFixed(1) : value;
 };
 
+formatDate = function(unixTime) {
+    var date = new Date();
+    date.setTime(unixTime * 1000);
+
+    return date.toLocaleDateString('en-US', {day: 'numeric', month: 'short', year: 'numeric'});
+};
+
 formatTime = function(unixTime) {
     var date = new Date();
     date.setTime(unixTime * 1000);
