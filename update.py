@@ -192,11 +192,12 @@ try:
             with open(dbEventsPath + '/' + file) as eventDataFile:
                 e = mcstats.EventStat.deserialize(
                     json.load(eventDataFile), statByName)
-                e.ranking = [] # clear
+
                 eventStats.append(e)
                 eventStatByName[e.name] = e
 
                 if e.active:
+                    e.ranking = [] # clear, will be re-calculated
                     activeEvents.add(e.name)
 
 except Exception as e:
