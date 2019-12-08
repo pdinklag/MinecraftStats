@@ -141,6 +141,10 @@ class MinecraftStat(Ranking):
     def isEligible(self, version):
         return (version >= self.minVersion and version <= self.maxVersion)
 
+    # test if this player may enter the ranking
+    def canEnterRanking(self, id, active):
+        return active
+
 # Legacy statistics for supporting older data versions
 class LegacyStat:
     def __init__(self, link, minVersion, maxVersion, reader):
@@ -163,6 +167,10 @@ class LegacyStat:
     # test if this stat can be used right now
     def isEligible(self, version):
         return MinecraftStat.isEligible(self, version);
+
+    # test if this player may enter the ranking
+    def canEnterRanking(self, id, active):
+        return active
 
 # Event statistics for temporary events
 # similar to event stats in some ways
@@ -195,7 +203,7 @@ class EventStat(Ranking):
                 initial = 0
 
             MinecraftStat.enter(self, id, value - initial)
-        else:
+        elif value > 0:
             # first time we are entering somebody
             # do not really enter, but only save the initial score
             self.initialRanking[id] = value
@@ -207,6 +215,11 @@ class EventStat(Ranking):
     # test if this stat can be used right now
     def isEligible(self, version):
         return MinecraftStat.isEligible(self, version) if self.active else False
+
+    # test if this player may enter the ranking
+    def canEnterRanking(self, id, active):
+        global now
+        return active if now > self.startTime else True # enter everybody into the initial ranking
 
     # serializes the event stat to a dictionary
     def serialize(self):

@@ -366,7 +366,7 @@ for uuid, player in players.items():
             if mcstat.playerStatRelevant:
                 playerStats[mcstat.name] = {'value':value}
 
-            if active:
+            if mcstat.canEnterRanking(uuid, active):
                 mcstat.enter(uuid, value)
 
     # init crown score
