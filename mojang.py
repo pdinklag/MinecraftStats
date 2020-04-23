@@ -15,11 +15,20 @@ def get_player_profile(uuid):
         response_str = response.read().decode()
 
     if response_str:
-        profile = json.loads(response_str)
+        response = json.loads(response_str)
+        
+        if 'name' in response:
+            # get player name
+            profile = { 'name': response['name'] }
 
-        # FIXME: this is some heavy hardcoding right here, but what the API returns
-        # does not seem to follow any reasonnable logic
-        return json.loads(
-            base64.b64decode(profile['properties'][0]['value']).decode())
-    else:
-        return False
+            # get player skin URL
+            try:
+                textures = json.loads(base64.b64decode(response['properties'][0]['value']).decode())
+                profile['skin'] = textures['skin']['url'][38:] # remove URL prefix: http://textures.minecraft.net/texture/
+            except Exception as e:
+                print(e)
+                pass
+
+            return profile
+    
+    return False

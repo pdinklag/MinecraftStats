@@ -323,12 +323,9 @@ for uuid, player in players.items():
                             # or maybe the account was deleted
                             continue
                     else:
-                        # get name
-                        player['name'] = profile['profileName']
-
-                        # get skin
-                        # only store suffix of url, the prefix is always the base url
-                        skin = profile['textures']['SKIN']['url'][38:]
+                        # get name and skin
+                        player['name'] = profile['name']
+                        skin = profile['skin']
 
                 except:
                     skin = False
