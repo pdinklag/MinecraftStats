@@ -23,11 +23,10 @@ def get_player_profile(uuid):
             profile = { 'name': response['name'] }
 
             # get player skin URL
-            textures = json.loads(base64.b64decode(response['properties'][0]['value']).decode())
-            skin = textures['skin']
-            if skin:
-                profile['skin'] = skin['url'][38:] # remove URL prefix: http://textures.minecraft.net/texture/
-            else:
+            try:
+                dec = json.loads(base64.b64decode(response['properties'][0]['value']).decode())
+                profile['skin'] = dec['textures']['SKIN']['url'][38:] # remove URL prefix: http://textures.minecraft.net/texture/
+            except:
                 profile['skin'] = False
 
             return profile
