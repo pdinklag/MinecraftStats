@@ -10,7 +10,8 @@ profile_api_url = 'https://sessionserver.mojang.com/session/minecraft/profile/'
 def get_player_profile(uuid):
     compact_uuid = uuid.replace('-', '')
 
-    response_str = False
+    response_str = None
+
     with urllib.request.urlopen(profile_api_url + compact_uuid) as response:
         response_str = response.read().decode()
 
@@ -22,13 +23,17 @@ def get_player_profile(uuid):
             profile = { 'name': response['name'] }
 
             # get player skin URL
-            try:
-                textures = json.loads(base64.b64decode(response['properties'][0]['value']).decode())
-                profile['skin'] = textures['skin']['url'][38:] # remove URL prefix: http://textures.minecraft.net/texture/
-            except Exception as e:
-                print(e)
-                pass
+            textures = json.loads(base64.b64decode(response['properties'][0]['value']).decode())
+            skin = textures['skin']
+            if skin:
+                profile['skin'] = skin['url'][38:] # remove URL prefix: http://textures.minecraft.net/texture/
+            else:
+                profile['skin'] = False
 
             return profile
+        else:
+            print('unexpected Mojang API response for ' + compact_uuid + ':')
+            print(response)
     
-    return False
+    # failed
+    return None

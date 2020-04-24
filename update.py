@@ -6,6 +6,7 @@ import math
 import os
 import re
 import shutil
+import traceback
 
 # import custom modules
 import javaproperties
@@ -300,48 +301,38 @@ for uuid, player in players.items():
     active = is_active(last)
 
     # update skin
-    if (not 'name' in player) or args.update_inactive or active:
+    if (not 'name' in player) or active or args.update_inactive:
         if 'update' in player:
             update_time = player['update']
         else:
             update_time = 0
 
-        if (not 'skin' in player) or (mcstats.now - update_time > profile_update_interval):
+        if (not 'name' in player) or (not 'skin' in player) or (mcstats.now - update_time > profile_update_interval):
             try:
                 print('updating profile for ' + uuid + ' ...')
-                try:
-                    # try to get profile via Mojang API
-                    profile = mojang.get_player_profile(uuid)
 
-                    if not profile:
-                        # no profile available
-                        if uuid in usercache:
-                            # available in usercache, maybe an offline player
-                            player['name'] = usercache[uuid]
-                            skin = False
-                        else:
-                            # or maybe the account was deleted
-                            continue
-                    else:
-                        # get name and skin
-                        player['name'] = profile['name']
-                        skin = profile['skin']
-
-                except:
-                    skin = False
-
-                player['skin'] = skin
+                # try to get profile via Mojang API
+                profile = mojang.get_player_profile(uuid)
+                
+                if profile:
+                    # get name and skin
+                    player['name'] = profile['name']
+                    player['skin'] = profile['skin']
 
                 # profile updated
                 player['update'] = mcstats.now
 
-            except Exception as e:
-                print('failed to update profile for ' + player['name'] + ' (' + uuid + ')')
-                handle_error(e)
-                continue
+            except KeyboardInterrupt as e:
+                handle_error('cancelled', True)
 
-    # cache name
-    name = player['name']
+            except Exception as e:
+                print('failed to update profile for ' + uuid)
+                print(e)
+                # traceback.print_tb(e.__traceback__)
+
+        if (not 'name' in player) and (uuid in usercache):
+            # no profile available, but the UUID is in the usercache
+            player['name'] = usercache[uuid]
 
     # init database data
     playerStats = dict()
