@@ -18,12 +18,13 @@ mcstats.registry.append(
             mcstats.StatReader(['minecraft:used','minecraft:apple']),
             mcstats.StatReader(['minecraft:used','minecraft:pumpkin_pie']),
             mcstats.StatReader(['minecraft:used','minecraft:chorus_fruit']),
-            mcstats.StatReader(['minecraft:used','minecraft:melon']),
+            mcstats.StatReader(['minecraft:used','minecraft:melon_slice']),
             mcstats.StatReader(['minecraft:used','minecraft:cookie']),
             mcstats.StatReader(['minecraft:used','minecraft:cake']),
             mcstats.StatReader(['minecraft:used','minecraft:bread']),
             mcstats.StatReader(['minecraft:used','minecraft:mushroom_stew']),
             mcstats.StatReader(['minecraft:used','minecraft:beetroot_soup']),
             mcstats.StatReader(['minecraft:used','minecraft:sweet_berries']),
+            mcstats.StatReader(['minecraft:used','minecraft:dried_kelp']),
         ])
     ))
