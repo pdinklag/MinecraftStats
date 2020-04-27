@@ -467,7 +467,7 @@ for uuid, player in players.items():
             'name': name,
             'skin': skin,
             'last': last,
-            'update': player['update']
+            'update': player['update'] if 'update' in player else 0
         }
 
         clientInfo = {
