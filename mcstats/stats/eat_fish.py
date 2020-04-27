@@ -14,6 +14,6 @@ mcstats.registry.append(
             mcstats.StatReader(['minecraft:used','minecraft:salmon']),
             mcstats.StatReader(['minecraft:used','minecraft:cod']),
             mcstats.StatReader(['minecraft:used','minecraft:clownfish']),
-            mcstats.StatReader(['minecraft:used','minecraft:pufferfish']),
+            mcstats.StatReader(['minecraft:used','minecraft:tropical_fish']),
         ])
     ))
