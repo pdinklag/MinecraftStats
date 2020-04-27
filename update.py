@@ -460,7 +460,7 @@ for uuid, player in players.items():
         validPlayers[uuid] = player
 
         name = player['name']
-        skin = player['skin']
+        skin = player['skin'] if 'skin' in player else False
         last = player['last']
 
         serverPlayers[uuid] = {
