@@ -32,6 +32,7 @@ Simply change into the installation directory and pass the path to your Minecraf
 
 You may encounter the following messages during the update:
 * `updating profile for <player> ...` - the updater needs to download the player's skin URL every so often using Mojang's web API ,so that the browser won't have to do it later and slow the web application down. __If this fails__, make sure that Python is able to open `https` connections to `sessionserver.mojang.com`.
+* `HTTP Error 429` - Mojang has some limitations on their API that MinecraftStats uses to get player skins. If too many requests for the same player are done within a certain time frame (the exact specs are not known to me), Mojang's API refuses the request with a 429 code. This normally shouldn't happen if you use the default profile update interval.
 * `unsupported data version 0 for <player>` - this means that `<player>` has not logged into your server for a long time and his data format is still from Minecraft 1.12.2 or earlier.
 
 In case you encounter any error messages and can't find an explanation, don't hesistate to [open an issue][4].
@@ -128,7 +129,7 @@ There are various readers, the usage of which is best explained by having a clos
 ## Removing awards
 In order to remove an award, find the corresponding module and delete or modify it to suit your needs.
 
-## License and Attribution
+# License and Attribution
 
 _MinecraftStats_ is released under the [Creative Commons BY-SA 4.0][6] license. This means you can pretty much use and modify it freely, with the only requirements being attribution and not putting it under restrictive (e.g., commercial) licenses if modified.
 
