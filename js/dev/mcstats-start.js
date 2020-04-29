@@ -13,7 +13,7 @@ loader.addRequest('data/summary.json.gz', function(summary) {
 
     // fill server info
     serverName = JSON.parse('"' + mcstats.info.serverName + '"');
-    serverNameNoFmt = mcstats.removeColorCodes(serverName);
+    serverNameNoFmt = mcstats.removeColorCodes(serverName).replace('<br>', ' / ');
 
     document.title = `${serverNameNoFmt} \u2013 Stats`;
     document.getElementById('server-name').innerHTML = mcstats.formatColorCode(serverName);
