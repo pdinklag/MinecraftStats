@@ -129,7 +129,9 @@ if not args.server_name:
         for line in f:
             m = p.match(line)
             if m:
-                args.server_name = javaproperties.unescape(m.group(1))
+                args.server_name = javaproperties.unescape(
+                                       m.group(1)
+                                   ).replace('\n', '<br>')
                 break
 
 # try and load usercache
