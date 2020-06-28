@@ -15,6 +15,7 @@ mcstats.registry.append(
             mcstats.StatReader(['minecraft:crafted','minecraft:diamond_block']),
             mcstats.StatReader(['minecraft:crafted','minecraft:emerald_block']),
             mcstats.StatReader(['minecraft:crafted','minecraft:lapis_block']),
+            mcstats.StatReader(['minecraft:crafted','minecraft:netherite_block']),
             mcstats.StatReader(['minecraft:crafted','minecraft:redstone_block']),
             mcstats.StatReader(['minecraft:crafted','minecraft:quartz_block']),
         ])

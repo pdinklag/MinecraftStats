@@ -373,6 +373,10 @@ for mcstat in mcstats.registry:
     if mcstat.linkedStat:
         continue
 
+    if serverVersion > mcstat.maxVersion:
+        # no longer supported, but don't print a warning
+        continue
+
     if serverVersion < mcstat.minVersion:
         print('stat "' + mcstat.name + '" is not supported by server version '
               + str(serverVersion) + ' (required: ' + str(mcstat.minVersion) + ')')

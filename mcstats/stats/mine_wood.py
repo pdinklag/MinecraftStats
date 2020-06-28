@@ -9,5 +9,5 @@ mcstats.registry.append(
             'unit': 'int',
         },
         mcstats.StatSumMatchReader(
-            ['minecraft:mined'],['minecraft:.+_log'])
+            ['minecraft:mined'],['minecraft:.+_log', 'minecraft:.+_stem'])
     ))

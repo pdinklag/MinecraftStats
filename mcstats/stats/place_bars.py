@@ -5,8 +5,11 @@ mcstats.registry.append(
         'place_bars',
         {
             'title': 'Jailer',
-            'desc': 'Iron bars placed',
+            'desc': 'Iron bars & chains placed',
             'unit': 'int',
         },
-        mcstats.StatReader(['minecraft:used','minecraft:iron_bars'])
+        mcstats.StatSumReader([
+            mcstats.StatReader(['minecraft:used','minecraft:iron_bars']),
+            mcstats.StatReader(['minecraft:used','minecraft:chain']),
+        ])
     ))
