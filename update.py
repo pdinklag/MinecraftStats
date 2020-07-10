@@ -462,7 +462,7 @@ playerlist = []
 numActivePlayers = 0
 
 for uuid, player in players.items():
-    if ('last' in player) and ('name' in player):
+    if ('last' in player) and ('name' in player) and ('stats' in player):
         validPlayers[uuid] = player
 
         name = player['name']
