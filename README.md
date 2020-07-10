@@ -60,9 +60,27 @@ The `update.py` script accepts the following command-line options (and some less
 * `--crown-gold <score>` - worth of a gold medal against the crown score (default: 4).
 * `--crown-silver <score>` - worth of a silver medal against the crown score (default: 2).
 * `--crown-bronze <score>` - worth of a bronze medal against the crown score (default: 1).
-* `--start-event <id>` - see below.
-* `--stop-event <id>` - see below.
-* `--delete-event <id>` - see below.
+* `--start-event <id>` - see below under *Events*.
+* `--stop-event <id>` - see below under *Events*.
+* `--delete-event <id>` - see below under *Events*.
+* `--c <config>` - load configuration, see below.
+* `--save-config <config>` - save configuration see below.
+
+#### Saving and Loading Configurations
+
+To avoid having to pass command-line arguments over and over again, you can save the command-line passed to `update.py` using the `--save-config` argument. For example,
+
+```
+update.py -s /path/to/server --server-name "My Awesome Server" --min-playtime 60 --save-config example
+```
+
+would save everything all the arguments into a configuration called `example` (in a subdirectory called `config`). The next time, in order to use the same command-line, one could use
+
+```
+update.py -c example
+```
+
+with the same results.
 
 #### Database structure
 The `data` directory will contain the following after running an update:

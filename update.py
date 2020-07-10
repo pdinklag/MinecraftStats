@@ -6,6 +6,7 @@ import math
 import os
 import re
 import shutil
+import sys
 import traceback
 
 # import custom modules
@@ -15,6 +16,11 @@ import mojang
 from mcstats import mcstats
 from mcstats.stats import *
 
+def handle_error(e, die = False):
+    print(str(e))
+    if die:
+        exit(1)
+
 # name->stat
 statByName = dict()
 for mcstat in mcstats.registry:
@@ -22,7 +28,7 @@ for mcstat in mcstats.registry:
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description='Update Minecraft statistics')
-parser.add_argument('--server', '-s', type=str, required=True,
+parser.add_argument('--server', '-s', type=str, required=False, default=None,
                     help='path to the Minecraft server')
 parser.add_argument('--world', '-w', type=str, required=False, default='world',
                     help='name of the server\'s main world that contains the stats directory (default "world")')
@@ -58,17 +64,45 @@ parser.add_argument('--stop-event', type=str, required=False, default=None,
                     help='stops the event with the given ID')
 parser.add_argument('--delete-event', type=str, required=False, default=None,
                     help='completely deletes the event with the given ID')
+parser.add_argument('--save-config', type=str, required=False, default=None,
+                    help='saves the command-line into a config file with the given name')
+parser.add_argument('--load-config', '-c', type=str, required=False, default=None,
+                    help='uses the command-line from the config file with the given name')
 
 args = parser.parse_args()
+
+# handle config loading and saving
+cfgPath = 'config/'
+
+if args.load_config:
+    # try to load config
+    cfgFilename = cfgPath + args.load_config
+    if os.path.isfile(cfgFilename):
+        with open(cfgFilename, 'r') as cfgFile:
+            cfg = cfgFile.read().splitlines()
+
+        args = parser.parse_args(cfg + sys.argv[1:]) # append current command-line arguments to loaded config
+    else:
+        handle_error('configuration not found: ' + args.load_config, True)
+elif args.save_config:
+    # create config directory
+    if not os.path.isdir(cfgPath):
+        os.mkdir(cfgPath)    
+
+    # save configuration
+    with open(cfgPath + args.save_config, 'w') as cfgFile:
+        for arg in sys.argv[1:]:
+            cfgFile.write(arg + '\n')
+
+    print('command-line configuration saved as ' + args.save_config)
+
+if not args.server:
+    parser.print_help()
+    exit()
 
 mcstats.CrownScore.gold = args.crown_gold
 mcstats.CrownScore.silver = args.crown_silver
 mcstats.CrownScore.bronze = args.crown_bronze
-
-def handle_error(e, die = False):
-    print(str(e))
-    if die:
-        exit(1)
 
 inactive_time = 86400 * args.inactive_days
 
@@ -101,6 +135,7 @@ if args.start_event:
     if not (args.event_stat in statByName):
         handle_error('no such stat for event: ' + args.event_stat, True)
 
+# init paths
 dbRankingsPath = args.database + '/rankings'
 dbPlayerDataPath = args.database + '/playerdata'
 dbPlayerCachePath = args.database + '/playercache'
