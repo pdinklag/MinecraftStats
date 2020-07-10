@@ -74,7 +74,7 @@ To avoid having to pass command-line arguments over and over again, you can save
 update.py -s /path/to/server --server-name "My Awesome Server" --min-playtime 60 --save-config example
 ```
 
-would save everything all the arguments into a configuration called `example` (in a subdirectory called `config`). The next time, in order to use the same command-line, one could use
+would save all the arguments into a configuration called `example` (in a subdirectory called `config`). The next time, in order to use the same command-line, one could use
 
 ```
 update.py -c example
