@@ -74,13 +74,13 @@ To avoid having to pass command-line arguments over and over again, you can save
 update.py -s /path/to/server --server-name "My Awesome Server" --min-playtime 60 --save-config example
 ```
 
-would save all the arguments into a configuration called `example` (in a subdirectory called `config`). The next time, in order to use the same command-line, one could use
+would save all the arguments into a configuration called `example` (in a file in the `config` subdirectory, which can be edited like any text file). The next time, in order to use the same command-line, one could use
 
 ```
 update.py -c example
 ```
 
-with the same results.
+with the same results. It is possible to combine a loaded configuration with additional flags, for example `update.py -c example --start-event [...]` to use the example configuration and start an event as described in the *Events* section below.
 
 #### Database structure
 The `data` directory will contain the following after running an update:
