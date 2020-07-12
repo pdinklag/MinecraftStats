@@ -61,19 +61,27 @@ mcstats.showEventList = function() {
         return tbody;
     };
 
-    var eventsLive = generateList(mcstats.liveEventKeysByDate);
-    var eventsFinished = generateList(mcstats.finishedEventKeysByDate);
+    mcstats.viewContent.innerHTML = '';
 
-    // show
-    mcstats.viewContent.innerHTML = `
-        <div class="text-center mb-2">
-            <div class="h5 text-shadow">Ongoing Events</div>
-        </div>
-        ${eventsLive}
-        <div class="text-center mb-2 mt-4">
-            <div class="h5 text-shadow">Finished Events</div>
-        </div>
-        ${eventsFinished}
-    `;
+    // ongoing events
+    if(mcstats.liveEventKeysByDate.length > 0) {
+        mcstats.viewContent.innerHTML += `
+            <div class="text-center mb-2">
+                <div class="h5 text-shadow">Ongoing Events</div>
+            </div>
+            ${generateList(mcstats.liveEventKeysByDate)}
+        `;
+    }
+    
+    // finished events
+    if(mcstats.finishedEventKeysByDate.length > 0) {
+        mcstats.viewContent.innerHTML += `
+            <div class="text-center mb-2 mt-4">
+                <div class="h5 text-shadow">Finished Events</div>
+            </div>
+            ${generateList(mcstats.finishedEventKeysByDate)}
+        `;
+    }
+    
     mcstats.showView('Events', false, false, false);
 };

@@ -37,20 +37,25 @@ loader.addRequest('data/summary.json.gz', function(summary) {
     });
 
     // sort event keys by start time
+    var numEvents = 0;    
     for(var key in mcstats.events) {
         if(mcstats.events[key].active) {
             mcstats.liveEventKeysByDate.push(key);
         } else {
             mcstats.finishedEventKeysByDate.push(key);
         }
+        ++numEvents;
     }
 
-    mcstats.liveEventKeysByDate.sort(function(a,b) {
-        return mcstats.events[b].startTime - mcstats.events[a].startTime;
-    });
-    mcstats.finishedEventKeysByDate.sort(function(a,b) {
-        return mcstats.events[b].startTime - mcstats.events[a].startTime;
-    });
+    if(numEvents > 0) {
+        mcstats.liveEventKeysByDate.sort(function(a,b) {
+            return mcstats.events[b].startTime - mcstats.events[a].startTime;
+        });
+        mcstats.finishedEventKeysByDate.sort(function(a,b) {
+            return mcstats.events[b].startTime - mcstats.events[a].startTime;
+        });
+        document.getElementById('tab-events').style.display = '';
+    }
 
 }, true); // compressed!
 
