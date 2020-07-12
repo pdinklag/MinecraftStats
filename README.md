@@ -1,20 +1,20 @@
 # MinecraftStats
 
-_MinecraftStats_ is a web browser application for the [statistics][1] that Minecraft servers collect about players.
+_MinecraftStats_ is a web browser application for the [statistics](http://minecraft.gamepedia.com/Statistics) that Minecraft servers collect about players.
 
 The presentation is done by giving __awards__ to players for certain achievements. For example, the player who played on the server for the longest total time receives the _Addict_ award. Every award has a viewable ranking associated to it with __medals__ - the award holder gets the gold medal, the second the silver medal and the third the bronze medal for the award. Each medal gives players a __crown score__ (1 for every bronze medal, 2 for every silver, 4 for every gold medal), which is displayed in a server __hall of fame__.
 
 The system is highly customizable. All the awards are defined in Python modules that can be altered, added or removed to fit your needs. Additionally to simply reading Minecraft's original statistics, there are some awards that are combinations of various statistics.
 
-A live demo of _MinecraftStats_ in action is available here: [DVG Snapshot Stats][2]
+A live demo of _MinecraftStats_ in action is available here: [DVG Snapshot Stats](http://mine3.dvgaming.com/)
 
 ## Setup Guide
 This section describes how to set up _MinecraftStats_ to work on your server.
 
 ### Compatibility
-___MinecraftStats_ is compatible only to Minecraft 1.13 or later__ (more precisely: snapshot [17w47a][5] or later).
+___MinecraftStats_ is compatible only to Minecraft 1.13 or later__ (more precisely: snapshot [17w47a](https://minecraft.gamepedia.com/17w47a) or later).
 
-I am trying to keep the statistics up to date with Minecraft snapshots. Mojang sometimes decide to rename entity or statistic IDs, which may break stats. I am trying my best to update accordingly, but please don't hesitate to [open an issue][4] in case you notice something is wrong!
+I am trying to keep the statistics up to date with Minecraft snapshots. Mojang sometimes decide to rename entity or statistic IDs, which may break stats. I am trying my best to update accordingly, but please don't hesitate to [open an issue](https://github.com/pdinklag/MinecraftStats/issues) in case you notice something is wrong!
 
 ### Requirements
 _Python 3.4_ or later is required to feed _MinecraftStats_ with your server's data.
@@ -35,7 +35,7 @@ You may encounter the following messages during the update:
 * `HTTP Error 429` - Mojang has some limitations on their API that MinecraftStats uses to get player skins. If too many requests for the same player are done within a certain time frame (the exact specs are not known to me), Mojang's API refuses the request with a 429 code. This normally shouldn't happen if you use the default profile update interval.
 * `unsupported data version 0 for <player>` - this means that `<player>` has not logged into your server for a long time and his data format is still from Minecraft 1.12.2 or earlier.
 
-In case you encounter any error messages and can't find an explanation, don't hesistate to [open an issue][4].
+In case you encounter any error messages and can't find an explanation, don't hesistate to [open an issue](https://github.com/pdinklag/MinecraftStats/issues).
 
 After the update, you will have a `data` directory that contains everything the web application needs.
 
@@ -147,17 +147,15 @@ There are various readers, the usage of which is best explained by having a clos
 ## Removing awards
 In order to remove an award, find the corresponding module and delete or modify it to suit your needs.
 
+# Development Notes
+This section contains some hints for those who want to develop on _MinecraftStats_.
+
+##### JavaScript and CSS minimization
+
+In an effort to reduce client traffic, the JavaScript and CSS files of the web UI are minified. The JavaScripts are minified using [terser](https://github.com/terser/terser). Refer to the `minimize.sh` script located in the `js` directory for the command-line used to do so. For CSS minimization, I use [uglifycss](https://www.npmjs.com/package/uglifycss) without any special command-line parameters.
+
 # License and Attribution
 
-_MinecraftStats_ is released under the [Creative Commons BY-SA 4.0][6] license. This means you can pretty much use and modify it freely, with the only requirements being attribution and not putting it under restrictive (e.g., commercial) licenses if modified.
+_MinecraftStats_ is released under the [Creative Commons BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license. This means you can pretty much use and modify it freely, with the only requirements being attribution and not putting it under restrictive (e.g., commercial) licenses if modified.
 
-Concerning the _attribution_ part, the only requirement is that you provide a visible link to [this original repository][7] in your installment. The easiest way to do this is by not removing it from the `index.html` footer, where you will also find a reminder about this.
-
-[1]:http://minecraft.gamepedia.com/Statistics
-[2]:http://mine3.dvgaming.com/
-[3]:https://github.com/pdinklag/MinecraftStats/releases/tag/1.0
-[4]:https://github.com/pdinklag/MinecraftStats/issues
-[5]:https://minecraft.gamepedia.com/17w47a
-[6]:https://creativecommons.org/licenses/by-sa/4.0/
-[7]:https://github.com/pdinklag/MinecraftStats
-[8]:https://github.com/pdinklag/MinecraftStats/issues/85
+Concerning the _attribution_ part, the only requirement is that you provide a visible link to [this original repository](https://github.com/pdinklag/MinecraftStats) in your installment. The easiest way to do this is by not removing it from the `index.html` footer, where you will also find a reminder about this.
