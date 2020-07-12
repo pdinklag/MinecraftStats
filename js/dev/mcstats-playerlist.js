@@ -18,6 +18,7 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
         var numActive = mcstats.info.numActive;
         var numInactive = numPlayers - numActive;
         var numPerPage = mcstats.info.playersPerPage;
+        var numPagesAroundCurrent = 3; // yep, this is hardcoded
 
         var numPages = Math.ceil((inactive ? numPlayers : numActive) / numPerPage);
 
@@ -34,19 +35,70 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
         });
 
         var paginator = '';
-
-        if(page > 1) {
-            paginator += `
-                <li class="page-item">
-                    <a class="page-link" href="#${viewName}:${page-1}">&lt;</a>
-                </li>`;
-        } else {
-            paginator += `
+        
+        var generatePageLink = function(i, caption = null, enabled = true) {
+            if(caption === null) caption = i.toString();
+            if(enabled) {
+                return `
+                    <li class="page-item">
+                        <a class="page-link" href="#${viewName}:${i}">${caption}</a>
+                    </li>`; 
+            } else {
+                return `
                 <li class="page-item disabled">
-                    <div class="page-link">&lt;</div>
+                    <div class="page-link">${caption}</div>
                 </li>`;
+            }
+        };
+        
+        var generatePageActive = function() {
+            return `
+                <li class="page-item active">
+                    <div class="page-link">${page}</div>
+                </li>`;
+        };
+        
+        var generatePageDots = function() {
+            return `<li class="page-dots">...</li>`;
+        };
+
+        // previous page button
+        paginator += generatePageLink(page-1, '&lt', page > 1);
+
+        // first page
+        if(page > 1) {
+            paginator += generatePageLink(1);
         }
 
+        // pages between first and neighbourhood
+        if(page - 2 > numPagesAroundCurrent) {
+            paginator += generatePageDots();
+        }
+        
+        // left neighbourhood
+        for(var i = Math.max(2, page - numPagesAroundCurrent); i < page; i++) {
+            paginator += generatePageLink(i);
+        }
+        
+        // current
+        paginator += generatePageActive();
+        
+        // right neighbourhood
+        for(var i = page + 1; i <= Math.min(page + numPagesAroundCurrent, numPages - 1); i++) {
+            paginator += generatePageLink(i);
+        }
+        
+        // pages between neighbourhood and last
+        if(numPages - page - 1 > numPagesAroundCurrent) {
+            paginator += generatePageDots();
+        }
+        
+        // last page
+        if(page < numPages) {
+            paginator += generatePageLink(numPages);
+        }
+        
+        /*
         for(var i = 1; i <= numPages; i++) {
             if(page == i) {
                 paginator += `
@@ -60,19 +112,12 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
                     </li>`;
             }
         }
+        */
 
-        if(page < numPages) {
-            paginator += `
-                <li class="page-item">
-                    <a class="page-link" href="#${viewName}:${page+1}">&gt;</a>
-                </li>`;
-        } else {
-            paginator += `
-                <li class="page-item disabled">
-                    <div class="page-link">&gt;</div>
-                </li>`;
-        }
+        // next page button
+        paginator += generatePageLink(page+1, '&gt', page < numPages);
 
+        // build
         mcstats.viewContent.innerHTML = `
             <div class="text-center mt-3">
                 <input id="show-inactive" type="checkbox" ${inactive ? 'checked' : ''}/>

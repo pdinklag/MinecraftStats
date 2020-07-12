@@ -136,6 +136,11 @@ a:hover { color: #ACF; }
     color: #ACF;
 }
 
+.page-dots {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
 .page-item.active .page-link {
     font-weight: bold;
     background-color: rgba(0, 0, 0, 0.33);
