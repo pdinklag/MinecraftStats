@@ -17,6 +17,7 @@ def get_player_profile(uuid):
 
     if response_str:
         response = json.loads(response_str)
+        print(response_str)
         
         if 'name' in response:
             # get player name
@@ -31,8 +32,10 @@ def get_player_profile(uuid):
 
             return profile
         else:
-            print('unexpected Mojang API response for ' + compact_uuid + ':')
+            print('unexpected Mojang API response for ' + profile_api_url + compact_uuid + ':')
             print(response)
+    else:
+        print('empty Mojang API response for ' + profile_api_url + compact_uuid)
     
     # failed
     return None

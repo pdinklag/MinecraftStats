@@ -363,13 +363,20 @@ for uuid, player in players.items():
                 handle_error('cancelled', True)
 
             except Exception as e:
-                print('failed to update profile for ' + uuid)
+                print('\tfailed to update profile for ' + uuid)
                 print(e)
                 # traceback.print_tb(e.__traceback__)
 
         if (not 'name' in player) and (uuid in usercache):
             # no profile available, but the UUID is in the usercache
             player['name'] = usercache[uuid]
+
+        if (not 'name' in player):
+            # there is no way to find the name of this player
+            # this may happen if the player has no valid Mojang UUID
+            # since the ID also no longer appears in the usercache, chances are we're dealing with an inactive player anyway
+            print('\texcluding invalid player ' + uuid)
+            continue
 
     # init database data
     playerStats = dict()
