@@ -1,5 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import argparse
+import collections
+import datetime 
 import gzip
 import json
 import math
@@ -8,18 +10,52 @@ import re
 import shutil
 import sys
 import traceback
+import types
 
 # import custom modules
 import javaproperties
 import mojang
 
 from mcstats import mcstats
+from mcstats.util import handle_error
+from mcstats.util import RecursiveNamespace
+from mcstats.util import merge_dict
 from mcstats.stats import *
 
-def handle_error(e, die = False):
-    print(str(e))
-    if die:
-        exit(1)
+# default config
+configJson = {
+    "configVersion": 1,
+    "database": "data",              # where the database is written
+    "server": {
+        "path": False,               # path to server
+        "customName": False,         # custom server name; use MOTD if empty
+        "worldName": "world"         # name of the world to use, probably always "world"
+    },
+    "client": {
+        "playersPerPage": 100,       # how many players to display per page
+        "playerCacheUUIDPrefix": 2,  # length of UUID prefix for player cache - more = smaller caches
+    },
+    "players": {
+        "profileUpdateInterval": 3,  # update profile after this many days
+        "updateInactive": False,     # also update profile for inactive players
+        "inactiveDays": 7,           # number of offline days before a player is considered inactive
+        "minPlaytime": 60,           # number of minutes a player must have played before entering stats
+    },
+    "crown": {
+        "gold": 4,                   # crown score worth of a gold medal     
+        "silver": 2,                 # crown score worth of a silver medal
+        "bronze": 1                  # crown score worth of a bronze medal
+    },
+    "events": [ # list of events, as in example below
+        # {
+        #    "name": "zombie_hunt_2020",
+        #    "title": "Zombie Hunt 2020",
+        #    "stat": "kill_zombie",
+        #    "startTime": "2020-10-01 10:00",
+        #    "endTime": "2020-10-31 22:00"
+        # }
+    ],
+}
 
 # name->stat
 statByName = dict()
@@ -27,160 +63,119 @@ for mcstat in mcstats.registry:
     statByName[mcstat.name] = mcstat
 
 # Parse command-line arguments
-parser = argparse.ArgumentParser(description='Update Minecraft statistics')
-parser.add_argument('--server', '-s', type=str, required=False, default=None,
-                    help='path to the Minecraft server')
-parser.add_argument('--world', '-w', type=str, required=False, default='world',
-                    help='name of the server\'s main world that contains the stats directory (default "world")')
-parser.add_argument('--server-name', type=str, required=False, default=None,
-                    help='the server\'s display name - supports Minecraft color codes (default: motd from server.properties)')
-parser.add_argument('--database', '-d', type=str, required=False, default='data',
-                    help='path into which to store the MinecraftStats database (default: "data")')
-parser.add_argument('--profile-update-interval', type=int, required=False, default=3,
-                    help='update player skins and names every this many days (default 3)')
-parser.add_argument('--update-inactive', required=False, action='store_true',
-                    help='if set, skins of inactive players are updated as well')
-parser.add_argument('--inactive-days', type=int, required=False, default=7,
-                    help='number of days after which a player is considered inactive (default 7)')
-parser.add_argument('--min-playtime', type=int, required=False, default=0,
-                    help='number of minutes a player needs to have played before being eligible for any awards (default 0)')
-parser.add_argument('--crown-gold', type=int, required=False, default=4,
-                    help='the worth of a gold medal against the crown score (default 4)')
-parser.add_argument('--crown-silver', type=int, required=False, default=2,
-                    help='the worth of a silver medal against the crown score (default 2)')
-parser.add_argument('--crown-bronze', type=int, required=False, default=1,
-                    help='the worth of a bronze medal against the crown score (default 1)')
-parser.add_argument('--players-per-page', type=int, required=False, default=100,
-                    help='the number of players displayed on one page of the player list (default 100)')
-parser.add_argument('--player-cache-q', type=int, required=False, default=2,
-                    help='the UUID prefix length to build the playercache (default 2)')
-parser.add_argument('--start-event', type=str, required=False, default=None,
-                    help='starts an event with the given ID')
-parser.add_argument('--event-title', type=str, required=False, default=None,
-                    help='the title of the event')
-parser.add_argument('--event-stat', type=str, required=False, default=None,
-                    help='the stat to use for the event')
-parser.add_argument('--stop-event', type=str, required=False, default=None,
-                    help='stops the event with the given ID')
-parser.add_argument('--delete-event', type=str, required=False, default=None,
-                    help='completely deletes the event with the given ID')
-parser.add_argument('--save-config', type=str, required=False, default=None,
-                    help='saves the command-line into a config file with the given name')
-parser.add_argument('--load-config', '-c', type=str, required=False, default=None,
-                    help='uses the command-line from the config file with the given name')
+parser = argparse.ArgumentParser(description='Update MinecraftStats')
+parser.add_argument('config', type=str, help='the configuration to use')
 
 args = parser.parse_args()
 
-# handle config loading and saving
-cfgPath = 'config/'
+# load config
+if os.path.isfile(args.config):
+    with open(args.config, 'r') as configFile:
+        merge_dict(configJson, json.load(configFile))
+else:
+    # save default
+    print('writing default config to ' + args.config)
+    with open(args.config, 'w') as configFile:
+        json.dump(configJson, configFile, indent=4)
 
-if args.load_config:
-    # try to load config
-    cfgFilename = cfgPath + args.load_config
-    if os.path.isfile(cfgFilename):
-        with open(cfgFilename, 'r') as cfgFile:
-            cfg = cfgFile.read().splitlines()
+config = RecursiveNamespace(**configJson)
 
-        args = parser.parse_args(cfg + sys.argv[1:]) # append current command-line arguments to loaded config
-    else:
-        handle_error('configuration not found: ' + args.load_config, True)
-elif args.save_config:
-    # create config directory
-    if not os.path.isdir(cfgPath):
-        os.mkdir(cfgPath)    
+# ensure config
+if not config.server.path:
+    handle_error('server.path not configured, please edit ' + args.config, True)
 
-    # save configuration
-    with open(cfgPath + args.save_config, 'w') as cfgFile:
-        for arg in sys.argv[1:]:
-            cfgFile.write(arg + '\n')
+mcstats.CrownScore.gold = config.crown.gold
+mcstats.CrownScore.silver = config.crown.silver
+mcstats.CrownScore.bronze = config.crown.bronze
 
-    print('command-line configuration saved as ' + args.save_config)
-
-if not args.server:
-    parser.print_help()
-    exit()
-
-mcstats.CrownScore.gold = args.crown_gold
-mcstats.CrownScore.silver = args.crown_silver
-mcstats.CrownScore.bronze = args.crown_bronze
-
-inactive_time = 86400 * args.inactive_days
+inactive_time = 86400 * config.players.inactiveDays
 
 def is_active(last):
     global inactive_time
     return ((mcstats.now - last) <= inactive_time)
 
-min_playtime = args.min_playtime
-profile_update_interval = 86400 * args.profile_update_interval
+min_playtime = config.players.minPlaytime
+profile_update_interval = 86400 * config.players.profileUpdateInterval
 
 # paths
-mcWorldDir = args.server + '/' + args.world;
+serverPath = config.server.path
+mcWorldDir = serverPath + '/' + config.server.worldName;
 mcStatsDir = mcWorldDir + '/stats'
 mcAdvancementsDir = mcWorldDir + '/advancements'
 
 # sanity checks
-if not os.path.isdir(args.server):
-    handle_error('not a directory: ' + args.server, True)
+if not os.path.isdir(serverPath):
+    handle_error('not a directory: ' + serverPath, True)
 
 if not os.path.isdir(mcStatsDir):
     handle_error('no valid stat directory: ' + mcStatsDir, True)
 
-if args.start_event:
-    if not args.event_title:
-        handle_error('no event name given', True)
+# initialize event definitions
+Event = collections.namedtuple('Event', ['name', 'title', 'stat', 'startTime', 'endTime'])
+eventTimeFormat = '%Y-%m-%d %H:%M'
 
-    if not args.event_stat:
-        handle_error('no event stat given', True)
+events = []
+for e in config.events:
+    if not e.stat in statByName:
+        handle_error('ERROR: event ' + e.name + ' refers to unknown stat "' + e.stat + '"')
+        continue
 
-    if not (args.event_stat in statByName):
-        handle_error('no such stat for event: ' + args.event_stat, True)
+    stat = statByName[e.stat]
+    startTime = int(datetime.datetime.strptime(e.startTime, eventTimeFormat).timestamp())
+    endTime = int(datetime.datetime.strptime(e.endTime, eventTimeFormat).timestamp())
+    
+    if startTime >= endTime:
+        handle_error('ERROR: event ' + e.name + ': end time (' + e.endTime + ' lies before start time (' + e.startTime + ')')
+        continue
+    
+    events.append(Event(title=e.title, name=e.name, stat=stat, startTime=startTime, endTime=endTime))
 
 # init paths
-dbRankingsPath = args.database + '/rankings'
-dbPlayerDataPath = args.database + '/playerdata'
-dbPlayerCachePath = args.database + '/playercache'
-dbEventsPath = args.database + '/events'
+dbRankingsPath = config.database + '/rankings'
+dbPlayerDataPath = config.database + '/playerdata'
+dbPlayerCachePath = config.database + '/playercache'
+dbEventsPath = config.database + '/events'
 
-playerCacheQ = args.player_cache_q
-playersPerPage = args.players_per_page
+playerCacheQ = config.client.playerCacheUUIDPrefix
+playersPerPage = config.client.playersPerPage
 
-dbPlayersFilename = args.database + '/players.json'
-dbSummaryFilename = args.database + '/summary.json.gz'
+dbPlayersFilename = config.database + '/players.json'
+dbSummaryFilename = config.database + '/summary.json.gz'
 
-dbPlayerListPath = args.database + '/playerlist'
+dbPlayerListPath = config.database + '/playerlist'
 dbPlayerListAllFilename = dbPlayerListPath + '/all{}.json.gz'
 dbPlayerListActiveFilename = dbPlayerListPath + '/active{}.json.gz'
 
 # clean old format database
-oldDbFilename = args.database + '/db.json.gz'
+oldDbFilename = config.database + '/db.json.gz'
 if os.path.isfile(oldDbFilename):
     print('Removing deprecated database file: ' + oldDbFilename)
     os.remove(oldDbFilename)
 
 # get server.properties motd if no server name is set
-if not args.server_name:
+if config.server.customName:
+    serverName = config.server.customName
+else:
     p = re.compile('^motd=(.+)$')
-    with open(args.server + '/server.properties', encoding='utf-8') as f:
+    with open(serverPath + '/server.properties', encoding='utf-8') as f:
         for line in f:
             m = p.match(line)
             if m:
-                args.server_name = javaproperties.unescape(
-                                       m.group(1)
-                                   ).replace('\n', '<br>')
+                serverName = javaproperties.unescape(m.group(1)).replace('\n', '<br>')
                 break
 
 # try and load usercache
 usercache = dict()
 try:
-    with open(args.server + '/usercache.json') as f:
+    with open(serverPath + '/usercache.json') as f:
         for entry in json.load(f):
             usercache[entry['uuid']] = entry['name']
 except:
     print('Cannot use usercache.json for offline player lookup')
 
 # initialize database
-if not os.path.isdir(args.database):
-    os.mkdir(args.database)
+if not os.path.isdir(config.database):
+    os.mkdir(config.database)
 
 if not os.path.isdir(dbRankingsPath):
     os.mkdir(dbRankingsPath)
@@ -216,10 +211,10 @@ try:
             if not uuid in players:
                 players[uuid] = {}
 except Exception as e:
-    print('failed to read player data directory: ' + args.mcStatsDir)
+    print('failed to read player data directory: ' + mcStatsDir)
     handle_error(e, True)
 
-# init events
+# init event stats
 eventStats = []
 eventStatByName = dict()
 activeEvents = set()
@@ -242,45 +237,21 @@ except Exception as e:
     print('failed to read event data directory: ' + dbEventsPath)
     handle_error(e, True)
 
-# delete event
-if args.delete_event:
-    ename = args.delete_event
-    if not ename in eventStatByName:
-        handle_error('no such event to delete: ' + ename, True)
-
-    eventStatByName.pop(ename)
-    eventStats = list(filter(lambda x: x.name != ename, eventStats))
-
-    if ename in activeEvents:
-        activeEvents.discard(ename)
-
-    os.remove(dbEventsPath + '/' + ename + '.json')
-    print('deleted event: ' + ename)
-
-# do sanity check for stop event
-if args.stop_event:
-    ename = args.stop_event
-    if not ename in eventStatByName:
-        handle_error('no such event to stop: ' + ename, True)
-    elif not eventStatByName[ename].active:
-        handle_error('event already stopped: ' + ename, True)
-
-# start new event
-if args.start_event:
-    ename = args.start_event
-    if ename in eventStatByName:
-        handle_error('cannot restart existing event: ' + ename, True)
-
-    # register
-    # all sanity checks (event stat exists, etc.) have been done before
-    e = mcstats.EventStat(
-        ename, args.event_title, statByName[args.event_stat])
-
-    eventStats.append(e)
-    eventStatByName[ename] = e
-    activeEvents.add(ename)
-
-    print('started event: ' + args.event_title + ' (' + ename + ')')
+# possibly start events
+for e in events:
+    if mcstats.now >= e.startTime and mcstats.now < e.endTime:
+        # this event should be running
+        if not e.name in activeEvents:
+            if e.name in eventStatByName:
+                handle_error('ERROR: duplicate event ' + e.name)
+                continue
+        
+            # ... but it's not - start it
+            eventStat = mcstats.EventStat(e.name, e.title, e.stat)
+            eventStats.append(eventStat)
+            eventStatByName[e.name] = eventStat
+            activeEvents.add(e.name)
+            print('event "' + e.title + '" (' + e.name + ') has started!')
 
 # update player data
 serverVersion = 0
@@ -338,7 +309,7 @@ for uuid, player in players.items():
     active = is_active(last)
 
     # update skin
-    if (not 'name' in player) or active or args.update_inactive:
+    if (not 'name' in player) or active or config.players.updateInactive:
         if 'update' in player:
             update_time = player['update']
         else:
@@ -458,14 +429,15 @@ for mcstat in mcstats.registry:
     # add to award info list
     awards[mcstat.name] = award
 
-# stop an event
-if args.stop_event:
-    # sanity checks have been done earlier
-    # deactivate
-    # do NOT exclude from activeEvents - we still need to save it!
-    e = eventStatByName[args.stop_event]
-    e.active = False
-    e.stopTime = mcstats.now
+# possibly stop events
+for e in events:
+    if mcstats.now >= e.endTime and e.name in activeEvents:
+        # stop event
+        eventStat = eventStatByName[e.name]
+        eventStat.active = False
+        eventStat.stopTime = mcstats.now
+        # nb: do NOT exclude from activeEvents - we still need to save it!
+        print('event "' + e.title + '" (' + e.name + ') has ended!')
 
 # process events
 summaryEvents = dict()
@@ -545,20 +517,20 @@ for ename in activeEvents:
         json.dump(eventStatByName[ename].serialize(), dataFile)
 
 # copy server icon if available
-if os.path.isfile(args.server + '/server-icon.png'):
+if os.path.isfile(serverPath + '/server-icon.png'):
     has_icon = True
-    shutil.copy(args.server + '/server-icon.png', args.database)
+    shutil.copy(serverPath + '/server-icon.png', config.database)
 else:
     has_icon = False
 
 # gather info for client
 info = {
     'hasIcon': has_icon,
-    'serverName': args.server_name,
+    'serverName': serverName,
     'updateTime': int(mcstats.now),
-    'inactiveDays': args.inactive_days,
+    'inactiveDays': config.players.inactiveDays,
     'minPlayTime': min_playtime,
-    'crown': [args.crown_gold, args.crown_silver, args.crown_bronze],
+    'crown': [config.crown.gold, config.crown.silver, config.crown.bronze],
     'cacheQ': playerCacheQ,
     'numPlayers': len(playerlist),
     'numActive': numActivePlayers,
@@ -636,3 +608,6 @@ for i in range(0, len(playerlist), playersPerPage):
     with gzip.open(dbPlayerListActiveFilename.format(page + 1), 'wb') as f:
         f.write(json.dumps(
             playerlist[i : i + playersPerPage]).encode())
+
+# done
+print('update finished')
