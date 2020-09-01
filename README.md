@@ -12,125 +12,152 @@ A live demo of _MinecraftStats_ in action is available here: [DVG Snapshot Stats
 This section describes how to set up _MinecraftStats_ to work on your server.
 
 ### Compatibility
-___MinecraftStats_ is compatible only to Minecraft 1.13 or later__ (more precisely: snapshot [17w47a](https://minecraft.gamepedia.com/17w47a) or later).
+_MinecraftStats_ is compatible only to Minecraft 1.13 or later (more precisely: snapshot [17w47a](https://minecraft.gamepedia.com/17w47a) or later).
 
-I am trying to keep the statistics up to date with Minecraft snapshots. Mojang sometimes decide to rename entity or statistic IDs, which may break stats. I am trying my best to update accordingly, but please don't hesitate to [open an issue](https://github.com/pdinklag/MinecraftStats/issues) in case you notice something is wrong!
+I am trying to keep the statistics up to date with new Minecraft versions. However, Mojang sometimes decide to rename entity or statistic IDs, which may break some awards. I am trying my best to update accordingly, but please don't hesitate to [open an issue](https://github.com/pdinklag/MinecraftStats/issues) in case you notice something is wrong!
 
 ### Requirements
 _Python 3.4_ or later is required to feed _MinecraftStats_ with your server's data.
 
 ### Installation
-Simply copy all files (or check out this repository) somewhere under your webserver's document root (e.g. `htdocs/MinecraftStats`).
 
-The web application is simply `index.html` - so you'll simply need to point your players to the URL corresponding to the installation path.
+I recommend using git to check out this repository somewhere under your webserver's document root (e.g. `/var/www/html`), as it makes updating easier (see below).
 
-### Feeding the data
-The heart of _MinecraftStats_ is the `update.py` script, which compiles the Minecraft server's statistics into a database that is used by the web application.
+```sh
+git clone https://github.com/pdinklag/MinecraftStats.git
+```
 
-Simply change into the installation directory and pass the path to your Minecraft server to the update script like so:
-```python3 update.py -s /path/to/server```
+However, downloading the repository as a zip file and unpacking it there will work as well.
+
+The web application is accessed via `index.html` - so you'll simply need to point your players to the URL corresponding to the installation path.
+
+### Updating
+
+If you are using git, the following will do the trick:
+
+```sh
+git pull
+```
+
+Otherwise, re-download the repository and overwrite any existing files.
+
+### Feeding Data
+
+The heart of _MinecraftStats_ is the `update.py` script, which loads the player statistics from your Minecraft server into the database for the web application. Said database is file-based and will be stored in the `data` directory by default.
+
+To call the update script, simply go into the installation directory and execute the following:
+
+```sh
+python3 update.py -c config.json
+```
+
+When you do this for the first time, the file called `config.json` will be created for you with a default configuration. You will also receive the following message:
+
+```
+server.path not configured, please edit config.json
+```
+
+This is because _MinecraftStats_ does not yet know where your Minecraft server is installed. So go ahead and enter the path to your Minecraft server under the `server > path` setting in `config.json`. See below for more configuration possibilities.
+
+#### Configuration
+
+The configuration JSON file supprots the following settings:
+
+* `client`
+  * `playerCacheUUIDPrefix` - short explanation: *do not touch*. Determines player cache grouping by UUIDs. Most of the time you should leave the default value of 2 untouched. If you have *many* active players on your server (e.g., thousands) and wish to reduce traffic and load times somewhat, you may try increasing this to 3 to see if it helps. Note that increasing this value will increase the number of files under `data/playercache` *exponentially* (!), so handle with care.
+  * `playersPerPage` - how many players to display at most in the players list.
+* `configVersion` - used internally, do not change manually.
+* `crown`
+  * `bronze` - the crown score worth of a bronze medal
+  * `silver` - the crown score worth of a silver medal
+  * `gold` - the crown score worth of a gold medal
+* `events` - see below in the *Events* section.
+* `players`
+  * `inactiveDays` - if a player is inactive for this many days, they will no longer be eligible for any awards
+  * `minPlaytime` - only players having played this many minutes or more will be eligible for awards
+  * `profileUpdateInterval` - update player names and skins using the Mojang API every this many days
+  * `updateInactive` - also update names and skins of inactive players (not recommended)
+
+* `server`
+  * `customName` - the server name to display on the home page. Leave this at `null` to use the MOTD from your `server.properties`.
+  * `path` - the path to your Minecraft server installation.
+  * `worldName` - the name of the world on the server that contains the player statistics (`stats` directory with JSON files in it). In most cases, this is simply `world`.
+
+#### Troubleshooting
 
 You may encounter the following messages during the update:
+
+* `update.py: error: unrecognized arguments: ...` - if you are sure that everything is right, it may be that when you last used *MinecraftStats*, configuration was still done via the command line. This has changed and you need to switch to the JSON based configuration described above. You can call `makeconfig.py` with the old list of arguments to create a JSON file from it to make the process easier.
+
 * `updating profile for <player> ...` - the updater needs to download the player's skin URL every so often using Mojang's web API ,so that the browser won't have to do it later and slow the web application down. __If this fails__, make sure that Python is able to open `https` connections to `sessionserver.mojang.com`.
 * `HTTP Error 429` - Mojang has some limitations on their API that MinecraftStats uses to get player skins. If too many requests for the same player are done within a certain time frame (the exact specs are not known to me), Mojang's API refuses the request with a 429 code. This normally shouldn't happen if you use the default profile update interval.
 * `unsupported data version 0 for <player>` - this means that `<player>` has not logged into your server for a long time and his data format is still from Minecraft 1.12.2 or earlier.
 
 In case you encounter any error messages and can't find an explanation, don't hesistate to [open an issue](https://github.com/pdinklag/MinecraftStats/issues).
 
-After the update, you will have a `data` directory that contains everything the web application needs.
+After the update, you will have a `data` directory that contains everything the web application needs; refer to the *Database Structure* section for details.
 
-#### Automatic updates
+#### Automatic Updates
 _MinecraftStats_ does not include any means for automatic updates - you need to take care of this yourself. The most common way to do it on Linux servers is by creating a cronjob that starts the update script regularly, e.g., every 10 minutes.
 
-If you're using Windows to run your server... shame on you, figure something out!
+If you're using Windows to run your server... figure something out!
 
 #### FTP
 In case you use FTP to transfer the JSON files to another machine before updating, please note that _MinecraftStats_ uses a JSON file's last modified date in order to determine a player's last play time. Therefore, in order for it to function correctly, the last modified timestamps of the files need to be retained.
 
-#### Options
-
-The `update.py` script accepts the following command-line options (and some less important ones, check `--help`):
-
-* `-s <server>` - the path to your Minecraft server. This is the only __required__ option.
-* `-w <world>` - if your server's main world (the one that contains the `stats` directory) is not named "world", pass its alternate name here.
-* `-d <path>` - where to store the database ("data" per default). Note that the web application will only work if the database is in a directory called `data` next to `index.html`. You should not need this option unless you don't run the updater from within the web directory.
-* `--server-name <name>` - specify the server's name displayed in the web app's heading. Minecraft color codes are supported! By default, the updater will read your `server.properties` file and use the `motd` setting, i.e., the same name that players see in the game's server browser.
-* `--inactive-days <days>` - if a player does not join the server for more than `<days>` days (default: 7), then he is no longer eligible for any awards.
-* `--min-playtime <minutes>` - only players who have played at least `<minutes>` minues (default: 0) on the server are eligible for awards.
-* `--crown-gold <score>` - worth of a gold medal against the crown score (default: 4).
-* `--crown-silver <score>` - worth of a silver medal against the crown score (default: 2).
-* `--crown-bronze <score>` - worth of a bronze medal against the crown score (default: 1).
-* `--start-event <id>` - see below under *Events*.
-* `--stop-event <id>` - see below under *Events*.
-* `--delete-event <id>` - see below under *Events*.
-* `--c <config>` - load configuration, see below.
-* `--save-config <config>` - save configuration see below.
-
-#### Saving and Loading Configurations
-
-To avoid having to pass command-line arguments over and over again, you can save the command-line passed to `update.py` using the `--save-config` argument. For example,
-
-```
-update.py -s /path/to/server --server-name "My Awesome Server" --min-playtime 60 --save-config example
-```
-
-would save all the arguments into a configuration called `example` (in a file in the `config` subdirectory, which can be edited like any text file). The next time, in order to use the same command-line, one could use
-
-```
-update.py -c example
-```
-
-with the same results. It is possible to combine a loaded configuration with additional flags, for example `update.py -c example --start-event [...]` to use the example configuration and start an event as described in the *Events* section below.
-
-#### Database structure
+#### Database Structure
 The `data` directory will contain the following after running an update:
 * `summary.json.gz` - This is a summary for the web application, containing information about the server and everything needed to display the award listing.
 * `server-icon.png` - if your server has an icon, this will be a copy of it. Otherwise, a default icon will be used.
+* `events` - contains one JSON file for every event containing player scores.
 * `playercache` - cache of player names and skin IDs, grouped by player UUIDs.
 * `playerdata` - contains one JSON file for every player, containing information displayed in the player view.
 * `playerlist` - contains an index for player information used by the player list.
 * `rankings` - contains one JSON file for every award containing player rankings.
 
 ## Events
-Events allow you to track a specific award stat for a limited amount of time. For example, let's consider a Halloween-themed event called "Skeleton Hunt" that tracks how many skeletons people kill between October 30 and November 1.
+Events allow you to track a specific award stat for a limited amount of time. You can plan events via the `events` list in the config JSON. The following information needs to be specified for an event:
 
-#### Starting an event
-An event can be started by passing `--start-event <id>` to the updater, where `<id>` is a _unique_ identifier for the event. You cannot have multilple events with the same ID. Additionally, you require to pass the following two parameters:
-* `--event-title <title>` - sets the title of the event displayed in the browser.
-* `--event-stat <id>` - sets the stat to be tracked in the event according to the given award ID.
+* `name` - the *unique* internal name of the event, which needs to be a valid file and URL name, i.e., you should not use spaces or special characters here. Every event needs a different name, even if they share the same title.
+* `title` - the title of the event displayed in the browser.
+* `stat` - the ID of the award stat counted for the event. An easy way to find these IDs is by clicking an award in the browser and getting it from the URL.
+* `startTime` - the time at which the event starts in `YYYY-MM-DD HH:MM` format (4-digit year, 2-digit month, day, hour and minute).
+* `endTime` - the time at which the event ends (same format as `startTime`).
 
-To set up our example Skeleton Hunt event, we would use this:
+When you run `update.py`, events will automatically be started or stopped based on the current server time.
+
+### Example
+
+As an example, let's consider a Halloween-themed event called "Skeleton Hunt" that tracks how many skeletons people kill between October 30, 10 o'clock in the morning and midnight of November 1. We would add the following to the config JSON:
+
+```json
+...
+	"events": [
+        {
+            "name": "skeleton_hunt_2020",
+            "title": "Skeleton Hunt",
+            "stat": "kill_skeleton",
+            "startTime": "2020-10-30 10:00",
+            "endTime": "2020-01-01 00:00"
+        }
+    ],
+...
 ```
-update.py [...] --start-event halloween2019 --event-title "Skeleton Hunt" --event-stat kill_skeleton
-```
-Note the `[...]` - you will have to pass all parameters that you usually pass for an update, which will be changed in the future (see [issue #85][8]).
 
-#### Stopping and deleting events
-To stop an event, use `--stop-event <id>`, with `<id>` being the identifier of the event to stop. Note that a stopped event **cannot be restarted**. So in our example,
-```
-update.py [...] --stop-event halloween2019
-```
-would stop the Halloween event. Again, `[...]` means that this is a normal update and all the other parameters have to be passed.
-
-Using `--delete-event <id>`, the event with identifier `<id>` is deleted completely. This **cannot be undone**.
-
-#### Automatic event scheduling
-Like with automatic updates, _MinecraftStats_ provides no such concept of its own. Automatic event schedules can also be done using cronjobs that run exactly once - one for starting and a second one for stopping.
-
-# Customizing Awards
+## Customizing Awards
 I assume here that you have some very basic knowledge of Python, however, you may also get away without any.
 
 `update.py` imports all modules from the `mcstats/stats` directory. Here you will find many `.py` files that define the awards in a pretty straightforward way.
 
 Any changes will be in effect the next time `update.py` is executed.
 
-## Adding new awards
+### Adding New Awards
 For adding a new award, follow these steps:
 
 1. Create a new module in `mcstats/stats` and register your `MinecraftStat` instances (see below).
 2. Place an icon for the award in `img/award-icons`. If your award ID is `my_award`, the icon's file name needs to be `my_award.png`.
 
-### The MinecraftStat class
+#### The MinecraftStat Class
 A `MinecraftStat` object consists of an _ID_, some _meta information_ (_title_, _description_ and a _unit_ for statistic values) and a _StatReader_.
 
 The _ID_ is simply the award's internal identifier. It is used for the database and the web application also uses it to locate the award icon (`img/award-icons/<id>.png`).
@@ -144,17 +171,19 @@ The _StatReader_ is responsible for calculating the displayed and ranked statist
 
 There are various readers, the usage of which is best explained by having a close look to the existing awards. If you require new types of calculations, dig in the `mcstats/mcstats.py` file and expand upon what's there.
 
-## Removing awards
-In order to remove an award, find the corresponding module and delete or modify it to suit your needs.
+### Modifying and Removing Awards
+In order to modify or remove an award, find the corresponding module and modify or delete it to suit your needs.
 
-# Development Notes
+Note that some awards, e.g., all the mob kill awards, are grouped into a single python file.
+
+## Development Notes
 This section contains some hints for those who want to develop on _MinecraftStats_.
 
 ##### JavaScript and CSS minimization
 
 In an effort to reduce client traffic, the JavaScript and CSS files of the web UI are minified. The JavaScripts are minified using [terser](https://github.com/terser/terser). Refer to the `minimize.sh` script located in the `js` directory for the command-line used to do so. For CSS minimization, I use [uglifycss](https://www.npmjs.com/package/uglifycss) without any special command-line parameters.
 
-# License and Attribution
+## License and Attribution
 
 _MinecraftStats_ is released under the [Creative Commons BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license. This means you can pretty much use and modify it freely, with the only requirements being attribution and not putting it under restrictive (e.g., commercial) licenses if modified.
 
