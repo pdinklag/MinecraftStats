@@ -21,7 +21,7 @@ _Python 3.4_ or later is required to feed _MinecraftStats_ with your server's da
 
 ### Installation
 
-I recommend using git to check out this repository somewhere under your webserver's document root (e.g. `/var/www/html`), as it makes updating easier (see below).
+I recommend using git to check out the `master` branch of this repository somewhere under your webserver's document root (e.g. `/var/www/html`), as it makes updating easier (see below).
 
 ```sh
 git clone https://github.com/pdinklag/MinecraftStats.git
@@ -31,9 +31,9 @@ However, downloading the repository as a zip file and unpacking it there will wo
 
 The web application is accessed via `index.html` - so you'll simply need to point your players to the URL corresponding to the installation path.
 
-### Updating
+##### Updating MinecraftStats
 
-If you are using git, the following will do the trick:
+To update _MinecraftStats_ to a newer version, if you are using git, the following will do the trick:
 
 ```sh
 git pull
@@ -41,7 +41,7 @@ git pull
 
 Otherwise, re-download the repository and overwrite any existing files.
 
-### Feeding Data
+### Feeding The Data
 
 The heart of _MinecraftStats_ is the `update.py` script, which loads the player statistics from your Minecraft server into the database for the web application. Said database is file-based and will be stored in the `data` directory by default.
 
@@ -51,7 +51,9 @@ To call the update script, simply go into the installation directory and execute
 python3 update.py -c config.json
 ```
 
-When you do this for the first time, the file called `config.json` will be created for you with a default configuration. You will also receive the following message:
+When you do this for the first time, the file called `config.json` will be created for you with a default configuration.
+
+You will also receive the following message:
 
 ```
 server.path not configured, please edit config.json
@@ -59,7 +61,7 @@ server.path not configured, please edit config.json
 
 This is because _MinecraftStats_ does not yet know where your Minecraft server is installed. So go ahead and enter the path to your Minecraft server under the `server > path` setting in `config.json`. See below for more configuration possibilities.
 
-#### Configuration
+### Configuration
 
 The configuration JSON file supprots the following settings:
 
@@ -83,6 +85,16 @@ The configuration JSON file supprots the following settings:
   * `path` - the path to your Minecraft server installation.
   * `worldName` - the name of the world on the server that contains the player statistics (`stats` directory with JSON files in it). In most cases, this is simply `world`.
 
+##### Migrating Command-Line Configurations
+
+If you have been using _MinecraftStats_ before the configuration was changed to JSON-based, you can use the `makeconfig.py` script with all your old arguments to generate the corresponding JSON configuration, for example:
+
+```sh
+python3 makeconfig.py -s /path/to/server --min-playtime 60 > config.json
+```
+
+Note that the way how events are started and stopped has changed. You will find the new information in the *Events* section.
+
 #### Troubleshooting
 
 You may encounter the following messages during the update:
@@ -97,15 +109,15 @@ In case you encounter any error messages and can't find an explanation, don't he
 
 After the update, you will have a `data` directory that contains everything the web application needs; refer to the *Database Structure* section for details.
 
-#### Automatic Updates
+### Automatic Updates
 _MinecraftStats_ does not include any means for automatic updates - you need to take care of this yourself. The most common way to do it on Linux servers is by creating a cronjob that starts the update script regularly, e.g., every 10 minutes.
 
 If you're using Windows to run your server... figure something out!
 
-#### FTP
+### FTP
 In case you use FTP to transfer the JSON files to another machine before updating, please note that _MinecraftStats_ uses a JSON file's last modified date in order to determine a player's last play time. Therefore, in order for it to function correctly, the last modified timestamps of the files need to be retained.
 
-#### Database Structure
+### Database Structure
 The `data` directory will contain the following after running an update:
 * `summary.json.gz` - This is a summary for the web application, containing information about the server and everything needed to display the award listing.
 * `server-icon.png` - if your server has an icon, this will be a copy of it. Otherwise, a default icon will be used.
@@ -121,12 +133,12 @@ Events allow you to track a specific award stat for a limited amount of time. Yo
 * `name` - the *unique* internal name of the event, which needs to be a valid file and URL name, i.e., you should not use spaces or special characters here. Every event needs a different name, even if they share the same title.
 * `title` - the title of the event displayed in the browser.
 * `stat` - the ID of the award stat counted for the event. An easy way to find these IDs is by clicking an award in the browser and getting it from the URL.
-* `startTime` - the time at which the event starts in `YYYY-MM-DD HH:MM` format (4-digit year, 2-digit month, day, hour and minute).
+* `startTime` - the time at which the event starts in `YYYY-MM-DD HH:MM` format (4-digit year followed by 2-digit month, day, hour and minute).
 * `endTime` - the time at which the event ends (same format as `startTime`).
 
 When you run `update.py`, events will automatically be started or stopped based on the current server time.
 
-### Example
+##### Event Example
 
 As an example, let's consider a Halloween-themed event called "Skeleton Hunt" that tracks how many skeletons people kill between October 30, 10 o'clock in the morning and midnight of November 1. We would add the following to the config JSON:
 
