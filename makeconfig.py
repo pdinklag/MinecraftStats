@@ -4,7 +4,9 @@ import os
 import json
 import sys
 
+from mcstats import config
 from mcstats.util import handle_error
+from mcstats.util import merge_dict
 
 parser = argparse.ArgumentParser(description='Create a MinecraftStats configuration using legacy parameters')
 parser.add_argument('--server', '-s', type=str, required=False, default=None,
@@ -53,9 +55,8 @@ if args.load_config:
         handle_error('configuration not found: ' + args.load_config, True)
 
 # create a JSON config and dump it to stdout
-configJson = {
-    "configVersion": 1,
-    "database": "data",
+configJson = config.defaultConfig
+merge_dict(configJson, {
     "server": {
         "path": args.server,
         "customName": args.server_name,
@@ -76,8 +77,6 @@ configJson = {
         "silver": args.crown_silver,
         "bronze": args.crown_bronze
     },
-    "events": [
-    ],
-}
+})
 
 print(json.dumps(configJson, indent=4))

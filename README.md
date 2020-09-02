@@ -66,24 +66,26 @@ This is because _MinecraftStats_ does not yet know where your Minecraft server i
 The configuration JSON file supprots the following settings:
 
 * `client`
-  * `playerCacheUUIDPrefix` - short explanation: *do not touch*. Determines player cache grouping by UUIDs. Most of the time you should leave the default value of 2 untouched. If you have *many* active players on your server (e.g., thousands) and wish to reduce traffic and load times somewhat, you may try increasing this to 3 to see if it helps. Note that increasing this value will increase the number of files under `data/playercache` *exponentially* (!), so handle with care.
-  * `playersPerPage` - how many players to display at most in the players list.
+  * `playerCacheUUIDPrefix` - short explanation: *do not touch*. Determines player cache grouping by UUIDs. Most of the time you should leave the default value of 2 untouched. If you have *many* active players on your server (e.g., thousands) and wish to reduce traffic and load times somewhat, you may try increasing this to 3 to see if it helps. Note that increasing this value will increase the number of files under `data/playercache` *exponentially* (!), so handle with care (*default: 2*).
+  * `playersPerPage` - how many players to display at most in the players list (*default: 100*).
 * `configVersion` - used internally, do not change manually.
 * `crown`
-  * `bronze` - the crown score worth of a bronze medal
-  * `silver` - the crown score worth of a silver medal
-  * `gold` - the crown score worth of a gold medal
+  * `bronze` - the crown score worth of a bronze medal (*default: 1*)
+  * `silver` - the crown score worth of a silver medal (*default: 2*)
+  * `gold` - the crown score worth of a gold medal (*default: 4*)
 * `events` - see below in the *Events* section.
 * `players`
-  * `inactiveDays` - if a player is inactive for this many days, they will no longer be eligible for any awards
-  * `minPlaytime` - only players having played this many minutes or more will be eligible for awards
-  * `profileUpdateInterval` - update player names and skins using the Mojang API every this many days
-  * `updateInactive` - also update names and skins of inactive players (not recommended)
-
+  * `exclude` - a list of UUIDs to exclude from the stats (*default: empty*)
+  * `excludeBanned` - if `true`, exclude players listed in `banned-players.json` from the stats (*default: true*)
+  * `excludeOps` - if `true`, exclude players listed in `ops.json` from the stats (*default: false*)
+  * `inactiveDays` - if a player is inactive for this many days, they will no longer be eligible for any awards (*default: 7*)
+* `minPlaytime` - only players having played this many minutes or more will be eligible for awards (*default: 0*)
+  * `profileUpdateInterval` - update player names and skins using the Mojang API every this many days (*default: 3*)
+  * `updateInactive` - also update names and skins of inactive players (not recommended) (*default: false*)
 * `server`
-  * `customName` - the server name to display on the home page. Leave this at `null` to use the MOTD from your `server.properties`.
-  * `path` - the path to your Minecraft server installation.
-  * `worldName` - the name of the world on the server that contains the player statistics (`stats` directory with JSON files in it). In most cases, this is simply `world`.
+  * `customName` - the server name to display on the home page. Leave this at `null` to use the MOTD from your `server.properties` (*default: null*)
+  * `path` - the path to your Minecraft server installation (*no default*).
+  * `worldName` - the name of the world on the server that contains the player statistics (`stats` directory with JSON files in it). In most cases, this is simply `world` (*default: world*).
 
 ##### Migrating Command-Line Configurations
 

@@ -16,6 +16,7 @@ import types
 import javaproperties
 import mojang
 
+from mcstats import config
 from mcstats import mcstats
 from mcstats.util import handle_error
 from mcstats.util import RecursiveNamespace
@@ -23,39 +24,7 @@ from mcstats.util import merge_dict
 from mcstats.stats import *
 
 # default config
-configJson = {
-    "configVersion": 1,
-    "database": "data",              # where the database is written
-    "server": {
-        "path": False,               # path to server
-        "customName": False,         # custom server name; use MOTD if empty
-        "worldName": "world"         # name of the world to use, probably always "world"
-    },
-    "client": {
-        "playersPerPage": 100,       # how many players to display per page
-        "playerCacheUUIDPrefix": 2,  # length of UUID prefix for player cache - more = smaller caches
-    },
-    "players": {
-        "profileUpdateInterval": 3,  # update profile after this many days
-        "updateInactive": False,     # also update profile for inactive players
-        "inactiveDays": 7,           # number of offline days before a player is considered inactive
-        "minPlaytime": 60,           # number of minutes a player must have played before entering stats
-    },
-    "crown": {
-        "gold": 4,                   # crown score worth of a gold medal     
-        "silver": 2,                 # crown score worth of a silver medal
-        "bronze": 1                  # crown score worth of a bronze medal
-    },
-    "events": [ # list of events, as in example below
-        # {
-        #    "name": "zombie_hunt_2020",
-        #    "title": "Zombie Hunt 2020",
-        #    "stat": "kill_zombie",
-        #    "startTime": "2020-10-01 10:00",
-        #    "endTime": "2020-10-31 22:00"
-        # }
-    ],
-}
+configJson = config.defaultConfig
 
 # name->stat
 statByName = dict()
@@ -171,7 +140,31 @@ try:
         for entry in json.load(f):
             usercache[entry['uuid']] = entry['name']
 except:
-    print('Cannot use usercache.json for offline player lookup')
+    handle_error('Cannot use usercache.json for offline player lookup')
+
+# exclude players
+excludePlayers = set()
+
+for uuid in config.players.excludeUUIDs:
+    excludePlayers.add(uuid)
+
+# exclude banned players
+if config.players.excludeBanned:
+    try:
+        with open(serverPath + '/banned-players.json') as f:
+            for entry in json.load(f):
+                excludePlayers.add(entry['uuid'])
+    except:
+        handle_error('Cannot use banned-players.json for banned player exclusion')
+
+# exclude ops
+if config.players.excludeOps:
+    try:
+        with open(serverPath + '/ops.json') as f:
+            for entry in json.load(f):
+                excludePlayers.add(entry['uuid'])
+    except:
+        handle_error('Cannot use ops.json for op exclusion')
 
 # initialize database
 if not os.path.isdir(config.database):
@@ -258,6 +251,10 @@ serverVersion = 0
 hof = mcstats.Ranking()
 
 for uuid, player in players.items():
+    # check if uuid is excluded
+    if uuid in excludePlayers:
+        continue
+
     # check if data file is available
     dataFilename = mcStatsDir + '/' + uuid + '.json'
     if not os.path.isfile(dataFilename):
@@ -476,7 +473,7 @@ playerlist = []
 numActivePlayers = 0
 
 for uuid, player in players.items():
-    if ('last' in player) and ('name' in player) and ('stats' in player):
+    if (not uuid in excludePlayers) and  ('last' in player) and ('name' in player) and ('stats' in player):
         validPlayers[uuid] = player
 
         name = player['name']
