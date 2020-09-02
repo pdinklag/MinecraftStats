@@ -48,7 +48,7 @@ The heart of _MinecraftStats_ is the `update.py` script, which loads the player 
 To call the update script, simply go into the installation directory and execute the following:
 
 ```sh
-python3 update.py -c config.json
+python3 update.py config.json
 ```
 
 When you do this for the first time, the file called `config.json` will be created for you with a default configuration.
