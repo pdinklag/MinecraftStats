@@ -44,7 +44,7 @@ mcstats.showPlayer = function(uuid) {
             mcstats.showView(
                 mcstats.playerWidget(uuid, 'textw texth align-baseline mr-2', false),
                 'Player Statistics',
-                'Last played: ' + mcstats.lastOnlineWidget(player.last),
+                mcstats.info.showLastOnline ? 'Last played: ' + mcstats.lastOnlineWidget(player.last) : '',
                 false);
         });
     });

@@ -68,6 +68,7 @@ The configuration JSON file supprots the following settings:
 * `client`
   * `playerCacheUUIDPrefix` - short explanation: *do not touch*. Determines player cache grouping by UUIDs. Most of the time you should leave the default value of 2 untouched. If you have *many* active players on your server (e.g., thousands) and wish to reduce traffic and load times somewhat, you may try increasing this to 3 to see if it helps. Note that increasing this value will increase the number of files under `data/playercache` *exponentially* (!), so handle with care (*default: 2*).
   * `playersPerPage` - how many players to display at most in the players list (*default: 100*).
+  * `showLastOnline` - if `true`, the last online date and time will be displayed for players (*default: true*).
 * `configVersion` - used internally, do not change manually.
 * `crown`
   * `bronze` - the crown score worth of a bronze medal (*default: 1*)

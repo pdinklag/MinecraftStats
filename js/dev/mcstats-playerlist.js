@@ -24,12 +24,12 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
 
         list.forEach(function(player) {
             var widget = mcstats.playerWidget(player.uuid);
-            var last = mcstats.lastOnlineWidget(player.last);
+            var lastOnlineColumn = mcstats.info.showLastOnline ? `<td class="text-right">${mcstats.lastOnlineWidget(player.last)}</td>` : '';
 
             tbody += `
                 <tr>
                     <td>${widget}</td>
-                    <td class="text-right">${last}</td>
+                    ${lastOnlineColumn}
                 </tr>
             `;
         });
@@ -118,6 +118,8 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
         paginator += generatePageLink(page+1, '&gt', page < numPages);
 
         // build
+        var lastOnlineHeader = mcstats.info.showLastOnline ? `<th scope="col" class="text-right text-shadow">Last online</th>` : '';
+        
         mcstats.viewContent.innerHTML = `
             <div class="text-center mt-3">
                 <input id="show-inactive" type="checkbox" ${inactive ? 'checked' : ''}/>
@@ -131,7 +133,7 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
                 <table class="table table-responsive-xs table-hover table-sm">
                 <thead>
                     <th scope="col" class="text-shadow">Player</th>
-                    <th scope="col" class="text-right text-shadow">Last online</th>
+                    ${lastOnlineHeader}
                 </thead>
                 <tbody>${tbody}</tbody>
                 </table>

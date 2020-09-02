@@ -18,7 +18,7 @@ loader.addRequest('data/summary.json.gz', function(summary) {
     document.title = `${serverNameNoFmt} \u2013 Stats`;
     document.getElementById('server-name').innerHTML = mcstats.formatColorCode(serverName);
     document.getElementById('update-time').textContent = formatTime(mcstats.info.updateTime);
-
+    
     var serverIcon = document.getElementById('server-icon');
     if(!mcstats.info.hasIcon) {
         serverIcon.style.display = 'none';
