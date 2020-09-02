@@ -17,7 +17,6 @@ def get_player_profile(uuid):
 
     if response_str:
         response = json.loads(response_str)
-        print(response_str)
         
         if 'name' in response:
             # get player name
