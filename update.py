@@ -532,7 +532,7 @@ info = {
     'numPlayers': len(playerlist),
     'numActive': numActivePlayers,
     'playersPerPage': playersPerPage,
-    'showLastOnline': config.players.showLastOnline,
+    'showLastOnline': config.client.showLastOnline,
 }
 
 # write hall of fame for client
