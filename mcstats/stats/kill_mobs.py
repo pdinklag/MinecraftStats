@@ -54,6 +54,7 @@ create_kill_stat('polar_bear','Polar Hunter','Polar Bears')
 create_kill_stat('snow_golem','AntiFrosty','Snow Golems')
 create_kill_stat('zombie_pigman','Nether Gang War','Zombie Pigmen',0,2510) # renamed to Zombified Piglin in 20w09a
 create_kill_stat('zombified_piglin','Nether Gang War','Zombified Piglins',2510)   # added in 20w09a
+create_kill_stat('piglin_brute','Brutal','Piglin Brutes',2569)   # added in 20w27a
 
 # Passives
 create_kill_stat('bat','Bat Flap','Bats')
