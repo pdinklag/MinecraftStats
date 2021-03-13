@@ -39,7 +39,7 @@ args = parser.parse_args()
 
 # load config
 if os.path.isfile(args.config):
-    with open(args.config, 'r') as configFile:
+    with open(args.config, 'r', encoding="utf8") as configFile:
         merge_dict(configJson, json.load(configFile))
 else:
     # save default
