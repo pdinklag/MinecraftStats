@@ -196,12 +196,17 @@ if os.path.isfile(dbPlayersFilename):
 else:
     players = dict()
 
+# remove excluded players
+for uuid in excludePlayers:
+    if uuid in players:
+        del players[uuid]
+
 # find available player IDs in stats dir
 try:
     for file in os.listdir(mcStatsDir):
         if file.endswith('.json'):
             uuid = file[:-5] # cut off '.json' extension
-            if not uuid in players:
+            if (not uuid in players) and (not uuid in excludePlayers):
                 players[uuid] = {}
 except Exception as e:
     print('failed to read player data directory: ' + mcStatsDir)
@@ -251,10 +256,6 @@ serverVersion = 0
 hof = mcstats.Ranking()
 
 for uuid, player in players.items():
-    # check if uuid is excluded
-    if uuid in excludePlayers:
-        continue
-
     # check if data file is available
     dataFilename = mcStatsDir + '/' + uuid + '.json'
     if not os.path.isfile(dataFilename):
@@ -473,7 +474,7 @@ playerlist = []
 numActivePlayers = 0
 
 for uuid, player in players.items():
-    if (not uuid in excludePlayers) and  ('last' in player) and ('name' in player) and ('stats' in player):
+    if ('last' in player) and ('name' in player) and ('stats' in player):
         validPlayers[uuid] = player
 
         name = player['name']
