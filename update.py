@@ -290,6 +290,8 @@ for uuid, player in players.items():
     playtimeTicks = 0
     if 'minecraft:custom' in stats:
         custom = stats['minecraft:custom']
+        if 'minecraft:play_time' in custom:
+            playtimeTicks = custom['minecraft:play_time'] # new in 21w16a (data version 2711)
         if 'minecraft:play_one_minute' in custom:
             playtimeTicks = custom['minecraft:play_one_minute']
 
