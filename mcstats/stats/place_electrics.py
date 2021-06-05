@@ -10,6 +10,7 @@ redstone_item_patterns = [
     'minecraft:observer',
     'minecraft:comparator',
     'minecraft:repeater',
+    'minecraft:sculk_sensor',
     'minecraft:.+_pressure_plate',
     'minecraft:target',
 ]
