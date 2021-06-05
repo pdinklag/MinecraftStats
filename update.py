@@ -49,9 +49,27 @@ else:
 
 config = RecursiveNamespace(**configJson)
 
-# ensure config
+# get server paths
 if not config.server.path:
     handle_error('server.path not configured, please edit ' + args.config, True)
+
+if isinstance(config.server.path, list):
+    serverPaths = config.server.path
+else:
+    serverPaths = [config.server.path]
+
+statsDirs = []
+advancementDirs = []
+
+for path in serverPaths:
+    if not os.path.isdir(path):
+        handle_error('invalid path in server.path: ' + path, True)
+
+    worldDir = os.path.join(path, config.server.worldName)
+    statsDirs.append(os.path.join(worldDir, 'stats'))
+    advancementDirs.append(os.path.join(worldDir, 'advancements'))
+
+primaryServerPath = serverPaths[0]
 
 mcstats.CrownScore.gold = config.crown.gold
 mcstats.CrownScore.silver = config.crown.silver
@@ -65,19 +83,6 @@ def is_active(last):
 
 min_playtime = config.players.minPlaytime
 profile_update_interval = 86400 * config.players.profileUpdateInterval
-
-# paths
-serverPath = config.server.path
-mcWorldDir = serverPath + '/' + config.server.worldName;
-mcStatsDir = mcWorldDir + '/stats'
-mcAdvancementsDir = mcWorldDir + '/advancements'
-
-# sanity checks
-if not os.path.isdir(serverPath):
-    handle_error('not a directory: ' + serverPath, True)
-
-if not os.path.isdir(mcStatsDir):
-    handle_error('no valid stat directory: ' + mcStatsDir, True)
 
 # initialize event definitions
 Event = collections.namedtuple('Event', ['name', 'title', 'stat', 'startTime', 'endTime'])
@@ -126,7 +131,7 @@ if config.server.customName:
     serverName = config.server.customName
 else:
     p = re.compile('^motd=(.+)$')
-    with open(serverPath + '/server.properties', encoding='utf-8') as f:
+    with open(os.path.join(primaryServerPath, 'server.properties'), encoding='utf-8') as f:
         for line in f:
             m = p.match(line)
             if m:
@@ -135,12 +140,14 @@ else:
 
 # try and load usercache
 usercache = dict()
-try:
-    with open(serverPath + '/usercache.json') as f:
-        for entry in json.load(f):
-            usercache[entry['uuid']] = entry['name']
-except:
-    handle_error('Cannot use usercache.json for offline player lookup')
+for path in serverPaths:
+    usercacheFile = os.path.join(path, 'usercache.json')
+    try:
+        with open(usercacheFile) as f:
+            for entry in json.load(f):
+                usercache[entry['uuid']] = entry['name']
+    except:
+        handle_error('Cannot open ' + usercacheFile + ' for offline player lookup')
 
 # exclude players
 excludePlayers = set()
@@ -150,21 +157,25 @@ for uuid in config.players.excludeUUIDs:
 
 # exclude banned players
 if config.players.excludeBanned:
-    try:
-        with open(serverPath + '/banned-players.json') as f:
-            for entry in json.load(f):
-                excludePlayers.add(entry['uuid'])
-    except:
-        handle_error('Cannot use banned-players.json for banned player exclusion')
+    for path in serverPaths:
+        bannedPlayersFile = os.path.join(path, 'banned-players.json')
+        try:
+            with open(bannedPlayersFile) as f:
+                for entry in json.load(f):
+                    excludePlayers.add(entry['uuid'])
+        except:
+            handle_error('Cannot open ' + bannedPlayersFile + ' for banned player exclusion')
 
 # exclude ops
 if config.players.excludeOps:
-    try:
-        with open(serverPath + '/ops.json') as f:
-            for entry in json.load(f):
-                excludePlayers.add(entry['uuid'])
-    except:
-        handle_error('Cannot use ops.json for op exclusion')
+    for path in serverPaths:
+        opsFile = os.path.join(path, 'ops.json')
+        try:
+            with open(opsFile) as f:
+                for entry in json.load(f):
+                    excludePlayers.add(entry['uuid'])
+        except:
+            handle_error('Cannot open ' + opsFile + ' for op exclusion')
 
 # initialize database
 if not os.path.isdir(config.database):
@@ -201,16 +212,17 @@ for uuid in excludePlayers:
     if uuid in players:
         del players[uuid]
 
-# find available player IDs in stats dir
-try:
-    for file in os.listdir(mcStatsDir):
-        if file.endswith('.json'):
-            uuid = file[:-5] # cut off '.json' extension
-            if (not uuid in players) and (not uuid in excludePlayers):
-                players[uuid] = {}
-except Exception as e:
-    print('failed to read player data directory: ' + mcStatsDir)
-    handle_error(e, True)
+# find available player IDs in stats dirs
+for statsDir in statsDirs:
+    try:
+        for file in os.listdir(statsDir):
+            if file.endswith('.json'):
+                uuid = file[:-5] # cut off '.json' extension
+                if (not uuid in players) and (not uuid in excludePlayers):
+                    players[uuid] = {}
+    except Exception as e:
+        print('failed to read player data directory: ' + statsDir)
+        handle_error(e, True)
 
 # init event stats
 eventStats = []
@@ -256,21 +268,45 @@ serverVersion = 0
 hof = mcstats.Ranking()
 
 for uuid, player in players.items():
-    # check if data file is available
-    dataFilename = mcStatsDir + '/' + uuid + '.json'
-    if not os.path.isfile(dataFilename):
-        # got no data for this dude
-        continue
+    # check if any data files are available and get basic data
+    last = 0
+    playtimeTicks = 0
+    version = 0
+    datasets = []
+    
+    for i, statsDir in enumerate(statsDirs):
+        dataFilename = os.path.join(statsDir, uuid + '.json')
+        if os.path.isfile(dataFilename):
+            last = max(last, int(os.path.getmtime(dataFilename)))
+            
+            with open(dataFilename) as f:
+                data = json.load(f)
 
-    # load data
-    try:
-        with open(dataFilename) as dataFile:
-            data = json.load(dataFile)
-    except Exception as e:
-        print('failed to update player data for ' + uuid)
-        handle_error(e)
-        continue
+            if 'DataVersion' in data:
+                version = max(version, data['DataVersion'])
 
+            if 'stats' in data:
+                stats = data['stats']
+                
+                if 'minecraft:custom' in stats:
+                    custom = stats['minecraft:custom']
+                    if 'minecraft:play_time' in custom:
+                        playtimeTicks += int(custom['minecraft:play_time']) # new in 21w16a (data version 2711)
+                    if 'minecraft:play_one_minute' in custom:
+                        playtimeTicks += int(custom['minecraft:play_one_minute'])
+
+                # also attempt to load advancements
+                advFilename = os.path.join(advancementDirs[i], uuid + '.json')
+                if os.path.isfile(advFilename):
+                    with open(advFilename) as advFile:
+                        stats['advancements'] = json.load(advFile)
+
+                datasets.append(stats)
+    
+    # check if any data is available
+    if len(datasets) == 0:
+        continue
+    
     # check data version
     if 'DataVersion' in data:
         version = data['DataVersion']
@@ -281,20 +317,10 @@ for uuid, player in players.items():
         print('unsupported data version ' + str(version) + ' for ' + uuid)
         continue
 
+    # find latest overall server version
     serverVersion = max(serverVersion, version)
 
-    # collapse stats
-    stats = data['stats']
-
-    # get amount of time played
-    playtimeTicks = 0
-    if 'minecraft:custom' in stats:
-        custom = stats['minecraft:custom']
-        if 'minecraft:play_time' in custom:
-            playtimeTicks = custom['minecraft:play_time'] # new in 21w16a (data version 2711)
-        if 'minecraft:play_one_minute' in custom:
-            playtimeTicks = custom['minecraft:play_one_minute']
-
+    # get total amount of time played
     playtimeMinutes = playtimeTicks / (20 * 60);
     if playtimeMinutes < min_playtime:
         # invalidate player and continue
@@ -302,12 +328,10 @@ for uuid, player in players.items():
         player.pop('last', None)
         continue
 
-    # get last play time and determine activity
-    last = int(os.path.getmtime(dataFilename))
+    # determine activity
     player['last'] = last
-
     active = is_active(last)
-
+    
     # update skin
     if (not 'name' in player) or active or config.players.updateInactive:
         if 'update' in player:
@@ -353,22 +377,23 @@ for uuid, player in players.items():
     playerStats = dict()
     player['stats'] = playerStats
 
-    # try and load advancements into stats
-    advFilename = mcAdvancementsDir + '/' + uuid + '.json'
-    try:
-        with open(advFilename) as advFile:
-            stats['advancements'] = json.load(advFile)
-    except:
-        stats['advancements'] = dict()
+    # process registry and event stats for each dataset
+    for stats in datasets:
+        for mcstat in mcstats.registry + eventStats:
+            if mcstat.isEligible(version):
+                value = mcstat.read(stats)
+                if mcstat.playerStatRelevant:
+                    if mcstat.name in playerStats:
+                        value = mcstat.aggregate(playerStats[mcstat.name], value)
+                    
+                    playerStats[mcstat.name] = value
 
-    # process registry and event stats
+    # enter into rankings
     for mcstat in mcstats.registry + eventStats:
-        if mcstat.isEligible(version):
-            value = mcstat.read(stats)
-
-            if mcstat.playerStatRelevant:
-                playerStats[mcstat.name] = {'value':value}
-
+        if mcstat.name in playerStats:
+            value = playerStats[mcstat.name]['value']
+            playerStats[mcstat.name] = {'value': value} # collapse
+            
             if mcstat.canEnterRanking(uuid, active):
                 mcstat.enter(uuid, value)
 
@@ -517,9 +542,10 @@ for ename in activeEvents:
         json.dump(eventStatByName[ename].serialize(), dataFile)
 
 # copy server icon if available
-if os.path.isfile(serverPath + '/server-icon.png'):
+serverIconFile = os.path.join(primaryServerPath, '/server-icon.png')
+if os.path.isfile(serverIconFile):
     has_icon = True
-    shutil.copy(serverPath + '/server-icon.png', config.database)
+    shutil.copy(serverIconFile, config.database)
 else:
     has_icon = False
 

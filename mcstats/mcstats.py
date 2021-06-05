@@ -64,15 +64,6 @@ class StatSumMatchReader:
 
         return sum
 
-# Reader that counts the amount of entries of a list
-class StatListLengthReader:
-    def __init__(self, path):
-        self.path = path
-
-    # read from stats
-    def read(self, stats):
-        return len(read(stats, self.path, []))
-
 # Ranking entries
 class RankingEntry:
     def __init__(self, id, value):
@@ -113,6 +104,10 @@ class Ranking:
     def sort(self):
         self.ranking.sort(reverse=True)
 
+# Aggregation functions
+def aggregateSum(a, b):
+    return {'value': a['value'] + b['value']}
+
 # Base for all minecraft stats
 class MinecraftStat(Ranking):
     def __init__(self, name, meta, reader, minVersion = 1451, maxVersion = float("inf")):
@@ -124,6 +119,7 @@ class MinecraftStat(Ranking):
         self.maxVersion = maxVersion
         self.linkedStat = False
         self.playerStatRelevant = True
+        self.aggregate = aggregateSum
 
     # enter the player with id and value into the ranking
     def enter(self, id, value):
@@ -135,7 +131,7 @@ class MinecraftStat(Ranking):
 
     # read the statistic value from the player stats
     def read(self, stats):
-        return self.reader.read(stats)
+        return {'value': self.reader.read(stats)}
 
     # test if this stat can be used right now
     def isEligible(self, version):
@@ -162,7 +158,7 @@ class LegacyStat:
 
     # read the statistic value from the player stats
     def read(self, stats):
-        return self.reader.read(stats)
+        return {'value': self.reader.read(stats)}
 
     # test if this stat can be used right now
     def isEligible(self, version):
@@ -210,7 +206,7 @@ class EventStat(Ranking):
 
     # read the statistic value from the player stats via the linked stat
     def read(self, stats):
-        return self.link.read(stats)
+        return {'value': self.link.read(stats)}
 
     # test if this stat can be used right now
     def isEligible(self, version):
