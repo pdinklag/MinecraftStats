@@ -113,9 +113,24 @@ In case you encounter any error messages and can't find an explanation, don't he
 After the update, you will have a `data` directory that contains everything the web application needs; refer to the *Database Structure* section for details.
 
 ### Automatic Updates
-_MinecraftStats_ does not include any means for automatic updates - you need to take care of this yourself. The most common way to do it on Linux servers is by creating a cronjob that starts the update script regularly, e.g., every 10 minutes.
+_MinecraftStats_ does not include any means for automatic updates - you need to take care of this yourself.
 
-If you're using Windows to run your server... figure something out!
+#### Cronjobs
+
+The most common way to do it on Linux servers is by creating a cronjob that starts the update script regularly, e.g., every 10 minutes.
+
+:warning: Note that ​ *MinecraftStats* will produce the output (`data` directory) in the *current working directory*, and not simply where `update.py` is located. This means that your cronjob may have to start with a `cd` to your *MinecraftStats* directory, otherwise the output will be created in the home directory of the cron user.
+
+Typically, a cronjob for *MinecraftStats* will look like this:
+
+```
+# update MinecraftStats every 10 minutes
+ */10 *  *  *  *  cd /path/to/mcstats ; python3 update.py config.json
+```
+
+#### Windows
+
+If you're using Windows to run your server... figure something out! There's probably some task scheduler available that you can use.
 
 ### FTP
 In case you use FTP to transfer the JSON files to another machine before updating, please note that _MinecraftStats_ uses a JSON file's last modified date in order to determine a player's last play time. Therefore, in order for it to function correctly, the last modified timestamps of the files need to be retained.
