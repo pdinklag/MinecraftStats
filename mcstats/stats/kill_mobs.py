@@ -45,8 +45,9 @@ create_kill_stat('wither_skeleton','Wither Or Not','Wither Skeletons')
 
 # Neutrals
 create_kill_stat('bee','Beegone!','Bees',2200) # added in 19w34a
-create_kill_stat('dolphin','Dolphin Hunter','Dolphins',1482) # added in 18w15a
+create_kill_stat('dolphin','Dolphin Hunter','Dolphins', 1482) # added in 18w15a
 create_kill_stat('enderman','Enderman Ender','Endermen')
+create_kill_stat('goat','G.O.A.T.','Goats', 2705) # added in 21w13a
 create_kill_stat('iron_golem','Defense Down!','Iron Golems')
 create_kill_stat('panda','Kung FU! Panda','Pandas',1901) # added in 18w43a
 create_kill_stat('piglin','Die, Pig!','Piglins', 2506) # added in 20w07a
