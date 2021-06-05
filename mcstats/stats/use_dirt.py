@@ -8,5 +8,8 @@ mcstats.registry.append(
             'desc': 'Dirt blocks placed',
             'unit': 'int',
         },
-        mcstats.StatReader(['minecraft:used','minecraft:dirt'])
+        mcstats.StatSumReader([
+            mcstats.StatReader(['minecraft:used','minecraft:dirt']),
+            mcstats.StatReader(['minecraft:used','minecraft:rooted_dirt'])
+        ])
     ))

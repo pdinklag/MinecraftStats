@@ -18,6 +18,7 @@ mcstats.registry.append(
             mcstats.StatReader(['minecraft:mined','minecraft:mycelium']),
             mcstats.StatReader(['minecraft:mined','minecraft:podzol']),
             mcstats.StatReader(['minecraft:mined','minecraft:red_sand']),
+            mcstats.StatReader(['minecraft:mined','minecraft:rooted_dirt']),
             mcstats.StatReader(['minecraft:mined','minecraft:sand']),
             mcstats.StatReader(['minecraft:mined','minecraft:soul_sand']),
             mcstats.StatReader(['minecraft:mined','minecraft:soul_soil']),
