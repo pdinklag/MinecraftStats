@@ -69,7 +69,6 @@ create_kill_stat('parrot','Stupid Bird!','Parrots')
 create_kill_stat('pig','Pork Chopper','Pigs')
 create_kill_stat('rabbit','Bunny Killer :(','Rabbits')
 create_kill_stat('sheep','Big Bad Wolf','Sheep')
-create_kill_stat('squid','Pool Cleaner','Squids')
 create_kill_stat('strider','Lava Pool Cleaner','Striders',2520) # added in 20w13a
 create_kill_stat('turtle','Super Mario','Turtles',1467) # added in 18w07a
 create_kill_stat('villager','Bully','Villagers')
@@ -218,4 +217,19 @@ mcstats.registry.append(
             mcstats.StatReader(['minecraft:killed','minecraft:tropical_fish']),
         ]),
         1471 # fish mobs added in 18w08b
+    ))
+
+# Squids (including glow squids)
+mcstats.registry.append(
+    mcstats.MinecraftStat(
+        'kill_squid',
+        {
+            'title': 'Pool Cleaner',
+            'desc': 'Squids killed',
+            'unit': 'int',
+        },
+        mcstats.StatSumReader([
+            mcstats.StatReader(['minecraft:killed','minecraft:glow_squid']),
+            mcstats.StatReader(['minecraft:killed','minecraft:squid']),
+        ])
     ))
