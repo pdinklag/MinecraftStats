@@ -5,9 +5,12 @@ mcstats.registry.append(
         'collect_berries',
         {
             'title': 'Berry Collector',
-            'desc': 'Sweet berries collected',
+            'desc': 'Berries collected',
             'unit': 'int',
         },
-        mcstats.StatReader(['minecraft:picked_up','minecraft:sweet_berries']),
-        1916 # berries introduced in 18w49a
+        mcstats.StatSumReader([
+            mcstats.StatReader(['minecraft:picked_up','minecraft:glow_berries']),
+            mcstats.StatReader(['minecraft:picked_up','minecraft:sweet_berries'])
+        ]),
+        1916 # sweet berries introduced in 18w49a
     ))
