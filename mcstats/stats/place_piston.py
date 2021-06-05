@@ -8,11 +8,7 @@ mcstats.registry.append(
             'desc': 'Pistons placed',
             'unit': 'int',
         },
-        mcstats.StatDiffReader(
-            mcstats.StatSumMatchReader(
-                ['minecraft:used'],
-                ['minecraft:.*piston']),
-            mcstats.StatSumMatchReader(
-                ['minecraft:mined'],
-                ['minecraft:.*piston'])),
+        mcstats.StatSumMatchReader(
+            ['minecraft:used'],
+            ['minecraft:.*piston'])
     ))

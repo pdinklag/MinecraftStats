@@ -8,12 +8,7 @@ mcstats.registry.append(
             'desc': 'Trees planted',
             'unit': 'int',
         },
-        # subtract mined from placed
-        mcstats.StatDiffReader(
-            mcstats.StatSumMatchReader(
-                ['minecraft:used'],
-                ['minecraft:.+_sapling']),
-            mcstats.StatSumMatchReader(
-                ['minecraft:mined'],
-                ['minecraft:.+_sapling'])),
+        mcstats.StatSumMatchReader(
+            ['minecraft:used'],
+            ['minecraft:.+_sapling'])
     ))
