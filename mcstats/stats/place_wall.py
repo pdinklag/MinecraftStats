@@ -8,7 +8,5 @@ mcstats.registry.append(
             'desc': 'Walls placed',
             'unit': 'int',
         },
-        mcstats.StatSumMatchReader(
-            ['minecraft:used'],
-            ['minecraft:glass','minecraft:.*_wall']),
+        mcstats.StatSumMatchReader(['minecraft:used'],['minecraft:.*_wall']),
     ))
