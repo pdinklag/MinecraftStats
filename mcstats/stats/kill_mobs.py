@@ -58,6 +58,7 @@ create_kill_stat('zombified_piglin','Nether Gang War','Zombified Piglins',2510) 
 create_kill_stat('piglin_brute','Brutal','Piglin Brutes',2569)   # added in 20w27a
 
 # Passives
+create_kill_stat('axolotl','Sir Axolot','Axolotls',2687) #added in 20w51a
 create_kill_stat('bat','Bat Flap','Bats')
 create_kill_stat('chicken','Chicken Griller','Chickens')
 create_kill_stat('cow','Cow Tipper','Cows')
