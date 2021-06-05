@@ -10,5 +10,5 @@ mcstats.registry.append(
         },
         mcstats.StatSumMatchReader(
             ['minecraft:used'],
-            ['minecraft:glass','minecraft:.*glass_pane','minecraft:.*stained_glass']),
+            ['minecraft:glass','minecraft:tinted_glass','minecraft:.*glass_pane','minecraft:.*stained_glass']),
     ))

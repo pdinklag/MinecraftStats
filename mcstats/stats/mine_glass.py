@@ -1,4 +1,5 @@
 from mcstats import mcstats
+
 mcstats.registry.append(
     mcstats.MinecraftStat(
         'mine_glass',
@@ -9,5 +10,5 @@ mcstats.registry.append(
         },
         mcstats.StatSumMatchReader(
             ['minecraft:mined'],
-            ['minecraft:glass','minecraft:.*glass_pane','minecraft:.*stained_glass']),
+            ['minecraft:glass','minecraft:tinted_glass','minecraft:.*glass_pane','minecraft:.*stained_glass']),
     ))
