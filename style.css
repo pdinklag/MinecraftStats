@@ -81,6 +81,8 @@ a:hover { color: #ACF; }
     image-rendering: pixelated;
     /* Firefox (and others?) */
     image-rendering: optimizeSpeed;
+    /* Internet Exploder */
+    -ms-interpolation-mode: nearest-neighbor;
 }
 
 .img-textsize { height: 1em; }
