@@ -1,8 +1,7 @@
 /* define Minecraft font */
 @font-face {
-    font-family: 'minecraftfont';
-    src: url('minecraftfont/minecraftfont.eot');
-    src: local('minecraftfont'), url('minecraftfont/minecraftfont.woff') format('woff'), url('minecraftfont/minecraftfont.ttf') format('truetype');
+    font-family: 'minecraftia';
+    src: url('font/minecraftia.woff2');
 }
 
 /* Global */
@@ -12,7 +11,7 @@ html {
 
 /* Body */
 body {
-    font-family: 'minecraftfont', monospace;
+    font-family: 'minecraftia', monospace;
 
     color: #EEE;
 
