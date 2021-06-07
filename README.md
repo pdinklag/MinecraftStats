@@ -1,5 +1,10 @@
 # MinecraftStats
 
+[![Example Installation at DVGaming.com](https://img.shields.io/badge/Example-DVGaming.COM%20Snapshot%20Server-blue)](http://mine3.dvgaming.com/)
+[![Minecraft 1.13 to 1.17](https://img.shields.io/badge/Minecraft-1.13%20--%201.17-brightgreen)](https://www.minecraft.net/)
+[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://github.com/pdinklag/MinecraftStats/blob/master/LICENSE.txt)
+[![Discord](https://img.shields.io/discord/850982115633790976.svg?label=Discord&logo=discord&logoColor=ffffff&color=8399E8&labelColor=7A7EC2)](https://discord.gg/brH5PGG8By)
+
 _MinecraftStats_ is a web browser application for the [statistics](http://minecraft.gamepedia.com/Statistics) that Minecraft servers collect about players.
 
 The presentation is done by giving __awards__ to players for certain achievements. For example, the player who played on the server for the longest total time receives the _Addict_ award. Every award has a viewable ranking associated to it with __medals__ - the award holder gets the gold medal, the second the silver medal and the third the bronze medal for the award. Each medal gives players a __crown score__ (1 for every bronze medal, 2 for every silver, 4 for every gold medal), which is displayed in a server __hall of fame__.
@@ -7,6 +12,8 @@ The presentation is done by giving __awards__ to players for certain achievement
 The system is highly customizable. All the awards are defined in Python modules that can be altered, added or removed to fit your needs. Additionally to simply reading Minecraft's original statistics, there are some awards that are combinations of various statistics.
 
 A live demo of _MinecraftStats_ in action is available here: [DVG Snapshot Stats](http://mine3.dvgaming.com/)
+
+Feel free to join the project [Discord](https://discord.gg/brH5PGG8By) 
 
 ## Setup Guide
 This section describes how to set up _MinecraftStats_ to work on your server.
@@ -108,7 +115,6 @@ You can combine multiple servers (e.g., servers connected via BungeeCord) into a
         ],
     },
 }
-
 ```
 
 Any number of servers can be combined this way. Note that *MinecraftStats* will get the server name (MOTD) and icon from the first source only.
