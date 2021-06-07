@@ -58,9 +58,13 @@ if args.load_config:
 configJson = config.defaultConfig
 merge_dict(configJson, {
     "server": {
-        "path": args.server,
+        "sources": [
+            {
+                "path": args.server,
+                "worldName": args.world,
+            }
+        ],
         "customName": args.server_name,
-        "worldName": args.world,
     },
     "client": {
         "playersPerPage": args.players_per_page,

@@ -84,26 +84,34 @@ The configuration JSON file supprots the following settings:
   * `profileUpdateInterval` - update player names and skins using the Mojang API every this many days (*default: 3*)
   * `updateInactive` - also update names and skins of inactive players (not recommended) (*default: false*)
 * `server`
+  * `sources` - a list of data sources, each of which must define the following
+    * `path` - the path to the Minecraft server installation (*no default*)
+    * `worldName` the name of the world on the server that contains the player statistics (`stats` directory with JSON files in it). In most cases, this is simply `world` (*default: world*).
   * `customName` - the server name to display on the home page. Leave this at `null` to use the MOTD from your `server.properties` (*default: null*)
-  * `path` - the path to your Minecraft server installation (*no default*). This also supports an array of paths to combine multiple servers (e.g., when using BungeeCord).
-  * `worldName` - the name of the world on the server that contains the player statistics (`stats` directory with JSON files in it). In most cases, this is simply `world` (*default: world*).
 
 ##### Combining Multiple Servers
 
-You can combine multiple servers (e.g., servers connected via BungeeCord) into a single stat database. For this, simply state an array of server paths in the `server` &rarr; `path` configuration like so:
+You can combine multiple servers (e.g., servers connected via BungeeCord) into a single stat database by listing multiple entries in the `server` &rarr; `sources` configuration like so:
 
 ```json
 {
     "server": {
-        "path": ["/opt/minecraft/server1","/opt/minecraft/server2"],
-        ...
+        "sources": [
+            {
+                "path": "/opt/minecraft/server1",
+                "worldName": "world1"
+            },
+            {
+                "path": "/opt/minecraft/server2",
+                "worldName": "world2"
+            },
+        ],
     },
-    ...
 }
 
 ```
 
-Any number of servers can be combined this way. Note that *MinecraftStats* will get the server name (MOTD) and icon from the first server only.
+Any number of servers can be combined this way. Note that *MinecraftStats* will get the server name (MOTD) and icon from the first source only.
 
 ##### Migrating Command-Line Configurations
 

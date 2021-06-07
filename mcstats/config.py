@@ -2,9 +2,13 @@ defaultConfig = {
     "configVersion": 1,
     "database": "data",              # where the database is written
     "server": {
-        "path": False,               # path to server
+        "sources": [
+            {
+                "path": False,       # path to server
+                "worldName": "world" # name of the world to use, probably always "world"
+            }
+        ],
         "customName": False,         # custom server name; use MOTD if empty
-        "worldName": "world"         # name of the world to use, probably always "world"
     },
     "client": {
         "playersPerPage": 100,       # how many players to display per page

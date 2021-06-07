@@ -49,27 +49,39 @@ else:
 
 config = RecursiveNamespace(**configJson)
 
-# get server paths
-if not config.server.path:
-    handle_error('server.path not configured, please edit ' + args.config, True)
+# get sources
+sources = []
+if hasattr(config.server, 'path') and config.server.path:
+    handle_error('server.path is deprecated, please use server.sources instead to configure your paths')
+    
+    worldName = config.server.worldName
+    if isinstance(config.server.path, list):
+        serverPaths = config.server.path
+    else:
+        serverPaths = [config.server.path]
 
-if isinstance(config.server.path, list):
-    serverPaths = config.server.path
-else:
-    serverPaths = [config.server.path]
+    for path in serverPaths:
+        sources.append((path, worldName))
+
+if isinstance(config.server.sources, list):
+    for e in config.server.sources:
+        sources.append((e.path, e.worldName))
+
+if len(sources) == 0:
+    handle_error('server.sources not configured, please consult the documentation and edit ' + args.config, True)
 
 statsDirs = []
 advancementDirs = []
 
-for path in serverPaths:
+for (path, worldName) in sources:
     if not os.path.isdir(path):
-        handle_error('invalid path in server.path: ' + path, True)
+        handle_error('invalid path in server.sources: ' + str(path), True)
 
-    worldDir = os.path.join(path, config.server.worldName)
+    worldDir = os.path.join(path, worldName)
     statsDirs.append(os.path.join(worldDir, 'stats'))
     advancementDirs.append(os.path.join(worldDir, 'advancements'))
 
-primaryServerPath = serverPaths[0]
+primaryServerPath = sources[0][0]
 
 mcstats.CrownScore.gold = config.crown.gold
 mcstats.CrownScore.silver = config.crown.silver
@@ -140,7 +152,7 @@ else:
 
 # try and load usercache
 usercache = dict()
-for path in serverPaths:
+for (path, _) in sources:
     usercacheFile = os.path.join(path, 'usercache.json')
     try:
         with open(usercacheFile) as f:
@@ -157,7 +169,7 @@ for uuid in config.players.excludeUUIDs:
 
 # exclude banned players
 if config.players.excludeBanned:
-    for path in serverPaths:
+    for (path, _) in sources:
         bannedPlayersFile = os.path.join(path, 'banned-players.json')
         try:
             with open(bannedPlayersFile) as f:
@@ -168,7 +180,7 @@ if config.players.excludeBanned:
 
 # exclude ops
 if config.players.excludeOps:
-    for path in serverPaths:
+    for (path, _) in sources:
         opsFile = os.path.join(path, 'ops.json')
         try:
             with open(opsFile) as f:
