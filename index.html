@@ -11,23 +11,23 @@
         <title>Minecraft Stats</title>
     </head>
     <body>
-        <nav class="position-absolute navbar navbar-dark navbar-expand-sm ml-2 mt-4 p-1 round-box">
+        <nav id="navigation" class="position-absolute navbar navbar-dark navbar-expand-sm ml-2 mt-4 p-1 round-box" style="display:none;">
             <button id="collapse-button" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <ul class="navbar-nav">
                     <li id="tab-awards" class="nav-item px-2">
-                        <a class="nav-link" href="#awards">Awards</a>
+                        <a class="nav-link" href="#awards"><span class="localize">navigation.awards</span></a>
                     </li>
                     <li id="tab-events" class="nav-item px-2" style="display: none;">
-                        <a class="nav-link" href="#events">Events</a>
+                        <a class="nav-link" href="#events"><span class="localize">navigation.events</span></a>
                     </li>
                     <li id="tab-hof" class="nav-item px-2">
-                        <a class="nav-link" href="#hof">Hall of Fame</a>
+                        <a class="nav-link" href="#hof"><span class="localize">navigation.hof</span></a>
                     </li>
                     <li id="tab-players" class="nav-item px-2">
-                        <a class="nav-link" href="#players">Players</a>
+                        <a class="nav-link" href="#players"><span class="localize">navigation.players</span></a>
                     </li>
                 </ul>
             </div>
@@ -37,13 +37,13 @@
                 <img id="server-icon" class="mr-1 img-textsize-3 align-bottom" title="" src="data/server-icon.png"/>
                 <span id="server-name" class="d-none d-sm-inline text-shadow">(server name)</span>
                 <div class="small text-muted">
-                    Last update: <span id="update-time" class="text-info">(last update)</span>
+                    <span class="localize">info.lastUpdate</span> <span id="update-time" class="text-info">(last update)</span>
                 </div>
             </div>
         </div>
         <div id="loader" class="container text-center mt-2">
             <img class="img-pixelated img-textsize-8" src="img/loader.gif"/>
-            <h4 class="mt-2 text-shadow">Loading...</h4>
+            <h4 id="loading-text" class="mt-2 text-shadow"></h4>
         </div>
         <div id="content" style="display:none;">
             <div id="view" class="container mx-auto">
@@ -76,6 +76,7 @@
         <script src="js/mcstats.min.js"></script>
         <!-- development mode -->
         <!-- <script src="js/dev/mcstats.js"></script> -->
+        <!-- <script src="js/dev/mcstats-localization.js"></script> -->
         <!-- <script src="js/dev/mcstats-widgets.js"></script> -->
         <!-- <script src="js/dev/mcstats-awardlist.js"></script> -->
         <!-- <script src="js/dev/mcstats-awardview.js"></script> -->

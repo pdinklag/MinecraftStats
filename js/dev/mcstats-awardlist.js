@@ -49,5 +49,5 @@ mcstats.showAwardsList = function() {
 
     // show
     mcstats.viewContent.innerHTML = viewHTML;
-    mcstats.showView('Award Overview', false, false, false);
+    mcstats.showView(mcstats.localize('page.awardList.title'), false, false, false);
 };

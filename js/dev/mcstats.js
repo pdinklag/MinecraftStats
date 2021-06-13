@@ -11,6 +11,7 @@ var mcstats = {
     viewIcon: document.getElementById('view-icon'),
     viewContent: document.getElementById('view-content'),
 
+    localization: {},
     info: {},
     awards: {},
     events: {},
@@ -80,6 +81,7 @@ mcstats.showView = function(title, subtitle, desc, iconUrl) {
         mcstats.viewIcon.style.display = 'none';
     }
 
+    mcstats.localizePage();
     mcstats.loader.style.display = 'none';
     mcstats.content.style.display = 'block';
 }
@@ -145,5 +147,3 @@ window.onhashchange = function() {
         mcstats.showAwardsList();
     }
 };
-
-

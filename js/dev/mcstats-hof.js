@@ -24,12 +24,12 @@ mcstats.showHof = function() {
         <div class="round-box p-1">
             <table class="table table-responsive-xs table-hover table-sm">
             <thead>
-                <th scope="col" class="text-right text-shadow">Rank</th>
-                <th scope="col" class="text-shadow">Player</th>
-                <th scope="col" class="text-center"><img class="img-textsize-2" title="Gold Medals" src="img/fatcow/medal_award_gold.png"/></th>
-                <th scope="col" class="text-center"><img class="img-textsize-2" title="Silver Medals" src="img/fatcow/medal_award_silver.png"/></th>
-                <th scope="col" class="text-center"><img class="img-textsize-2" title="Bronze Medals" src="img/fatcow/medal_award_bronze.png"/></th>
-                <th scope="col" class="text-right text-shadow">Score</th>
+                <th scope="col" class="text-right text-shadow">${mcstats.localize('stat.rank')}</th>
+                <th scope="col" class="text-shadow">${mcstats.localize('stat.player')}</th>
+                <th scope="col" class="text-center"><img class="img-textsize-2" title="${mcstats.localize('stat.unit.medals.gold')}" src="img/fatcow/medal_award_gold.png"/></th>
+                <th scope="col" class="text-center"><img class="img-textsize-2" title="${mcstats.localize('stat.unit.medals.silver')}" src="img/fatcow/medal_award_silver.png"/></th>
+                <th scope="col" class="text-center"><img class="img-textsize-2" title="${mcstats.localize('stat.unit.medals.bronze')}" src="img/fatcow/medal_award_bronze.png"/></th>
+                <th scope="col" class="text-right text-shadow">${mcstats.localize('stat.score')}</th>
             </thead>
             <tbody>${tbody}</tbody>
             </table>
@@ -39,19 +39,13 @@ mcstats.showHof = function() {
 
     var crown = mcstats.info.crown;
     var formatCrown = function(x) {
-        return wordSmallInt(x) + ' point' + ((x > 1) ? 's' : '');
+        return x + ' ' + mcstats.localize(x > 1 ? 'stat.unit.points' : 'stat.unit.point');
     };
 
     // show
     mcstats.showView(
-        'Hall of Fame',
-        'Crown Score Ranking',
-        `
-            The crown score is calculated by the amount of medals a player
-            holds.<br/>
-            A gold medal is worth <span class="rank-1">${formatCrown(crown[0])}</span>,
-            a silver medal is worth <span class="rank-2">${formatCrown(crown[1])}</span> and
-            a bronze medal is worth <span class="rank-3">${formatCrown(crown[2])}</span>.
-        `,
+        mcstats.localize('page.hof.title'),
+        mcstats.localize('page.hof.subtitle'),
+        mcstats.localize('page.hof.description', [formatCrown(crown[0]), formatCrown(crown[1]), formatCrown(crown[2])]),
         false);
 }

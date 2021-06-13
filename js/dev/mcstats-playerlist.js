@@ -98,32 +98,16 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
             paginator += generatePageLink(numPages);
         }
         
-        /*
-        for(var i = 1; i <= numPages; i++) {
-            if(page == i) {
-                paginator += `
-                    <li class="page-item active">
-                        <div class="page-link">${i}</div>
-                    </li>`;
-            } else {
-                paginator += `
-                    <li class="page-item">
-                        <a class="page-link" href="#${viewName}:${i}">${i}</a>
-                    </li>`;
-            }
-        }
-        */
-
         // next page button
         paginator += generatePageLink(page+1, '&gt', page < numPages);
 
         // build
-        var lastOnlineHeader = mcstats.info.showLastOnline ? `<th scope="col" class="text-right text-shadow">Last online</th>` : '';
+        var lastOnlineHeader = mcstats.info.showLastOnline ? `<th scope="col" class="text-right text-shadow">${mcstats.localize('page.playerList.lastOnline')}</th>` : '';
         
         mcstats.viewContent.innerHTML = `
             <div class="text-center mt-3">
                 <input id="show-inactive" type="checkbox" ${inactive ? 'checked' : ''}/>
-                <label for="show-inactive">Show inactive players</label>
+                <label for="show-inactive">${mcstats.localize('page.playerList.showInactive')}</label>
             </div>
             <div class="text-center mt-3">
                 <ul class="pagination justify-content-center">${paginator}</ul>
@@ -140,10 +124,7 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
             </div>
             </div>
             <div class="mt-2 text-muted text-center text-shadow">
-                Players need to have played at least ${mcstats.info.minPlayTime} minutes
-                in order to appear in the statistics.<br/>
-                Players who have not been online for over ${mcstats.info.inactiveDays} days
-                are considered inactive and are not eligible for any awards.
+                ${mcstats.localize('page.playerList.activityInfo', [mcstats.info.minPlayTime, mcstats.info.inactiveDays])}
             </div>
             <div class="text-center mt-3">
                 <ul class="pagination justify-content-center">${paginator}</ul>
@@ -157,16 +138,9 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
 
         // show
         mcstats.showView(
-            'Player List',
-            `
-                    <span class="text-data">${numPlayers}</span>
-                    players total
-                    ( <span class="text-success">${numActive}</span> active,
-                    <span class="text-danger">${numInactive}</span> inactive).
-            `,
-            `
-                Showing ${numPerPage} players per page.<br/>
-            `,
+            mcstats.localize('page.playerList.title'),
+            mcstats.localize('page.playerList.count', [numPlayers, numActive, numInactive]),
+            mcstats.localize('page.playerList.paginationInfo', [numPerPage]) + '<br/>',
             false);
     }, true);
 }

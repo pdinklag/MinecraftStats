@@ -22,8 +22,8 @@ mcstats.showAward = function(id) {
             <div class="round-box p-1">
                 <table class="table table-responsive-xs table-hover table-sm">
                 <thead>
-                    <th scope="col" class="text-right text-shadow">Rank</th>
-                    <th scope="col" class="text-shadow">Player</th>
+                    <th scope="col" class="text-right text-shadow">${mcstats.localize('stat.rank')}</th>
+                    <th scope="col" class="text-shadow">${mcstats.localize('stat.player')}</th>
                     <th scope="col" class="text-right text-shadow">${award.desc}</th>
                 </thead>
                 <tbody>${tbody}</tbody>
@@ -35,7 +35,7 @@ mcstats.showAward = function(id) {
         // show
         mcstats.showView(
             award.title,
-            'Award Ranking',
+            mcstats.localize('page.awardView.subtitle'),
             false,
             'img/award-icons/' + id + '.png');
     });

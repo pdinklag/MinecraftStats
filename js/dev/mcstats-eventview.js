@@ -21,10 +21,9 @@ mcstats.showEvent = function(id) {
 
         var eventTime;
         if(e.active) {
-            eventTime = `
-            This event is <span class="text-success">LIVE</span>
-            since <span class="text-info">${formatTime(e.startTime)}!</span>`;
+            eventTime = mcstats.localize('page.eventView.eventStatus.live', [formatTime(e.startTime)]);
         } else {
+            eventTime = mcstats.localize('page.eventView.eventStatus.finished', [formatTime(e.startTime), formatTime(e.stopTime)]);
             eventTime = `
                 This event went from
                 <span class="text-info">${formatTime(e.startTime)}</span>
@@ -37,8 +36,8 @@ mcstats.showEvent = function(id) {
             <div class="round-box p-1">
                 <table class="table table-responsive-xs table-hover table-sm">
                 <thead>
-                    <th scope="col" class="text-right text-shadow">Rank</th>
-                    <th scope="col" class="text-shadow">Player</th>
+                    <th scope="col" class="text-right text-shadow">${mcstats.localize('stat.rank')}</th>
+                    <th scope="col" class="text-shadow">${mcstats.localize('stat.player')}</th>
                     <th scope="col" class="text-right text-shadow">${award.desc}</th>
                 </thead>
                 <tbody>${tbody}</tbody>
@@ -50,7 +49,7 @@ mcstats.showEvent = function(id) {
         // show
         mcstats.showView(
             e.title,
-            e.active ? 'Event Leaderboard' : 'Event Ranking',
+            e.active ? mcstats.localize('page.eventView.title.active') : mcstats.localize('page.eventView.title.inactive'),
             eventTime,
             'img/award-icons/' + awardId + '.png');
     });

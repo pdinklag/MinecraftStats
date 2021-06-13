@@ -9,7 +9,7 @@ mcstats.showEventList = function() {
 
             var eventWidget = mcstats.eventWidget(id);
             if(e.active) {
-                eventWidget += `<span class="text-success ml-2">[LIVE]</span>`;
+                eventWidget += `<span class="text-success ml-2">[${mcstats.localize('page.eventList.live')}]</span>`;
             }
 
             var holder, info;
@@ -30,8 +30,8 @@ mcstats.showEventList = function() {
 
             var eventStartTime = formatTime(e.startTime);
             var live = e.active
-                ? `<span class="pl-2 text-success">[LIVE]</span>`
-                : `<span class="pl-2 text-danger">[Finished]</span>`;
+                ? `<span class="pl-2 text-success">[${mcstats.localize('page.eventList.live')}]</span>`
+                : `<span class="pl-2 text-danger">[${mcstats.localize('page.eventList.finished')}]</span>`;
 
             tbody += `
                 <div class="row">
@@ -48,7 +48,7 @@ mcstats.showEventList = function() {
                             </div>
                         </div>
                         <div class="p-1 round-box text-center">
-                            <span class="rank-1">${e.active ? "Leading:" : "Winner:"}</span>
+                            <span class="rank-1">${e.active ? "${mcstats.localize('page.eventList.leading')}:" : "${mcstats.localize('page.eventList.winner')}:"}</span>
                             ${holder}
                             <br/>
                             ${info}
@@ -67,7 +67,7 @@ mcstats.showEventList = function() {
     if(mcstats.liveEventKeysByDate.length > 0) {
         mcstats.viewContent.innerHTML += `
             <div class="text-center mb-2">
-                <div class="h5 text-shadow">Ongoing Events</div>
+                <div class="h5 text-shadow">${mcstats.localize('page.eventList.ongoingEvents')}</div>
             </div>
             ${generateList(mcstats.liveEventKeysByDate)}
         `;
@@ -77,11 +77,11 @@ mcstats.showEventList = function() {
     if(mcstats.finishedEventKeysByDate.length > 0) {
         mcstats.viewContent.innerHTML += `
             <div class="text-center mb-2 mt-4">
-                <div class="h5 text-shadow">Finished Events</div>
+                <div class="h5 text-shadow">${mcstats.localize('page.eventList.finishedEvents')}</div>
             </div>
             ${generateList(mcstats.finishedEventKeysByDate)}
         `;
     }
     
-    mcstats.showView('Events', false, false, false);
+    mcstats.showView(mcstats.localize('page.eventList.title'), false, false, false);
 };
