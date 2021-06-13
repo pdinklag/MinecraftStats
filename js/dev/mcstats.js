@@ -89,14 +89,6 @@ mcstats.showView = function(title, subtitle, desc, iconUrl) {
 // Collapse navbar when an item is clicked
 var navbarElement = document.getElementById('navbar-content');
 var navbar = new bootstrap.Collapse(navbarElement, {toggle: false});
-var collapseNavbar = function() {
-    navbar.hide();
-};
-
-var navlinks = document.getElementsByClassName('nav-link');
-for(var i = 0; i < navlinks.length; i++) {
-    navlinks[i].onclick = collapseNavbar;
-}
 
 // Register navigation event handler
 window.onhashchange = function() {
@@ -144,4 +136,7 @@ window.onhashchange = function() {
         // go to awards list (default)
         mcstats.showAwardsList();
     }
+    
+    // collapse navbar
+    navbar.hide();
 };

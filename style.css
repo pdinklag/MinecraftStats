@@ -22,8 +22,15 @@ body {
 }
 
 /* Links */
-a { color: #ACF; text-decoration: none; }
-a:hover { color: #ACF; text-decoration: underline; }
+a {
+    color: #ACF;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ACF;
+    text-decoration: underline;
+}
 
 /* Nav */
 .navbar-dark .navbar-toggler {
@@ -100,7 +107,6 @@ a:hover { color: #ACF; text-decoration: underline; }
 .texth-1_5 { height: 1.5em; min-height: 1.5em; max-height: 1.5em; }
 
 /* Tables */
-
 .table thead th {
     color: #FFF;
     border-bottom-style: solid;
@@ -152,6 +158,25 @@ a:hover { color: #ACF; text-decoration: underline; }
     background-color: rgba(0, 0, 0, 0.33);
     border-color: #888;
     color: #888;
+}
+
+/* Dropdowns */
+.dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.33);
+}
+
+.dropdown-item:hover {
+    background-color: unset;
+}
+
+a.dropdown-item {
+    color: #ACF;
+    text-decoration: none;
+}
+
+a.dropdown-item:hover {
+    color: #ACF;
+    text-decoration: underline;
 }
 
 /* Specials */
