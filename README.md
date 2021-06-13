@@ -206,6 +206,7 @@ As an example, let's consider a Halloween-themed event called "Skeleton Hunt" th
 ```
 
 ## Customizing Awards
+
 I assume here that you have some very basic knowledge of Python, however, you may also get away without any.
 
 `update.py` imports all modules from the `mcstats/stats` directory. Here you will find many `.py` files that define the awards in a pretty straightforward way.
@@ -240,7 +241,14 @@ Note that some awards, e.g., all the mob kill awards, are grouped into a single 
 ## Development Notes
 This section contains some hints for those who want to develop on _MinecraftStats_.
 
-##### JavaScript and CSS minimization
+### Web Frontend Localization
+
+The web frontend is fully localized. If you cannot find your language yet, please feel very welcome to provide a localization and create a pull request! In order to add a new language, two things have to be done:
+
+* Create a new language JSON file in the `localizations` directory and fill it with your translations. For the file name, please choose the corresponding [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) code for your language.
+* Find the `language-dropdown` element in `index.html` and add a new entry for your language there. The text should be the name of the language in that language (e.g. "Deutsch" for German, which is the German word for "German"). Please try and keep the dropdown sorted alphabetically.
+
+### JavaScript and CSS minimization
 
 In an effort to reduce client traffic, the JavaScript and CSS files of the web UI are minified. The JavaScripts are minified using [terser](https://github.com/terser/terser). Refer to the `minimize.sh` script located in the `js` directory for the command-line used to do so. For CSS minimization, I use [uglifycss](https://www.npmjs.com/package/uglifycss) without any special command-line parameters.
 
