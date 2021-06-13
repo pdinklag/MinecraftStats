@@ -117,23 +117,23 @@ for e in config.events:
     events.append(Event(title=e.title, name=e.name, stat=stat, startTime=startTime, endTime=endTime))
 
 # init paths
-dbRankingsPath = config.database + '/rankings'
-dbPlayerDataPath = config.database + '/playerdata'
-dbPlayerCachePath = config.database + '/playercache'
-dbEventsPath = config.database + '/events'
+dbRankingsPath = os.path.join(config.database, 'rankings')
+dbPlayerDataPath = os.path.join(config.database, 'playerdata')
+dbPlayerCachePath = os.path.join(config.database, 'playercache')
+dbEventsPath = os.path.join(config.database, 'events')
 
 playerCacheQ = config.client.playerCacheUUIDPrefix
 playersPerPage = config.client.playersPerPage
 
-dbPlayersFilename = config.database + '/players.json'
-dbSummaryFilename = config.database + '/summary.json.gz'
+dbPlayersFilename = os.path.join(config.database, 'players.json')
+dbSummaryFilename = os.path.join(config.database, 'summary.json.gz')
 
-dbPlayerListPath = config.database + '/playerlist'
-dbPlayerListAllFilename = dbPlayerListPath + '/all{}.json.gz'
-dbPlayerListActiveFilename = dbPlayerListPath + '/active{}.json.gz'
+dbPlayerListPath = os.path.join(config.database, 'playerlist')
+dbPlayerListAllFilename = os.path.join(dbPlayerListPath, 'all{}.json.gz')
+dbPlayerListActiveFilename = os.path.join(dbPlayerListPath, 'active{}.json.gz')
 
 # clean old format database
-oldDbFilename = config.database + '/db.json.gz'
+oldDbFilename = os.path.join(config.database, 'db.json.gz')
 if os.path.isfile(oldDbFilename):
     print('Removing deprecated database file: ' + oldDbFilename)
     os.remove(oldDbFilename)
@@ -244,7 +244,7 @@ activeEvents = set()
 try:
     for file in os.listdir(dbEventsPath):
         if file.endswith('.json'):
-            with open(dbEventsPath + '/' + file) as eventDataFile:
+            with open(os.path.join(dbEventsPath, file)) as eventDataFile:
                 e = mcstats.EventStat.deserialize(
                     json.load(eventDataFile), statByName)
 
@@ -453,7 +453,7 @@ for mcstat in mcstats.registry:
     for entry in mcstat.ranking:
         outRanking.append({'uuid':entry.id,'value':entry.value})
 
-    with open(dbRankingsPath + '/' + mcstat.name + '.json', 'w') as rankingFile:
+    with open(os.path.join(dbRankingsPath, mcstat.name + '.json'), 'w') as rankingFile:
         json.dump(outRanking, rankingFile)
 
     # set first rank in award info
@@ -539,7 +539,7 @@ for uuid, player in players.items():
         if is_active(last):
             numActivePlayers += 1
 
-        with open(dbPlayerDataPath + '/' + uuid + '.json', 'w') as dataFile:
+        with open(os.path.join(dbPlayerDataPath, uuid + '.json'), 'w') as dataFile:
             json.dump(player['stats'], dataFile)
 
 players = validPlayers
@@ -550,11 +550,11 @@ with open(dbPlayersFilename, 'w') as playersFile:
 
 # write event data
 for ename in activeEvents:
-    with open(dbEventsPath + '/' + ename + '.json', 'w') as dataFile:
+    with open(os.path.join(dbEventsPath , ename + '.json'), 'w') as dataFile:
         json.dump(eventStatByName[ename].serialize(), dataFile)
 
 # copy server icon if available
-serverIconFile = os.path.join(primaryServerPath, '/server-icon.png')
+serverIconFile = os.path.join(primaryServerPath, 'server-icon.png')
 if os.path.isfile(serverIconFile):
     has_icon = True
     shutil.copy(serverIconFile, config.database)
@@ -629,7 +629,7 @@ for uuid, player in players.items():
     })
 
 for key, cache in playercache.items():
-    with open(dbPlayerCachePath + '/' + key + '.json', 'w') as cacheFile:
+    with open(os.path.join(dbPlayerCachePath, key + '.json'), 'w') as cacheFile:
         json.dump(cache, cacheFile)
 
 # write player list (all players)
