@@ -12,9 +12,9 @@ mcstats.showEvent = function(id) {
 
             tbody += `
                 <tr>
-                    <td class="text-right">${rankWidget}</th>
+                    <td class="text-end">${rankWidget}</th>
                     <td>${playerWidget}</td>
-                    <td class="text-data text-right">${value}</td>
+                    <td class="text-data text-end">${value}</td>
                 </tr>
             `;
         });
@@ -36,9 +36,9 @@ mcstats.showEvent = function(id) {
             <div class="round-box p-1">
                 <table class="table table-responsive-xs table-hover table-sm">
                 <thead>
-                    <th scope="col" class="text-right text-shadow">${mcstats.localize('stat.rank')}</th>
+                    <th scope="col" class="text-end text-shadow">${mcstats.localize('stat.rank')}</th>
                     <th scope="col" class="text-shadow">${mcstats.localize('stat.player')}</th>
-                    <th scope="col" class="text-right text-shadow">${award.desc}</th>
+                    <th scope="col" class="text-end text-shadow">${award.desc}</th>
                 </thead>
                 <tbody>${tbody}</tbody>
                 </table>

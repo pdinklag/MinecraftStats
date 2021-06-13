@@ -9,7 +9,7 @@ mcstats.showEventList = function() {
 
             var eventWidget = mcstats.eventWidget(id);
             if(e.active) {
-                eventWidget += `<span class="text-success ml-2">[${mcstats.localize('page.eventList.live')}]</span>`;
+                eventWidget += `<span class="text-success ms-2">[${mcstats.localize('page.eventList.live')}]</span>`;
             }
 
             var holder, info;
@@ -30,8 +30,8 @@ mcstats.showEventList = function() {
 
             var eventStartTime = formatTime(e.startTime);
             var live = e.active
-                ? `<span class="pl-2 text-success">[${mcstats.localize('page.eventList.live')}]</span>`
-                : `<span class="pl-2 text-danger">[${mcstats.localize('page.eventList.finished')}]</span>`;
+                ? `<span class="ps-2 text-success">[${mcstats.localize('page.eventList.live')}]</span>`
+                : `<span class="ps-2 text-danger">[${mcstats.localize('page.eventList.finished')}]</span>`;
 
             tbody += `
                 <div class="row">

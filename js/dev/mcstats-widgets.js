@@ -153,7 +153,7 @@ mcstats.rankWidget = function(rank, type = 'medal') {
 
         if(medal) {
             widget = `
-                <img class="img-textsize-1_5 mr-1 align-top" title="${mcstats.localize(awardType.locPrefix + medal)}" src="img/${awardType.imgPrefix}${medal}.png"/>
+                <img class="img-textsize-1_5 me-1 align-top" title="${mcstats.localize(awardType.locPrefix + medal)}" src="img/${awardType.imgPrefix}${medal}.png"/>
             ` + widget;
         }
     } else {
@@ -239,7 +239,7 @@ mcstats.makePlayerWidget = function(uuid, skinCss, asLink) {
         (asLink ? `<a href="#player:${uuid}">${p.name}</a>` : p.name);
 }
 
-mcstats.playerWidget = function(uuid, skinCss = 'textw-1_5 texth-1_5 align-baseline mr-1', asLink = true) {
+mcstats.playerWidget = function(uuid, skinCss = 'textw-1_5 texth-1_5 align-baseline me-1', asLink = true) {
     if(uuid) {
         if(uuid in mcstats.players) {
             return mcstats.makePlayerWidget(uuid, skinCss, asLink);

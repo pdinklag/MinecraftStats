@@ -4,36 +4,38 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <link rel="stylesheet" href="js/lib/bootstrap-4.3.1.min.css"/>
+        <link rel="stylesheet" href="js/lib/bootstrap-5.0.1.min.css"/>
         <link rel="stylesheet" href="style.min.css"/>
         <link rel="icon" href="data/server-icon.png"/>
 
         <title>Minecraft Stats</title>
     </head>
     <body>
-        <nav id="navigation" class="position-absolute navbar navbar-dark navbar-expand-sm ml-2 mt-4 p-1 round-box" style="display:none;">
-            <button id="collapse-button" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarToggler">
-                <ul class="navbar-nav">
-                    <li id="tab-awards" class="nav-item px-2">
-                        <a class="nav-link" href="#awards"><span class="localize">navigation.awards</span></a>
-                    </li>
-                    <li id="tab-events" class="nav-item px-2" style="display: none;">
-                        <a class="nav-link" href="#events"><span class="localize">navigation.events</span></a>
-                    </li>
-                    <li id="tab-hof" class="nav-item px-2">
-                        <a class="nav-link" href="#hof"><span class="localize">navigation.hof</span></a>
-                    </li>
-                    <li id="tab-players" class="nav-item px-2">
-                        <a class="nav-link" href="#players"><span class="localize">navigation.players</span></a>
-                    </li>
-                </ul>
+        <nav id="navigation" class="position-absolute navbar navbar-expand-sm navbar-dark ml-2 mt-4 p-1 round-box" style="display:none;">
+            <div class="container-fluid">
+                <button id="collapse-button" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbar-content">
+                    <ul class="navbar-nav">
+                        <li id="tab-awards" class="nav-item px-2">
+                            <a class="nav-link" href="#awards"><span class="localize">navigation.awards</span></a>
+                        </li>
+                        <li id="tab-events" class="nav-item px-2" style="display: none;">
+                            <a class="nav-link" href="#events"><span class="localize">navigation.events</span></a>
+                        </li>
+                        <li id="tab-hof" class="nav-item px-2">
+                            <a class="nav-link" href="#hof"><span class="localize">navigation.hof</span></a>
+                        </li>
+                        <li id="tab-players" class="nav-item px-2">
+                            <a class="nav-link" href="#players"><span class="localize">navigation.players</span></a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
         <div id="header" class="clearfix text-center">
-            <div id="info" class="float-right ml-auto mr-2 mt-4 p-2 round-box small text-right" style="display:none;">
+            <div id="info" class="float-end ml-auto mr-2 mt-4 p-2 round-box small text-end" style="display:none;">
                 <img id="server-icon" class="mr-1 img-textsize-3 align-bottom" title="" src="data/server-icon.png"/>
                 <span id="server-name" class="d-none d-sm-inline text-shadow">(server name)</span>
                 <div class="small text-muted">
@@ -71,7 +73,7 @@
         </div>
 
         <script src="js/lib/pako_inflate-1.0.11.min.js"></script>
-        <script src="js/lib/bootstrap-native-3.0.9.min.js"></script>
+        <script src="js/lib/bootstrap-5.0.1.bundle.min.js"></script>
         <!-- release mode -->
         <script src="js/mcstats.min.js"></script>
         <!-- development mode -->

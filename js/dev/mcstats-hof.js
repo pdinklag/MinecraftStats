@@ -9,12 +9,12 @@ mcstats.showHof = function() {
 
         tbody += `
             <tr>
-                <td class="text-right">${rankWidget}</th>
+                <td class="text-end">${rankWidget}</th>
                 <td>${playerWidget}</td>
                 <td class="text-data text-center">${value[1]}</td>
                 <td class="text-data text-center">${value[2]}</td>
                 <td class="text-data text-center">${value[3]}</td>
-                <td class="text-data text-right">${value[0]}</td>
+                <td class="text-data text-end">${value[0]}</td>
             </tr>
         `;
     });
@@ -24,12 +24,12 @@ mcstats.showHof = function() {
         <div class="round-box p-1">
             <table class="table table-responsive-xs table-hover table-sm">
             <thead>
-                <th scope="col" class="text-right text-shadow">${mcstats.localize('stat.rank')}</th>
+                <th scope="col" class="text-end text-shadow">${mcstats.localize('stat.rank')}</th>
                 <th scope="col" class="text-shadow">${mcstats.localize('stat.player')}</th>
                 <th scope="col" class="text-center"><img class="img-textsize-2" title="${mcstats.localize('stat.unit.medals.gold')}" src="img/fatcow/medal_award_gold.png"/></th>
                 <th scope="col" class="text-center"><img class="img-textsize-2" title="${mcstats.localize('stat.unit.medals.silver')}" src="img/fatcow/medal_award_silver.png"/></th>
                 <th scope="col" class="text-center"><img class="img-textsize-2" title="${mcstats.localize('stat.unit.medals.bronze')}" src="img/fatcow/medal_award_bronze.png"/></th>
-                <th scope="col" class="text-right text-shadow">${mcstats.localize('stat.score')}</th>
+                <th scope="col" class="text-end text-shadow">${mcstats.localize('stat.score')}</th>
             </thead>
             <tbody>${tbody}</tbody>
             </table>

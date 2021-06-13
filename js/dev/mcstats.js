@@ -87,12 +87,10 @@ mcstats.showView = function(title, subtitle, desc, iconUrl) {
 }
 
 // Collapse navbar when an item is clicked
-var navbarButton = document.getElementById('collapse-button');
-var navbar = new BSN.Collapse(navbarButton);
+var navbarElement = document.getElementById('navbar-content');
+var navbar = new bootstrap.Collapse(navbarElement, {toggle: false});
 var collapseNavbar = function() {
-    if(navbarButton.getAttribute('aria-expanded') == 'true') {
-        navbar.hide();
-    }
+    navbar.hide();
 };
 
 var navlinks = document.getElementsByClassName('nav-link');

@@ -22,8 +22,8 @@ body {
 }
 
 /* Links */
-a { color: #ACF; }
-a:hover { color: #ACF; }
+a { color: #ACF; text-decoration: none; }
+a:hover { color: #ACF; text-decoration: underline; }
 
 /* Nav */
 .navbar-dark .navbar-toggler {
@@ -100,20 +100,19 @@ a:hover { color: #ACF; }
 .texth-1_5 { height: 1.5em; min-height: 1.5em; max-height: 1.5em; }
 
 /* Tables */
-.table {
-    margin-bottom: 0;
-    color: #EEE;
-}
-
-.table td, .table th {
-    border-top-style: dashed;
-    border-top-color: #666;
-}
 
 .table thead th {
     color: #FFF;
-    border-top-width: 0;
-    border-bottom-color: #666;
+    border-bottom-style: solid;
+    border-bottom-color: #666 !important;
+    border-bottom-width: 2px;
+}
+
+.table tbody td, .table tbody th {
+    border-top-style: dashed;
+    border-top-color: #666;
+    border-top-width: 1px;
+    border-bottom-style: none;
 }
 
 .table tbody tr:hover {
