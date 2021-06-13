@@ -132,12 +132,6 @@ dbPlayerListPath = os.path.join(config.database, 'playerlist')
 dbPlayerListAllFilename = os.path.join(dbPlayerListPath, 'all{}.json.gz')
 dbPlayerListActiveFilename = os.path.join(dbPlayerListPath, 'active{}.json.gz')
 
-# clean old format database
-oldDbFilename = os.path.join(config.database, 'db.json.gz')
-if os.path.isfile(oldDbFilename):
-    print('Removing deprecated database file: ' + oldDbFilename)
-    os.remove(oldDbFilename)
-
 # get server.properties motd if no server name is set
 if config.server.customName:
     serverName = config.server.customName
