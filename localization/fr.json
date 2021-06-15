@@ -24,7 +24,7 @@
     "page.playerList.title": "Liste des Joueurs",
     "page.playerList.count": "<span class=\"text-data\">{0}</span> joueurs au total (<span class=\"text-success\">{1}</span> actifs, <span class=\"text-danger\">{2}</span> inactifs).",
     "page.playerList.paginationInfo": "Affichant {0} jouers par page.",
-    "page.playerList.lastOnline": "En ligne il y a",
+    "page.playerList.lastOnline": "Dernier en ligne",
     "page.playerList.showInactive": "Affiche des joueurs inactifs",
     "page.playerList.activityInfo": "Les joueurs doivent avoir joué au moins {0} minutes pour apparaître dans les statistiques.<br/>Les joueurs qui n'ont pas été en ligne depuis plus de {1} jours sont considérés comme inactifs et ne peuvent prétendre à aucune prix.",
     "page.playerView.subtitle": "Statistiques du Joueur",
