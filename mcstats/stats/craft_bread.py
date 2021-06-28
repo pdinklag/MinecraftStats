@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'craft_bread',
         {
-            'title': 'Baker',
-            'desc': 'Breads, cakes and cookies made',
             'unit': 'int',
         },
         mcstats.StatSumReader([

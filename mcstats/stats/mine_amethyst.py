@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'mine_amethyst',
         {
-            'title': 'Jeweler',
-            'desc': 'Amethysts mined',
             'unit': 'int',
         },
         mcstats.StatSumMatchReader(

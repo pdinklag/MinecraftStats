@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'win_raid',
         {
-            'title': 'Hero',
-            'desc': 'Raids won',
             'unit': 'int',
         },
         mcstats.StatReader(['minecraft:custom','minecraft:raid_win']),

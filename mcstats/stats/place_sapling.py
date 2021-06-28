@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'place_sapling',
         {
-            'title': 'Forester',
-            'desc': 'Trees planted',
             'unit': 'int',
         },
         mcstats.StatSumMatchReader(

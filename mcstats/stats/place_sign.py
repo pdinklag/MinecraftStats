@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'place_sign',
         {
-            'title': 'README.TXT',
-            'desc': 'Signs placed',
             'unit': 'int',
         },
         mcstats.StatSumReader([

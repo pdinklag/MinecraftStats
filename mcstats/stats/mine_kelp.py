@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'mine_kelp',
         {
-            'title': 'I Need Kelp!',
-            'desc': 'Kelp mined',
             'unit': 'int',
         },
         mcstats.StatSumReader([

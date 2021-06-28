@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'craft_respawn_anchor',
         {
-            'title': 'Respawn',
-            'desc': 'Respawn Anchors crafted',
             'unit': 'int',
         },
         mcstats.StatSumReader([

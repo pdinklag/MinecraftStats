@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'place_lodestone',
         {
-            'title': 'Lodecrumb Trail',
-            'desc': 'Lodestone placed',
             'unit': 'int',
         },
         mcstats.StatReader(['minecraft:used','minecraft:lodestone']),

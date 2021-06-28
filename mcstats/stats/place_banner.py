@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'place_banner',
         {
-            'title': 'Flying Flags',
-            'desc': 'Banners placed',
             'unit': 'int',
         },
         mcstats.StatSumMatchReader(

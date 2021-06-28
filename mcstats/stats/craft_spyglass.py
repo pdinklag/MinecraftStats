@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'craft_spyglass',
         {
-            'title': 'Voyeur',
-            'desc': 'Spyglasses crafted',
             'unit': 'int',
         },
         mcstats.StatReader(['minecraft:crafted','minecraft:spyglass']),

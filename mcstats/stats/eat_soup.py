@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'eat_soup',
         {
-            'title': 'Soupy Caspar',
-            'desc': 'Soups and stews eaten',
             'unit': 'int',
         },
         mcstats.StatSumReader([

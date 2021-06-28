@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'mine_pointed_dripstone',
         {
-            'title': 'Cave Dweller',
-            'desc': 'Pointed Dripstone mined',
             'unit': 'int',
         },
         mcstats.StatReader(['minecraft:mined','minecraft:pointed_dripstone']),

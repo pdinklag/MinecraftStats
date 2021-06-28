@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'place_candle',
         {
-            'title': 'Candlelight Dinner',
-            'desc': 'Candles placed',
             'unit': 'int',
         },
         mcstats.StatSumMatchReader(

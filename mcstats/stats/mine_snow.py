@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'mine_snow',
         {
-            'title': 'Snow Pusher',
-            'desc': 'Snow removed',
             'unit': 'int',
         },
         mcstats.StatSumReader([

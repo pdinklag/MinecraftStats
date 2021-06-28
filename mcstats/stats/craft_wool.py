@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'craft_wool',
         {
-            'title': 'Clothier',
-            'desc': 'Wool/carpets crafted/dyed',
             'unit': 'int',
         },
         mcstats.StatSumMatchReader(

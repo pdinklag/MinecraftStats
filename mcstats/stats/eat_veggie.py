@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'eat_veggie',
         {
-            'title': 'Vegetarian',
-            'desc': 'Veggie items eaten',
             'unit': 'int',
         },
         mcstats.StatSumReader([

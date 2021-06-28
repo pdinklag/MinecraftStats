@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'interact_anvil',
         {
-            'title': 'Smith',
-            'desc': 'Anvil interactions',
             'unit': 'int',
         },
         mcstats.StatReader(['minecraft:custom','minecraft:interact_with_anvil']),

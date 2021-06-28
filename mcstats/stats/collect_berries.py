@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'collect_berries',
         {
-            'title': 'Berry Collector',
-            'desc': 'Berries collected',
             'unit': 'int',
         },
         mcstats.StatSumReader([

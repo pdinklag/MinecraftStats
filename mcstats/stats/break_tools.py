@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'break_tools',
         {
-            'title': 'Oh snap',
-            'desc': 'Tools broken',
             'unit': 'int',
         },
         mcstats.StatSumMatchReader(

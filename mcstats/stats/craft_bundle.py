@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'craft_bundle',
         {
-            'title': 'Backpacker',
-            'desc': 'Bundles crafted',
             'unit': 'int',
         },
         mcstats.StatReader(['minecraft:crafted','minecraft:bundle']),

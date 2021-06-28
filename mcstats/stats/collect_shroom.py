@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'collect_shroom',
         {
-            'title': 'Fun Guy',
-            'desc': 'Mushrooms collected',
             'unit': 'int',
         },
         # subtract placed from mined

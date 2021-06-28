@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'noteblock',
         {
-            'title': 'Musician',
-            'desc': 'Note block interactions',
             'unit': 'int',
         },
         mcstats.StatSumReader([

@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'place_bars',
         {
-            'title': 'Jailer',
-            'desc': 'Iron bars & chains placed',
             'unit': 'int',
         },
         mcstats.StatSumReader([

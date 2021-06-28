@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'harvest_nether_wart',
         {
-            'title': 'Nether Farmer',
-            'desc': 'Nether warts harvested',
             'unit': 'int',
         },
         mcstats.StatDiffReader(

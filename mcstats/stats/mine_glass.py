@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'mine_glass',
         {
-            'title': 'Glassbreaker',
-            'desc': 'Glass broken',
             'unit': 'int',
         },
         mcstats.StatSumMatchReader(

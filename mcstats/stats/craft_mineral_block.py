@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'craft_mineral_block',
         {
-            'title': 'Compressor',
-            'desc': 'Mineral blocks crafted',
             'unit': 'int',
         },
         mcstats.StatSumReader([

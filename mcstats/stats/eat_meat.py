@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'eat_meat',
         {
-            'title': 'Carnivore',
-            'desc': 'Meat items eaten',
             'unit': 'int',
         },
         mcstats.StatSumReader([

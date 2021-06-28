@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'harvest_bamboo',
         {
-            'title': 'Bamboozled',
-            'desc': 'Bamboo harvested',
             'unit': 'int',
         },
         mcstats.StatReader(['minecraft:picked_up','minecraft:bamboo']),

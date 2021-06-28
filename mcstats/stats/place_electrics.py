@@ -19,8 +19,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'place_electrics',
         {
-            'title': 'Electrician',
-            'desc': 'Redstone items placed',
             'unit': 'int',
         },
         mcstats.StatSumMatchReader(['minecraft:used'], redstone_item_patterns)

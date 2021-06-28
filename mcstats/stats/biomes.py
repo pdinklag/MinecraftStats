@@ -30,8 +30,6 @@ mcstats.registry.append(
     ExplorerStat(
         'biomes',
         {
-            'title': 'Explorer',
-            'desc': 'Biomes discovered',
             'unit': 'int',
         },
         StatListReader([

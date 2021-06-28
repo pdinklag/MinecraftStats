@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'play',
         {
-            'title': 'Dedication',
-            'desc': 'Total time played',
             'unit': 'ticks',
         },
         mcstats.StatSumReader([
