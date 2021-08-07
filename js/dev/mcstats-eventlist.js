@@ -48,7 +48,7 @@ mcstats.showEventList = function() {
                             </div>
                         </div>
                         <div class="p-1 round-box text-center">
-                            <span class="rank-1">${e.active ? "${mcstats.localize('page.eventList.leading')}:" : "${mcstats.localize('page.eventList.winner')}:"}</span>
+                            <span class="rank-1">${mcstats.localize(e.active ? 'page.eventList.leading' : 'page.eventList.winner')}:</span>
                             ${holder}
                             <br/>
                             ${info}

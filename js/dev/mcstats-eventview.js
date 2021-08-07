@@ -24,11 +24,6 @@ mcstats.showEvent = function(id) {
             eventTime = mcstats.localize('page.eventView.eventStatus.live', [formatTime(e.startTime)]);
         } else {
             eventTime = mcstats.localize('page.eventView.eventStatus.finished', [formatTime(e.startTime), formatTime(e.stopTime)]);
-            eventTime = `
-                This event went from
-                <span class="text-info">${formatTime(e.startTime)}</span>
-                to <span class="text-info">${formatTime(e.stopTime)}</span>
-                and has already <span class="text-danger">finished</span>.`;
         }
 
         mcstats.viewContent.innerHTML = `
@@ -49,7 +44,7 @@ mcstats.showEvent = function(id) {
         // show
         mcstats.showView(
             e.title,
-            e.active ? mcstats.localize('page.eventView.title.active') : mcstats.localize('page.eventView.title.inactive'),
+            mcstats.localize(e.active ? 'page.eventView.title.active' : 'page.eventView.title.inactive'),
             eventTime,
             'img/award-icons/' + awardId + '.png');
     });
