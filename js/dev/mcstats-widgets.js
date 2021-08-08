@@ -93,7 +93,7 @@ mcstats.formatValue = function(value, unit, compact = false) {
 
                 if(higher || seconds > 60) {
                     var minutes = Math.floor(seconds / 60);
-                    table += `<td class="minutes">${minutes}${mcstats.localize('stat.unit.duration.hours')}</td>`
+                    table += `<td class="minutes">${minutes}${mcstats.localize('stat.unit.duration.minutes')}</td>`
 
                     seconds %= 60;
                 } else {
