@@ -141,33 +141,6 @@ class MinecraftStat(Ranking):
     def canEnterRanking(self, id, active):
         return active
 
-# Legacy statistics for supporting older data versions
-class LegacyStat:
-    def __init__(self, link, minVersion, maxVersion, reader):
-        self.link = link
-        self.name = link.name
-        self.minVersion = minVersion
-        self.maxVersion = maxVersion
-        self.reader = reader
-        self.linkedStat = True
-        self.playerStatRelevant = True
-
-    # enter the player with id and value into the linked ranking
-    def enter(self, id, value):
-        self.link.enter(id, value)
-
-    # read the statistic value from the player stats
-    def read(self, stats):
-        return {'value': self.reader.read(stats)}
-
-    # test if this stat can be used right now
-    def isEligible(self, version):
-        return MinecraftStat.isEligible(self, version);
-
-    # test if this player may enter the ranking
-    def canEnterRanking(self, id, active):
-        return active
-
 # Event statistics for temporary events
 # similar to event stats in some ways
 class EventStat(Ranking):
