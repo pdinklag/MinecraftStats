@@ -136,6 +136,8 @@ dbPlayerListActiveFilename = os.path.join(dbPlayerListPath, 'active{}.json.gz')
 if config.server.customName:
     serverName = config.server.customName
 else:
+    serverName = None
+
     p = re.compile('^motd=(.+)$')
     with open(os.path.join(primaryServerPath, 'server.properties'), encoding='utf-8') as f:
         for line in f:
@@ -143,6 +145,10 @@ else:
             if m:
                 serverName = javaproperties.unescape(m.group(1)).replace('\n', '<br>')
                 break
+
+    if not serverName:
+        serverName = ''
+        print('Server name could not be extracted from server.properties - does it contain a "motd" line?')
 
 # try and load usercache
 usercache = dict()
