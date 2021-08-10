@@ -190,6 +190,8 @@ class EventStat(Ranking):
     # enter the player with id and value delta into the ranking
     def enter(self, id, value):
         global now
+        
+        value = value['value'] # yikes!
 
         if now > self.startTime:
             # subtract initial value and enter
