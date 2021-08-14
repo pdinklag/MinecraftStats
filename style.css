@@ -3,6 +3,10 @@
     font-family: 'minecraftia';
     src: url('font/minecraftia.woff2');
 }
+@font-face {
+    font-family: 'Zpix';
+    src: url('font/CJK_Zpix.woff2');
+}
 
 /* Global */
 html {
@@ -11,7 +15,7 @@ html {
 
 /* Body */
 body {
-    font-family: 'minecraftia', monospace;
+    font-family: 'minecraftia','Zpix', monospace;
 
     color: #EEE;
 
@@ -117,7 +121,6 @@ a:hover {
 
 /* Text styles */
 .text-shadow { text-shadow: 2px 2px rgba(0,0,0,0.5); }
-.text-underline { text-decoration: underline; }
 
 /* Images */
 .img-pixelated {
