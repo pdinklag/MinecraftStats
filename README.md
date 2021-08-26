@@ -179,13 +179,13 @@ The `data` directory will contain the following after running an update:
 ## Events
 Events allow you to track a specific award stat for a limited amount of time. You can plan events via the `events` list in the config JSON. The following information needs to be specified for an event:
 
-* `name` - the *unique* internal name of the event, which needs to be a valid file and URL name, i.e., you should not use spaces or special characters here. Every event needs a different name, even if they share the same title.
+* `name` - the *unique* internal name of the event, which needs to be a valid file and URL name, i.e., you should not use spaces or special characters here. Every event needs a different name, even if they share the same title, and they must not collide with the ID of any actual stat.
 * `title` - the title of the event displayed in the browser.
 * `stat` - the ID of the award stat counted for the event. An easy way to find these IDs is by clicking an award in the browser and getting it from the URL.
-* `startTime` - the time at which the event starts in `YYYY-MM-DD HH:MM` format (4-digit year followed by 2-digit month, day, hour and minute).
+* `startTime` - the time at which the event starts in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format (e.g., `YYYY-MM-DD HH:MM`, where the hour field assumes a 24h day).
 * `endTime` - the time at which the event ends (same format as `startTime`).
 
-When you run `update.py`, events will automatically be started or stopped based on the current server time.
+When you run `update.py`, events will automatically be started or stopped based on the current server time. Please note that there should be at least one update *before* the event starts, so that each player's initial score can be saved.
 
 ##### Event Example
 
@@ -195,11 +195,11 @@ As an example, let's consider a Halloween-themed event called "Skeleton Hunt" th
 ...
 	"events": [
         {
-            "name": "skeleton_hunt_2020",
+            "name": "skeleton_hunt_2021",
             "title": "Skeleton Hunt",
             "stat": "kill_skeleton",
-            "startTime": "2020-10-30 10:00",
-            "endTime": "2020-01-01 00:00"
+            "startTime": "2021-10-30 10:00",
+            "endTime": "2021-01-01 00:00"
         }
     ],
 ...

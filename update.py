@@ -101,9 +101,19 @@ Event = collections.namedtuple('Event', ['name', 'title', 'stat', 'startTime', '
 eventTimeFormat = '%Y-%m-%d %H:%M'
 
 events = []
+eventNames = set()
+
 for e in config.events:
+    if e.name in statByName:
+        handle_error('ERROR: event name must not collide with a stat name: \"' + e.name + '\"')
+        continue
+    
+    if e.name in eventNames:
+        handle_error('ERROR: duplicate event name: \"' + e.name + '\"')
+        continue
+    
     if not e.stat in statByName:
-        handle_error('ERROR: event ' + e.name + ' refers to unknown stat "' + e.stat + '"')
+        handle_error('ERROR: event \"' + e.name + '\" refers to unknown stat "' + e.stat + '"')
         continue
 
     stat = statByName[e.stat]
@@ -111,10 +121,11 @@ for e in config.events:
     endTime = int(datetime.datetime.strptime(e.endTime, eventTimeFormat).timestamp())
     
     if startTime >= endTime:
-        handle_error('ERROR: event ' + e.name + ': end time (' + e.endTime + ' lies before start time (' + e.startTime + ')')
+        handle_error('ERROR: event \"' + e.name + '\": end time (' + e.endTime + ' is before start time (' + e.startTime + ')')
         continue
-    
+
     events.append(Event(title=e.title, name=e.name, stat=stat, startTime=startTime, endTime=endTime))
+    eventNames.add(e.name)
 
 # init paths
 dbRankingsPath = os.path.join(config.database, 'rankings')
@@ -241,39 +252,23 @@ eventStats = []
 eventStatByName = dict()
 activeEvents = set()
 
-try:
-    for file in os.listdir(dbEventsPath):
-        if file.endswith('.json'):
-            with open(os.path.join(dbEventsPath, file)) as eventDataFile:
-                e = mcstats.EventStat.deserialize(
-                    json.load(eventDataFile), statByName)
-
-                eventStats.append(e)
-                eventStatByName[e.name] = e
-
-                if e.active:
-                    e.ranking = [] # clear, will be re-calculated
-                    activeEvents.add(e.name)
-
-except Exception as e:
-    print('failed to read event data directory: ' + dbEventsPath)
-    handle_error(e, True)
-
-# possibly start events
 for e in events:
-    if mcstats.now >= e.startTime and mcstats.now < e.endTime:
-        # this event should be running
-        if not e.name in activeEvents:
-            if e.name in eventStatByName:
-                handle_error('ERROR: duplicate event ' + e.name)
-                continue
-        
-            # ... but it's not - start it
-            eventStat = mcstats.EventStat(e.name, e.title, e.stat)
-            eventStats.append(eventStat)
-            eventStatByName[e.name] = eventStat
-            activeEvents.add(e.name)
-            print('event "' + e.title + '" (' + e.name + ') has started!')
+    eventStat = mcstats.EventStat(e.name, e.title, e.stat, e.startTime, e.endTime)
+
+    # load the initial ranking if available
+    eventDataFile = os.path.join(dbEventsPath, e.name + '.json')
+    if os.path.isfile(eventDataFile):
+        with open(eventDataFile) as f:
+            eventData = json.load(f)
+            eventStat.initialRanking = eventData['initialRanking']
+    elif eventStat.hasStarted():
+        print('event \"' + e.name + '\" has already started, but no initial ranking is available')
+
+    eventStats.append(eventStat)
+    eventStatByName[e.name] = eventStat
+
+    if not eventStat.hasEnded():
+        activeEvents.add(e.name)
 
 # update player data
 serverVersion = 0
@@ -469,20 +464,14 @@ for mcstat in mcstats.registry:
     # add to award info list
     awards[mcstat.name] = award
 
-# possibly stop events
-for e in events:
-    if mcstats.now >= e.endTime and e.name in activeEvents:
-        # stop event
-        eventStat = eventStatByName[e.name]
-        eventStat.active = False
-        eventStat.stopTime = mcstats.now
-        # nb: do NOT exclude from activeEvents - we still need to save it!
-        print('event "' + e.title + '" (' + e.name + ') has ended!')
-
 # process events
 summaryEvents = dict()
 
 for event in eventStats:
+    # events that did not yet start should not appear on the client
+    if not event.hasStarted():
+        continue
+
     # check version
     if serverVersion < mcstat.minVersion:
         print('event "' + event.name + '" is not supported by server version '
@@ -497,8 +486,8 @@ for event in eventStats:
         'title':     event.title,
         'link':      event.link.name,
         'startTime': event.startTime,
-        'stopTime':  event.stopTime,
-        'active':    event.active,
+        'stopTime':  event.endTime,
+        'active':    event.isRunning(),
     }
 
     if(len(event.ranking) > 0):
