@@ -40,7 +40,13 @@ args = parser.parse_args()
 # load config
 if os.path.isfile(args.config):
     with open(args.config, 'r', encoding="utf8") as configFile:
-        merge_dict(configJson, json.load(configFile))
+        try:
+            loadedConfigJson = json.load(configFile)
+        except Exception as e:
+            print('ERROR: failed to load config JSON')
+            handle_error(e, True)
+        
+        merge_dict(configJson, loadedConfigJson)
 else:
     # save default
     print('writing default config to ' + args.config)
