@@ -6,7 +6,7 @@ mcstats.registry.append(
         {
             'title': 'Punching Bag',
             'desc': 'Damage taken',
-            'unit': 'int',
+            'unit': 'tenths_of_heart',
         },
         mcstats.StatReader(['minecraft:custom','minecraft:damage_taken'])
     ))

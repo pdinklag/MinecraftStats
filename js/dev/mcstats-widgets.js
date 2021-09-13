@@ -107,6 +107,10 @@ mcstats.formatValue = function(value, unit, compact = false) {
             }
             break;
 
+        case 'tenths_of_heart':
+            value = formatFloat(parseInt(value) / 10.0);
+            break;
+
         case 'int':
             value = formatInt(parseInt(value));
             break;

@@ -6,7 +6,7 @@ mcstats.registry.append(
         {
             'title': 'Berserk!',
             'desc': 'Damage dealt',
-            'unit': 'int',
+            'unit': 'tenths_of_heart',
         },
         mcstats.StatReader(['minecraft:custom','minecraft:damage_dealt'])
     ))
