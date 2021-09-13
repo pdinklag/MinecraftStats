@@ -30,7 +30,7 @@ mcstats.showPlayer = function(uuid) {
                 <div class="round-box p-1">
                     <table class="table table-responsive-xs table-hover table-sm">
                     <thead>
-                        <th scope="col" class="text-end text-shadow">Rank</th>
+                        <th scope="col" class="text-end text-shadow">${mcstats.localize('stat.rank')}</th>
                         <th scope="col" class="text-shadow">${mcstats.localize('stat.award')}</th>
                         <th scope="col" class="text-shadow">${mcstats.localize('stat.score')}</th>
                     </thead>
