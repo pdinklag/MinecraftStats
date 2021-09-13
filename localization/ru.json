@@ -2,6 +2,7 @@
     "display": "Русский",
     "locale": "ru-RU",
     
+    "nobody": "(никто)",
     "loading": "Загрузка ...",
     "info.lastUpdate": "Обновлено:",
     "navigation.awards": "Награды",
