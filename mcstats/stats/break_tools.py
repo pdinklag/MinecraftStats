@@ -4,7 +4,7 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'break_tools',
         {
-            'title': 'Wastrel',
+            'title': 'Oh snap',
             'desc': 'Tools broken',
             'unit': 'int',
         },

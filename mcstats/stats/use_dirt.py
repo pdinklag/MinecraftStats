@@ -4,7 +4,7 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'use_dirt',
         {
-            'title': 'Dirtbag',
+            'title': 'Getting Dirty',
             'desc': 'Dirt blocks placed',
             'unit': 'int',
         },

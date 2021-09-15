@@ -4,7 +4,7 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'place_banner',
         {
-            'title': 'Propaganda',
+            'title': 'Flying Flags',
             'desc': 'Banners placed',
             'unit': 'int',
         },
