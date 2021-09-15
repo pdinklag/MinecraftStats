@@ -4,7 +4,7 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'harvest_sugar',
         {
-            'title': 'Sugardaddy',
+            'title': 'Sugar High',
             'desc': 'Sugar harvested',
             'unit': 'int',
         },

@@ -50,7 +50,7 @@ create_kill_stat('enderman','Enderman Ender','Endermen')
 create_kill_stat('goat','G.O.A.T.','Goats', 2705) # added in 21w13a
 create_kill_stat('iron_golem','Defense Down!','Iron Golems')
 create_kill_stat('panda','Kung FU! Panda','Pandas',1901) # added in 18w43a
-create_kill_stat('piglin','Die, Pig!','Piglins', 2506) # added in 20w07a
+create_kill_stat('piglin','Kill or Be Killed','Piglins', 2506) # added in 20w07a
 create_kill_stat('polar_bear','Polar Hunter','Polar Bears')
 create_kill_stat('snow_golem','AntiFrosty','Snow Golems')
 create_kill_stat('zombie_pigman','Nether Gang War','Zombie Pigmen',0,2510) # renamed to Zombified Piglin in 20w09a
@@ -71,7 +71,7 @@ create_kill_stat('rabbit','Bunny Killer :(','Rabbits')
 create_kill_stat('sheep','Big Bad Wolf','Sheep')
 create_kill_stat('strider','Lava Pool Cleaner','Striders',2520) # added in 20w13a
 create_kill_stat('turtle','Super Mario','Turtles',1467) # added in 18w07a
-create_kill_stat('villager','Bully','Villagers')
+create_kill_stat('villager','Immoral','Villagers')
 create_kill_stat('wandering_trader','Trade Sanctions','Wandering Traders',1930) # added in 19w05a
 create_kill_stat('wolf','Bad Dog!','Wolves and Dogs')
 

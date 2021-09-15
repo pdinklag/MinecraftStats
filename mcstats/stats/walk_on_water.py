@@ -4,7 +4,7 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'walk_on_water',
         {
-            'title': 'Jesus',
+            'title': 'Water Walker',
             'desc': 'Distance walked on water',
             'unit': 'cm',
         },

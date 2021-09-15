@@ -4,7 +4,7 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'play',
         {
-            'title': 'Addict',
+            'title': 'Dedication',
             'desc': 'Total time played',
             'unit': 'ticks',
         },
