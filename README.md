@@ -246,7 +246,7 @@ This section contains some hints for those who want to develop on _MinecraftStat
 The web frontend is fully localized. If you cannot find your language yet, please feel very welcome to provide a localization and create a pull request! In order to add a new language, two things have to be done:
 
 * Create a new language JSON file in the `localizations` directory and fill it with your translations. For the file name, please choose the corresponding [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) code for your language.
-* Find the `language-dropdown` element in `index.html` and add a new entry for your language there. The text should be the name of the language in that language (e.g. "Deutsch" for German, which is the German word for "German"). Please try and keep the dropdown sorted alphabetically.
+* Find the `mcstats.languages` array in `js/dev/mcstats-localization.js` and add a new entry for your language there. The text should be the name of the language in that language (e.g. "Deutsch" for German, which is the German word for "German").
 
 ### JavaScript and CSS minimization
 

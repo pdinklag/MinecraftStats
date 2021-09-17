@@ -139,4 +139,7 @@ window.onhashchange = function() {
     
     // collapse navbar
     navbar.hide();
+
+    // update URLs in language selection
+    mcstats.updateLangSelect();
 };

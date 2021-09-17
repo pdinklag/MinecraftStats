@@ -30,8 +30,8 @@ loader.addRequest('data/summary.json.gz', function(summary) {
     // localize awards
     for(var key in mcstats.awards) {
         var award = mcstats.awards[key];
-        award.title = mcstats.localizeDefault('award.' + key + '.title', award.title);
-        award.desc = mcstats.localizeDefault('award.' + key + '.desc', award.desc);
+        award.title = mcstats.localizeDefault('award.' + key + '.title', key);
+        award.desc = mcstats.localizeDefault('award.' + key + '.desc', key);
     }
 
     // fill server info
@@ -85,6 +85,7 @@ loader.addRequest('data/summary.json.gz', function(summary) {
 
 // create loader for localization
 var localizationLoader = new Loader(function() {
+    mcstats.fillLangSelect();
     loader.start();
 });
 

@@ -1,3 +1,37 @@
+mcstats.languages = [
+    { 'code': 'de', 'display': 'Deutsch' },
+    { 'code': 'en', 'display': 'English' },
+    { 'code': 'es', 'display': 'Español' },
+    { 'code': 'fr', 'display': 'Français' },
+    { 'code': 'ru', 'display': 'Русский' }
+];
+
+mcstats.getLangURL = function(code) {
+    return `?lang=${code}${window.location.hash}`;
+}
+
+mcstats.fillLangSelect = function() {
+    langSelect = '';
+    mcstats.languages.sort(function(a, b) {
+        return a.display.localeCompare(b.display);
+    });
+    
+    for(var i in mcstats.languages) {
+        var lang = mcstats.languages[i];
+        langSelect += `<li><a id="lang-${lang.code}" class="dropdown-item language" href="${mcstats.getLangURL(lang.code)}">${lang.display}</a></li>`;
+    }
+    
+    document.getElementById('lang-select').innerHTML = langSelect;
+}
+
+mcstats.updateLangSelect = function() {
+    for(var i in mcstats.languages) {
+        var lang = mcstats.languages[i];
+        var x = document.getElementById(`lang-${lang.code}`);
+        x.setAttribute('href', mcstats.getLangURL(lang.code));
+    }
+}
+
 mcstats.localizeDefault = function(key, def) {
     if(key in mcstats.localization) {
         return mcstats.localization[key];
