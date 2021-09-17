@@ -73,6 +73,7 @@ This is because _MinecraftStats_ does not yet know where your Minecraft server i
 The configuration JSON file supprots the following settings:
 
 * `client`
+  * `defaultLanguage` - the [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) code of the default language to use when none was explicitly selected by the user (*default: en*) .
   * `playerCacheUUIDPrefix` - short explanation: *do not touch*. Determines player cache grouping by UUIDs. Most of the time you should leave the default value of 2 untouched. If you have *many* active players on your server (e.g., thousands) and wish to reduce traffic and load times somewhat, you may try increasing this to 3 to see if it helps. Note that increasing this value will increase the number of files under `data/playercache` *exponentially* (!), so handle with care (*default: 2*).
   * `playersPerPage` - how many players to display at most in the players list (*default: 100*).
   * `showLastOnline` - if `true`, the last online date and time will be displayed for players (*default: true*).
@@ -95,6 +96,8 @@ The configuration JSON file supprots the following settings:
     * `path` - the path to the Minecraft server installation (*no default*)
     * `worldName` the name of the world on the server that contains the player statistics (`stats` directory with JSON files in it). In most cases, this is simply `world` (*default: world*).
   * `customName` - the server name to display on the home page. Leave this at `null` to use the MOTD from your `server.properties` (*default: null*)
+
+A nice commented overview with default values can also be found in `mcstats/config.py`
 
 ##### Combining Multiple Servers
 

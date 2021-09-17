@@ -1,6 +1,6 @@
 // parse params
 params = {
-    'lang': 'en'
+    'lang': null // null will use the server's default language
 };
 
 if(window.location.search.startsWith('?')) {
@@ -13,19 +13,12 @@ if(window.location.search.startsWith('?')) {
     }
 }
 
-// create loader for data summary
-var loader = new Loader(function() {
-    mcstats.init();
-    window.onhashchange(); // navigate
-});
-
-loader.addRequest('data/summary.json.gz', function(summary) {
-    // load db
-    mcstats.info = summary.info;
-    mcstats.players = summary.players;
-    mcstats.awards = summary.awards;
-    mcstats.events = summary.events;
-    mcstats.hof = summary.hof;
+mcstats.start = function() {
+    // maybe use default localization
+    if(params.lang == null) {
+        console.log(summary);
+        params.lang = mcstats.defaultLanguage;
+    }
     
     // localize awards
     for(var key in mcstats.awards) {
@@ -80,20 +73,47 @@ loader.addRequest('data/summary.json.gz', function(summary) {
         });
         document.getElementById('tab-events').style.display = '';
     }
+    
+    // open the curtain!
+    mcstats.infoBox.style.display = 'block';
+    mcstats.content.style.display = 'block';
+    
+    // navigate to current page
+    window.onhashchange();
+}
 
-}, true); // compressed!
-
-// create loader for localization
+// create localization loader
 var localizationLoader = new Loader(function() {
-    mcstats.fillLangSelect();
-    loader.start();
+    mcstats.start(); // once localization is loaded: start!
 });
 
-localizationLoader.addRequest('localization/' + params.lang + '.json', function(localization) {
-    mcstats.localization = localization;
-    document.getElementById('loading-text').innerHTML = mcstats.localize('loading');
+// create summary loader
+summaryLoader = new Loader(function() {
+    // only after loading the summary we definitely know the language
+    localizationLoader.addRequest('localization/' + params.lang + '.json', function(localization) {
+        mcstats.localization = localization;
+        
+        document.getElementById('loading-text').innerHTML = mcstats.localize('loading');
+        mcstats.fillLangSelect();
+    });
+    
+    // once summary is completely loaded, load localization
+    localizationLoader.start();
 });
+
+summaryLoader.addRequest('data/summary.json.gz', function(summary) {
+    // store summary data
+    mcstats.info = summary.info;
+    mcstats.players = summary.players;
+    mcstats.awards = summary.awards;
+    mcstats.events = summary.events;
+    mcstats.hof = summary.hof;
+    
+    if(params.lang == null) {
+        params.lang = mcstats.info.defaultLanguage;
+    }
+}, true); // compressed!
 
 // Start
 mcstats.showLoader();
-localizationLoader.start();
+summaryLoader.start();

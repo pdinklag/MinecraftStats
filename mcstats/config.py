@@ -11,6 +11,7 @@ defaultConfig = {
         "customName": False,         # custom server name; use MOTD if empty
     },
     "client": {
+        "defaultLanguage": "en",     # the default client language
         "playersPerPage": 100,       # how many players to display per page
         "playerCacheUUIDPrefix": 2,  # length of UUID prefix for player cache - more = smaller caches
         "showLastOnline": True       # whether to show the last online time in the browser
