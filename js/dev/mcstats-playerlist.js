@@ -116,7 +116,7 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
             <div class="round-box p-1">
                 <table class="table table-responsive-xs table-hover table-sm">
                 <thead>
-                    <th scope="col" class="text-shadow">Player</th>
+                    <th scope="col" class="text-shadow">${mcstats.localize('stat.player')}</th>
                     ${lastOnlineHeader}
                 </thead>
                 <tbody>${tbody}</tbody>
