@@ -3,7 +3,8 @@ mcstats.languages = [
     { 'code': 'en', 'display': 'English' },
     { 'code': 'es', 'display': 'Español' },
     { 'code': 'fr', 'display': 'Français' },
-    { 'code': 'ru', 'display': 'Русский' }
+    { 'code': 'ru', 'display': 'Русский' },
+    { 'code': 'zh-hans', 'display': '简体中文' }
 ];
 
 mcstats.getLangURL = function(code) {
