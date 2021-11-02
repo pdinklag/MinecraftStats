@@ -2,6 +2,7 @@
     "display": "简体中文",
     "locale": "zh-hans",
     
+    "nobody": "(无人)",
     "loading": "加载中 ...",
     "info.lastUpdate": "上一次更新:",
     "navigation.awards": "成就",
