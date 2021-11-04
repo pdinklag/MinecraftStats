@@ -20,7 +20,7 @@ mcstats.showAwardsList = function() {
         currentRow += `
             <div class="col-sm">
                 <div class="container p-1 mb-3 mcstats-entry">
-                    <div class="h4 p-1 mb-1 round-box text-center">
+                    <div class="h4 p-1 mb-1 round-box text-center align-middle">
                         <img class="img-pixelated img-textsize align-baseline" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
                         <a href="#award:${id}">${award.title}</a>
                     </div>
