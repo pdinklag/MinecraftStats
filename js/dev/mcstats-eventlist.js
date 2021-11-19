@@ -37,7 +37,7 @@ mcstats.showEventList = function() {
                 <div class="row">
                 <div class="col-sm">
                     <div class="container p-1 mb-3 mcstats-entry">
-                        <div class="p-1 mb-1 round-box text-center">
+                        <div class="p-1 mb-1 round-box text-center align-middle">
                             <div class="h4">
                                 <img class="img-pixelated img-textsize align-baseline" src="img/award-icons/${e.link}.png" alt="${id}" title="${e.title}"/>
                                 <a href="#event:${id}">${e.title}</a>

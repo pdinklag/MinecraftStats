@@ -1,9 +1,14 @@
 /* define Minecraft font */
 @font-face {
-    font-family: 'minecraftia';
-    src: url('font/minecraftia.woff2');
+    font-family: minecraftia;
+    src: url(./font/minecraftia.woff2);
 }
 
+@font-face {
+    font-family: Zpix;
+    src: url(./font/zpix.woff2?v2021-03-21);
+}
+  
 /* Global */
 html {
     font-size: 12px;
@@ -11,7 +16,7 @@ html {
 
 /* Body */
 body {
-    font-family: 'minecraftia', monospace;
+    font-family: minecraftia, Zpix, monospace;
 
     color: #EEE;
 
@@ -25,6 +30,7 @@ body {
 a {
     color: #ACF;
     text-decoration: none;
+    text-align: center;
 }
 
 a:hover {
