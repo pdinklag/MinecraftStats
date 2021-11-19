@@ -646,4 +646,6 @@ for i in range(0, len(playerlist), playersPerPage):
             playerlist[i : i + playersPerPage]).encode())
 
 # done
-print('update finished')
+now = datetime.datetime.now()
+current_time = now.strftime("%H:%M:%S")
+print(current_time, ' update finished')
