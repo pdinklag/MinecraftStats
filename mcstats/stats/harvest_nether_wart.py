@@ -6,8 +6,5 @@ mcstats.registry.append(
         {
             'unit': 'int',
         },
-        mcstats.StatDiffReader(
-            mcstats.StatReader(['minecraft:picked_up','minecraft:nether_wart']),
-            mcstats.StatReader(['minecraft:used','minecraft:nether_wart'])
-        )
+        mcstats.StatReader(['minecraft:picked_up','minecraft:nether_wart']),
     ))
