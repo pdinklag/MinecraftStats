@@ -31,7 +31,7 @@ fi
 umask 022
 
 # Create the mirror path if it doesn't already exist
-mkdir -p "$MIRRORPATH"
+mkdir -p "$MIRRORPATH" || exit 1
 
 # Sync the files from the Minecraft Server
 cd "$MIRRORPATH"
