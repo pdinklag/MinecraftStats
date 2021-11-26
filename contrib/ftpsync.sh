@@ -5,7 +5,8 @@
 # script can successfully run.
 #
 # This script requires the `lftp` utility which is almost certainly available
-# in your OS package repository.
+# in your OS package repository.  This tool will only transfer new or changed
+# files, making it very efficient and fast on subsequent runs.
 #
 # Update the values below to your local environment and you should be good
 # to go!
