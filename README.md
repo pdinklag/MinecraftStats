@@ -162,6 +162,10 @@ Typically, a cronjob for *MinecraftStats* will look like this:
  */10 *  *  *  *  cd /path/to/mcstats ; python3 update.py config.json
 ```
 
+#### Mirroring Remote Files
+
+An example script is available in the `contrib` directory to sync the required files from a remote or hosted Minecraft server using the FTP protocol.
+
 #### Windows
 
 If you're using Windows to run your server... figure something out! There's probably some task scheduler available that you can use.
