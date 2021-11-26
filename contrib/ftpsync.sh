@@ -8,22 +8,24 @@
 # in your OS package repository.  This tool will only transfer new or changed
 # files, making it very efficient and fast on subsequent runs.
 #
-# Update the values below to your local environment and you should be good
-# to go!
-#
+# Edit the config values in the `ftpsync.config` file and then run this 
+# script:
 
-# Location of MinecraftStats webroot
-WEBROOT=/var/www/MinecraftStats
+CONFIGFILE="$(dirname $0)/ftpsync.config"
 
-# Target destination for synched files from Minecraft server
-MIRRORPATH=/var/minecraft/serverroot
+if [ -e $CONFIGFILE ]; then 
+    # Configuration file found, load it up
+    source $CONFIGFILE
+else
+    # Cannot find configuration file in expected location
+    echo "Configuration file $CONFIGFILE not found"
+    exit 1
+fi
 
-# Minecraft server "level-name" in server.properties (usually "world")
-LEVELNAME='world'
-
-FTPHOST=ftp.example.com
-FTPUSER=username
-FTPPASS=password
+if [ -z "$MIRRORPATH" ]; then
+    echo "Configuration not loaded"
+    exit 1
+fi
 
 # Sync files group and world readable so that the web server can view them
 umask 022

@@ -1,0 +1,12 @@
+# Location of MinecraftStats webroot
+WEBROOT=/var/www/MinecraftStats
+
+# Target destination for synched files from Minecraft server
+MIRRORPATH=/var/minecraft/serverroot
+
+# Minecraft server "level-name" in server.properties (usually "world")
+LEVELNAME='world'
+
+FTPHOST=ftp.example.com
+FTPUSER=username
+FTPPASS=password
