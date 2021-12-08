@@ -23,7 +23,7 @@ mcstats.showEventList = function() {
 
             var eventTime;
             if(e.active) {
-                eventTime = `${mcstats.localize('page.eventList.ongoingSince')} ${formatDate(e.startTime)}! \n ${mcstats.localize('page.eventList.endsAt')} ${formatDate(e.stopTime)}`;
+                eventTime = `${mcstats.localize('page.eventList.ongoingSince')} ${formatDate(e.startTime)}! <br /> ${mcstats.localize('page.eventList.endsAt')} ${formatDate(e.stopTime)}.`;
             } else {
                 eventTime = `${formatDate(e.startTime)} - ${formatDate(e.stopTime)}`;
             }
