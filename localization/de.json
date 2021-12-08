@@ -16,6 +16,8 @@
     "page.eventList.finished": "Beendet",
     "page.eventList.leading": "Führend",
     "page.eventList.winner": "Sieger",
+    "page.eventList.ongoingSince": "Going since",
+    "page.eventList.endsAt": "Ends at",
     "page.eventList.ongoingEvents": "Laufende Veranstaltungen",
     "page.eventList.finishedEvents": "Beendete Veranstaltungen",
     "page.eventView.title.active": "Tabelle",
