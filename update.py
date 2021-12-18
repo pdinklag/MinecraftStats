@@ -486,7 +486,10 @@ for event in eventStats:
         continue
 
     # sort ranking
-    event.ranking = sorted(event.ranking, key = lambda i: i['value'], reverse=True)
+    try:
+        event.ranking = sorted(event.ranking, key = lambda i: i['value'], reverse=True)
+    except Exception as e:
+        event.sort()
 
     # create summary
     esummary = {
@@ -497,10 +500,15 @@ for event in eventStats:
         'active':    event.isRunning(),
     }
 
+
     if(len(event.ranking) > 0):
         best = event.ranking[0]
-        esummary['best'] = {'uuid': best['uuid'], 'value': best['value']}
-        summaryPlayerIds.add(best['uuid'])
+        try:
+            esummary['best'] = {'uuid': best['uuid'], 'value': best['value']}
+            summaryPlayerIds.add(best['uuid'])
+        except Exception as e:
+            esummary['best'] = {'uuid': best.id, 'value': best.value}
+            summaryPlayerIds.add(best.id)
 
     summaryEvents[event.name] = esummary
 
