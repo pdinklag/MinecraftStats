@@ -260,3 +260,6 @@ In an effort to reduce client traffic, the JavaScript and CSS files of the web U
 _MinecraftStats_ is released under the [Creative Commons BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license. This means you can pretty much use and modify it freely, with the only requirements being attribution and not putting it under restrictive (e.g., commercial) licenses if modified.
 
 Concerning the _attribution_ part, the only requirement is that you provide a visible link to [this original repository](https://github.com/pdinklag/MinecraftStats) in your installment. The easiest way to do this is by not removing it from the `index.html` footer, where you will also find a reminder about this.
+
+
+Hello World
