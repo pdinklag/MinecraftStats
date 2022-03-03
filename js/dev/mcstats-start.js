@@ -112,6 +112,9 @@ summaryLoader.addRequest('data/summary.json.gz', function(summary) {
     if(params.lang == null) {
         params.lang = mcstats.info.defaultLanguage;
     }
+    if(params.lang === undefined) {
+        params.lang = "en";
+    }
 }, true); // compressed!
 
 // Start
