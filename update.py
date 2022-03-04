@@ -267,7 +267,7 @@ for e in events:
         with open(eventDataFile) as f:
             eventData = json.load(f)
             eventStat.initialRanking = eventData['initialRanking']
-            eventStat.ranking = eventData['ranking']
+            eventStat.webranking = eventData['ranking']
     elif eventStat.hasStarted():
         print('event \"' + e.name + '\" has already started, but no initial ranking is available')
 
@@ -486,11 +486,9 @@ for event in eventStats:
         continue
 
     # sort ranking
-    try:
-        event.ranking = sorted(event.ranking, key = lambda i: i['value'], reverse=True)
-    except Exception as e:
-        event.sort()
-
+    event.webranking = sorted(event.webranking, key = lambda i: i['value'], reverse=True)
+    event.sort()
+    
     # create summary
     esummary = {
         'title':     event.title,
@@ -501,8 +499,8 @@ for event in eventStats:
     }
 
 
-    if(len(event.ranking) > 0):
-        best = event.ranking[0]
+    if(len(event.webranking) > 0):
+        best = event.webranking[0]
         try:
             esummary['best'] = {'uuid': best['uuid'], 'value': best['value']}
             summaryPlayerIds.add(best['uuid'])
