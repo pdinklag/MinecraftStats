@@ -17,7 +17,7 @@
     "page.eventList.leading": "Leading",
     "page.eventList.winner": "Winner",
     "page.eventList.ongoingSince": "Going since",
-    "page.eventList.endsAt": "Ends at",
+    "page.eventList.endsAt": "Ends",
     "page.eventList.ongoingEvents": "Ongoing Events",
     "page.eventList.finishedEvents": "Finished Events",
     "page.eventView.title.active": "Event Leaderboard",
