@@ -16,6 +16,8 @@
     "page.eventList.finished": "已結束",
     "page.eventList.leading": "領先者",
     "page.eventList.winner": "獲勝者",
+    "page.eventList.ongoingSince": "開始時間",
+    "page.eventList.endsAt": "結束時間",
     "page.eventList.ongoingEvents": "正在進行的活動",
     "page.eventList.finishedEvents": "已經結束的活動",
     "page.eventView.title.active": "活動排行榜",

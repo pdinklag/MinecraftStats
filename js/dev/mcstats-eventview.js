@@ -21,7 +21,7 @@ mcstats.showEvent = function(id) {
 
         var eventTime;
         if(e.active) {
-            eventTime = mcstats.localize('page.eventView.eventStatus.live', [formatTime(e.startTime)]);
+            eventTime = `${mcstats.localize('page.eventView.eventStatus.live', [formatTime(e.startTime)])} <br/> ${mcstats.localize('page.eventList.endsAt')} ${formatDate(e.stopTime)}`;
         } else {
             eventTime = mcstats.localize('page.eventView.eventStatus.finished', [formatTime(e.startTime), formatTime(e.stopTime)]);
         }

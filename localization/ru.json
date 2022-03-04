@@ -16,6 +16,8 @@
     "page.eventList.finished": "Завершено",
     "page.eventList.leading": "В процессе",
     "page.eventList.winner": "Победитель",
+    "page.eventList.ongoingSince": "Going since",
+    "page.eventList.endsAt": "Ends at",
     "page.eventList.ongoingEvents": "Текущие события",
     "page.eventList.finishedEvents": "Завершенные события",
     "page.eventView.title.active": "Доска почёта",
