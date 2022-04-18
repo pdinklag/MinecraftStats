@@ -3,6 +3,7 @@ mcstats.languages = [
     { 'code': 'en', 'display': 'English' },
     { 'code': 'es', 'display': 'Español' },
     { 'code': 'fr', 'display': 'Français' },
+    { 'code': 'ja', 'display': '日本語'},
     { 'code': 'ru', 'display': 'Русский' },
     { 'code': 'zh-hans', 'display': '简体中文' },
     { 'code': 'zh-hant', 'display': '繁體中文' }
