@@ -288,6 +288,8 @@
     "award.kill_zombified_piglin.title": "Nether Gang War",
     "award.killed_by_creeper.desc": "Times Killed by Creepers",
     "award.killed_by_creeper.title": "Keboom!",
+    "award.killed_by_warden.desc": "Times Killed by Wardens",
+    "award.killed_by_warden.title": "Stay out!",
     "award.mine_amethyst.desc": "Amethysts mined",
     "award.mine_amethyst.title": "Jeweler",
     "award.mine_ancient_debris.desc": "Ancient Debris mined",
