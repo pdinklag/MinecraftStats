@@ -13,6 +13,7 @@ mcstats.registry.append(
             mcstats.StatReader(['minecraft:mined','minecraft:grass']),
             mcstats.StatReader(['minecraft:mined','minecraft:grass_path']),
             mcstats.StatReader(['minecraft:mined','minecraft:gravel']),
+            mcstats.StatReader(['minecraft:mined','minecraft:mud']),
             mcstats.StatReader(['minecraft:mined','minecraft:mycelium']),
             mcstats.StatReader(['minecraft:mined','minecraft:podzol']),
             mcstats.StatReader(['minecraft:mined','minecraft:red_sand']),
