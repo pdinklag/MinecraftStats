@@ -155,6 +155,7 @@ class EventStat(Ranking):
         self.endTime = endTime
         self.initialRanking = dict()
         self.ranking = []
+        self.webranking = []
         self.linkedStat = True
         self.playerStatRelevant = False
 
