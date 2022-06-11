@@ -288,6 +288,8 @@
     "award.kill_zombified_piglin.title": "Guerra del Nether",
     "award.killed_by_creeper.desc": "Vezes matado por Creepers",
     "award.killed_by_creeper.title": "¡Bum!",
+    "award.killed_by_warden.desc": "Vezes matado por Wardens",
+    "award.killed_by_warden.title": "¡Quedarse fuera!",
     "award.mine_amethyst.desc": "Amatistas minadas",
     "award.mine_amethyst.title": "Joyería",
     "award.mine_ancient_debris.desc": "Escombros ancestrales minados",

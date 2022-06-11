@@ -288,6 +288,8 @@
     "award.kill_zombified_piglin.title": "Guerre du Nether",
     "award.killed_by_creeper.desc": "Fois tués par un Creeper",
     "award.killed_by_creeper.title": "Boum!",
+    "award.killed_by_warden.desc": "Fois tués par un Warden",
+    "award.killed_by_warden.title": "Reste dehors!",
     "award.mine_amethyst.desc": "Améthystes minées",
     "award.mine_amethyst.title": "Bijoutier",
     "award.mine_ancient_debris.desc": "Débris antique miné",

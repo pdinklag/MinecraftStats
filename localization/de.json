@@ -288,6 +288,8 @@
     "award.kill_zombified_piglin.title": "Nether-Bandenkrieg",
     "award.killed_by_creeper.desc": "Tode durch Creeper",
     "award.killed_by_creeper.title": "Kabumm!",
+    "award.killed_by_warden.desc": "Tode durch Wächter",
+    "award.killed_by_warden.title": "Raus!",
     "award.mine_amethyst.desc": "Amethyste gefördert",
     "award.mine_amethyst.title": "Juwelier",
     "award.mine_ancient_debris.desc": "Antiken Schrott gefördert",
