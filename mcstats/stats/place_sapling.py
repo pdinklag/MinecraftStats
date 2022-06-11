@@ -8,5 +8,5 @@ mcstats.registry.append(
         },
         mcstats.StatSumMatchReader(
             ['minecraft:used'],
-            ['minecraft:.+_sapling'])
+            ['minecraft:.+_sapling','minecraft:mangrove_propagule'])
     ))
