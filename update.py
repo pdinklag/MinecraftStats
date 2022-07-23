@@ -293,8 +293,13 @@ for uuid, player in players.items():
         if os.path.isfile(dataFilename):
             last = max(last, int(os.path.getmtime(dataFilename)))
             
-            with open(dataFilename) as f:
-                data = json.load(f)
+            try:
+                with open(dataFilename) as f:
+                    data = json.load(f)
+            except Exception as e:
+                print('failed to load \"' + dataFilename + '\" - may be corrupted, skipping')
+                print(e)
+                continue
 
             if 'DataVersion' in data:
                 version = max(version, data['DataVersion'])
