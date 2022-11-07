@@ -7,16 +7,14 @@ import javax.net.ssl.HttpsURLConnection;
 
 import org.json.JSONObject;
 
+import de.pdinklag.mcstats.PlayerProfile;
 import de.pdinklag.mcstats.util.StreamUtils;
 
-public class PlayerProfile {
+public class API {
     private static final String API_URL = "https://sessionserver.mojang.com/session/minecraft/profile/";
     private static final String SKIN_URL = "http://textures.minecraft.net/texture/";
 
-    private String name;
-    private String skin;
-
-    public PlayerProfile(String uuid) throws APIException {
+    public static PlayerProfile requestPlayerProfile(String uuid) throws APIException {
         try {
             final String response;
             {
@@ -28,7 +26,7 @@ public class PlayerProfile {
 
             if (!response.isEmpty()) {
                 JSONObject obj = new JSONObject(response);
-                name = obj.getString("name");
+                String name = obj.getString("name");
 
                 String encProps = obj.getJSONArray("properties")
                         .getJSONObject(0)
@@ -36,23 +34,17 @@ public class PlayerProfile {
 
                 String decProps = new String(Base64.getDecoder().decode(encProps));
                 JSONObject props = new JSONObject(decProps);
-                skin = props.getJSONObject("textures")
+                String skin = props.getJSONObject("textures")
                         .getJSONObject("SKIN")
                         .getString("url")
                         .substring(SKIN_URL.length());
+
+                return new PlayerProfile(name, skin, System.currentTimeMillis());
             } else {
                 throw new APIException("no response for UUID: " + uuid);
             }
         } catch (Exception e) {
             throw new APIException(e);
         }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSkin() {
-        return skin;
     }
 }

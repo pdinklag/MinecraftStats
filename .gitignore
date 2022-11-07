@@ -1,9 +1,10 @@
 # Gradle build
 .gradle
+bin
 build
 
 # Dev
 .vscode
 
 # CLI generated data
-/data
+data
