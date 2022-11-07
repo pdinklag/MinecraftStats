@@ -4,23 +4,27 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven { url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
-    maven { url = "https://oss.sonatype.org/content/repositories/snapshots" }
-    maven { url = "https://oss.sonatype.org/content/repositories/central" }
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://oss.sonatype.org/content/repositories/central' }
 }
 
 dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT"
+    implementation 'org.json:json:20220924'
+    compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
 }
 
 application {
-    mainClass = "de.pdinklag.mcstats.cli.MinecraftStatsCLI"
+    mainClass = 'de.pdinklag.mcstats.cli.MinecraftStatsCLI'
 }
 
 jar {
     manifest {
         attributes(
-            "Main-Class": application.mainClass
+            'Main-Class': application.mainClass
         )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
