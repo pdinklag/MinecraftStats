@@ -1,11 +1,9 @@
+# Gradle build
+.gradle
+build
 
+# Dev
+.vscode
+
+# CLI generated data
 /data
-/config
-/icons
-/raw
-/skins
-__pycache__
-*.log
-/*.json
-update.sh
-update.bat
