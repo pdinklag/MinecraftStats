@@ -1,35 +1,33 @@
 package de.pdinklag.mcstats;
 
-import org.json.JSONObject;
-
-public class Stat<V extends IValue> {
+public class Stat {
     public enum Unit {
-        NUMBER("int"),
-        DISTANCE("cm"),
-        DURATION("ticks"),
-        HEALTH("tenths_of_heart");
-
-        private final String code;
-
-        private Unit(String code) {
-            this.code = code;
-        }
+        INT, CM, TICKS, TENTHS_OF_HEART;
 
         @Override
         public String toString() {
-            return code;
+            return name().toLowerCase();
         }
     }
 
-    private String name;
-    private Unit unit;
-    private IReader<V> reader;
-    private IAggregator<V> aggregator;
-    private int minVersion;
-    private int maxVersion;
+    private final String id;
+    private final Unit unit;
+    private final int minVersion;
+    private final int maxVersion;
+    private final IReader reader;
+    private final IAggregator aggregator;
 
-    public String getName() {
-        return name;
+    public Stat(String id, Unit unit, int minVersion, int maxVersion, IReader reader, IAggregator aggregator) {
+        this.id = id;
+        this.unit = unit;
+        this.minVersion = minVersion;
+        this.maxVersion = maxVersion;
+        this.reader = reader;
+        this.aggregator = aggregator;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public Unit getUnit() {
@@ -40,12 +38,11 @@ public class Stat<V extends IValue> {
         return version >= minVersion && version <= maxVersion;
     }
 
-    @SuppressWarnings("unchecked")
-    public V aggregate(IValue a, IValue b) {
-        return aggregator.aggregate((V)a, (V)b);
+    public IReader getReader() {
+        return reader;
     }
 
-    public V read(JSONObject stats) {
-        return reader.read(stats);
+    public IAggregator getAggregator() {
+        return aggregator;
     }
 }

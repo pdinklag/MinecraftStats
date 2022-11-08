@@ -2,19 +2,18 @@ package de.pdinklag.mcstats;
 
 import org.json.JSONObject;
 
-public abstract class JSONReader<V extends IValue> implements IReader<V> {
+public abstract class JSONReader implements IReader {
     private final String[] path;
 
     protected JSONReader(String[] path) {
         this.path = path;
     }
 
-    protected abstract V getDefaultValue();
+    protected abstract IValue getDefaultValue();
 
-    protected abstract V read(JSONObject obj, String key);
+    protected abstract IValue read(JSONObject obj, String key);
 
-    @Override
-    public V read(JSONObject stats) {
+    public IValue read(JSONObject stats) {
         final int depth = path.length - 1;
         for(int i = 0; i < depth; i++)
         {

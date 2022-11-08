@@ -4,10 +4,10 @@ import java.util.regex.Pattern;
 
 import org.json.JSONObject;
 
-public class SumMatchReader extends JSONReader<IntValue> {
+public class MatchSumReader extends JSONReader {
     private final Pattern[] patterns;
 
-    public SumMatchReader(String[] path, String[] patterns) {
+    public MatchSumReader(String[] path, String[] patterns) {
         super(path);
 
         this.patterns = new Pattern[patterns.length];
@@ -17,12 +17,12 @@ public class SumMatchReader extends JSONReader<IntValue> {
     }
 
     @Override
-    protected IntValue getDefaultValue() {
+    protected IValue getDefaultValue() {
         return new IntValue(0);
     }
 
     @Override
-    protected IntValue read(JSONObject obj, String key) {
+    protected IValue read(JSONObject obj, String key) {
         obj = obj.getJSONObject(key);
 
         int sum = 0;
@@ -34,6 +34,11 @@ public class SumMatchReader extends JSONReader<IntValue> {
             }
         }
         return new IntValue(sum);
+    }
+
+    @Override
+    public IAggregator createDefaultAggregator() {
+        return new IntSumAggregator();
     }
 
 }

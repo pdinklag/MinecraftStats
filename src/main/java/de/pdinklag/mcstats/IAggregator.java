@@ -1,5 +1,5 @@
 package de.pdinklag.mcstats;
 
-public interface IAggregator<V extends IValue> {
-    public V aggregate(V a, V b);
+public interface IAggregator {
+    public IValue aggregate(IValue a, IValue b);
 }

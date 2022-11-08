@@ -3,18 +3,18 @@ package de.pdinklag.mcstats;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class StringSetReader extends JSONReader<StringSetValue> {
-    public StringSetReader(String... path) {
+public class SetCountReader extends JSONReader {
+    public SetCountReader(String[] path) {
         super(path);
     }
 
     @Override
-    protected StringSetValue getDefaultValue() {
+    protected IValue getDefaultValue() {
         return new StringSetValue();
     }
 
     @Override
-    protected StringSetValue read(JSONObject obj, String key) {
+    protected IValue read(JSONObject obj, String key) {
         StringSetValue set = new StringSetValue();
         JSONArray array = obj.optJSONArray(key);
         if (array != null) {
@@ -23,5 +23,10 @@ public class StringSetReader extends JSONReader<StringSetValue> {
             });
         }
         return set;
+    }
+
+    @Override
+    public IAggregator createDefaultAggregator() {
+        return new StringSetMergeAggregator(); 
     }
 }

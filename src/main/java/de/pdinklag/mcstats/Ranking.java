@@ -26,7 +26,7 @@ public class Ranking {
 
     private final ArrayList<Entry> orderedEntries;
 
-    public Ranking(Stat<?> stat, Map<Player, PlayerData> players) {
+    public Ranking(Stat stat, Map<Player, PlayerData> players) {
         orderedEntries = new ArrayList<>(players.size());
         players.forEach((player, data) -> {
             orderedEntries.add(new Entry(player, data.get(stat).toInt()));
