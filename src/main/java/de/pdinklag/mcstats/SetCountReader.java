@@ -3,7 +3,14 @@ package de.pdinklag.mcstats;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class SetCountReader extends JSONDataReader {
+/**
+ * Reads a set of strings.
+ */
+public class SetCountReader extends NestedDataReader {
+    /**
+     * Constructs a set count reader
+     * @param path the JSON object names on the path to the set to read
+     */
     public SetCountReader(String[] path) {
         super(path);
     }
@@ -27,6 +34,6 @@ public class SetCountReader extends JSONDataReader {
 
     @Override
     public DataAggregator createDefaultAggregator() {
-        return new StringSetMergeAggregator(); 
+        return new StringSetUnionAggregator(); 
     }
 }

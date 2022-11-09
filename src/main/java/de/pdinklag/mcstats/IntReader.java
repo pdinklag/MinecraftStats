@@ -2,7 +2,14 @@ package de.pdinklag.mcstats;
 
 import org.json.JSONObject;
 
-public class IntReader extends JSONDataReader {
+/**
+ * Reads a single integer value from a nested object.
+ */
+public class IntReader extends NestedDataReader {
+    /**
+     * Constructs an integer reader
+     * @param path the JSON object names on the path to the value to read
+     */
     public IntReader(String[] path) {
         super(path);
     }

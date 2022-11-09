@@ -2,10 +2,13 @@ package de.pdinklag.mcstats;
 
 import org.json.JSONObject;
 
-public abstract class JSONDataReader implements DataReader {
+/**
+ * Abstract base for data readers that read a value from a nested object.
+ */
+public abstract class NestedDataReader implements DataReader {
     private final String[] path;
 
-    protected JSONDataReader(String[] path) {
+    protected NestedDataReader(String[] path) {
         this.path = path;
     }
 
@@ -13,6 +16,7 @@ public abstract class JSONDataReader implements DataReader {
 
     protected abstract DataValue read(JSONObject obj, String key);
 
+    @Override
     public DataValue read(JSONObject stats) {
         final int depth = path.length - 1;
         for(int i = 0; i < depth; i++)

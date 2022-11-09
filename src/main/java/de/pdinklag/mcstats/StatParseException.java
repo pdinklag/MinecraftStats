@@ -1,6 +1,6 @@
 package de.pdinklag.mcstats;
 
-public class StatParseException extends RuntimeException {
+class StatParseException extends RuntimeException {
     public StatParseException() {
     }
 

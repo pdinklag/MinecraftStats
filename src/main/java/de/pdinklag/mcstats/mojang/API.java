@@ -10,11 +10,20 @@ import org.json.JSONObject;
 import de.pdinklag.mcstats.PlayerProfile;
 import de.pdinklag.mcstats.util.StreamUtils;
 
+/**
+ * Mojang API.
+ */
 public class API {
     private static final String API_URL = "https://sessionserver.mojang.com/session/minecraft/profile/";
     private static final String SKIN_URL = "http://textures.minecraft.net/texture/";
 
-    public static PlayerProfile requestPlayerProfile(String uuid) throws APIException {
+    /**
+     * Requests a player profile from the Mojang API.
+     * @param uuid the UUID of the player in question
+     * @return the player profile associated to the given UUID.
+     * @throws APIRequestException in case any error occurs trying to request the profile
+     */
+    public static PlayerProfile requestPlayerProfile(String uuid) throws APIRequestException {
         try {
             final String response;
             {
@@ -41,10 +50,10 @@ public class API {
 
                 return new PlayerProfile(name, skin);
             } else {
-                throw new APIException("no response for UUID: " + uuid);
+                throw new APIRequestException("no response for UUID: " + uuid);
             }
         } catch (Exception e) {
-            throw new APIException(e);
+            throw new APIRequestException(e);
         }
     }
 }

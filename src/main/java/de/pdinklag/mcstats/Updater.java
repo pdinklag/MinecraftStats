@@ -1,5 +1,8 @@
 package de.pdinklag.mcstats;
 
+/**
+ * The heart of MinecraftStats.
+ */
 public class Updater {
     // TODO: config
 

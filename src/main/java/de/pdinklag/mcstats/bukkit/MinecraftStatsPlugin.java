@@ -2,6 +2,9 @@ package de.pdinklag.mcstats.bukkit;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * The entry point of the MinecraftStats Bukkit plugin.
+ */
 public class MinecraftStatsPlugin extends JavaPlugin {
     @Override
     public void onEnable() {

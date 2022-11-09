@@ -1,24 +1,40 @@
 package de.pdinklag.mcstats;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
+/**
+ * A ranking of players.
+ */
 public class Ranking {
+    /**
+     * A single entry in a ranking.
+     */
     public class Entry {
         private final Player player;
         private final int score;
 
-        public Entry(Player player, int score) {
+        private Entry(Player player, int score) {
             this.player = player;
             this.score = score;
         }
 
+        /**
+         * Gets the player represented by the entry.
+         * @return the player represented by the entry
+         */
         public Player getPlayer() {
             return player;
         }
 
+        /**
+         * Gets the score that the player was entered with.
+         * @return the score that the player was entered with
+         */
         public int getScore() {
             return score;
         }
@@ -26,10 +42,15 @@ public class Ranking {
 
     private final ArrayList<Entry> orderedEntries;
 
-    public Ranking(Stat stat, Map<Player, PlayerData> players) {
+    /**
+     * Computes a ranking for the given players and score function.
+     * @param players the players to be ranked
+     * @param score the score function reporting each player's scoring data value
+     */
+    public Ranking(Collection<Player> players, Function<Player, DataValue> score) {
         orderedEntries = new ArrayList<>(players.size());
-        players.forEach((player, data) -> {
-            orderedEntries.add(new Entry(player, data.get(stat).toInt()));
+        players.forEach(player -> {
+            orderedEntries.add(new Entry(player, score.apply(player).toInt()));
         });
         orderedEntries.sort((a, b) -> {
             if (a.score != b.score) {
@@ -42,6 +63,10 @@ public class Ranking {
         });
     }
 
+    /**
+     * Reports the ordered list of entries in the ranking.
+     * @return the ordered list of entries in the ranking
+     */
     public List<Entry> getOrderedEntries() {
         return Collections.unmodifiableList(orderedEntries);
     }

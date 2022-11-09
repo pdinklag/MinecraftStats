@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 import org.json.JSONObject;
 
-public class MatchSumReader extends JSONDataReader {
+public class MatchSumReader extends NestedDataReader {
     private final Pattern[] patterns;
 
     public MatchSumReader(String[] path, String[] patterns) {
