@@ -16,7 +16,7 @@ public class StatParser {
 
     private static SumReader parseSumReader(JSONObject obj) throws JSONException {
         JSONArray jsonReaders = obj.getJSONArray("readers");
-        IReader[] readers = new IReader[jsonReaders.length()];
+        DataReader[] readers = new DataReader[jsonReaders.length()];
         for(int i = 0; i < readers.length; i++) {
             readers[i] = parseReader(jsonReaders.getJSONObject(i));
         }
@@ -47,7 +47,7 @@ public class StatParser {
         return new SetCountReader(path);
     }
 
-    private static IReader parseReader(JSONObject obj) throws JSONException, StatParseException {
+    private static DataReader parseReader(JSONObject obj) throws JSONException, StatParseException {
         String type = obj.getString("$type");
         switch(type) {
             case "int":
@@ -68,8 +68,8 @@ public class StatParser {
         Stat.Unit unit = Stat.Unit.valueOf(obj.getString("unit").toUpperCase());
         int minVersion = obj.optInt("minVersion", 0);
         int maxVersion = obj.optInt("maxVersion", Integer.MAX_VALUE);
-        IReader reader = parseReader(obj.getJSONObject("reader"));
-        IAggregator aggregator = reader.createDefaultAggregator();
+        DataReader reader = parseReader(obj.getJSONObject("reader"));
+        DataAggregator aggregator = reader.createDefaultAggregator();
         return new Stat(id ,unit, minVersion, maxVersion, reader, aggregator);
     }
 }

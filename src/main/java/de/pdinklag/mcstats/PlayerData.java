@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.json.JSONObject;
 
 public class PlayerData {
-    private final HashMap<Stat, IValue> stats = new HashMap<>();
+    private final HashMap<Stat, DataValue> stats = new HashMap<>();
 
     public PlayerData() {
     }
@@ -16,14 +16,14 @@ public class PlayerData {
         });
     }
 
-    private void setOrAggregate(Stat stat, IValue value) {
+    private void setOrAggregate(Stat stat, DataValue value) {
         if (stats.containsKey(stat)) {
             value = stat.getAggregator().aggregate(stats.get(stat), value);
         }
         stats.put(stat, value);
     }
 
-    public IValue get(Stat stat) {
+    public DataValue get(Stat stat) {
         return stats.getOrDefault(stat, new NoValue());
     }
 }

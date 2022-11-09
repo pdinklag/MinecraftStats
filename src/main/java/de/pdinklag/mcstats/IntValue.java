@@ -1,6 +1,6 @@
 package de.pdinklag.mcstats;
 
-public class IntValue implements IValue {
+public class IntValue implements DataValue {
     private final int value;
 
     public IntValue(int value) {

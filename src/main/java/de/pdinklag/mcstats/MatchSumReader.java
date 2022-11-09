@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 import org.json.JSONObject;
 
-public class MatchSumReader extends JSONReader {
+public class MatchSumReader extends JSONDataReader {
     private final Pattern[] patterns;
 
     public MatchSumReader(String[] path, String[] patterns) {
@@ -17,12 +17,12 @@ public class MatchSumReader extends JSONReader {
     }
 
     @Override
-    protected IValue getDefaultValue() {
+    protected DataValue getDefaultValue() {
         return new IntValue(0);
     }
 
     @Override
-    protected IValue read(JSONObject obj, String key) {
+    protected DataValue read(JSONObject obj, String key) {
         obj = obj.getJSONObject(key);
 
         int sum = 0;
@@ -37,7 +37,7 @@ public class MatchSumReader extends JSONReader {
     }
 
     @Override
-    public IAggregator createDefaultAggregator() {
+    public DataAggregator createDefaultAggregator() {
         return new IntSumAggregator();
     }
 

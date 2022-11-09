@@ -2,24 +2,24 @@ package de.pdinklag.mcstats;
 
 import org.json.JSONObject;
 
-public class SumReader implements IReader {
-    private final IReader[] readers;
+public class SumReader implements DataReader {
+    private final DataReader[] readers;
 
-    public SumReader(IReader[] readers) {
+    public SumReader(DataReader[] readers) {
         this.readers = readers;
     }
 
     @Override
-    public IValue read(JSONObject stats) {
+    public DataValue read(JSONObject stats) {
         int sum = 0;
-        for (IReader r : readers) {
+        for (DataReader r : readers) {
             sum += r.read(stats).toInt();
         }
         return new IntValue(sum);
     }
 
     @Override
-    public IAggregator createDefaultAggregator() {
+    public DataAggregator createDefaultAggregator() {
         return new IntSumAggregator();
     }
 }

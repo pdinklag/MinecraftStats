@@ -1,7 +1,7 @@
 package de.pdinklag.mcstats;
 
-public class StringSetMergeAggregator implements IAggregator {
-    public StringSetValue aggregate(IValue a, IValue b) {
+public class StringSetMergeAggregator implements DataAggregator {
+    public StringSetValue aggregate(DataValue a, DataValue b) {
         StringSetValue merged = new StringSetValue();
         merged.addAll(((StringSetValue)a).getSet());
         merged.addAll(((StringSetValue)b).getSet());

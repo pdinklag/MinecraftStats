@@ -3,7 +3,7 @@ package de.pdinklag.mcstats;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class StringSetValue implements IValue {
+public class StringSetValue implements DataValue {
     private final HashSet<String> set = new HashSet<>();
 
     public StringSetValue() {

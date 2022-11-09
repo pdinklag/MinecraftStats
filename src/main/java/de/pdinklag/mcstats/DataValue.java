@@ -1,5 +1,5 @@
 package de.pdinklag.mcstats;
 
-public interface IValue {
+public interface DataValue {
     public int toInt();
 }

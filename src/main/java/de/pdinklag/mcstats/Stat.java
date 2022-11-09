@@ -14,10 +14,10 @@ public class Stat {
     private final Unit unit;
     private final int minVersion;
     private final int maxVersion;
-    private final IReader reader;
-    private final IAggregator aggregator;
+    private final DataReader reader;
+    private final DataAggregator aggregator;
 
-    public Stat(String id, Unit unit, int minVersion, int maxVersion, IReader reader, IAggregator aggregator) {
+    public Stat(String id, Unit unit, int minVersion, int maxVersion, DataReader reader, DataAggregator aggregator) {
         this.id = id;
         this.unit = unit;
         this.minVersion = minVersion;
@@ -38,11 +38,11 @@ public class Stat {
         return version >= minVersion && version <= maxVersion;
     }
 
-    public IReader getReader() {
+    public DataReader getReader() {
         return reader;
     }
 
-    public IAggregator getAggregator() {
+    public DataAggregator getAggregator() {
         return aggregator;
     }
 }
