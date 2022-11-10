@@ -48,7 +48,7 @@ public class API {
                         .getString("url")
                         .substring(SKIN_URL.length());
 
-                return new PlayerProfile(name, skin);
+                return new PlayerProfile(name, skin, System.currentTimeMillis());
             } else {
                 throw new APIRequestException("no response for UUID: " + uuid);
             }

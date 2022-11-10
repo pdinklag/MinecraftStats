@@ -19,10 +19,10 @@ public abstract class NestedDataReader implements DataReader {
     @Override
     public DataValue read(JSONObject stats) {
         final int depth = path.length - 1;
-        for(int i = 0; i < depth; i++)
-        {
+        for (int i = 0; i < depth; i++) {
             stats = stats.optJSONObject(path[i]);
-            if(stats == null) return getDefaultValue();
+            if (stats == null)
+                return getDefaultValue();
         }
         return read(stats, path[depth]);
     }

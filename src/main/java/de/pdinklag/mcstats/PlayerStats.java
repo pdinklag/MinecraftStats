@@ -18,13 +18,18 @@ public class PlayerStats {
 
     /**
      * Gathers data for the given stats and data held in the player's stat JSON.
-     * If a data value already exists for some stat, it will be aggregated with the new value.
+     * If a data value already exists for some stat, it will be aggregated with the
+     * new value.
+     * 
      * @param stats the stats to consider
-     * @param data the data object to read from
+     * @param data  the data object to read from
      */
     public void gather(Iterable<Stat> stats, JSONObject data) {
+        final int dataVersion = DefaultReaders.DATA_VERSION_READER.read(data).toInt();
         stats.forEach(stat -> {
-            setOrAggregate(stat, stat.getReader().read(data));
+            if (stat.isVersionSupported(dataVersion)) {
+                setOrAggregate(stat, stat.getReader().read(data));
+            }
         });
     }
 
@@ -37,6 +42,7 @@ public class PlayerStats {
 
     /**
      * Gets the data value for the given stat.
+     * 
      * @param stat the stat in question
      * @return the data value for the given stat
      */

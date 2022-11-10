@@ -67,8 +67,8 @@ public class Stat {
         return unit;
     }
 
-    public boolean isEligible(int version) {
-        return version >= minVersion && version <= maxVersion;
+    public boolean isVersionSupported(int dataVersion) {
+        return dataVersion >= minVersion && dataVersion <= maxVersion;
     }
 
     public DataReader getReader() {

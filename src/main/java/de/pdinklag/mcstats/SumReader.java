@@ -12,7 +12,7 @@ public class SumReader implements DataReader {
      * Constructs a sum reader.
      * @param readers the set of readers to sum up
      */
-    public SumReader(DataReader[] readers) {
+    public SumReader(DataReader... readers) {
         this.readers = readers;
     }
 

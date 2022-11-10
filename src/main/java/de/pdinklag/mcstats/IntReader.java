@@ -10,7 +10,7 @@ public class IntReader extends NestedDataReader {
      * Constructs an integer reader
      * @param path the JSON object names on the path to the value to read
      */
-    public IntReader(String[] path) {
+    public IntReader(String... path) {
         super(path);
     }
 

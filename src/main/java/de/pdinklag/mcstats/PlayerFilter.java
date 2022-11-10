@@ -5,7 +5,7 @@ package de.pdinklag.mcstats;
  */
 public interface PlayerFilter {
     /**
-     * Tests whether a player should be filtered (included).
+     * Tests whether a player should be filtered, i.e., included in the database.
      * @param player the player in question
      * @return true if the player stays, false if it goes
      */

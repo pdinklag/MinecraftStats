@@ -1,19 +1,28 @@
 package de.pdinklag.mcstats;
 
 /**
- * Represents a player on the Minecraft server.
+ * Represents a player tracked by MinecraftStats.
  */
 public class Player {
+    // identifier
     private final String uuid;
 
+    // discovery and filtering information
+    private long lastOnlineTime = 0;
+    private int playtime = 0;
+    private int dataVersion = 0;
+
+    // update information
     private PlayerProfile profile;
+    private final PlayerStats stats = new PlayerStats();
 
     /**
      * Constructs a new player object.
-     * @param uuid the player's UUID.
+     * @param uuid the player's UUID
      */
     public Player(String uuid) {
         this.uuid = uuid;
+        this.profile = new PlayerProfile(uuid, null);
     }
 
     /**
@@ -38,5 +47,33 @@ public class Player {
      */
     public void setProfile(PlayerProfile profile) {
         this.profile = profile;
+    }
+
+    public PlayerStats getStats() {
+        return stats;
+    }
+
+    public long getLastOnlineTime() {
+        return lastOnlineTime;
+    }
+
+    public void setLastOnlineTime(long lastOnlineTime) {
+        this.lastOnlineTime = lastOnlineTime;
+    }
+
+    public int getDataVersion() {
+        return dataVersion;
+    }
+
+    public void setDataVersion(int dataVersion) {
+        this.dataVersion = dataVersion;
+    }
+
+    public int getPlaytime() {
+        return playtime;
+    }
+
+    public void setPlaytime(int playtime) {
+        this.playtime = playtime;
     }
 }
