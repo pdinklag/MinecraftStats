@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -16,14 +15,19 @@ import de.pdinklag.mcstats.util.MinecraftServerUtils;
 /**
  * The heart of MinecraftStats.
  */
-public abstract class Updater {
+public class Updater {
     private static final String JSON_FILE_EXT = ".json";
     private static final int MIN_DATA_VERSION = 1451; // 17w47a
     private static final String DATABASE_PLAYERS_JSON = "players.json";
 
+    private static final int TICKS_PER_SECOND = 20;
+    private static final int MINUTES_TO_TICKS = 60 * TICKS_PER_SECOND;
+
+    private static final long DAYS_TO_MILLISECONDS = 24L * 60L * 60L * 1000L;
+
     // initialization
-    private final Path databasePath;
-    private final LinkedList<DataSource> dataSources = new LinkedList<>();
+    private final Config config;
+    private final LogWriter log;
 
     protected final LinkedList<PlayerFilter> playerFilters = new LinkedList<>();
     private final ArrayList<Stat> awards = new ArrayList<>();
@@ -31,14 +35,11 @@ public abstract class Updater {
     protected final LinkedList<PlayerProfileProvider> localProfileProviders = new LinkedList<>();
     private final PlayerProfileProvider authenticProfileProvider;
 
-    // config
-    protected long profileUpdateInterval = 0;
-
     private HashMap<String, Player> processPlayers() {
         HashMap<String, Player> discoveredPlayers = new HashMap<>();
 
         // discover players in data sources
-        dataSources.forEach(source -> {
+        config.getDataSources().forEach(source -> {
             Path statsPath = source.getPlayerStatsPath();
             try {
                 Files.list(statsPath).forEach(path -> {
@@ -94,14 +95,14 @@ public abstract class Updater {
         return new MojangAPIPlayerProfileProvider();
     }
 
-    protected Updater(Path databasePath, Collection<DataSource> sources) {
-        this.databasePath = databasePath;
-        dataSources.addAll(sources);
+    public Updater(Config config, LogWriter log) {
+        this.config = config;
+        this.log = log;
 
         // create local providers
         {
             // players.json
-            Path playersJsonPath = databasePath.resolve(DATABASE_PLAYERS_JSON);
+            Path playersJsonPath = config.getDatabasePath().resolve(DATABASE_PLAYERS_JSON);
             if (Files.isRegularFile(playersJsonPath)) {
                 try {
                     JSONObject playersJson = new JSONObject(Files.readString(playersJsonPath));
@@ -114,7 +115,7 @@ public abstract class Updater {
         }
 
         // usercache.json
-        dataSources.forEach(source -> {
+        config.getDataSources().forEach(source -> {
             Path usercachePath = MinecraftServerUtils.getUserCachePath(source.getServerPath());
             if (Files.isRegularFile(usercachePath)) {
                 try {
@@ -135,8 +136,16 @@ public abstract class Updater {
         // filter players whose data version is too low
         playerFilters.add(new DataVersionPlayerFilter(MIN_DATA_VERSION, Integer.MAX_VALUE));
 
-        // TODO: add MinPlaytimePlayerFilter
+        // filter players who didn't play long enough
+        playerFilters.add(new MinPlaytimePlayerFilter(MINUTES_TO_TICKS * config.getMinPlaytime()));
+
+        // filter players who are inactive
+        playerFilters.add(new LastOnlinePlayerFilter(System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long)config.getInactiveDays()));
+
         // TODO: add LastOnlinePlayerFilter
+        // TODO: add op filter
+        // TODO: add banned filter
+        // TODO: add exclude UUID filter
     }
 
     public void run() {
@@ -149,30 +158,29 @@ public abstract class Updater {
             // discover and process players
             HashMap<String, Player> discoveredPlayers = processPlayers();
 
-            // filter players
+            // get player profiles and filter
             discoveredPlayers.forEach((uuid, player) -> {
+                // use local sources
+                for (PlayerProfileProvider provider : localProfileProviders) {
+                    player.setProfile(provider.getPlayerProfile(player));
+                    if (player.getProfile().hasName()) {
+                        break;
+                    }
+                }
+
+                // use authentic sources if due
+                if (now - player.getProfile().getLastUpdateTime() >= DAYS_TO_MILLISECONDS * (long)config.getProfileUpdateInterval()) {
+                    log.writeLine("updating profile for " + player.getUuid() + " ...");
+                    player.setProfile(authenticProfileProvider.getPlayerProfile(player));
+                }
+
+                // filter
                 if (filterPlayer(player)) {
                     // keep player
                     players.put(uuid, player);
                 }
             });
         }
-
-        // get player profiles
-        players.forEach((uuid, player) -> {
-            // use local sources
-            for (PlayerProfileProvider provider : localProfileProviders) {
-                player.setProfile(provider.getPlayerProfile(player));
-                if (player.getProfile().hasName()) {
-                    break;
-                }
-            }
-
-            // use authentic sources if due
-            if (now - player.getProfile().getLastUpdateTime() >= profileUpdateInterval) {
-                player.setProfile(authenticProfileProvider.getPlayerProfile(player));
-            }
-        });
 
         // TODO: compute rankings
         // TODO: process crown score

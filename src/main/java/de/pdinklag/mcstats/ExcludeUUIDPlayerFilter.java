@@ -1,5 +1,6 @@
 package de.pdinklag.mcstats;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 /**
@@ -20,6 +21,14 @@ public class ExcludeUUIDPlayerFilter implements PlayerFilter {
      */
     public void exclude(String uuid) {
         excludedUuids.add(uuid);
+    }
+
+    /**
+     * Adds UUIDs to exclude
+     * @param uuids the uuids to exclude.
+     */
+    public void excludeAll(Collection<String> uuids) {
+        excludedUuids.addAll(uuids);
     }
 
     @Override
