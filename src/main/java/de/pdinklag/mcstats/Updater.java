@@ -44,9 +44,9 @@ public class Updater {
             try {
                 Files.list(statsPath).forEach(path -> {
                     try {
-                        if (Files.isRegularFile(path) && path.endsWith(JSON_FILE_EXT)) {
+                        final String filename = path.getFileName().toString();
+                        if (Files.isRegularFile(path) && filename.endsWith(JSON_FILE_EXT)) {
                             // extract UUID from filename
-                            final String filename = path.getFileName().toString();
                             final String uuid = filename.substring(0, filename.length() - JSON_FILE_EXT.length());
 
                             // read JSON
@@ -140,7 +140,8 @@ public class Updater {
         playerFilters.add(new MinPlaytimePlayerFilter(MINUTES_TO_TICKS * config.getMinPlaytime()));
 
         // filter players who are inactive
-        playerFilters.add(new LastOnlinePlayerFilter(System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long)config.getInactiveDays()));
+        playerFilters.add(new LastOnlinePlayerFilter(
+                System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long) config.getInactiveDays()));
 
         // TODO: add LastOnlinePlayerFilter
         // TODO: add op filter
@@ -169,7 +170,8 @@ public class Updater {
                 }
 
                 // use authentic sources if due
-                if (now - player.getProfile().getLastUpdateTime() >= DAYS_TO_MILLISECONDS * (long)config.getProfileUpdateInterval()) {
+                if (now - player.getProfile().getLastUpdateTime() >= DAYS_TO_MILLISECONDS
+                        * (long) config.getProfileUpdateInterval()) {
                     log.writeLine("updating profile for " + player.getUuid() + " ...");
                     player.setProfile(authenticProfileProvider.getPlayerProfile(player));
                 }
