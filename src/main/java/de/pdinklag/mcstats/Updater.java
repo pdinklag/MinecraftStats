@@ -50,7 +50,8 @@ public class Updater {
                             final String uuid = filename.substring(0, filename.length() - JSON_FILE_EXT.length());
 
                             // read JSON
-                            final JSONObject stats = new JSONObject(Files.readString(path));
+                            final JSONObject json = new JSONObject(Files.readString(path));
+                            final JSONObject stats = json.getJSONObject("stats");
 
                             // gather basic information
                             Player player = discoveredPlayers.getOrDefault(uuid, new Player(uuid));
@@ -58,7 +59,7 @@ public class Updater {
                             final long lastOnlineTime = Files.getLastModifiedTime(path).toMillis();
                             player.setLastOnlineTime(Math.max(player.getLastOnlineTime(), lastOnlineTime));
 
-                            final int dataVersion = DefaultReaders.DATA_VERSION_READER.read(stats).toInt();
+                            final int dataVersion = DefaultReaders.DATA_VERSION_READER.read(json).toInt();
                             player.setDataVersion(Math.max(player.getDataVersion(), dataVersion));
 
                             final int playTime = DefaultReaders.PLAYTIME_READER.read(stats).toInt();
@@ -85,8 +86,9 @@ public class Updater {
 
     private boolean filterPlayer(Player player) {
         for (PlayerFilter filter : playerFilters) {
-            if (!filter.filter(player))
+            if (!filter.filter(player)) {
                 return false;
+            }
         }
         return true;
     }
