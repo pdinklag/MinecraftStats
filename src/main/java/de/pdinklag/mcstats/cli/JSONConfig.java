@@ -39,7 +39,7 @@ public class JSONConfig extends Config {
             setExcludeBanned(players.getBoolean("excludeBanned"));
             setExcludeOps(players.getBoolean("excludeOps"));
 
-            JSONArray excludeUUIDs = json.getJSONArray("excludeUUIDs");
+            JSONArray excludeUUIDs = players.getJSONArray("excludeUUIDs");
             for(int i = 0; i< excludeUUIDs.length(); i++) {
                 getExcludeUUIDs().add(excludeUUIDs.getString(i));
             }
