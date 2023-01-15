@@ -178,6 +178,18 @@ for (path, _) in sources:
     except:
         handle_error('Cannot open ' + usercacheFile + ' for offline player lookup')
 
+# try and load OPs
+oplist = dict()
+if config.players.lookupUsingOPs:
+    for (path, _) in sources:
+        opsFile = os.path.join(path, 'ops.json')
+        try:
+            with open(opsFile) as f:
+                for entry in json.load(f):
+                    oplist[entry['uuid']] = entry['name']
+        except:
+            handle_error('Cannot open ' + opsFile + ' for offline (op player) lookup')
+
 # exclude players
 excludePlayers = set()
 
@@ -384,6 +396,10 @@ for uuid, player in players.items():
         if (not 'name' in player) and (uuid in usercache):
             # no profile available, but the UUID is in the usercache
             player['name'] = usercache[uuid]
+
+        if (not 'name' in player) and (uuid in oplist):
+            # no profile available, but the UUID is in the OP list
+            player['name'] = oplist[uuid]
 
         if (not 'name' in player):
             # there is no way to find the name of this player
