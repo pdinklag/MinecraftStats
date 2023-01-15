@@ -21,6 +21,9 @@ defaultConfig = {
         "updateInactive": False,     # also update profile for inactive players
         "inactiveDays": 7,           # number of offline days before a player is considered inactive
         "minPlaytime": 60,           # number of minutes a player must have played before entering stats
+        "pluginFolder": "plugins",   # For the next two options, a valid plugin folder name (ignore if vanilla)
+        "lookupUsingMVI": True,      # Include Multiverse Inventories plugin in the UUID to name lookup
+        "lookupUsingFaction": True,  # Include Factions plugin in the UUID to name lookup
         "excludeBanned": True,       # whether or not to exclude banned players
         "excludeOps": False,         # whether or not to exclude ops
         "excludeUUIDs": []           # list of UUIDs to exclude

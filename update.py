@@ -6,6 +6,7 @@ import gzip
 import json
 import math
 import os
+import pathlib
 import re
 import shutil
 import sys
@@ -177,6 +178,41 @@ for (path, _) in sources:
                 usercache[entry['uuid']] = entry['name']
     except:
         handle_error('Cannot open ' + usercacheFile + ' for offline player lookup')
+
+# try and load from MV Inventories
+mvinvlist = dict()
+if config.players.lookupUsingMVI:
+    for (path, _) in sources:
+        mvpath = config.players.pluginFolder + '/Multiverse-Inventories/players'
+        mvpath = os.path.join(path, mvpath)  # 'plugins/Multiverse-Inventories/players'
+        try:
+            for filenamemvpath in pathlib.Path(mvpath).iterdir():
+                if filenamemvpath.is_file():
+                    filenamemvSTR = os.path.join(filenamemvpath)
+                    try:
+                        with open(filenamemvpath) as f:
+                            string = f.read()
+                            filename = os.path.basename(filenamemvpath)
+                            filenameuuid = os.path.splitext(filename)[0]
+                            entry = json.loads(string, object_hook=lambda d: types.SimpleNamespace(**d))
+                            mvinvlist[filenameuuid] = entry.playerData.lastKnownName
+                    except:
+                        handle_error('Cannot open ' + filenamemvSTR + ' for offline (multiverse inv) player lookup')
+        except:
+            handle_error('Cannot open ' + mvpath + ' for offline (multiverse inventory) player lookup')
+
+# try and load from Factions
+factionlist = dict()
+if config.players.lookupUsingFaction:
+    for (path, _) in sources:
+        factionpath = config.players.pluginFolder + '/MassiveCore/idnamecache.json'
+        factionpath = os.path.join(path, factionpath)  # 'plugins/MassiveCore/idnamecache.json'
+        try:
+            with open(factionpath) as f:
+                for entry in json.load(f):
+                    factionlist[entry['id']] = entry['name']
+        except:
+            handle_error('Cannot open ' + factionpath + ' for offline (factions cache) player lookup')
 
 # exclude players
 excludePlayers = set()
@@ -384,6 +420,14 @@ for uuid, player in players.items():
         if (not 'name' in player) and (uuid in usercache):
             # no profile available, but the UUID is in the usercache
             player['name'] = usercache[uuid]
+
+        if (not 'name' in player) and (uuid in mvinvlist):
+            # no profile available, but the UUID is in the multiverse inventory list
+            player['name'] = mvinvlist[uuid]
+
+        if (not 'name' in player) and (uuid in factionlist):
+            # no profile available, but the UUID is in the faction list
+            player['name'] = factionlist[uuid]
 
         if (not 'name' in player):
             # there is no way to find the name of this player
