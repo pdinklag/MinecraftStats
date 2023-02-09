@@ -167,7 +167,7 @@ public class Updater {
         // exclude banned players
         if (config.isExcludeBanned()) {
             config.getDataSources().forEach(source -> {
-                Path bannedPlayersPath = source.getServerPath().resolve("banned-players.json");
+                Path bannedPlayersPath = MinecraftServerUtils.getBannedPlayersPath(source.getServerPath());
                 if (Files.isRegularFile(bannedPlayersPath)) {
                     try {
                         JSONArray ops = new JSONArray(Files.readString(bannedPlayersPath));
@@ -182,7 +182,7 @@ public class Updater {
         // exclude ops
         if (config.isExcludeOps()) {
             config.getDataSources().forEach(source -> {
-                Path opsPath = source.getServerPath().resolve("ops.json");
+                Path opsPath = MinecraftServerUtils.getOpsPath(source.getServerPath());
                 if (Files.isRegularFile(opsPath)) {
                     try {
                         JSONArray ops = new JSONArray(Files.readString(opsPath));
