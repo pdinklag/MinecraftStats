@@ -23,17 +23,20 @@ public class MatchSumReader extends NestedDataReader {
 
     @Override
     protected DataValue read(JSONObject obj, String key) {
-        obj = obj.getJSONObject(key);
-
-        int sum = 0;
-        for (String x : obj.keySet()) {
-            for (Pattern p : patterns) {
-                if (p.matcher(x).matches()) {
-                    sum += obj.getInt(x);
+        obj = obj.optJSONObject(key);
+        if (obj != null) {
+            int sum = 0;
+            for (String x : obj.keySet()) {
+                for (Pattern p : patterns) {
+                    if (p.matcher(x).matches()) {
+                        sum += obj.getInt(x);
+                    }
                 }
             }
+            return new IntValue(sum);
+        } else {
+            return getDefaultValue();
         }
-        return new IntValue(sum);
     }
 
     @Override

@@ -21,8 +21,9 @@ public abstract class NestedDataReader implements DataReader {
         final int depth = path.length - 1;
         for (int i = 0; i < depth; i++) {
             stats = stats.optJSONObject(path[i]);
-            if (stats == null)
+            if (stats == null) {
                 return getDefaultValue();
+            }
         }
         return read(stats, path[depth]);
     }
