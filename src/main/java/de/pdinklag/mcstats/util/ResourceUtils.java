@@ -13,7 +13,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ResourceUtils {
-    public static List<String> getResourceFilenames(String dirname)
+    public static List<String> getResourceFilenames(ClassLoader classLoader, String dirname)
             throws URISyntaxException, UnsupportedEncodingException, IOException {
         List<String> filenames = new ArrayList<>();
 
@@ -21,7 +21,7 @@ public class ResourceUtils {
             dirname = dirname + "/";
         }
 
-        final URL url = Thread.currentThread().getContextClassLoader().getResource(dirname);
+        final URL url = classLoader.getResource(dirname);
         if (url != null && url.getProtocol().equals("jar")) {
             final String path = url.getPath();
             final String jarPath = path.substring(5, path.indexOf("!"));

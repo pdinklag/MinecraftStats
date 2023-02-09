@@ -141,7 +141,7 @@ public class Updater {
 
         // discover and instantiate stats
         try {
-            ResourceUtils.getResourceFilenames("stats").forEach(resource -> {
+            ResourceUtils.getResourceFilenames(getClass().getClassLoader(), "stats").forEach(resource -> {
                 try {
                     final JSONObject obj = new JSONObject(StreamUtils.readStreamFully(getClass().getResourceAsStream(resource)));
                     final Stat stat = StatParser.parse(obj);
