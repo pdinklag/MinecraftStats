@@ -1,9 +1,7 @@
 {
     "id": "harvest_bamboo",
     "unit": "int",
-    "version": {
-        "min": 1901
-    },
+    "minVersion": 1901,
     "reader": {
         "$type": "int",
         "path": ["minecraft:picked_up","minecraft:bamboo"]
