@@ -1,14 +1,12 @@
 package de.pdinklag.mcstats;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -61,6 +59,8 @@ public class Updater {
                             // read JSON
                             final JSONObject json = new JSONObject(Files.readString(path));
                             final JSONObject stats = json.getJSONObject("stats");
+
+                            // TODO: advancements
 
                             // gather basic information
                             Player player = discoveredPlayers.getOrDefault(uuid, new Player(uuid));
@@ -139,21 +139,6 @@ public class Updater {
         // create authentic provider
         authenticProfileProvider = createAuthenticProfileProvider();
 
-        // discover and instantiate stats
-        try {
-            ResourceUtils.getResourceFilenames(getClass().getClassLoader(), "stats").forEach(resource -> {
-                try {
-                    final JSONObject obj = new JSONObject(StreamUtils.readStreamFully(getClass().getResourceAsStream(resource)));
-                    final Stat stat = StatParser.parse(obj);
-                    log.writeLine("parsed stat: " + stat.getId());
-                } catch(Exception e2) {
-                    log.writeError("failed to load stat from resources: " + resource, e2);
-                }
-            });
-        } catch (Exception e) {
-            log.writeError("failed to discover stats", e);
-        }
-
         // filter players whose data version is too low
         playerFilters.add(new DataVersionPlayerFilter(MIN_DATA_VERSION, Integer.MAX_VALUE));
 
@@ -200,6 +185,21 @@ public class Updater {
             filter.excludeAll(config.getExcludeUUIDs());
             playerFilters.add(filter);
         }
+
+        // discover and instantiate stats
+        try {
+            ResourceUtils.getResourceFilenames(getClass().getClassLoader(), "stats").forEach(resource -> {
+                try {
+                    final JSONObject obj = new JSONObject(
+                            StreamUtils.readStreamFully(getClass().getResourceAsStream(resource)));
+                    awards.add(StatParser.parse(obj));
+                } catch (Exception e2) {
+                    log.writeError("failed to load stat from resources: " + resource, e2);
+                }
+            });
+        } catch (Exception e) {
+            log.writeError("failed to discover stats", e);
+        }
     }
 
     public void run() {
@@ -243,7 +243,17 @@ public class Updater {
             }
         });
 
-        // TODO: compute rankings
+        // compute rankings
+        awards.forEach(award -> {
+            final Ranking ranking = new Ranking(activePlayers.values(), player -> {
+                return player.getStats().get(award);
+            });
+
+            final List<Ranking.Entry> orderedEntries = ranking.getOrderedEntries();
+            log.writeLine("best player for award " + award.getId() + " is " +
+                    (orderedEntries.isEmpty() ? "nobody" : orderedEntries.get(0).getPlayer().getProfile().getName() + " with score " + orderedEntries.get(0).getScore()));
+        });
+
         // TODO: process crown score
 
         // write players.json
