@@ -146,10 +146,42 @@ public class Updater {
         playerFilters.add(new LastOnlinePlayerFilter(
                 System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long) config.getInactiveDays()));
 
-        // TODO: add LastOnlinePlayerFilter
-        // TODO: add op filter
-        // TODO: add banned filter
-        // TODO: add exclude UUID filter
+        // exclude banned players
+        if(config.isExcludeBanned()) {
+            config.getDataSources().forEach(source -> {
+                Path bannedPlayersPath = source.getServerPath().resolve("banned-players.json");
+                if(Files.isRegularFile(bannedPlayersPath)) {
+                    try {
+                        JSONArray ops = new JSONArray(Files.readString(bannedPlayersPath));
+                        playerFilters.add(new JSONPlayerFilter(ops));
+                    } catch(Exception e) {
+                        log.writeError("failed to read banned players file: " + bannedPlayersPath.toString(), e);
+                    }
+                }
+            });
+        }
+
+        // exclude ops
+        if(config.isExcludeOps()) {
+            config.getDataSources().forEach(source -> {
+                Path opsPath = source.getServerPath().resolve("ops.json");
+                if(Files.isRegularFile(opsPath)) {
+                    try {
+                        JSONArray ops = new JSONArray(Files.readString(opsPath));
+                        playerFilters.add(new JSONPlayerFilter(ops));
+                    } catch(Exception e) {
+                        log.writeError("failed to read ops file: " + opsPath.toString(), e);
+                    }
+                }
+            });
+        }
+
+        // filter explicitly excluded players
+        if(!config.getExcludeUUIDs().isEmpty()) {
+            ExcludeUUIDPlayerFilter filter = new ExcludeUUIDPlayerFilter();
+            filter.excludeAll(config.getExcludeUUIDs());
+            playerFilters.add(filter);
+        }
     }
 
     public void run() {
