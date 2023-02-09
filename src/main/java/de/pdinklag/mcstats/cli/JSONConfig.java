@@ -34,6 +34,7 @@ public class JSONConfig extends Config {
             JSONObject players = json.getJSONObject("players");
             setInactiveDays(players.getInt("inactiveDays"));
             setMinPlaytime(players.getInt("minPlaytime"));
+            setUpdateInactive(players.getBoolean("updateInactive"));
             setProfileUpdateInterval(players.getInt("profileUpdateInterval"));
 
             setExcludeBanned(players.getBoolean("excludeBanned"));

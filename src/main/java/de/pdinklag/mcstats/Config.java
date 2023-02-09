@@ -12,6 +12,7 @@ public class Config {
 
     private int inactiveDays = 7;
     private int minPlaytime = 60;
+    private boolean updateInactive = false;
     private int profileUpdateInterval = 3;
 
     private boolean excludeBanned = true;
@@ -75,5 +76,13 @@ public class Config {
 
     public void setProfileUpdateInterval(int profileUpdateInterval) {
         this.profileUpdateInterval = profileUpdateInterval;
+    }
+
+    public boolean isUpdateInactive() {
+        return updateInactive;
+    }
+
+    public void setUpdateInactive(boolean updateInactive) {
+        this.updateInactive = updateInactive;
     }
 }

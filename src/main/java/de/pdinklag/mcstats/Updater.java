@@ -1,8 +1,11 @@
 package de.pdinklag.mcstats;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -35,7 +38,11 @@ public class Updater {
     protected final LinkedList<PlayerProfileProvider> localProfileProviders = new LinkedList<>();
     private final PlayerProfileProvider authenticProfileProvider;
 
-    private HashMap<String, Player> processPlayers() {
+    // paths
+    private final Path dbPath;
+    private final Path playersJsonPath;
+
+    private HashMap<String, Player> discoverPlayers() {
         HashMap<String, Player> discoveredPlayers = new HashMap<>();
 
         // discover players in data sources
@@ -101,18 +108,19 @@ public class Updater {
         this.config = config;
         this.log = log;
 
+        // cache some paths
+        this.dbPath = config.getDatabasePath();
+        this.playersJsonPath = dbPath.resolve(DATABASE_PLAYERS_JSON);
+
         // create local providers
-        {
-            // players.json
-            Path playersJsonPath = config.getDatabasePath().resolve(DATABASE_PLAYERS_JSON);
-            if (Files.isRegularFile(playersJsonPath)) {
-                try {
-                    JSONObject playersJson = new JSONObject(Files.readString(playersJsonPath));
-                    localProfileProviders.add(new DatabasePlayerProfileProvider(playersJson));
-                } catch (Exception e) {
-                    System.err.println("failed to load players from previous database: " + playersJsonPath.toString());
-                    e.printStackTrace();
-                }
+        // players.json
+        if (Files.isRegularFile(playersJsonPath)) {
+            try {
+                JSONObject playersJson = new JSONObject(Files.readString(playersJsonPath));
+                localProfileProviders.add(new DatabasePlayerProfileProvider(playersJson));
+            } catch (Exception e) {
+                System.err.println("failed to load players from previous database: " + playersJsonPath.toString());
+                e.printStackTrace();
             }
         }
 
@@ -155,39 +163,56 @@ public class Updater {
         // get current timestamp
         final long now = System.currentTimeMillis();
 
-        // get players
-        HashMap<String, Player> players = new HashMap<>();
-        {
-            // discover and process players
-            HashMap<String, Player> discoveredPlayers = processPlayers();
+        // create database directories
+        try {
+            Files.createDirectories(dbPath);
+        } catch (Exception e) {
+            System.err.println("failed to create database directories: " + dbPath.toString());
+            e.printStackTrace();
+        }
 
-            // get player profiles and filter
-            discoveredPlayers.forEach((uuid, player) -> {
-                // use local sources
-                for (PlayerProfileProvider provider : localProfileProviders) {
-                    player.setProfile(provider.getPlayerProfile(player));
-                    if (player.getProfile().hasName()) {
-                        break;
-                    }
+        // discover and process players
+        HashMap<String, Player> allPlayers = discoverPlayers();
+        HashMap<String, Player> activePlayers = new HashMap<>();
+
+        allPlayers.forEach((uuid, player) -> {
+            // use local sources
+            for (PlayerProfileProvider provider : localProfileProviders) {
+                player.setProfile(provider.getPlayerProfile(player));
+                if (player.getProfile().hasName()) {
+                    break;
                 }
+            }
 
-                // use authentic sources if due
-                if (now - player.getProfile().getLastUpdateTime() >= DAYS_TO_MILLISECONDS
-                        * (long) config.getProfileUpdateInterval()) {
+            // filter active players
+            final boolean isActive = filterPlayer(player);
+            if (isActive) {
+                activePlayers.put(uuid, player);
+            }
+
+            // use authentic sources if due
+            if (isActive || config.isUpdateInactive()) {
+                final long updateInterval = DAYS_TO_MILLISECONDS * (long) config.getProfileUpdateInterval();
+                final long timeSinceUpdate = now - player.getProfile().getLastUpdateTime();
+                if (timeSinceUpdate >= updateInterval) {
                     log.writeLine("updating profile for " + player.getUuid() + " ...");
                     player.setProfile(authenticProfileProvider.getPlayerProfile(player));
                 }
-
-                // filter
-                if (filterPlayer(player)) {
-                    // keep player
-                    players.put(uuid, player);
-                }
-            });
-        }
+            }
+        });
 
         // TODO: compute rankings
         // TODO: process crown score
+
+        // write players.json
+        try {
+            JSONObject db = DatabasePlayerProfileProvider.createDatabase(allPlayers.values());
+            Files.writeString(playersJsonPath, db.toString(4));
+        } catch (Exception e) {
+            System.err.println("failed to write players database: " + playersJsonPath.toString());
+            e.printStackTrace();
+        }
+
         // TODO: write database for client
     }
 }
