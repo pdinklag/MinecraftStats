@@ -74,12 +74,12 @@ public class StatParser {
      */
     public static Stat parse(JSONObject obj) throws StatParseException {
         try {
-            String id = obj.getString("id");
-            Stat.Unit unit = Stat.Unit.valueOf(obj.getString("unit").toUpperCase());
-            int minVersion = obj.optInt("minVersion", 0);
-            int maxVersion = obj.optInt("maxVersion", Integer.MAX_VALUE);
-            DataReader reader = parseReader(obj.getJSONObject("reader"));
-            DataAggregator aggregator = reader.createDefaultAggregator();
+            final String id = obj.getString("id");
+            final Stat.Unit unit = Stat.Unit.valueOf(obj.getString("unit").toUpperCase());
+            final int minVersion = obj.optInt("minVersion", 0);
+            final int maxVersion = obj.optInt("maxVersion", Integer.MAX_VALUE);
+            final DataReader reader = parseReader(obj.getJSONObject("reader"));
+            final DataAggregator aggregator = reader.createDefaultAggregator();
             return new Stat(id ,unit, minVersion, maxVersion, reader, aggregator);
         } catch(JSONException e) {
             throw new StatParseException(e);
