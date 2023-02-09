@@ -1,6 +1,9 @@
 package de.pdinklag.mcstats;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -10,7 +13,9 @@ import java.util.LinkedList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import de.pdinklag.mcstats.util.ResourceUtils;
 import de.pdinklag.mcstats.util.MinecraftServerUtils;
+import de.pdinklag.mcstats.util.StreamUtils;
 
 /**
  * The heart of MinecraftStats.
@@ -134,7 +139,20 @@ public class Updater {
         // create authentic provider
         authenticProfileProvider = createAuthenticProfileProvider();
 
-        // TODO: parse and instantiate stats
+        // discover and instantiate stats
+        try {
+            ResourceUtils.getResourceFilenames("stats").forEach(resource -> {
+                try {
+                    final JSONObject obj = new JSONObject(StreamUtils.readStreamFully(getClass().getResourceAsStream(resource)));
+                    final Stat stat = StatParser.parse(obj);
+                    log.writeLine("parsed stat: " + stat.getId());
+                } catch(Exception e2) {
+                    log.writeError("failed to load stat from resources: " + resource, e2);
+                }
+            });
+        } catch (Exception e) {
+            log.writeError("failed to discover stats", e);
+        }
 
         // filter players whose data version is too low
         playerFilters.add(new DataVersionPlayerFilter(MIN_DATA_VERSION, Integer.MAX_VALUE));
@@ -147,14 +165,14 @@ public class Updater {
                 System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long) config.getInactiveDays()));
 
         // exclude banned players
-        if(config.isExcludeBanned()) {
+        if (config.isExcludeBanned()) {
             config.getDataSources().forEach(source -> {
                 Path bannedPlayersPath = source.getServerPath().resolve("banned-players.json");
-                if(Files.isRegularFile(bannedPlayersPath)) {
+                if (Files.isRegularFile(bannedPlayersPath)) {
                     try {
                         JSONArray ops = new JSONArray(Files.readString(bannedPlayersPath));
                         playerFilters.add(new JSONPlayerFilter(ops));
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         log.writeError("failed to read banned players file: " + bannedPlayersPath.toString(), e);
                     }
                 }
@@ -162,14 +180,14 @@ public class Updater {
         }
 
         // exclude ops
-        if(config.isExcludeOps()) {
+        if (config.isExcludeOps()) {
             config.getDataSources().forEach(source -> {
                 Path opsPath = source.getServerPath().resolve("ops.json");
-                if(Files.isRegularFile(opsPath)) {
+                if (Files.isRegularFile(opsPath)) {
                     try {
                         JSONArray ops = new JSONArray(Files.readString(opsPath));
                         playerFilters.add(new JSONPlayerFilter(ops));
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         log.writeError("failed to read ops file: " + opsPath.toString(), e);
                     }
                 }
@@ -177,7 +195,7 @@ public class Updater {
         }
 
         // filter explicitly excluded players
-        if(!config.getExcludeUUIDs().isEmpty()) {
+        if (!config.getExcludeUUIDs().isEmpty()) {
             ExcludeUUIDPlayerFilter filter = new ExcludeUUIDPlayerFilter();
             filter.excludeAll(config.getExcludeUUIDs());
             playerFilters.add(filter);

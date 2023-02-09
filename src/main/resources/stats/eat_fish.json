@@ -1,0 +1,33 @@
+{
+    "id": "eat_fish",
+    "unit": "int",
+    "reader": {
+        "$type": "sum",
+        "readers": [
+            {
+                "$type": "int",
+                "path": ["minecraft:used","minecraft:clownfish"]
+            },
+            {
+                "$type": "int",
+                "path": ["minecraft:used","minecraft:cod"]
+            },
+            {
+                "$type": "int",
+                "path": ["minecraft:used","minecraft:cooked_salmon"]
+            },
+            {
+                "$type": "int",
+                "path": ["minecraft:used","minecraft:cooked_cod"]
+            },
+            {
+                "$type": "int",
+                "path": ["minecraft:used","minecraft:salmon"]
+            },
+            {
+                "$type": "int",
+                "path": ["minecraft:used","minecraft:tropical_fish"]
+            }
+        ]
+    }
+}
