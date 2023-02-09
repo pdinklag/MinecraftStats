@@ -42,7 +42,7 @@ public class Updater {
     private final Path dbPath;
     private final Path playersJsonPath;
 
-    private HashMap<String, Player> discoverPlayers() {
+    private HashMap<String, Player> processPlayers() {
         HashMap<String, Player> discoveredPlayers = new HashMap<>();
 
         // discover players in data sources
@@ -214,9 +214,20 @@ public class Updater {
         }
 
         // discover and process players
-        HashMap<String, Player> allPlayers = discoverPlayers();
-        HashMap<String, Player> activePlayers = new HashMap<>();
+        HashMap<String, Player> allPlayers = processPlayers();
 
+        // find effective server version
+        final int serverDataVersion;
+        {
+            int maxDataVersion = 0;
+            for (Player player : allPlayers.values()) {
+                maxDataVersion = Math.max(maxDataVersion, player.getDataVersion());
+            }
+            serverDataVersion = maxDataVersion;
+        }
+
+        // update player profiles
+        HashMap<String, Player> activePlayers = new HashMap<>();
         allPlayers.forEach((uuid, player) -> {
             // use local sources
             for (PlayerProfileProvider provider : localProfileProviders) {
@@ -245,13 +256,19 @@ public class Updater {
 
         // compute rankings
         awards.forEach(award -> {
-            final Ranking ranking = new Ranking(activePlayers.values(), player -> {
-                return player.getStats().get(award);
-            });
+            if (award.isVersionSupported(serverDataVersion)) {
+                final Ranking ranking = new Ranking(activePlayers.values(), player -> {
+                    return player.getStats().get(award);
+                });
 
-            final List<Ranking.Entry> orderedEntries = ranking.getOrderedEntries();
-            log.writeLine("best player for award " + award.getId() + " is " +
-                    (orderedEntries.isEmpty() ? "nobody" : orderedEntries.get(0).getPlayer().getProfile().getName() + " with score " + orderedEntries.get(0).getScore()));
+                final List<Ranking.Entry> orderedEntries = ranking.getOrderedEntries();
+                log.writeLine("best player for award " + award.getId() + " is " +
+                        (orderedEntries.isEmpty() ? "nobody"
+                                : orderedEntries.get(0).getPlayer().getProfile().getName() + " with score "
+                                        + orderedEntries.get(0).getScore()));
+            } else {
+                log.writeLine("award " + award.getId() + " is not supported by server (data version " + serverDataVersion + ")");
+            }
         });
 
         // TODO: process crown score
