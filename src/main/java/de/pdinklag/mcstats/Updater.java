@@ -1,11 +1,8 @@
 package de.pdinklag.mcstats;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -79,13 +76,11 @@ public class Updater {
                             discoveredPlayers.put(uuid, player);
                         }
                     } catch (Exception e) {
-                        System.err.println("failed to process file: " + path.toString());
-                        e.printStackTrace();
+                        log.writeError("failed to process file: " + path.toString(), e);
                     }
                 });
             } catch (IOException e) {
-                System.err.println("failed to run discovery on data source: " + statsPath.toString());
-                e.printStackTrace();
+                log.writeError("failed to run discovery on data source: " + statsPath.toString(), e);
             }
         });
         return discoveredPlayers;
@@ -119,8 +114,7 @@ public class Updater {
                 JSONObject playersJson = new JSONObject(Files.readString(playersJsonPath));
                 localProfileProviders.add(new DatabasePlayerProfileProvider(playersJson));
             } catch (Exception e) {
-                System.err.println("failed to load players from previous database: " + playersJsonPath.toString());
-                e.printStackTrace();
+                log.writeError("failed to load players from previous database: " + playersJsonPath.toString(), e);
             }
         }
 
@@ -132,8 +126,7 @@ public class Updater {
                     JSONArray usercacheJson = new JSONArray(Files.readString(usercachePath));
                     localProfileProviders.add(new UserCachePlayerProfileProvider(usercacheJson));
                 } catch (Exception e) {
-                    System.err.println("failed to read usercache: " + usercachePath.toString());
-                    e.printStackTrace();
+                    log.writeError("failed to read usercache: " + usercachePath.toString(), e);
                 }
             }
         });
@@ -167,8 +160,7 @@ public class Updater {
         try {
             Files.createDirectories(dbPath);
         } catch (Exception e) {
-            System.err.println("failed to create database directories: " + dbPath.toString());
-            e.printStackTrace();
+            log.writeError("failed to create database directories: " + dbPath.toString(), e);
         }
 
         // discover and process players
@@ -209,8 +201,7 @@ public class Updater {
             JSONObject db = DatabasePlayerProfileProvider.createDatabase(allPlayers.values());
             Files.writeString(playersJsonPath, db.toString(4));
         } catch (Exception e) {
-            System.err.println("failed to write players database: " + playersJsonPath.toString());
-            e.printStackTrace();
+            log.writeError("failed to write players database: " + playersJsonPath.toString(), e);
         }
 
         // TODO: write database for client

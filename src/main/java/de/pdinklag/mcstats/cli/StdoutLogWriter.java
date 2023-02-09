@@ -9,7 +9,10 @@ public class StdoutLogWriter implements LogWriter {
     }
 
     @Override
-    public void writeError(Throwable e) {
-        e.printStackTrace();
+    public void writeError(String line, Throwable e) {
+        System.err.println(line);
+        if (e != null) {
+            e.printStackTrace(System.err);
+        }
     }
 }
