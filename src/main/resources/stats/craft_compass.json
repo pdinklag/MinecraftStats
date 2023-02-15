@@ -1,0 +1,8 @@
+{
+    "id": "craft_compass",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:crafted","minecraft:compass"]
+    }
+}

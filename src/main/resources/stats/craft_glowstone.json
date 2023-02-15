@@ -1,0 +1,8 @@
+{
+    "id": "craft_glowstone",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:crafted","minecraft:glowstone"]
+    }
+}

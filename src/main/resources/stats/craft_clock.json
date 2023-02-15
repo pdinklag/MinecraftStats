@@ -1,0 +1,8 @@
+{
+    "id": "craft_clock",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:crafted","minecraft:clock"]
+    }
+}

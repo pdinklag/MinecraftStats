@@ -1,0 +1,8 @@
+{
+    "id": "craft_beacon",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:crafted","minecraft:beacon"]
+    }
+}

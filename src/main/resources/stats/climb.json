@@ -1,0 +1,8 @@
+{
+    "id": "climb",
+    "unit": "cm",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:climb_one_cm"]
+    }
+}
