@@ -24,8 +24,7 @@ public class PlayerStats {
      * @param stats the stats to consider
      * @param data  the data object to read from
      */
-    public void gather(Iterable<Stat> stats, JSONObject data) {
-        final int dataVersion = DefaultReaders.DATA_VERSION_READER.read(data).toInt();
+    public void gather(Iterable<Stat> stats, JSONObject data, int dataVersion) {
         stats.forEach(stat -> {
             if (stat.isVersionSupported(dataVersion)) {
                 setOrAggregate(stat, stat.getReader().read(data));

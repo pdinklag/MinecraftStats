@@ -75,7 +75,7 @@ public class Updater {
                             player.setPlaytime(Math.max(player.getPlaytime(), playTime));
 
                             // gather stats
-                            player.getStats().gather(awards, stats);
+                            player.getStats().gather(awards, stats, dataVersion);
 
                             // register in set of players
                             discoveredPlayers.put(uuid, player);
