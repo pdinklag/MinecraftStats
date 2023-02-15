@@ -49,7 +49,10 @@ public class Ranking {
     public Ranking(Collection<Player> players, Function<Player, DataValue> score) {
         orderedEntries = new ArrayList<>(players.size());
         players.forEach(player -> {
-            orderedEntries.add(new Entry(player, score.apply(player).toInt()));
+            final int playerScore = score.apply(player).toInt();
+            if(playerScore > 0) {
+                orderedEntries.add(new Entry(player, playerScore));
+            }
         });
         orderedEntries.sort((a, b) -> {
             if (a.score != b.score) {
