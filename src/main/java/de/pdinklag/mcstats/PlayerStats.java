@@ -2,6 +2,7 @@ package de.pdinklag.mcstats;
 
 import java.util.HashMap;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -9,6 +10,7 @@ import org.json.JSONObject;
  */
 public class PlayerStats {
     private final HashMap<Stat, DataValue> stats = new HashMap<>();
+    private final HashMap<Stat, Integer> statRanks = new HashMap<>();
 
     /**
      * Constructs an empty player stats holder.
@@ -47,5 +49,34 @@ public class PlayerStats {
      */
     public DataValue get(Stat stat) {
         return stats.getOrDefault(stat, new NoValue());
+    }
+
+    /**
+     * Sets the player's ranking for the given stat.
+     * 
+     * @param stat the stat in question
+     * @param rank the player's rank for the stat
+     */
+    public void setRank(Stat stat, int rank) {
+        // TODO: handle meta stats / crown score ranking here
+        statRanks.put(stat, rank);
+    }
+
+    /**
+     * Gets the player's stats report in JSON format.
+     * 
+     * @return the player's stats report in JSON format
+     */
+    public JSONObject toJSON() {
+        JSONObject obj = new JSONObject();
+        stats.forEach((stat, value) -> {
+            JSONObject statData = new JSONObject();
+            statData.put("value", value.toInt());
+            if (statRanks.containsKey(stat)) {
+                statData.put("rank", (int) statRanks.get(stat));
+            }
+            obj.put(stat.getId(), statData);
+        });
+        return obj;
     }
 }

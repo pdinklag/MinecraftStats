@@ -23,6 +23,7 @@ public class Updater {
     private static final int MIN_DATA_VERSION = 1451; // 17w47a
     private static final String DATABASE_PLAYERS_JSON = "players.json";
     private static final String DATABASE_RANKINGS = "rankings";
+    private static final String DATABASE_PLAYERDATA = "playerdata";
 
     private static final int TICKS_PER_SECOND = 20;
     private static final int MINUTES_TO_TICKS = 60 * TICKS_PER_SECOND;
@@ -43,6 +44,7 @@ public class Updater {
     private final Path dbPath;
     private final Path dbPlayersJsonPath;
     private final Path dbRankingsPath;
+    private final Path dbPlayerdataPath;
 
     private HashMap<String, Player> processPlayers() {
         HashMap<String, Player> discoveredPlayers = new HashMap<>();
@@ -114,6 +116,7 @@ public class Updater {
         this.dbPath = config.getDatabasePath();
         this.dbPlayersJsonPath = dbPath.resolve(DATABASE_PLAYERS_JSON);
         this.dbRankingsPath = dbPath.resolve(DATABASE_RANKINGS);
+        this.dbPlayerdataPath = dbPath.resolve(DATABASE_PLAYERDATA);
 
         // create local providers
         // players.json
@@ -261,14 +264,24 @@ public class Updater {
         try {
             // create directories
             Files.createDirectories(dbRankingsPath);
+            Files.createDirectories(dbPlayerdataPath);
 
             // compute and write rankings
             awards.forEach(award -> {
                 if (award.isVersionSupported(serverDataVersion)) {
+                    // rank players
                     final Ranking ranking = new Ranking(activePlayers.values(), player -> {
                         return player.getStats().get(award);
                     });
 
+                    // notify players of their rankings
+                    List<Ranking.Entry> rankingEntries = ranking.getOrderedEntries();
+                    for (int rank = 0; rank < rankingEntries.size(); rank++) {
+                        Ranking.Entry e = rankingEntries.get(rank);
+                        e.getPlayer().getStats().setRank(award, rank + 1);
+                    }
+
+                    // write award summary file
                     Path awardJsonPath = dbRankingsPath.resolve(award.getId() + JSON_FILE_EXT);
                     try {
                         Files.writeString(awardJsonPath, ranking.toJSON().toString());
@@ -278,6 +291,16 @@ public class Updater {
                 } else {
                     log.writeLine("award " + award.getId() + " is not supported by server (data version "
                             + serverDataVersion + ")");
+                }
+            });
+
+            // write playerdata
+            activePlayers.forEach((uuid, player) -> {
+                Path playerdataPath = dbPlayerdataPath.resolve(uuid + JSON_FILE_EXT);
+                try {
+                    Files.writeString(playerdataPath, player.getStats().toJSON().toString());
+                } catch (Exception ex) {
+                    log.writeError("failed to write player data: " + playerdataPath, ex);
                 }
             });
 
