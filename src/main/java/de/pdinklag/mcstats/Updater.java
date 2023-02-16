@@ -22,6 +22,7 @@ public class Updater {
     private static final String JSON_FILE_EXT = ".json";
     private static final int MIN_DATA_VERSION = 1451; // 17w47a
     private static final String DATABASE_PLAYERS_JSON = "players.json";
+    private static final String DATABASE_RANKINGS = "rankings";
 
     private static final int TICKS_PER_SECOND = 20;
     private static final int MINUTES_TO_TICKS = 60 * TICKS_PER_SECOND;
@@ -40,7 +41,8 @@ public class Updater {
 
     // paths
     private final Path dbPath;
-    private final Path playersJsonPath;
+    private final Path dbPlayersJsonPath;
+    private final Path dbRankingsPath;
 
     private HashMap<String, Player> processPlayers() {
         HashMap<String, Player> discoveredPlayers = new HashMap<>();
@@ -110,16 +112,17 @@ public class Updater {
 
         // cache some paths
         this.dbPath = config.getDatabasePath();
-        this.playersJsonPath = dbPath.resolve(DATABASE_PLAYERS_JSON);
+        this.dbPlayersJsonPath = dbPath.resolve(DATABASE_PLAYERS_JSON);
+        this.dbRankingsPath = dbPath.resolve(DATABASE_RANKINGS);
 
         // create local providers
         // players.json
-        if (Files.isRegularFile(playersJsonPath)) {
+        if (Files.isRegularFile(dbPlayersJsonPath)) {
             try {
-                JSONObject playersJson = new JSONObject(Files.readString(playersJsonPath));
+                JSONObject playersJson = new JSONObject(Files.readString(dbPlayersJsonPath));
                 localProfileProviders.add(new DatabasePlayerProfileProvider(playersJson));
             } catch (Exception e) {
-                log.writeError("failed to load players from previous database: " + playersJsonPath.toString(), e);
+                log.writeError("failed to load players from previous database: " + dbPlayersJsonPath.toString(), e);
             }
         }
 
@@ -254,31 +257,35 @@ public class Updater {
             }
         });
 
-        // compute rankings
-        awards.forEach(award -> {
-            if (award.isVersionSupported(serverDataVersion)) {
-                final Ranking ranking = new Ranking(activePlayers.values(), player -> {
-                    return player.getStats().get(award);
-                });
-
-                final List<Ranking.Entry> orderedEntries = ranking.getOrderedEntries();
-                log.writeLine("best player for award " + award.getId() + " is " +
-                        (orderedEntries.isEmpty() ? "nobody"
-                                : orderedEntries.get(0).getPlayer().getProfile().getName() + " with score "
-                                        + orderedEntries.get(0).getScore()));
-            } else {
-                log.writeLine("award " + award.getId() + " is not supported by server (data version " + serverDataVersion + ")");
-            }
-        });
-
-        // TODO: process crown score
-
-        // write players.json
+        // write database
         try {
-            JSONObject db = DatabasePlayerProfileProvider.createDatabase(allPlayers.values());
-            Files.writeString(playersJsonPath, db.toString(4));
+            // create directories
+            Files.createDirectories(dbRankingsPath);
+
+            // compute and write rankings
+            awards.forEach(award -> {
+                if (award.isVersionSupported(serverDataVersion)) {
+                    final Ranking ranking = new Ranking(activePlayers.values(), player -> {
+                        return player.getStats().get(award);
+                    });
+
+                    Path awardJsonPath = dbRankingsPath.resolve(award.getId() + JSON_FILE_EXT);
+                    try {
+                        Files.writeString(awardJsonPath, ranking.toJSON().toString());
+                    } catch (Exception e) {
+                        log.writeError("failed to write award data: " + awardJsonPath, e);
+                    }
+                } else {
+                    log.writeLine("award " + award.getId() + " is not supported by server (data version "
+                            + serverDataVersion + ")");
+                }
+            });
+
+            // write players.json
+            Files.writeString(dbPlayersJsonPath,
+                    DatabasePlayerProfileProvider.createDatabase(allPlayers.values()).toString());
         } catch (Exception e) {
-            log.writeError("failed to write players database: " + playersJsonPath.toString(), e);
+            log.writeError("failed to write database", e);
         }
 
         // TODO: write database for client

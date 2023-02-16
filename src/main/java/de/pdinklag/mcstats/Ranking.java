@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * A ranking of players.
  */
@@ -36,6 +39,17 @@ public class Ranking {
          */
         public int getScore() {
             return score;
+        }
+
+        /**
+         * Gets a JSON object describing this entry.
+         * @return a JSON object describing this entry
+         */
+        public JSONObject toJSON() {
+            JSONObject obj = new JSONObject();
+            obj.put("uuid", player.getUuid());
+            obj.put("value", score);
+            return obj;
         }
     }
 
@@ -71,5 +85,17 @@ public class Ranking {
      */
     public List<Entry> getOrderedEntries() {
         return Collections.unmodifiableList(orderedEntries);
+    }
+
+    /**
+     * Reports the ordered list of entries in the ranking in JSON format.
+     * @return the ordered list of entries in the ranking
+     */
+    public JSONArray toJSON() {
+        JSONArray array = new JSONArray(orderedEntries.size());
+        orderedEntries.forEach(e -> {
+            array.put(e.toJSON());
+        });
+        return array;
     }
 }
