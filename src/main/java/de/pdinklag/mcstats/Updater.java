@@ -267,6 +267,7 @@ public class Updater {
             Files.createDirectories(dbPlayerdataPath);
 
             // compute and write rankings
+            HashMap<Stat, Ranking.Entry> best = new HashMap<>();
             awards.forEach(award -> {
                 if (award.isVersionSupported(serverDataVersion)) {
                     // rank players
@@ -279,6 +280,11 @@ public class Updater {
                     for (int rank = 0; rank < rankingEntries.size(); rank++) {
                         Ranking.Entry e = rankingEntries.get(rank);
                         e.getPlayer().getStats().setRank(award, rank + 1);
+                    }
+
+                    // store best for front page
+                    if (rankingEntries.size() > 0) {
+                        best.put(award, rankingEntries.get(0));
                     }
 
                     // write award summary file
@@ -305,16 +311,21 @@ public class Updater {
             });
 
             // crown ranking for Hall of Fame
+            final Ranking hallOfFameRanking;
             {
                 final int goldWeight = config.getGoldMedalWeight();
                 final int silverWeight = config.getSilverMedalWeight();
                 final int bronzeWeight = config.getBronzeMedalWeight();
-                final Ranking hallOfFameRanking = new Ranking(activePlayers.values(), player -> {
+                hallOfFameRanking = new Ranking(activePlayers.values(), player -> {
                     return new IntValue(player.getStats().getCrownScore(goldWeight, silverWeight, bronzeWeight));
                 });
             }
 
-            // write players.json
+            // TODO: write playerlist
+            // TODO: write playercache
+            // TODO: write summary
+
+            // write players.json for next update
             Files.writeString(dbPlayersJsonPath,
                     DatabasePlayerProfileProvider.createDatabase(allPlayers.values()).toString());
         } catch (Exception e) {
