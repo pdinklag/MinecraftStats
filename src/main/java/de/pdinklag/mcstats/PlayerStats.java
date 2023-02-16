@@ -2,7 +2,6 @@ package de.pdinklag.mcstats;
 
 import java.util.HashMap;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -11,6 +10,10 @@ import org.json.JSONObject;
 public class PlayerStats {
     private final HashMap<Stat, DataValue> stats = new HashMap<>();
     private final HashMap<Stat, Integer> statRanks = new HashMap<>();
+
+    private int goldMedals = 0;
+    private int silverMedals = 0;
+    private int bronzeMedals = 0;
 
     /**
      * Constructs an empty player stats holder.
@@ -53,13 +56,38 @@ public class PlayerStats {
 
     /**
      * Sets the player's ranking for the given stat.
+     * If applicable, also counts the corresponding medal.
      * 
      * @param stat the stat in question
      * @param rank the player's rank for the stat
      */
     public void setRank(Stat stat, int rank) {
-        // TODO: handle meta stats / crown score ranking here
+        switch (rank) {
+            case 1:
+                ++goldMedals;
+                break;
+
+            case 2:
+                ++silverMedals;
+                break;
+
+            case 3:
+                ++bronzeMedals;
+                break;
+        }
         statRanks.put(stat, rank);
+    }
+
+    /**
+     * Gets the player's crown score for the given parameters.
+     * 
+     * @param goldWeight the weight of a gold medal
+     * @param silverWeight the weight of a silver medal
+     * @param bronzeWeight the weight of a bronze medal
+     * @return the crown score according to the weights
+     */
+    public int getCrownScore(int goldWeight, int silverWeight, int bronzeWeight) {
+        return goldMedals * goldWeight + silverMedals * silverWeight + bronzeMedals * bronzeWeight;
     }
 
     /**

@@ -19,6 +19,10 @@ public class Config {
     private boolean excludeOps = false;
     private final ArrayList<String> excludeUUIDs = new ArrayList<>();
 
+    private int bronzeMedalWeight = 1;
+    private int silverMedalWeight = 2;
+    private int goldMedalWeight = 4;
+
     public Config() {
     }
 
@@ -84,5 +88,29 @@ public class Config {
 
     public void setUpdateInactive(boolean updateInactive) {
         this.updateInactive = updateInactive;
+    }
+
+    public int getBronzeMedalWeight() {
+        return bronzeMedalWeight;
+    }
+
+    public void setBronzeMedalWeight(int bronzeMedalWeight) {
+        this.bronzeMedalWeight = bronzeMedalWeight;
+    }
+
+    public int getSilverMedalWeight() {
+        return silverMedalWeight;
+    }
+
+    public void setSilverMedalWeight(int silverMedalWeight) {
+        this.silverMedalWeight = silverMedalWeight;
+    }
+
+    public int getGoldMedalWeight() {
+        return goldMedalWeight;
+    }
+
+    public void setGoldMedalWeight(int goldMedalWeight) {
+        this.goldMedalWeight = goldMedalWeight;
     }
 }

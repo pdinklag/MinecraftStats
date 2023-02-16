@@ -304,6 +304,16 @@ public class Updater {
                 }
             });
 
+            // crown ranking for Hall of Fame
+            {
+                final int goldWeight = config.getGoldMedalWeight();
+                final int silverWeight = config.getSilverMedalWeight();
+                final int bronzeWeight = config.getBronzeMedalWeight();
+                final Ranking hallOfFameRanking = new Ranking(activePlayers.values(), player -> {
+                    return new IntValue(player.getStats().getCrownScore(goldWeight, silverWeight, bronzeWeight));
+                });
+            }
+
             // write players.json
             Files.writeString(dbPlayersJsonPath,
                     DatabasePlayerProfileProvider.createDatabase(allPlayers.values()).toString());

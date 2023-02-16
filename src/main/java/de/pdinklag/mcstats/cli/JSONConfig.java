@@ -12,7 +12,7 @@ import de.pdinklag.mcstats.FileSystemDataSource;
 public class JSONConfig extends Config {
     public JSONConfig() {
     }
-    
+
     public JSONConfig(JSONObject json) throws JSONException {
         // read databaseDir
         setDatabasePath(Path.of(json.optString("databaseDir")));
@@ -21,11 +21,11 @@ public class JSONConfig extends Config {
         {
             JSONObject server = json.getJSONObject("server");
             JSONArray sources = server.getJSONArray("sources");
-            for(int i = 0; i < sources.length(); i++) {
+            for (int i = 0; i < sources.length(); i++) {
                 JSONObject source = sources.getJSONObject(i);
                 getDataSources().add(new FileSystemDataSource(
-                    Path.of(source.getString("path")), 
-                    source.getString("worldName")));
+                        Path.of(source.getString("path")),
+                        source.getString("worldName")));
             }
         }
 
@@ -41,9 +41,17 @@ public class JSONConfig extends Config {
             setExcludeOps(players.getBoolean("excludeOps"));
 
             JSONArray excludeUUIDs = players.getJSONArray("excludeUUIDs");
-            for(int i = 0; i< excludeUUIDs.length(); i++) {
+            for (int i = 0; i < excludeUUIDs.length(); i++) {
                 getExcludeUUIDs().add(excludeUUIDs.getString(i));
             }
+        }
+
+        // crown settings
+        {
+            JSONObject crown = json.getJSONObject("crown");
+            setGoldMedalWeight(crown.getInt("gold"));
+            setSilverMedalWeight(crown.getInt("silver"));
+            setBronzeMedalWeight(crown.getInt("bronze"));
         }
     }
 }
