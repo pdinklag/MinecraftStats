@@ -1,0 +1,8 @@
+{
+    "id": "harvest_nether_wart",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:picked_up","minecraft:nether_wart"]
+    }
+}

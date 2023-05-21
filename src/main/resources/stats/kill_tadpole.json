@@ -1,0 +1,9 @@
+{
+    "id": "kill_tadpole",
+    "unit": "int",
+    "minVersion": 3080,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:killed","minecraft:tadpole"]
+    }
+}

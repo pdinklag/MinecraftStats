@@ -1,0 +1,9 @@
+{
+    "id": "damage_shield",
+    "unit": "tenths_of_heart",
+    "minVersion": 1623,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:damage_blocked_by_shield"]
+    }
+}

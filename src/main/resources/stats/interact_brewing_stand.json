@@ -1,0 +1,8 @@
+{
+    "id": "interact_brewing_stand",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:interact_with_brewingstand"]
+    }
+}

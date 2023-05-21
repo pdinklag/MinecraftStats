@@ -1,0 +1,9 @@
+{
+    "id": "kill_wandering_trader",
+    "unit": "int",
+    "minVersion": 1930,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:killed","minecraft:wandering_trader"]
+    }
+}

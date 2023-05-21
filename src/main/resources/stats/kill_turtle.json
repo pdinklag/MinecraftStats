@@ -1,0 +1,9 @@
+{
+    "id": "kill_turtle",
+    "unit": "int",
+    "minVersion": 1467,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:killed","minecraft:turtle"]
+    }
+}

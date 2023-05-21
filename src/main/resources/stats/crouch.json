@@ -1,0 +1,8 @@
+{
+    "id": "crouch",
+    "unit": "cm",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:crouch_one_cm"]
+    }
+}

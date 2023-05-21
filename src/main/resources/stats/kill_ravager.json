@@ -1,0 +1,13 @@
+{
+    "id": "kill_fish",
+    "unit": "int",
+    "minVersion": 1901,
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:killed"],
+        "patterns": [
+            "minecraft:illager_beast",
+            "minecraft:ravager"
+        ]
+    }
+}

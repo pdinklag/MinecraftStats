@@ -1,0 +1,14 @@
+{
+    "id": "eat_soup",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:mushroom_stew",
+            "minecraft:beetroot_soup",
+            "minecraft:rabbit_stew",
+            "minecraft:suspicious_stew"
+        ]
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "id": "eat_junkfood",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:poisonous_potato",
+            "minecraft:rotten_flesh",
+            "minecraft:spider_eye"
+        ]
+    }
+}

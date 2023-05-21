@@ -1,0 +1,12 @@
+{
+    "id": "kill_spider",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:killed"],
+        "patterns": [
+            "minecraft:cave_spider",
+            "minecraft:spider"
+        ]
+    }
+}

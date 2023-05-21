@@ -1,0 +1,14 @@
+{
+    "id": "kill_illagers",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:killed"],
+        "patterns": [
+            "minecraft:evoker",
+            "minecraft:illusioner",
+            "minecraft:pillager",
+            "minecraft:vindicator"
+        ]
+    }
+}

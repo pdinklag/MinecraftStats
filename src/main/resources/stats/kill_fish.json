@@ -1,14 +1,12 @@
 {
-    "id": "eat_fish",
+    "id": "kill_fish",
     "unit": "int",
     "reader": {
         "$type": "match-sum",
-        "path": ["minecraft:used"],
+        "path": ["minecraft:killed"],
         "patterns": [
-            "minecraft:clownfish",
             "minecraft:cod",
-            "minecraft:cooked_cod",
-            "minecraft:cooked_salmon",
+            "minecraft:pufferfish",
             "minecraft:salmon",
             "minecraft:tropical_fish"
         ]

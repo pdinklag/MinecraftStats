@@ -1,0 +1,8 @@
+{
+    "id": "drink_milk",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:used","minecraft:milk_bucket"]
+    }
+}

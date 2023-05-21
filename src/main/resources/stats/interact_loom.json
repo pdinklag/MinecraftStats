@@ -1,0 +1,9 @@
+{
+    "id": "interact_loom",
+    "unit": "int",
+    "minVersion": 1901 ,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:interact_with_loom"]
+    }
+}
