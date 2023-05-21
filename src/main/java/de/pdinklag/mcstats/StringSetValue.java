@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.json.JSONArray;
+
 /**
  * Represents a set of strings.
  */
@@ -44,5 +46,10 @@ public class StringSetValue implements DataValue {
     @Override
     public int toInt() {
         return set.size();
+    }
+
+    @Override
+    public Object toJSON() {
+        return new JSONArray(set);
     }
 }

@@ -9,4 +9,10 @@ public interface DataValue {
      * @return the integer representing the data value
      */
     public int toInt();
+
+    /**
+     * Returns the JSON representation of the data value.
+     * @return the JSON representation of the data value.
+     */
+    public Object toJSON();
 }

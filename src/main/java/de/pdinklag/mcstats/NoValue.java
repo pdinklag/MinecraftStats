@@ -5,4 +5,9 @@ class NoValue implements DataValue {
     public int toInt() {
         return 0;
     }
+
+    @Override
+    public Object toJSON() {
+        return null;
+    }
 }

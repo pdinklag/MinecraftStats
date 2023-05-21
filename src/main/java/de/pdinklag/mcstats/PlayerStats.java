@@ -79,15 +79,13 @@ public class PlayerStats {
     }
 
     /**
-     * Gets the player's crown score for the given parameters.
+     * Gets the player's crown score for the given configuration.
      * 
-     * @param goldWeight the weight of a gold medal
-     * @param silverWeight the weight of a silver medal
-     * @param bronzeWeight the weight of a bronze medal
-     * @return the crown score according to the weights
+     * @param config the configuration
+     * @return the crown score according to the configuration
      */
-    public int getCrownScore(int goldWeight, int silverWeight, int bronzeWeight) {
-        return goldMedals * goldWeight + silverMedals * silverWeight + bronzeMedals * bronzeWeight;
+    public CrownScoreValue getCrownScore(Config config) {
+        return new CrownScoreValue(bronzeMedals, silverMedals, goldMedals, config);
     }
 
     /**

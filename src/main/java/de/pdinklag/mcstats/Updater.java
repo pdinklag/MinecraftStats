@@ -314,18 +314,18 @@ public class Updater {
             Files.createDirectories(dbPlayerlistPath);
 
             // compute and write rankings
-            HashMap<Stat, Ranking.Entry> best = new HashMap<>();
+            HashMap<Stat, Ranking<IntValue>.Entry> best = new HashMap<>();
             awards.forEach(award -> {
                 if (award.isVersionSupported(serverDataVersion)) {
                     // rank players
-                    final Ranking ranking = new Ranking(activePlayers.values(), player -> {
-                        return player.getStats().get(award);
+                    final Ranking<IntValue> ranking = new Ranking<IntValue>(activePlayers.values(), player -> {
+                        return new IntValue(player.getStats().get(award).toInt());
                     });
 
                     // notify players of their rankings
-                    List<Ranking.Entry> rankingEntries = ranking.getOrderedEntries();
+                    List<Ranking<IntValue>.Entry> rankingEntries = ranking.getOrderedEntries();
                     for (int rank = 0; rank < rankingEntries.size(); rank++) {
-                        Ranking.Entry e = rankingEntries.get(rank);
+                        final Ranking<IntValue>.Entry e = rankingEntries.get(rank);
                         e.getPlayer().getStats().setRank(award, rank + 1);
                     }
 
@@ -391,15 +391,10 @@ public class Updater {
             }
 
             // crown ranking for Hall of Fame
-            final Ranking hallOfFameRanking;
+            final Ranking<CrownScoreValue> hallOfFameRanking;
             {
-                final int goldWeight = config.getGoldMedalWeight();
-                final int silverWeight = config.getSilverMedalWeight();
-                final int bronzeWeight = config.getBronzeMedalWeight();
-                hallOfFameRanking = new Ranking(activePlayers.values(), player -> {
-                    // TODO: we actually want to write an array of four values (total and amount of
-                    // each medal) rather than a single int
-                    return new IntValue(player.getStats().getCrownScore(goldWeight, silverWeight, bronzeWeight));
+                hallOfFameRanking = new Ranking<CrownScoreValue>(activePlayers.values(), player -> {
+                    return player.getStats().getCrownScore(config);
                 });
             }
 
@@ -422,7 +417,7 @@ public class Updater {
                     final JSONObject awardSummary = new JSONObject();
                     awardSummary.put("unit", stat.getUnit().toString());
 
-                    final Ranking.Entry awardBest = best.get(stat);
+                    final Ranking<IntValue>.Entry awardBest = best.get(stat);
                     if (awardBest != null) {
                         awardSummary.put("best", awardBest.toJSON());
                         summaryRelevantPlayers.add(awardBest.getPlayer());

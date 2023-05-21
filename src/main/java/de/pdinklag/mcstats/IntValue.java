@@ -8,6 +8,7 @@ public class IntValue implements DataValue {
 
     /**
      * Constructs an integer data value.
+     * 
      * @param value the wrapped integer
      */
     public IntValue(int value) {
@@ -16,6 +17,11 @@ public class IntValue implements DataValue {
 
     @Override
     public int toInt() {
+        return value;
+    }
+
+    @Override
+    public Object toJSON() {
         return value;
     }
 }

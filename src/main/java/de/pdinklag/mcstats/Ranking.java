@@ -12,21 +12,22 @@ import org.json.JSONObject;
 /**
  * A ranking of players.
  */
-public class Ranking {
+public class Ranking<T extends DataValue> {
     /**
      * A single entry in a ranking.
      */
     public class Entry {
         private final Player player;
-        private final int score;
+        private final T score;
 
-        private Entry(Player player, int score) {
+        private Entry(Player player, T score) {
             this.player = player;
             this.score = score;
         }
 
         /**
          * Gets the player represented by the entry.
+         * 
          * @return the player represented by the entry
          */
         public Player getPlayer() {
@@ -35,20 +36,22 @@ public class Ranking {
 
         /**
          * Gets the score that the player was entered with.
+         * 
          * @return the score that the player was entered with
          */
-        public int getScore() {
+        public T getScore() {
             return score;
         }
 
         /**
          * Gets a JSON object describing this entry.
+         * 
          * @return a JSON object describing this entry
          */
         public JSONObject toJSON() {
             JSONObject obj = new JSONObject();
             obj.put("uuid", player.getUuid());
-            obj.put("value", score);
+            obj.put("value", score.toJSON());
             return obj;
         }
     }
@@ -57,21 +60,22 @@ public class Ranking {
 
     /**
      * Computes a ranking for the given players and score function.
+     * 
      * @param players the players to be ranked
-     * @param score the score function reporting each player's scoring data value
+     * @param score   the score function reporting each player's scoring data value
      */
-    public Ranking(Collection<Player> players, Function<Player, DataValue> score) {
+    public Ranking(Collection<Player> players, Function<Player, T> score) {
         orderedEntries = new ArrayList<>(players.size());
         players.forEach(player -> {
-            final int playerScore = score.apply(player).toInt();
-            if(playerScore > 0) {
+            final T playerScore = score.apply(player);
+            if (playerScore.toInt() > 0) {
                 orderedEntries.add(new Entry(player, playerScore));
             }
         });
         orderedEntries.sort((a, b) -> {
             if (a.score != b.score) {
                 // sort by score descending
-                return Integer.compare(b.score, a.score);
+                return Integer.compare(b.score.toInt(), a.score.toInt());
             } else {
                 // tie break comparing names lexicographically
                 return a.player.getProfile().getName().compareTo(b.player.getProfile().getName());
@@ -81,6 +85,7 @@ public class Ranking {
 
     /**
      * Reports the ordered list of entries in the ranking.
+     * 
      * @return the ordered list of entries in the ranking
      */
     public List<Entry> getOrderedEntries() {
@@ -89,6 +94,7 @@ public class Ranking {
 
     /**
      * Reports the ordered list of entries in the ranking in JSON format.
+     * 
      * @return the ordered list of entries in the ranking
      */
     public JSONArray toJSON() {
