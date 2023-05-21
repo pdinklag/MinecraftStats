@@ -12,7 +12,20 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+/**
+ * Utilities related to the JAR's resources.
+ */
 public class ResourceUtils {
+    /**
+     * Lists the names of the available resource files in the given directory.
+     * 
+     * @param classLoader the relevant class loader
+     * @param dirname the name of the directory to list
+     * @return the names of the available resource files in that directory
+     * @throws URISyntaxException
+     * @throws UnsupportedEncodingException
+     * @throws IOException
+     */
     public static List<String> getResourceFilenames(ClassLoader classLoader, String dirname)
             throws URISyntaxException, UnsupportedEncodingException, IOException {
         List<String> filenames = new ArrayList<>();

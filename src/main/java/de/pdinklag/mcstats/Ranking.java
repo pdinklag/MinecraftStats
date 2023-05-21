@@ -11,6 +11,8 @@ import org.json.JSONObject;
 
 /**
  * A ranking of players.
+ * 
+ * @param <T> the data value type
  */
 public class Ranking<T extends DataValue> {
     /**
