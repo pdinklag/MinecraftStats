@@ -9,11 +9,13 @@ import java.util.ArrayList;
 public class Config {
     private final ArrayList<DataSource> dataSources = new ArrayList<>();
     private Path databasePath;
+    private String customName;
 
     private int inactiveDays = 7;
     private int minPlaytime = 60;
     private boolean updateInactive = false;
     private int profileUpdateInterval = 3;
+    private boolean showLastOnline = true;
 
     private boolean excludeBanned = true;
     private boolean excludeOps = false;
@@ -23,8 +25,9 @@ public class Config {
     private int silverMedalWeight = 2;
     private int goldMedalWeight = 4;
 
-    private int playersPePage = 100;
+    private int playersPerPage = 100;
     private int playerCacheUUIDPrefix = 2;
+    private String defaultLanguage = "en";
 
     public Config() {
     }
@@ -41,6 +44,14 @@ public class Config {
         this.databasePath = databasePath;
     }
 
+    public String getCustomName() {
+        return customName;
+    }
+
+    public void setCustomName(String customName) {
+        this.customName = customName;
+    }
+    
     public int getInactiveDays() {
         return inactiveDays;
     }
@@ -117,12 +128,12 @@ public class Config {
         this.goldMedalWeight = goldMedalWeight;
     }
 
-    public int getPlayersPePage() {
-        return playersPePage;
+    public int getPlayersPerPage() {
+        return playersPerPage;
     }
 
-    public void setPlayersPePage(int playersPePage) {
-        this.playersPePage = playersPePage;
+    public void setPlayersPerPage(int playersPerPage) {
+        this.playersPerPage = playersPerPage;
     }
 
     public int getPlayerCacheUUIDPrefix() {
@@ -131,5 +142,21 @@ public class Config {
 
     public void setPlayerCacheUUIDPrefix(int playerCacheUUIDPrefix) {
         this.playerCacheUUIDPrefix = playerCacheUUIDPrefix;
+    }
+
+    public String getDefaultLanguage() {
+        return defaultLanguage;
+    }
+
+    public void setDefaultLanguage(String defaultLanguage) {
+        this.defaultLanguage = defaultLanguage;
+    }
+
+    public boolean isShowLastOnline() {
+        return showLastOnline;
+    }
+
+    public void setShowLastOnline(boolean showLastOnline) {
+        this.showLastOnline = showLastOnline;
     }
 }

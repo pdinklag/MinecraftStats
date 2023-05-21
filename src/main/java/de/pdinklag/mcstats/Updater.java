@@ -3,6 +3,7 @@ package de.pdinklag.mcstats;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.pdinklag.mcstats.util.ResourceUtils;
+import de.pdinklag.mcstats.util.ClientUtils;
 import de.pdinklag.mcstats.util.FileUtils;
 import de.pdinklag.mcstats.util.MinecraftServerUtils;
 import de.pdinklag.mcstats.util.StreamUtils;
@@ -123,7 +125,7 @@ public class Updater {
         final ArrayList<Player> playersSorted = new ArrayList<>(players);
         Collections.sort(playersSorted, (a, b) -> a.getProfile().getName().compareTo(b.getProfile().getName()));
 
-        final int playersPerPage = config.getPlayersPePage();
+        final int playersPerPage = config.getPlayersPerPage();
         final int numPlayers = players.size();
         final int numPages = (int) Math.ceil((double) numPlayers / playersPerPage);
 
@@ -403,7 +405,62 @@ public class Updater {
                 final JSONObject summary = new JSONObject();
                 final HashSet<Player> summaryRelevantPlayers = new HashSet<>();
 
-                summary.put("info", new JSONObject()); // TODO: fill info
+                final JSONObject info = new JSONObject();
+                {
+                    // determine the server name
+                    String serverName = config.getCustomName();
+                    if (serverName == null) {
+                        // try all data sources for a server.properties file
+                        for (DataSource dataSource : config.getDataSources()) {
+                            serverName = MinecraftServerUtils.getMOTD(dataSource.getServerPath());
+                            if (serverName != null) {
+                                serverName = serverName.replace("\\n", "<br>");
+                                break;
+                            }
+                        }
+
+                        if (serverName == null) {
+                            serverName = "";
+                            log.writeLine(
+                                    "the server's name could not be determined -- try stating a customName in the config");
+                        }
+                    }
+
+                    // find and copy the server's icon, if any
+                    boolean hasIcon = false;
+                    for (DataSource dataSource : config.getDataSources()) {
+                        final Path iconPath = MinecraftServerUtils.getServerIconPath(dataSource.getServerPath());
+                        if (Files.exists(iconPath)) {
+                            try {
+                                Files.copy(iconPath, dbPath.resolve(iconPath.getFileName()),
+                                        StandardCopyOption.REPLACE_EXISTING);
+                                hasIcon = true;
+                                break;
+                            } catch (Exception e) {
+                                log.writeError("failed to copy icon " + iconPath + " to " + dbPath, e);
+                            }
+                        }
+                    }
+
+                    info.put("serverName", serverName);
+                    info.put("updateTime", ClientUtils.convertTimestamp(now));
+                    info.put("defaultLanguage", config.getDefaultLanguage());
+                    info.put("minPlayTime", config.getMinPlaytime());
+                    info.put("showLastOnline", config.isShowLastOnline());
+                    info.put("hasIcon", hasIcon);
+                    info.put("playersPerPage", config.getPlayersPerPage());
+                    info.put("inactiveDays", config.getInactiveDays());
+                    info.put("numPlayers", validPlayers.size());
+                    info.put("numActive", activePlayers.size());
+                    info.put("cacheQ", config.getPlayerCacheUUIDPrefix());
+
+                    final JSONArray infoCrown = new JSONArray(3);
+                    infoCrown.put(config.getGoldMedalWeight());
+                    infoCrown.put(config.getSilverMedalWeight());
+                    infoCrown.put(config.getBronzeMedalWeight());
+                    info.put("crown", infoCrown);
+                }
+                summary.put("info", info);
 
                 // hall of fame
                 summary.put("hof", hallOfFameRanking.toJSON());

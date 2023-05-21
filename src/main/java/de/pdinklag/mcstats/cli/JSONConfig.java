@@ -27,6 +27,7 @@ public class JSONConfig extends Config {
                         Path.of(source.getString("path")),
                         source.getString("worldName")));
             }
+            setCustomName(server.optString("customName", null));
         }
 
         // player settings
@@ -36,6 +37,7 @@ public class JSONConfig extends Config {
             setMinPlaytime(players.getInt("minPlaytime"));
             setUpdateInactive(players.getBoolean("updateInactive"));
             setProfileUpdateInterval(players.getInt("profileUpdateInterval"));
+            setShowLastOnline(players.getBoolean("showLastOnline"));
 
             setExcludeBanned(players.getBoolean("excludeBanned"));
             setExcludeOps(players.getBoolean("excludeOps"));
@@ -57,8 +59,9 @@ public class JSONConfig extends Config {
         // client settings
         {
             JSONObject client = json.getJSONObject("client");
-            setPlayersPePage(client.getInt("playersPerPage"));
+            setPlayersPerPage(client.getInt("playersPerPage"));
             setPlayerCacheUUIDPrefix(client.getInt("playerCacheUUIDPrefix"));
+            setDefaultLanguage(client.getString("defaultLanguage"));
         }
     }
 }
