@@ -1,5 +1,7 @@
 package de.pdinklag.mcstats;
 
+import org.json.JSONObject;
+
 /**
  * Represents a player tracked by MinecraftStats.
  */
@@ -18,6 +20,7 @@ public class Player {
 
     /**
      * Constructs a new player object.
+     * 
      * @param uuid the player's UUID
      */
     public Player(String uuid) {
@@ -27,6 +30,7 @@ public class Player {
 
     /**
      * Gets the player's UUID.
+     * 
      * @return the player's UUID
      */
     public String getUuid() {
@@ -35,6 +39,7 @@ public class Player {
 
     /**
      * Gets the player's known profile, if any.
+     * 
      * @return the player's known profile, or null if none is known
      */
     public PlayerProfile getProfile() {
@@ -43,6 +48,7 @@ public class Player {
 
     /**
      * Sets the player's known profile.
+     * 
      * @param profile the known profile
      */
     public void setProfile(PlayerProfile profile) {
@@ -75,5 +81,21 @@ public class Player {
 
     public void setPlaytime(int playtime) {
         this.playtime = playtime;
+    }
+
+    public JSONObject getClientInfo() {
+        JSONObject info = new JSONObject();
+        info.put("uuid", uuid);
+        info.put("name", getProfile().getName());
+
+        String skin = getProfile().getSkin();
+        if (skin != null) {
+            info.put("skin", skin);
+        } else {
+            info.put("skin", false);
+        }
+
+        info.put("last", lastOnlineTime);
+        return info;
     }
 }

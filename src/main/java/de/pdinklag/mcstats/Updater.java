@@ -1,17 +1,27 @@
 package de.pdinklag.mcstats;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.zip.GZIPOutputStream;
 
+import org.bukkit.util.FileUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.pdinklag.mcstats.util.ResourceUtils;
+import de.pdinklag.mcstats.util.FileUtils;
 import de.pdinklag.mcstats.util.MinecraftServerUtils;
 import de.pdinklag.mcstats.util.StreamUtils;
 
@@ -24,6 +34,9 @@ public class Updater {
     private static final String DATABASE_PLAYERS_JSON = "players.json";
     private static final String DATABASE_RANKINGS = "rankings";
     private static final String DATABASE_PLAYERDATA = "playerdata";
+    private static final String DATABASE_PLAYERLIST = "playerlist";
+    private static final String DATABASE_PLAYERLIST_ALL_FORMAT = "all%d.json.gz";
+    private static final String DATABASE_PLAYERLIST_ACTIVE_FORMAT = "active%d.json.gz";
 
     private static final int TICKS_PER_SECOND = 20;
     private static final int MINUTES_TO_TICKS = 60 * TICKS_PER_SECOND;
@@ -45,6 +58,7 @@ public class Updater {
     private final Path dbPlayersJsonPath;
     private final Path dbRankingsPath;
     private final Path dbPlayerdataPath;
+    private final Path dbPlayerlistPath;
 
     private HashMap<String, Player> processPlayers() {
         HashMap<String, Player> discoveredPlayers = new HashMap<>();
@@ -108,6 +122,32 @@ public class Updater {
         return new MojangAPIPlayerProfileProvider();
     }
 
+    private void writePlayerList(Collection<Player> players, String filenameFormat) {
+        final ArrayList<Player> playersSorted = new ArrayList<>(players);
+        Collections.sort(playersSorted, (a, b) -> a.getProfile().getName().compareTo(b.getProfile().getName()));
+
+        final int playersPerPage = config.getPlayersPePage();
+        final int numPlayers = players.size();
+        final int numPages = (int) Math.ceil((double) numPlayers / playersPerPage);
+
+        for (int pageNum = 0; pageNum < numPages; pageNum++) {
+            final int first = pageNum * playersPerPage;
+            final int last = Math.min(first + playersPerPage, numPlayers);
+
+            final JSONArray page = new JSONArray(playersPerPage);
+            for (var i = first; i < last; i++) {
+                page.put(playersSorted.get(i).getClientInfo());
+            }
+
+            final Path pageFilePath = dbPlayerlistPath.resolve(String.format(filenameFormat, pageNum + 1));
+            try {
+                FileUtils.writeStringGzipped(pageFilePath, page.toString());
+            } catch (IOException e) {
+                log.writeError("failed to write playerlist page file: " + pageFilePath, e);
+            }
+        }
+    }
+
     public Updater(Config config, LogWriter log) {
         this.config = config;
         this.log = log;
@@ -117,6 +157,7 @@ public class Updater {
         this.dbPlayersJsonPath = dbPath.resolve(DATABASE_PLAYERS_JSON);
         this.dbRankingsPath = dbPath.resolve(DATABASE_RANKINGS);
         this.dbPlayerdataPath = dbPath.resolve(DATABASE_PLAYERDATA);
+        this.dbPlayerlistPath = dbPath.resolve(DATABASE_PLAYERLIST);
 
         // create local providers
         // players.json
@@ -265,6 +306,7 @@ public class Updater {
             // create directories
             Files.createDirectories(dbRankingsPath);
             Files.createDirectories(dbPlayerdataPath);
+            Files.createDirectories(dbPlayerlistPath);
 
             // compute and write rankings
             HashMap<Stat, Ranking.Entry> best = new HashMap<>();
@@ -310,6 +352,14 @@ public class Updater {
                 }
             });
 
+            // write playerlist
+            writePlayerList(allPlayers.values(), DATABASE_PLAYERLIST_ALL_FORMAT);
+            writePlayerList(activePlayers.values(), DATABASE_PLAYERLIST_ACTIVE_FORMAT);
+
+            // write players.json for next update
+            Files.writeString(dbPlayersJsonPath,
+                    DatabasePlayerProfileProvider.createDatabase(allPlayers.values()).toString());
+
             // crown ranking for Hall of Fame
             final Ranking hallOfFameRanking;
             {
@@ -321,13 +371,8 @@ public class Updater {
                 });
             }
 
-            // TODO: write playerlist
-            // TODO: write playercache
             // TODO: write summary
 
-            // write players.json for next update
-            Files.writeString(dbPlayersJsonPath,
-                    DatabasePlayerProfileProvider.createDatabase(allPlayers.values()).toString());
         } catch (Exception e) {
             log.writeError("failed to write database", e);
         }

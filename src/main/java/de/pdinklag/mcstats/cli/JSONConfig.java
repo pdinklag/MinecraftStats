@@ -53,5 +53,11 @@ public class JSONConfig extends Config {
             setSilverMedalWeight(crown.getInt("silver"));
             setBronzeMedalWeight(crown.getInt("bronze"));
         }
+
+        // client settings
+        {
+            JSONObject client = json.getJSONObject("client");
+            setPlayersPePage(client.getInt("playersPerPage"));
+        }
     }
 }

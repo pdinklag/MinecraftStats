@@ -23,6 +23,8 @@ public class Config {
     private int silverMedalWeight = 2;
     private int goldMedalWeight = 4;
 
+    private int playersPePage = 100;
+
     public Config() {
     }
 
@@ -112,5 +114,13 @@ public class Config {
 
     public void setGoldMedalWeight(int goldMedalWeight) {
         this.goldMedalWeight = goldMedalWeight;
+    }
+
+    public int getPlayersPePage() {
+        return playersPePage;
+    }
+
+    public void setPlayersPePage(int playersPePage) {
+        this.playersPePage = playersPePage;
     }
 }
