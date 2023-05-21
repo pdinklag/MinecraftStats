@@ -26,6 +26,7 @@ public class Updater {
     private static final int MIN_DATA_VERSION = 1451; // 17w47a
     private static final String DATABASE_PLAYERS_JSON = "players.json";
     private static final String DATABASE_RANKINGS = "rankings";
+    private static final String DATABASE_PLAYERCACHE = "playercache";
     private static final String DATABASE_PLAYERDATA = "playerdata";
     private static final String DATABASE_PLAYERLIST = "playerlist";
     private static final String DATABASE_PLAYERLIST_ALL_FORMAT = "all%d.json.gz";
@@ -50,6 +51,7 @@ public class Updater {
     private final Path dbPath;
     private final Path dbPlayersJsonPath;
     private final Path dbRankingsPath;
+    private final Path dbPlayercachePath;
     private final Path dbPlayerdataPath;
     private final Path dbPlayerlistPath;
 
@@ -149,6 +151,7 @@ public class Updater {
         this.dbPath = config.getDatabasePath();
         this.dbPlayersJsonPath = dbPath.resolve(DATABASE_PLAYERS_JSON);
         this.dbRankingsPath = dbPath.resolve(DATABASE_RANKINGS);
+        this.dbPlayercachePath = dbPath.resolve(DATABASE_PLAYERCACHE);
         this.dbPlayerdataPath = dbPath.resolve(DATABASE_PLAYERDATA);
         this.dbPlayerlistPath = dbPath.resolve(DATABASE_PLAYERLIST);
 
@@ -266,7 +269,7 @@ public class Updater {
             serverDataVersion = maxDataVersion;
         }
 
-        // update player profiles
+        // update player profiles and filter valid players
         HashMap<String, Player> activePlayers = new HashMap<>();
         allPlayers.forEach((uuid, player) -> {
             // use local sources
@@ -298,6 +301,7 @@ public class Updater {
         try {
             // create directories
             Files.createDirectories(dbRankingsPath);
+            Files.createDirectories(dbPlayercachePath);
             Files.createDirectories(dbPlayerdataPath);
             Files.createDirectories(dbPlayerlistPath);
 
@@ -345,15 +349,38 @@ public class Updater {
                 }
             });
 
+            // write players.json for next update
+            Files.writeString(dbPlayersJsonPath,
+                    DatabasePlayerProfileProvider.createDatabase(allPlayers.values()).toString());
+
             // write playerlist
             writePlayerList(allPlayers.values(), DATABASE_PLAYERLIST_ALL_FORMAT);
             writePlayerList(activePlayers.values(), DATABASE_PLAYERLIST_ACTIVE_FORMAT);
 
-            // TODO: write playercache
+            // write playercache
+            {
+                final int prefixLength = config.getPlayerCacheUUIDPrefix();
+                final HashMap<String, JSONArray> playerCache = new HashMap<>();
+                allPlayers.forEach((uuid, player) -> {
+                    final String prefix = uuid.substring(0, prefixLength);
 
-            // write players.json for next update
-            Files.writeString(dbPlayersJsonPath,
-                    DatabasePlayerProfileProvider.createDatabase(allPlayers.values()).toString());
+                    JSONArray group = playerCache.get(prefix);
+                    if (group == null) {
+                        group = new JSONArray(1);
+                        playerCache.put(prefix, group);
+                    }
+                    group.put(player.getClientInfo());
+                });
+
+                playerCache.forEach((prefix, cache) -> {
+                    final Path groupPath = dbPlayercachePath.resolve(prefix + JSON_FILE_EXT);
+                    try {
+                        Files.writeString(groupPath, cache.toString());
+                    } catch (IOException e) {
+                        log.writeError("failed to write playerache file: " + groupPath, e);
+                    }
+                });
+            }
 
             // crown ranking for Hall of Fame
             final Ranking hallOfFameRanking;

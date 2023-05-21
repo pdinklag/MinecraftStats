@@ -58,6 +58,7 @@ public class JSONConfig extends Config {
         {
             JSONObject client = json.getJSONObject("client");
             setPlayersPePage(client.getInt("playersPerPage"));
+            setPlayerCacheUUIDPrefix(client.getInt("playerCacheUUIDPrefix"));
         }
     }
 }

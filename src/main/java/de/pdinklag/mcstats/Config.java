@@ -24,6 +24,7 @@ public class Config {
     private int goldMedalWeight = 4;
 
     private int playersPePage = 100;
+    private int playerCacheUUIDPrefix = 2;
 
     public Config() {
     }
@@ -122,5 +123,13 @@ public class Config {
 
     public void setPlayersPePage(int playersPePage) {
         this.playersPePage = playersPePage;
+    }
+
+    public int getPlayerCacheUUIDPrefix() {
+        return playerCacheUUIDPrefix;
+    }
+
+    public void setPlayerCacheUUIDPrefix(int playerCacheUUIDPrefix) {
+        this.playerCacheUUIDPrefix = playerCacheUUIDPrefix;
     }
 }
