@@ -1,22 +1,15 @@
 package de.pdinklag.mcstats;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Formatter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.zip.GZIPOutputStream;
 
-import org.bukkit.util.FileUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -355,6 +348,8 @@ public class Updater {
             // write playerlist
             writePlayerList(allPlayers.values(), DATABASE_PLAYERLIST_ALL_FORMAT);
             writePlayerList(activePlayers.values(), DATABASE_PLAYERLIST_ACTIVE_FORMAT);
+
+            // TODO: write playercache
 
             // write players.json for next update
             Files.writeString(dbPlayersJsonPath,
