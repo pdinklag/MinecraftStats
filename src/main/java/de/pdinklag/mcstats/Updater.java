@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class Updater {
     private static final String DATABASE_PLAYERLIST = "playerlist";
     private static final String DATABASE_PLAYERLIST_ALL_FORMAT = "all%d.json.gz";
     private static final String DATABASE_PLAYERLIST_ACTIVE_FORMAT = "active%d.json.gz";
+    private static final String DATABASE_SUMMARY = "summary.json.gz";
 
     private static final int TICKS_PER_SECOND = 20;
     private static final int MINUTES_TO_TICKS = 60 * TICKS_PER_SECOND;
@@ -131,7 +133,7 @@ public class Updater {
 
             final JSONArray page = new JSONArray(playersPerPage);
             for (var i = first; i < last; i++) {
-                page.put(playersSorted.get(i).getClientInfo());
+                page.put(playersSorted.get(i).getClientInfo(true));
             }
 
             final Path pageFilePath = dbPlayerlistPath.resolve(String.format(filenameFormat, pageNum + 1));
@@ -375,7 +377,7 @@ public class Updater {
                         group = new JSONArray(1);
                         playerCache.put(prefix, group);
                     }
-                    group.put(player.getClientInfo());
+                    group.put(player.getClientInfo(true));
                 });
 
                 playerCache.forEach((prefix, cache) -> {
@@ -395,16 +397,57 @@ public class Updater {
                 final int silverWeight = config.getSilverMedalWeight();
                 final int bronzeWeight = config.getBronzeMedalWeight();
                 hallOfFameRanking = new Ranking(activePlayers.values(), player -> {
+                    // TODO: we actually want to write an array of four values (total and amount of
+                    // each medal) rather than a single int
                     return new IntValue(player.getStats().getCrownScore(goldWeight, silverWeight, bronzeWeight));
                 });
             }
 
-            // TODO: write summary
+            // write summary
+            {
+                final JSONObject summary = new JSONObject();
+                final HashSet<Player> summaryRelevantPlayers = new HashSet<>();
 
+                summary.put("info", new JSONObject()); // TODO: fill info
+
+                // hall of fame
+                summary.put("hof", hallOfFameRanking.toJSON());
+                hallOfFameRanking.getOrderedEntries().forEach(e -> {
+                    summaryRelevantPlayers.add(e.getPlayer());
+                });
+
+                // awards
+                final JSONObject summaryAwards = new JSONObject(awards.size());
+                awards.forEach(stat -> {
+                    final JSONObject awardSummary = new JSONObject();
+                    awardSummary.put("unit", stat.getUnit().toString());
+
+                    final Ranking.Entry awardBest = best.get(stat);
+                    if (awardBest != null) {
+                        awardSummary.put("best", awardBest.toJSON());
+                        summaryRelevantPlayers.add(awardBest.getPlayer());
+                    }
+
+                    summaryAwards.put(stat.getId(), awardSummary);
+                });
+                summary.put("awards", summaryAwards);
+
+                // events
+                summary.put("events", new JSONObject()); // TODO: fill event data
+
+                // players
+                final JSONObject summaryPlayers = new JSONObject();
+                summaryRelevantPlayers.forEach(player -> {
+                    summaryPlayers.put(player.getUuid(), player.getClientInfo(false));
+                });
+                summary.put("players", summaryPlayers);
+
+                // write
+                final Path summaryPath = dbPath.resolve(DATABASE_SUMMARY);
+                FileUtils.writeStringGzipped(summaryPath, summary.toString());
+            }
         } catch (Exception e) {
             log.writeError("failed to write database", e);
         }
-
-        // TODO: write database for client
     }
 }

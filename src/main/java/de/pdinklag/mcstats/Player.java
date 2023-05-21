@@ -85,9 +85,12 @@ public class Player {
         this.playtime = playtime;
     }
 
-    public JSONObject getClientInfo() {
+    public JSONObject getClientInfo(boolean includeUuid) {
         JSONObject info = new JSONObject();
-        info.put("uuid", uuid);
+        if (includeUuid) {
+            info.put("uuid", uuid);
+        }
+
         info.put("name", getProfile().getName());
 
         String skin = getProfile().getSkin();
