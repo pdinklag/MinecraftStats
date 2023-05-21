@@ -2,6 +2,8 @@ package de.pdinklag.mcstats;
 
 import org.json.JSONObject;
 
+import de.pdinklag.mcstats.util.ClientUtils;
+
 /**
  * Represents a player tracked by MinecraftStats.
  */
@@ -95,7 +97,7 @@ public class Player {
             info.put("skin", false);
         }
 
-        info.put("last", lastOnlineTime);
+        info.put("last", ClientUtils.convertTimestamp(lastOnlineTime));
         return info;
     }
 }
