@@ -1,0 +1,12 @@
+{
+    "id": "mine_coal_ore",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:mined"],
+        "patterns": [
+            "minecraft:coal_ore",
+            "minecraft:deepslate_coal_ore"
+        ]
+    }
+}

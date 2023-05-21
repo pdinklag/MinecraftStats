@@ -1,0 +1,13 @@
+{
+    "id": "mine_snow",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:mined"],
+        "patterns": [
+            "minecraft:powder_snow",
+            "minecraft:snow",
+            "minecraft:snow_block"
+        ]
+    }
+}

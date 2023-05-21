@@ -1,0 +1,14 @@
+{
+    "id": "mine_ice",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": [
+            "minecraft:mined"
+        ],
+        "patterns": [
+            "minecraft:ice",
+            "minecraft:.+_ice"
+        ]
+    }
+}

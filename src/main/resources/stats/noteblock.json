@@ -1,0 +1,12 @@
+{
+    "id": "noteblock",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:custom"],
+        "patterns": [
+            "minecraft:play_noteblock",
+            "minecraft:tune_noteblock"
+        ]
+    }
+}

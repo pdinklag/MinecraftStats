@@ -1,0 +1,8 @@
+{
+    "id": "mine_spawner",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:mined","minecraft:spawner"]
+    }
+}

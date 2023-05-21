@@ -1,0 +1,15 @@
+{
+    "id": "mine_coral",
+    "unit": "int",
+    "minVersion": 1473,
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:mined"],
+        "patterns": [
+            "minecraft:.+_coral",
+            "minecraft:.+_coral_block",
+            "minecraft:.+_coral_fan",
+            "minecraft:.+_coral_wall_fan"
+        ]
+    }
+}

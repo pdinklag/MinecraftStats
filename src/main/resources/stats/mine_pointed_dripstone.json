@@ -1,0 +1,9 @@
+{
+    "id": "mine_pointed_dripstone",
+    "unit": "int",
+    "minVersion": 2683,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:mined","minecraft:pointed_dripstone"]
+    }
+}
