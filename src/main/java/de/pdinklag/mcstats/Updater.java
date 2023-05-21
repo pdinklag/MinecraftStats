@@ -271,6 +271,7 @@ public class Updater {
 
         // update player profiles and filter valid players
         HashMap<String, Player> activePlayers = new HashMap<>();
+        ArrayList<Player> validPlayers = new ArrayList<>();
         allPlayers.forEach((uuid, player) -> {
             // use local sources
             for (PlayerProfileProvider provider : localProfileProviders) {
@@ -294,6 +295,11 @@ public class Updater {
                     log.writeLine("updating profile for " + player.getUuid() + " ...");
                     player.setProfile(authenticProfileProvider.getPlayerProfile(player));
                 }
+            }
+
+            // filter valid players
+            if (player.getProfile().hasName()) {
+                validPlayers.add(player);
             }
         });
 
@@ -351,18 +357,18 @@ public class Updater {
 
             // write players.json for next update
             Files.writeString(dbPlayersJsonPath,
-                    DatabasePlayerProfileProvider.createDatabase(allPlayers.values()).toString());
+                    DatabasePlayerProfileProvider.createDatabase(validPlayers).toString());
 
             // write playerlist
-            writePlayerList(allPlayers.values(), DATABASE_PLAYERLIST_ALL_FORMAT);
+            writePlayerList(validPlayers, DATABASE_PLAYERLIST_ALL_FORMAT);
             writePlayerList(activePlayers.values(), DATABASE_PLAYERLIST_ACTIVE_FORMAT);
 
             // write playercache
             {
                 final int prefixLength = config.getPlayerCacheUUIDPrefix();
                 final HashMap<String, JSONArray> playerCache = new HashMap<>();
-                allPlayers.forEach((uuid, player) -> {
-                    final String prefix = uuid.substring(0, prefixLength);
+                validPlayers.forEach(player -> {
+                    final String prefix = player.getUuid().substring(0, prefixLength);
 
                     JSONArray group = playerCache.get(prefix);
                     if (group == null) {
