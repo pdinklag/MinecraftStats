@@ -46,7 +46,7 @@ public class Updater {
     private final LogWriter log;
 
     protected final LinkedList<PlayerFilter> playerFilters = new LinkedList<>();
-    private final ArrayList<Stat> awards = new ArrayList<>();
+    private final HashMap<String, Stat> awards = new HashMap<>();
 
     protected final LinkedList<PlayerProfileProvider> localProfileProviders = new LinkedList<>();
     private final PlayerProfileProvider authenticProfileProvider;
@@ -98,7 +98,7 @@ public class Updater {
                             player.setPlaytime(Math.max(player.getPlaytime(), playTime));
 
                             // gather stats
-                            player.getStats().gather(awards, stats, dataVersion);
+                            player.getStats().gather(awards.values(), stats, dataVersion);
 
                             // register in set of players
                             discoveredPlayers.put(uuid, player);
@@ -245,7 +245,13 @@ public class Updater {
                 try {
                     final JSONObject obj = new JSONObject(
                             StreamUtils.readStreamFully(getClass().getResourceAsStream(resource)));
-                    awards.add(StatParser.parse(obj));
+                    
+                    final Stat stat = StatParser.parse(obj);
+                    if(!awards.containsKey(stat.getId())) {
+                        awards.put(stat.getId(), stat);
+                    } else {
+                        log.writeLine("duplicate stat id \"" + stat.getId() + "\"");
+                    }
                 } catch (Exception e2) {
                     log.writeError("failed to load stat from resources: " + resource, e2);
                 }
@@ -323,7 +329,7 @@ public class Updater {
 
             // compute and write rankings
             HashMap<Stat, Ranking<IntValue>.Entry> best = new HashMap<>();
-            awards.forEach(award -> {
+            awards.forEach((id, award) -> {
                 if (award.isVersionSupported(serverDataVersion)) {
                     // rank players
                     final Ranking<IntValue> ranking = new Ranking<IntValue>(activePlayers.values(), player -> {
@@ -343,14 +349,14 @@ public class Updater {
                     }
 
                     // write award summary file
-                    Path awardJsonPath = dbRankingsPath.resolve(award.getId() + JSON_FILE_EXT);
+                    Path awardJsonPath = dbRankingsPath.resolve(id + JSON_FILE_EXT);
                     try {
                         Files.writeString(awardJsonPath, ranking.toJSON().toString());
                     } catch (Exception e) {
                         log.writeError("failed to write award data: " + awardJsonPath, e);
                     }
                 } else {
-                    log.writeLine("award " + award.getId() + " is not supported by server (data version "
+                    log.writeLine("award " + id + " is not supported by server (data version "
                             + serverDataVersion + ")");
                 }
             });
@@ -476,7 +482,7 @@ public class Updater {
 
                 // awards
                 final JSONObject summaryAwards = new JSONObject(awards.size());
-                awards.forEach(stat -> {
+                awards.forEach((id, stat) -> {
                     final JSONObject awardSummary = new JSONObject();
                     awardSummary.put("unit", stat.getUnit().toString());
 
@@ -486,7 +492,7 @@ public class Updater {
                         summaryRelevantPlayers.add(awardBest.getPlayer());
                     }
 
-                    summaryAwards.put(stat.getId(), awardSummary);
+                    summaryAwards.put(id, awardSummary);
                 });
                 summary.put("awards", summaryAwards);
 
