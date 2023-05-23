@@ -1,5 +1,5 @@
 {
-    "id": "kill_fish",
+    "id": "kill_ravager",
     "unit": "int",
     "minVersion": 1901,
     "reader": {
