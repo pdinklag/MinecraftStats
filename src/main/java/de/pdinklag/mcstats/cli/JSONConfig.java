@@ -7,6 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.pdinklag.mcstats.Config;
+import de.pdinklag.mcstats.Event;
+import de.pdinklag.mcstats.EventParser;
+import de.pdinklag.mcstats.EventParseException;
 import de.pdinklag.mcstats.FileSystemDataSource;
 
 public class JSONConfig extends Config {
@@ -62,6 +65,20 @@ public class JSONConfig extends Config {
             setPlayersPerPage(client.getInt("playersPerPage"));
             setPlayerCacheUUIDPrefix(client.getInt("playerCacheUUIDPrefix"));
             setDefaultLanguage(client.getString("defaultLanguage"));
+        }
+
+        // events
+        {
+            JSONArray events = json.optJSONArray("events");
+            if(events != null) {
+                for(int i = 0; i < events.length(); i++) {
+                    try {
+                        getEvents().add(EventParser.parse(events.getJSONObject(i)));
+                    } catch(EventParseException e) {
+                        throw new JSONException(e);
+                    }
+                }
+            }
         }
     }
 }

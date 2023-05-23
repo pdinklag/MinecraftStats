@@ -2,6 +2,7 @@ package de.pdinklag.mcstats;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The MinecraftStats configuration.
@@ -28,6 +29,8 @@ public class Config {
     private int playersPerPage = 100;
     private int playerCacheUUIDPrefix = 2;
     private String defaultLanguage = "en";
+
+    private final ArrayList<Event> events = new ArrayList<>();
 
     public Config() {
     }
@@ -158,5 +161,9 @@ public class Config {
 
     public void setShowLastOnline(boolean showLastOnline) {
         this.showLastOnline = showLastOnline;
+    }
+
+    public ArrayList<Event> getEvents() {
+        return events;
     }
 }

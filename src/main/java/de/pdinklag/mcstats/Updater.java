@@ -28,6 +28,7 @@ public class Updater {
     private static final String JSON_FILE_EXT = ".json";
     private static final int MIN_DATA_VERSION = 1451; // 17w47a
     private static final String DATABASE_PLAYERS_JSON = "players.json";
+    private static final String DATABASE_EVENTS = "events";
     private static final String DATABASE_RANKINGS = "rankings";
     private static final String DATABASE_PLAYERCACHE = "playercache";
     private static final String DATABASE_PLAYERDATA = "playerdata";
@@ -35,6 +36,8 @@ public class Updater {
     private static final String DATABASE_PLAYERLIST_ALL_FORMAT = "all%d.json.gz";
     private static final String DATABASE_PLAYERLIST_ACTIVE_FORMAT = "active%d.json.gz";
     private static final String DATABASE_SUMMARY = "summary.json.gz";
+
+    private static final String EVENT_INITIAL_SCORE_FIELD = "initialRanking";
 
     private static final int TICKS_PER_SECOND = 20;
     private static final int MINUTES_TO_TICKS = 60 * TICKS_PER_SECOND;
@@ -54,6 +57,7 @@ public class Updater {
     // paths
     private final Path dbPath;
     private final Path dbPlayersJsonPath;
+    private final Path dbEventsPath;
     private final Path dbRankingsPath;
     private final Path dbPlayercachePath;
     private final Path dbPlayerdataPath;
@@ -160,6 +164,7 @@ public class Updater {
         // cache some paths
         this.dbPath = config.getDatabasePath();
         this.dbPlayersJsonPath = dbPath.resolve(DATABASE_PLAYERS_JSON);
+        this.dbEventsPath = dbPath.resolve(DATABASE_EVENTS);
         this.dbRankingsPath = dbPath.resolve(DATABASE_RANKINGS);
         this.dbPlayercachePath = dbPath.resolve(DATABASE_PLAYERCACHE);
         this.dbPlayerdataPath = dbPath.resolve(DATABASE_PLAYERDATA);
@@ -323,12 +328,13 @@ public class Updater {
         try {
             // create directories
             Files.createDirectories(dbRankingsPath);
+            Files.createDirectories(dbEventsPath);
             Files.createDirectories(dbPlayercachePath);
             Files.createDirectories(dbPlayerdataPath);
             Files.createDirectories(dbPlayerlistPath);
 
             // compute and write rankings
-            HashMap<Stat, Ranking<IntValue>.Entry> best = new HashMap<>();
+            HashMap<Stat, Ranking<IntValue>.Entry> awardWinners = new HashMap<>();
             awards.forEach((id, award) -> {
                 if (award.isVersionSupported(serverDataVersion)) {
                     // rank players
@@ -345,7 +351,7 @@ public class Updater {
 
                     // store best for front page
                     if (rankingEntries.size() > 0) {
-                        best.put(award, rankingEntries.get(0));
+                        awardWinners.put(award, rankingEntries.get(0));
                     }
 
                     // write award summary file
@@ -358,6 +364,72 @@ public class Updater {
                 } else {
                     log.writeLine("award " + id + " is not supported by server (data version "
                             + serverDataVersion + ")");
+                }
+            });
+
+            // process events
+            HashMap<Event, Ranking<IntValue>.Entry> eventWinners = new HashMap<>();
+            config.getEvents().forEach(event -> {
+                if(!event.hasEnded(now)) {
+                    final Stat linkedStat = awards.get(event.getLinkedStatId());
+                    if(linkedStat != null) {
+                        final Path eventDataPath = dbEventsPath.resolve(event.getId() + JSON_FILE_EXT);
+
+                        final JSONObject eventData = new JSONObject();
+                        eventData.put("name", event.getId());
+                        eventData.put("title", event.getTitle());
+                        eventData.put("startTime", ClientUtils.convertTimestamp(event.getStartTime()));
+                        eventData.put("endTime", ClientUtils.convertTimestamp(event.getEndTime()));
+                        eventData.put("link", linkedStat.getId());
+
+                        if(event.hasStarted(now)) {
+                            // the event is currently running, read initial scores and update ranking
+                            log.writeLine("updating ranking for event " + event.getId());
+
+                            if(Files.exists(eventDataPath)) {
+                                try {
+                                    final JSONObject initialRanking = new JSONObject(Files.readString(eventDataPath)).getJSONObject(EVENT_INITIAL_SCORE_FIELD);
+                                    event.setInitialScores(initialRanking);
+                                    eventData.put(EVENT_INITIAL_SCORE_FIELD, initialRanking);
+                                } catch(Exception e) {
+                                    log.writeError("failed to load initial scores for event " + event.getId(), e);
+                                    eventData.put(EVENT_INITIAL_SCORE_FIELD, new JSONObject());
+                                }
+                            } else {
+                                log.writeLine("event is already running, but no initial scores are available: " + event.getId());
+                                eventData.put(EVENT_INITIAL_SCORE_FIELD, new JSONObject());
+                            }
+
+                            final Ranking<IntValue> eventRanking = new Ranking<IntValue>(validPlayers, player -> {
+                                return new IntValue(player.getStats().get(linkedStat).toInt() - event.getInitialScore(player));
+                            });
+                            eventData.put("ranking", eventRanking.toJSON());
+
+                            // store best for front page
+                            List<Ranking<IntValue>.Entry> rankingEntries = eventRanking.getOrderedEntries();
+                            if (rankingEntries.size() > 0) {
+                                eventWinners.put(event, rankingEntries.get(0));
+                            }
+                        } else {
+                            // the event has not yet started, update initial scores
+                            log.writeLine("updating initial scores for event " + event.getId());
+                            
+                            final JSONObject initialScores = new JSONObject();
+                            allPlayers.forEach((uuid, player) -> {
+                                final int score = player.getStats().get(linkedStat).toInt();
+                                if(score > 0) initialScores.put(uuid, score);
+                            });
+                            eventData.put(EVENT_INITIAL_SCORE_FIELD, initialScores);
+                        }
+
+                        try {
+                            Files.writeString(eventDataPath, eventData.toString());
+                        } catch(Exception e) {
+                            log.writeError("error writing data for event " + event.getId(), e);
+                        }
+                    } else {
+                        log.writeLine("linked stat \"" + event.getLinkedStatId() + "\" does not exist for event: " + event.getId());
+                    }
                 }
             });
 
@@ -486,10 +558,10 @@ public class Updater {
                     final JSONObject awardSummary = new JSONObject();
                     awardSummary.put("unit", stat.getUnit().toString());
 
-                    final Ranking<IntValue>.Entry awardBest = best.get(stat);
-                    if (awardBest != null) {
-                        awardSummary.put("best", awardBest.toJSON());
-                        summaryRelevantPlayers.add(awardBest.getPlayer());
+                    final Ranking<IntValue>.Entry winner = awardWinners.get(stat);
+                    if (winner != null) {
+                        awardSummary.put("best", winner.toJSON());
+                        summaryRelevantPlayers.add(winner.getPlayer());
                     }
 
                     summaryAwards.put(id, awardSummary);
@@ -497,7 +569,24 @@ public class Updater {
                 summary.put("awards", summaryAwards);
 
                 // events
-                summary.put("events", new JSONObject()); // TODO: fill event data
+                final JSONObject summaryEvents = new JSONObject();
+                config.getEvents().forEach(event -> {
+                    final JSONObject eventSummary = new JSONObject();
+                    eventSummary.put("title", event.getTitle());
+                    eventSummary.put("startTime", ClientUtils.convertTimestamp(event.getStartTime()));
+                    eventSummary.put("endTime", ClientUtils.convertTimestamp(event.getEndTime()));
+                    eventSummary.put("link", event.getLinkedStatId());
+                    eventSummary.put("active", event.hasStarted(now) && !event.hasEnded(now));
+
+                    final Ranking<IntValue>.Entry winner = eventWinners.get(event);
+                    if(winner != null) {
+                        eventSummary.put("best", winner.toJSON());
+                        summaryRelevantPlayers.add(winner.getPlayer());
+                    }
+
+                    summaryEvents.put(event.getId(), eventSummary);
+                });
+                summary.put("events", summaryEvents);
 
                 // players
                 final JSONObject summaryPlayers = new JSONObject();
