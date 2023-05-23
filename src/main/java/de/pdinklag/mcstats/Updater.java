@@ -65,6 +65,7 @@ public class Updater {
         // discover players in data sources
         config.getDataSources().forEach(source -> {
             Path statsPath = source.getPlayerStatsPath();
+            Path advancementsPath = source.getPlayerAdvancementsPath();
             try {
                 Files.list(statsPath).forEach(path -> {
                     try {
@@ -74,10 +75,15 @@ public class Updater {
                             final String uuid = filename.substring(0, filename.length() - JSON_FILE_EXT.length());
 
                             // read JSON
-                            final JSONObject json = new JSONObject(Files.readString(path));
-                            final JSONObject stats = json.getJSONObject("stats");
+                            final JSONObject statsRoot = new JSONObject(Files.readString(path));
+                            final JSONObject stats =  statsRoot.getJSONObject("stats");
 
-                            // TODO: advancements
+                            // read advancements if present
+                            final Path advancementsJsonPath = advancementsPath.resolve(filename);
+                            if(Files.exists(advancementsJsonPath)) {
+                                final JSONObject advancements = new JSONObject(Files.readString(advancementsJsonPath));
+                                stats.put("advancements", advancements);
+                            }
 
                             // gather basic information
                             Player player = discoveredPlayers.getOrDefault(uuid, new Player(uuid));
@@ -85,7 +91,7 @@ public class Updater {
                             final long lastOnlineTime = Files.getLastModifiedTime(path).toMillis();
                             player.setLastOnlineTime(Math.max(player.getLastOnlineTime(), lastOnlineTime));
 
-                            final int dataVersion = DefaultReaders.DATA_VERSION_READER.read(json).toInt();
+                            final int dataVersion = DefaultReaders.DATA_VERSION_READER.read(statsRoot).toInt();
                             player.setDataVersion(Math.max(player.getDataVersion(), dataVersion));
 
                             final int playTime = DefaultReaders.PLAYTIME_READER.read(stats).toInt();

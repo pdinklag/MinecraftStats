@@ -6,6 +6,7 @@ import java.nio.file.Path;
  * Describes a MinecraftStats data source on the local file system.
  */
 public class FileSystemDataSource implements DataSource {
+    private static final String ADVANCEMENTS_PATH_NAME = "advancements";
     private static final String STATS_PATH_NAME = "stats";
 
     private final Path serverPath;
@@ -29,5 +30,10 @@ public class FileSystemDataSource implements DataSource {
     @Override
     public Path getPlayerStatsPath() {
         return serverPath.resolve(worldName).resolve(STATS_PATH_NAME);
+    }
+
+    @Override
+    public Path getPlayerAdvancementsPath() {
+        return serverPath.resolve(worldName).resolve(ADVANCEMENTS_PATH_NAME);
     }
 }

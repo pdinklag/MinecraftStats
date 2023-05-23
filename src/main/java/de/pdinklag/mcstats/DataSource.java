@@ -9,4 +9,6 @@ public interface DataSource {
     public Path getServerPath();
     
     public Path getPlayerStatsPath();
+
+    public Path getPlayerAdvancementsPath();
 }
