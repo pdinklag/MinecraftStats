@@ -22,12 +22,20 @@ public class SetCountReader extends NestedDataReader {
 
     @Override
     protected DataValue read(JSONObject obj, String key) {
-        StringSetValue set = new StringSetValue();
-        JSONArray array = obj.optJSONArray(key);
-        if (array != null) {
-            array.forEach(x -> {
-                set.add(x.toString());
+        final StringSetValue set = new StringSetValue();
+
+        final JSONObject sub = obj.optJSONObject(key);
+        if(sub != null) {
+            sub.keySet().forEach(x -> {
+                set.add(x);
             });
+        } else {
+            final JSONArray array = obj.optJSONArray(key);
+            if (array != null) {
+                array.forEach(x -> {
+                    set.add(x.toString());
+                });
+            }
         }
         return set;
     }
