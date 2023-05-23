@@ -1,0 +1,11 @@
+{
+    "id": "use_hoe",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:.+_hoe"
+        ]
+    }
+}

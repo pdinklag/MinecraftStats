@@ -1,0 +1,9 @@
+{
+    "id": "ride_strider",
+    "unit": "cm",
+    "minVersion": 2534,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:strider_one_cm"]
+    }
+}

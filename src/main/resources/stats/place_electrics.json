@@ -1,0 +1,22 @@
+{
+    "id": "place_electrics",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:.+_pressure_plate",
+            "minecraft:.+button",
+            "minecraft:comparator",
+            "minecraft:daylight_detector.*",
+            "minecraft:detector_rail",
+            "minecraft:lever",
+            "minecraft:observer",
+            "minecraft:redstone",
+            "minecraft:redstone_torch",
+            "minecraft:repeater",
+            "minecraft:sculk_sensor",
+            "minecraft:target"
+        ]
+    }
+}

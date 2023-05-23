@@ -1,0 +1,8 @@
+{
+    "id": "place_cactus",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:used","minecraft:cactus"]
+    }
+}

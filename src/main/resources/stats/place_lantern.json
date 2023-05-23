@@ -1,0 +1,13 @@
+{
+    "id": "place_lantern",
+    "unit": "int",
+    "minVersion": 1910,
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:lantern",
+            "minecraft:soul_lantern"
+        ]
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "id": "place_candle",
+    "unit": "int",
+    "minVersion": 2681,
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:.*candle"
+        ]
+    }
+}

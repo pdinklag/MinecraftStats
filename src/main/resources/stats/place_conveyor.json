@@ -1,0 +1,12 @@
+{
+    "id": "place_conveyor",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:dropper",
+            "minecraft:hopper"
+        ]
+    }
+}

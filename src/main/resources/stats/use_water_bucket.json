@@ -1,0 +1,8 @@
+{
+    "id": "use_water_bucket",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:used","minecraft:water_bucket"]
+    }
+}

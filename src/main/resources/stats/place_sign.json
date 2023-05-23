@@ -1,0 +1,11 @@
+{
+    "id": "place_sign",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:.*sign"
+        ]
+    }
+}

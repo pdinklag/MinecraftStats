@@ -1,0 +1,8 @@
+{
+    "id": "pot_flower",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:pot_flower"]
+    }
+}

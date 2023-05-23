@@ -1,0 +1,9 @@
+{
+    "id": "use_crossbow",
+    "unit": "int",
+    "minVersion": 1901,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:used","minecraft:crossbow"]
+    }
+}
