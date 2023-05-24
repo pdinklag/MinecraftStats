@@ -49,6 +49,7 @@ public class Updater {
     private final LogWriter log;
 
     protected final LinkedList<PlayerFilter> playerFilters = new LinkedList<>();
+    protected final PlayerFilter inactiveFilter;
     private final HashMap<String, Stat> awards = new HashMap<>();
 
     protected final LinkedList<PlayerProfileProvider> localProfileProviders = new LinkedList<>();
@@ -115,7 +116,14 @@ public class Updater {
                 log.writeError("failed to run discovery on data source: " + statsPath.toString(), e);
             }
         });
-        return discoveredPlayers;
+
+        // filter players
+        HashMap<String, Player> filteredPlayers = new HashMap<>();
+        discoveredPlayers.forEach((uuid, player) -> {
+            if(filterPlayer(player)) filteredPlayers.put(uuid, player);
+        });
+
+        return filteredPlayers;
     }
 
     private boolean filterPlayer(Player player) {
@@ -133,7 +141,7 @@ public class Updater {
 
     private void writePlayerList(Collection<Player> players, String filenameFormat) {
         final ArrayList<Player> playersSorted = new ArrayList<>(players);
-        Collections.sort(playersSorted, (a, b) -> a.getProfile().getName().compareTo(b.getProfile().getName()));
+        Collections.sort(playersSorted, (a, b) -> a.getProfile().getName().compareToIgnoreCase(b.getProfile().getName()));
 
         final int playersPerPage = config.getPlayersPerPage();
         final int numPlayers = players.size();
@@ -204,8 +212,7 @@ public class Updater {
         playerFilters.add(new MinPlaytimePlayerFilter(MINUTES_TO_TICKS * config.getMinPlaytime()));
 
         // filter players who are inactive
-        playerFilters.add(new LastOnlinePlayerFilter(
-                System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long) config.getInactiveDays()));
+        inactiveFilter = new LastOnlinePlayerFilter(System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long) config.getInactiveDays());
 
         // exclude banned players
         if (config.isExcludeBanned()) {
@@ -291,7 +298,7 @@ public class Updater {
         }
 
         // update player profiles and filter valid players
-        HashMap<String, Player> activePlayers = new HashMap<>();
+        ArrayList<Player> activePlayers = new ArrayList<>();
         ArrayList<Player> validPlayers = new ArrayList<>();
         allPlayers.forEach((uuid, player) -> {
             // use local sources
@@ -302,25 +309,26 @@ public class Updater {
                 }
             }
 
+            // filter valid players
+            final boolean isValid = player.getProfile().hasName();
+            if(isValid) {
+                validPlayers.add(player);
+            }
+
             // filter active players
-            final boolean isActive = filterPlayer(player);
+            final boolean isActive = inactiveFilter.filter(player);
             if (isActive) {
-                activePlayers.put(uuid, player);
+                activePlayers.add(player);
             }
 
             // use authentic sources if due
-            if (isActive || config.isUpdateInactive()) {
+            if (!isValid || isActive || config.isUpdateInactive()) {
                 final long updateInterval = DAYS_TO_MILLISECONDS * (long) config.getProfileUpdateInterval();
                 final long timeSinceUpdate = now - player.getProfile().getLastUpdateTime();
                 if (timeSinceUpdate >= updateInterval) {
                     log.writeLine("updating profile for " + player.getUuid() + " ...");
                     player.setProfile(authenticProfileProvider.getPlayerProfile(player));
                 }
-            }
-
-            // filter valid players
-            if (player.getProfile().hasName()) {
-                validPlayers.add(player);
             }
         });
 
@@ -338,7 +346,7 @@ public class Updater {
             awards.forEach((id, award) -> {
                 if (award.isVersionSupported(serverDataVersion)) {
                     // rank players
-                    final Ranking<IntValue> ranking = new Ranking<IntValue>(activePlayers.values(), player -> {
+                    final Ranking<IntValue> ranking = new Ranking<IntValue>(activePlayers, player -> {
                         return new IntValue(player.getStats().get(award).toInt());
                     });
 
@@ -434,7 +442,7 @@ public class Updater {
             });
 
             // write playerdata
-            activePlayers.forEach((uuid, player) -> {
+            allPlayers.forEach((uuid, player) -> {
                 Path playerdataPath = dbPlayerdataPath.resolve(uuid + JSON_FILE_EXT);
                 try {
                     Files.writeString(playerdataPath, player.getStats().toJSON().toString());
@@ -449,7 +457,7 @@ public class Updater {
 
             // write playerlist
             writePlayerList(validPlayers, DATABASE_PLAYERLIST_ALL_FORMAT);
-            writePlayerList(activePlayers.values(), DATABASE_PLAYERLIST_ACTIVE_FORMAT);
+            writePlayerList(activePlayers, DATABASE_PLAYERLIST_ACTIVE_FORMAT);
 
             // write playercache
             {
@@ -479,7 +487,7 @@ public class Updater {
             // crown ranking for Hall of Fame
             final Ranking<CrownScoreValue> hallOfFameRanking;
             {
-                hallOfFameRanking = new Ranking<CrownScoreValue>(activePlayers.values(), player -> {
+                hallOfFameRanking = new Ranking<CrownScoreValue>(activePlayers, player -> {
                     return player.getStats().getCrownScore(config);
                 });
             }
