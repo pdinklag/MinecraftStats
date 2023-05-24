@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.pdinklag.mcstats.Config;
-import de.pdinklag.mcstats.Event;
 import de.pdinklag.mcstats.EventParser;
 import de.pdinklag.mcstats.EventParseException;
 import de.pdinklag.mcstats.FileSystemDataSource;
