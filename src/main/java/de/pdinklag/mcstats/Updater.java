@@ -508,14 +508,11 @@ public abstract class Updater {
                     String serverName = config.getCustomName();
                     if (serverName == null) {
                         // try all data sources for a server.properties file
-                        for (DataSource dataSource : config.getDataSources()) {
-                            serverName = getServerMotd();
-                            if (serverName != null) {
-                                serverName = serverName.replace("\\n", "<br>");
-                                break;
-                            }
+                        serverName = getServerMotd();
+                        if (serverName != null) {
+                            serverName = serverName.replace("\\n", "<br>");
                         }
-
+                        
                         if (serverName == null) {
                             serverName = "";
                             log.writeLine(
