@@ -7,8 +7,6 @@ import java.time.format.DateTimeFormatter;
 
 import org.json.JSONObject;
 
-import de.pdinklag.mcstats.Updater;
-
 /**
  * The entry point for the MinecraftStats command-line interface.
  */
@@ -28,12 +26,11 @@ public class MinecraftStatsCLI {
                 JSONConfig config = new JSONConfig(configJson);
 
                 // run updater
-                Updater updater = new Updater(config, log);
+                CLIUpdater updater = new CLIUpdater(config, log);
                 updater.run();
 
                 log.writeLine("[" + LocalDateTime.now().format(DATE_FORMAT) + "] update finished");
-            } catch(Exception e)
-            {
+            } catch(Exception e) {
                 e.printStackTrace();
             }
         } else {

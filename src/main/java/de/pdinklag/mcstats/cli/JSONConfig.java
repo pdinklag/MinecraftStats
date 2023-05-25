@@ -12,9 +12,6 @@ import de.pdinklag.mcstats.EventParseException;
 import de.pdinklag.mcstats.FileSystemDataSource;
 
 public class JSONConfig extends Config {
-    public JSONConfig() {
-    }
-
     public JSONConfig(JSONObject json) throws JSONException {
         // read databaseDir
         setDatabasePath(Path.of(json.optString("databaseDir")));

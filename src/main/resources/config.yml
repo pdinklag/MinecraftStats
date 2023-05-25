@@ -1,0 +1,21 @@
+databaseDir: null
+updateInterval: 1
+server:
+  customName: null
+crown:
+  bronze: 1
+  silver: 2
+  gold: 4
+client:
+  defaultLanguage: "en"
+  playersPerPage: 100
+  playerCacheUUIDPrefix: 2
+players:
+  inactiveDays: 90
+  updateInactive: true
+  profileUpdateInterval: 3
+  minPlaytime: 60
+  excludeBanned: true
+  excludeOps: false
+  excludeUUIDs: []
+  showLastOnline: true

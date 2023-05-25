@@ -43,7 +43,7 @@ task jarCli (type: Jar) {
     }
     from sourceSets.main.runtimeClasspath.collect { it.getName().endsWith(".jar") ? zipTree(it) : it }
     exclude 'de/pdinklag/mcstats/bukkit'
-    exclude 'plugin.yml'
+    exclude '*.yml'
 }
 
 task jarPlugin (type: Jar) {

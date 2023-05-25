@@ -1,15 +1,16 @@
 package de.pdinklag.mcstats.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Properties;
 
 /**
  * Utilities regarding Minecraft servers.
  */
 public class MinecraftServerUtils {
+    /**
+     * The number of Minecraft server ticks that passes per second.
+     */
+    public static final int TICKS_PER_SECOND = 20;
+
     /**
      * Gets the path to banned-players.json for the given server path.
      * 
@@ -48,26 +49,5 @@ public class MinecraftServerUtils {
      */
     public static Path getServerIconPath(Path serverPath) {
         return serverPath.resolve("server-icon.png");
-    }
-
-    /**
-     * Gets the MOTD from a Minecraft server's server.properties file.
-     * 
-     * @param serverPath the server path
-     * @return the value of the MOTD field, if any
-     */
-    public static String getMOTD(Path serverPath) {
-        final Path propertiesPath = serverPath.resolve("server.properties");
-        if (Files.exists(propertiesPath)) {
-            final Properties properties = new Properties();
-            try (final InputStream fis = Files.newInputStream(propertiesPath)) {
-                properties.load(fis);
-            } catch (IOException e) {
-                return null;
-            }
-            return properties.getProperty("motd");
-        } else {
-            return null;
-        }
     }
 }

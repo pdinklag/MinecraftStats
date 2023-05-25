@@ -24,7 +24,7 @@ import de.pdinklag.mcstats.util.StreamUtils;
 /**
  * The heart of MinecraftStats.
  */
-public class Updater {
+public abstract class Updater {
     private static final String JSON_FILE_EXT = ".json";
     private static final int MIN_DATA_VERSION = 1451; // 17w47a
     private static final String DATABASE_PLAYERS_JSON = "players.json";
@@ -39,14 +39,13 @@ public class Updater {
 
     private static final String EVENT_INITIAL_SCORE_FIELD = "initialRanking";
 
-    private static final int TICKS_PER_SECOND = 20;
-    private static final int MINUTES_TO_TICKS = 60 * TICKS_PER_SECOND;
+    private static final int MINUTES_TO_TICKS = 60 * MinecraftServerUtils.TICKS_PER_SECOND;
 
     private static final long DAYS_TO_MILLISECONDS = 24L * 60L * 60L * 1000L;
 
     // initialization
-    private final Config config;
-    private final LogWriter log;
+    protected final Config config;
+    protected final LogWriter log;
 
     protected final LinkedList<PlayerFilter> playerFilters = new LinkedList<>();
     protected final PlayerFilter inactiveFilter;
@@ -272,6 +271,12 @@ public class Updater {
             log.writeError("failed to discover stats", e);
         }
     }
+    
+    /**
+     * Gets the server's message of the day.
+     * @return the server's message of the day
+     */
+    protected abstract String getServerMotd();
 
     public void run() {
         // get current timestamp
@@ -504,7 +509,7 @@ public class Updater {
                     if (serverName == null) {
                         // try all data sources for a server.properties file
                         for (DataSource dataSource : config.getDataSources()) {
-                            serverName = MinecraftServerUtils.getMOTD(dataSource.getServerPath());
+                            serverName = getServerMotd();
                             if (serverName != null) {
                                 serverName = serverName.replace("\\n", "<br>");
                                 break;
