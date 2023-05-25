@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -47,12 +46,12 @@ public abstract class Updater {
     protected final Config config;
     protected final LogWriter log;
 
-    protected final LinkedList<PlayerFilter> playerFilters = new LinkedList<>();
-    protected final PlayerFilter inactiveFilter;
+    // protected final LinkedList<PlayerFilter> playerFilters = new LinkedList<>();
+    // protected final PlayerFilter inactiveFilter;
     private final HashMap<String, Stat> awards = new HashMap<>();
 
-    protected final LinkedList<PlayerProfileProvider> localProfileProviders = new LinkedList<>();
-    private final PlayerProfileProvider authenticProfileProvider;
+    // protected final LinkedList<PlayerProfileProvider> localProfileProviders = new LinkedList<>();
+    // private final PlayerProfileProvider authenticProfileProvider;
 
     // paths
     private final Path dbPath;
@@ -63,7 +62,95 @@ public abstract class Updater {
     private final Path dbPlayerdataPath;
     private final Path dbPlayerlistPath;
 
-    private HashMap<String, Player> processPlayers() {
+    protected PlayerProfileProvider getAuthenticProfileProvider() {
+        return new MojangAPIPlayerProfileProvider();
+    }
+
+    protected void gatherLocalProfileProviders(PlayerProfileProviderList providers) {
+        // usercache.json
+        config.getDataSources().forEach(source -> {
+            Path usercachePath = MinecraftServerUtils.getUserCachePath(source.getServerPath());
+            if (Files.isRegularFile(usercachePath)) {
+                try {
+                    JSONArray usercacheJson = new JSONArray(Files.readString(usercachePath));
+                    providers.add(new UserCachePlayerProfileProvider(usercacheJson));
+                } catch (Exception e) {
+                    log.writeError("failed to read usercache: " + usercachePath.toString(), e);
+                }
+            }
+        });
+    }
+    
+    private PlayerProfileProvider getLocalProfileProvider() {
+        PlayerProfileProviderList providers = new PlayerProfileProviderList();
+        gatherLocalProfileProviders(providers);
+
+        // players.json
+        if (Files.isRegularFile(dbPlayersJsonPath)) {
+            try {
+                JSONObject playersJson = new JSONObject(Files.readString(dbPlayersJsonPath));
+                providers.addFirst(new DatabasePlayerProfileProvider(playersJson));
+            } catch (Exception e) {
+                log.writeError("failed to load players from previous database: " + dbPlayersJsonPath.toString(), e);
+            }
+        }
+        return providers;
+    }
+
+    protected PlayerFilter getHardPlayerFilter() {
+        PlayerFilterList filters = new PlayerFilterList();
+
+        // filter players whose data version is too low
+        filters.add(new DataVersionPlayerFilter(MIN_DATA_VERSION, Integer.MAX_VALUE));
+
+        // filter players who didn't play long enough
+        filters.add(new MinPlaytimePlayerFilter(MINUTES_TO_TICKS * config.getMinPlaytime()));
+
+        // exclude banned players
+        if (config.isExcludeBanned()) {
+            config.getDataSources().forEach(source -> {
+                Path bannedPlayersPath = MinecraftServerUtils.getBannedPlayersPath(source.getServerPath());
+                if (Files.isRegularFile(bannedPlayersPath)) {
+                    try {
+                        JSONArray ops = new JSONArray(Files.readString(bannedPlayersPath));
+                        filters.add(new JSONPlayerFilter(ops));
+                    } catch (Exception e) {
+                        log.writeError("failed to read banned players file: " + bannedPlayersPath.toString(), e);
+                    }
+                }
+            });
+        }
+
+        // exclude ops
+        if (config.isExcludeOps()) {
+            config.getDataSources().forEach(source -> {
+                Path opsPath = MinecraftServerUtils.getOpsPath(source.getServerPath());
+                if (Files.isRegularFile(opsPath)) {
+                    try {
+                        JSONArray ops = new JSONArray(Files.readString(opsPath));
+                        filters.add(new JSONPlayerFilter(ops));
+                    } catch (Exception e) {
+                        log.writeError("failed to read ops file: " + opsPath.toString(), e);
+                    }
+                }
+            });
+        }
+
+        // filter explicitly excluded players
+        if (!config.getExcludeUUIDs().isEmpty()) {
+            ExcludeUUIDPlayerFilter filter = new ExcludeUUIDPlayerFilter();
+            filter.excludeAll(config.getExcludeUUIDs());
+            filters.add(filter);
+        }
+        return filters;
+    }
+
+    protected PlayerFilter getInactiveFilter() {
+        // filter players who are inactive
+        return new LastOnlinePlayerFilter(System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long) config.getInactiveDays());
+    }
+
+    private HashMap<String, Player> processPlayers(PlayerFilter filter) {
         HashMap<String, Player> discoveredPlayers = new HashMap<>();
 
         // discover players in data sources
@@ -119,23 +206,10 @@ public abstract class Updater {
         // filter players
         HashMap<String, Player> filteredPlayers = new HashMap<>();
         discoveredPlayers.forEach((uuid, player) -> {
-            if(filterPlayer(player)) filteredPlayers.put(uuid, player);
+            if(filter.filter(player)) filteredPlayers.put(uuid, player);
         });
 
         return filteredPlayers;
-    }
-
-    private boolean filterPlayer(Player player) {
-        for (PlayerFilter filter : playerFilters) {
-            if (!filter.filter(player)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    protected PlayerProfileProvider createAuthenticProfileProvider() {
-        return new MojangAPIPlayerProfileProvider();
     }
 
     private void writePlayerList(Collection<Player> players, String filenameFormat) {
@@ -177,79 +251,6 @@ public abstract class Updater {
         this.dbPlayerdataPath = dbPath.resolve(DATABASE_PLAYERDATA);
         this.dbPlayerlistPath = dbPath.resolve(DATABASE_PLAYERLIST);
 
-        // create local providers
-        // players.json
-        if (Files.isRegularFile(dbPlayersJsonPath)) {
-            try {
-                JSONObject playersJson = new JSONObject(Files.readString(dbPlayersJsonPath));
-                localProfileProviders.add(new DatabasePlayerProfileProvider(playersJson));
-            } catch (Exception e) {
-                log.writeError("failed to load players from previous database: " + dbPlayersJsonPath.toString(), e);
-            }
-        }
-
-        // usercache.json
-        config.getDataSources().forEach(source -> {
-            Path usercachePath = MinecraftServerUtils.getUserCachePath(source.getServerPath());
-            if (Files.isRegularFile(usercachePath)) {
-                try {
-                    JSONArray usercacheJson = new JSONArray(Files.readString(usercachePath));
-                    localProfileProviders.add(new UserCachePlayerProfileProvider(usercacheJson));
-                } catch (Exception e) {
-                    log.writeError("failed to read usercache: " + usercachePath.toString(), e);
-                }
-            }
-        });
-
-        // create authentic provider
-        authenticProfileProvider = createAuthenticProfileProvider();
-
-        // filter players whose data version is too low
-        playerFilters.add(new DataVersionPlayerFilter(MIN_DATA_VERSION, Integer.MAX_VALUE));
-
-        // filter players who didn't play long enough
-        playerFilters.add(new MinPlaytimePlayerFilter(MINUTES_TO_TICKS * config.getMinPlaytime()));
-
-        // filter players who are inactive
-        inactiveFilter = new LastOnlinePlayerFilter(System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long) config.getInactiveDays());
-
-        // exclude banned players
-        if (config.isExcludeBanned()) {
-            config.getDataSources().forEach(source -> {
-                Path bannedPlayersPath = MinecraftServerUtils.getBannedPlayersPath(source.getServerPath());
-                if (Files.isRegularFile(bannedPlayersPath)) {
-                    try {
-                        JSONArray ops = new JSONArray(Files.readString(bannedPlayersPath));
-                        playerFilters.add(new JSONPlayerFilter(ops));
-                    } catch (Exception e) {
-                        log.writeError("failed to read banned players file: " + bannedPlayersPath.toString(), e);
-                    }
-                }
-            });
-        }
-
-        // exclude ops
-        if (config.isExcludeOps()) {
-            config.getDataSources().forEach(source -> {
-                Path opsPath = MinecraftServerUtils.getOpsPath(source.getServerPath());
-                if (Files.isRegularFile(opsPath)) {
-                    try {
-                        JSONArray ops = new JSONArray(Files.readString(opsPath));
-                        playerFilters.add(new JSONPlayerFilter(ops));
-                    } catch (Exception e) {
-                        log.writeError("failed to read ops file: " + opsPath.toString(), e);
-                    }
-                }
-            });
-        }
-
-        // filter explicitly excluded players
-        if (!config.getExcludeUUIDs().isEmpty()) {
-            ExcludeUUIDPlayerFilter filter = new ExcludeUUIDPlayerFilter();
-            filter.excludeAll(config.getExcludeUUIDs());
-            playerFilters.add(filter);
-        }
-
         // discover and instantiate stats
         try {
             ResourceUtils.getResourceFilenames(getClass().getClassLoader(), "stats").forEach(resource -> {
@@ -290,7 +291,7 @@ public abstract class Updater {
         }
 
         // discover and process players
-        HashMap<String, Player> allPlayers = processPlayers();
+        HashMap<String, Player> allPlayers = processPlayers(getHardPlayerFilter());
 
         // find effective server version
         final int serverDataVersion;
@@ -303,16 +304,15 @@ public abstract class Updater {
         }
 
         // update player profiles and filter valid players
+        PlayerFilter inactiveFilter = getInactiveFilter();
+        PlayerProfileProvider localProvider = getLocalProfileProvider();
+        PlayerProfileProvider authenticProvider = getAuthenticProfileProvider();
+        
         ArrayList<Player> activePlayers = new ArrayList<>();
         ArrayList<Player> validPlayers = new ArrayList<>();
         allPlayers.forEach((uuid, player) -> {
             // use local sources
-            for (PlayerProfileProvider provider : localProfileProviders) {
-                player.setProfile(provider.getPlayerProfile(player));
-                if (player.getProfile().hasName()) {
-                    break;
-                }
-            }
+            player.setProfile(localProvider.getPlayerProfile(player));
 
             // filter valid players
             final boolean isValid = player.getProfile().hasName();
@@ -332,9 +332,10 @@ public abstract class Updater {
                 final long timeSinceUpdate = now - player.getProfile().getLastUpdateTime();
                 if (timeSinceUpdate >= updateInterval) {
                     log.writeLine("updating profile for " + player.getUuid() + " ...");
-                    player.setProfile(authenticProfileProvider.getPlayerProfile(player));
+                    player.setProfile(authenticProvider.getPlayerProfile(player));
 
-                    if(player.getProfile().hasName()) {
+                    if(!isValid && player.getProfile().hasName()) {
+                        // player has become valid
                         validPlayers.add(player);
                     }
                 }
