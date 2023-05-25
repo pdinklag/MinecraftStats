@@ -333,6 +333,10 @@ public abstract class Updater {
                 if (timeSinceUpdate >= updateInterval) {
                     log.writeLine("updating profile for " + player.getUuid() + " ...");
                     player.setProfile(authenticProfileProvider.getPlayerProfile(player));
+
+                    if(player.getProfile().hasName()) {
+                        validPlayers.add(player);
+                    }
                 }
             }
         });
