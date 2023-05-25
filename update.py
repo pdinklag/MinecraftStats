@@ -206,6 +206,24 @@ if config.rules.excludePlayer.op:
         except:
             handle_error('Cannot open ' + opsFile + ' for op exclusion')
 
+# exclude specific prefix(e.g. bot_ refers to fake player)
+if config.rules.excludePlayer.prefix.enable:
+    for (path, _) in sources:
+        usercacheFile = os.path.join(path, 'usercache.json')
+        try:
+            with open(usercacheFile) as f:
+                for entry in json.load(f):
+                    m = False
+                    if config.rules.excludePlayer.prefix.ignoreCase:
+                        pattern = re.compile('^' + config.rules.excludePlayer.prefix.prefix, re.IGNORECASE)
+                        m = bool(pattern.match(entry['name']))
+                    else:
+                        m = bool(entry['name'].startswith(config.rules.excludePlayer.prefix.prefix))
+                    if m:
+                        excludePlayers.add(entry['uuid'])
+        except:
+            handle_error('Cannot open ' + usercacheFile + ' for specific prefix exclusion')
+
 # initialize database
 if not os.path.isdir(config.database):
     os.mkdir(config.database)

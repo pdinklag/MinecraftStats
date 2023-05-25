@@ -24,6 +24,11 @@ defaultConfig = {
     },
     "rules": {
         "excludePlayer": {
+            "prefix": {              # exclude players which name starts with the following string if enabled
+                "enable": False,     # whether or not to enable this function
+                "prefix": "",        # prefix
+                "ignoreCase": False  # whether or not to ignore case sensitivity during matching
+            },
             "banned": True,          # whether or not to exclude banned players
             "op": False,             # whether or not to exclude ops
             "UUID": []               # list of UUIDs to exclude
