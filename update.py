@@ -55,6 +55,11 @@ else:
 
 config = RecursiveNamespace(**configJson)
 
+# check config version
+if config.configVersion != 2:
+    handle_error('Incorrect config version. Maybe you need to check your config file or update it manually')
+    exit(127)
+
 # get sources
 sources = []
 if hasattr(config.server, 'path') and config.server.path:
