@@ -181,11 +181,11 @@ for (path, _) in sources:
 # exclude players
 excludePlayers = set()
 
-for uuid in config.players.excludeUUIDs:
+for uuid in config.rules.excludePlayer.UUID:
     excludePlayers.add(uuid)
 
 # exclude banned players
-if config.players.excludeBanned:
+if config.rules.excludePlayer.banned:
     for (path, _) in sources:
         bannedPlayersFile = os.path.join(path, 'banned-players.json')
         try:
@@ -196,7 +196,7 @@ if config.players.excludeBanned:
             handle_error('Cannot open ' + bannedPlayersFile + ' for banned player exclusion')
 
 # exclude ops
-if config.players.excludeOps:
+if config.rules.excludePlayer.op:
     for (path, _) in sources:
         opsFile = os.path.join(path, 'ops.json')
         try:

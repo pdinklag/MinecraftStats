@@ -1,5 +1,5 @@
 defaultConfig = {
-    "configVersion": 1,
+    "configVersion": 2,
     "database": "data",              # where the database is written
     "server": {
         "sources": [
@@ -21,9 +21,13 @@ defaultConfig = {
         "updateInactive": False,     # also update profile for inactive players
         "inactiveDays": 7,           # number of offline days before a player is considered inactive
         "minPlaytime": 60,           # number of minutes a player must have played before entering stats
-        "excludeBanned": True,       # whether or not to exclude banned players
-        "excludeOps": False,         # whether or not to exclude ops
-        "excludeUUIDs": []           # list of UUIDs to exclude
+    },
+    "rules": {
+        "excludePlayer": {
+            "banned": True,          # whether or not to exclude banned players
+            "op": False,             # whether or not to exclude ops
+            "UUID": []               # list of UUIDs to exclude
+        }
     },
     "crown": {
         "gold": 4,                   # crown score worth of a gold medal     
