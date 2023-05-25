@@ -18,13 +18,49 @@ application {
     mainClass = 'de.pdinklag.mcstats.cli.MinecraftStatsCLI'
 }
 
-jar {
+task copyWww(type: Copy) {
+    from('.') {
+        include 'index.html'
+        include 'style.min.css'
+        include 'font/*.woff2'
+        include 'img/**/*.gif'
+        include 'img/**/*.png'
+        include 'js/lib/**'
+        include 'js/mcstats.min.js'
+        include 'js/mcstats.min.js.map'
+        include 'localization/*.json'
+    }
+    into 'build/www'
+}
+
+task jarCli (type: Jar) {
+    dependsOn compileJava
+    dependsOn processResources
     manifest {
         attributes(
             'Main-Class': application.mainClass
         )
     }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    from sourceSets.main.runtimeClasspath.collect { it.getName().endsWith(".jar") ? zipTree(it) : it }
+    exclude 'de/pdinklag/mcstats/bukkit'
+    exclude 'plugin.yml'
+}
+
+task jarPlugin (type: Jar) {
+    archiveBaseName = "MinecraftStatsPlugin"
+
+    dependsOn compileJava
+    dependsOn processResources
+    dependsOn copyWww
+    from('build') {
+        include 'www/**/*'
     }
+    from sourceSets.main.runtimeClasspath.collect { it.getName().endsWith(".jar") ? zipTree(it) : it }
+    exclude 'de/pdinklag/mcstats/cli'
+}
+
+jar {
+    actions = []
+    dependsOn jarCli
+    dependsOn jarPlugin
 }
