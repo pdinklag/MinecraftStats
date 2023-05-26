@@ -102,3 +102,11 @@ jar {
     dependsOn jarCli
     dependsOn jarPlugin
 }
+
+task zipFrontend (type: Zip) {
+    dependsOn copyWww
+    from 'build/www/'
+
+    archiveBaseName = 'mcstats-www'
+    destinationDirectory = file('build')
+}
