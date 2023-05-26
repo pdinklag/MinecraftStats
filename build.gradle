@@ -34,6 +34,8 @@ task copyWww(type: Copy) {
 }
 
 task jarCli (type: Jar) {
+    archiveBaseName = "MinecraftStatsCLI"
+
     dependsOn compileJava
     dependsOn processResources
     manifest {
@@ -47,7 +49,7 @@ task jarCli (type: Jar) {
 }
 
 task jarPlugin (type: Jar) {
-    archiveBaseName = "MinecraftStatsPlugin"
+    archiveBaseName = "MinecraftStats"
 
     dependsOn compileJava
     dependsOn processResources
