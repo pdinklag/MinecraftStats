@@ -1,5 +1,8 @@
-databaseDir: null
-updateInterval: 1
+data:
+  documentRoot: null
+  subdirName: "stats"
+  unpackWebFiles: true
+  updateInterval: 1
 server:
   customName: null
 crown:

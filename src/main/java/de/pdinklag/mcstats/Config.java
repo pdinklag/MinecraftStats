@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class Config {
     private final ArrayList<DataSource> dataSources = new ArrayList<>();
-    private Path databasePath;
+    private Path documentRoot;
     private String customName;
 
     private int inactiveDays = 7;
@@ -38,12 +38,12 @@ public class Config {
         return dataSources;
     }
 
-    public Path getDatabasePath() {
-        return databasePath;
+    public Path getDocumentRoot() {
+        return documentRoot;
     }
 
-    public void setDatabasePath(Path databasePath) {
-        this.databasePath = databasePath;
+    public void setDocumentRoot(Path databasePath) {
+        this.documentRoot = databasePath;
     }
 
     public String getCustomName() {

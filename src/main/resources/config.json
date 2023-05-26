@@ -1,0 +1,36 @@
+{
+    "data": {
+        "documentRoot": "/var/www/html"
+    },
+    "server": {
+        "sources": [
+            {
+                "path": "/path/to/server",
+                "worldName": "world"
+            }
+        ],
+        "customName": null
+    },
+    "crown": {
+        "silver": 2,
+        "gold": 4,
+        "bronze": 1
+    },
+    "events": [],
+    "configVersion": 1,
+    "client": {
+        "defaultLanguage": "en",
+        "playersPerPage": 100,
+        "playerCacheUUIDPrefix": 2
+    },
+    "players": {
+        "inactiveDays": 7,
+        "updateInactive": false,
+        "profileUpdateInterval": 3,
+        "minPlaytime": 60,
+        "excludeBanned": true,
+        "excludeOps": false,
+        "excludeUUIDs": [],
+        "showLastOnline": true
+    }
+}

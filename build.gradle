@@ -19,7 +19,7 @@ application {
 }
 
 task copyWww(type: Copy) {
-    from('.') {
+    from('www') {
         include 'index.html'
         include 'style.min.css'
         include 'font/*.woff2'

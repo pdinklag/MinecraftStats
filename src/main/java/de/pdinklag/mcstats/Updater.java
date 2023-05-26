@@ -26,6 +26,7 @@ import de.pdinklag.mcstats.util.StreamUtils;
 public abstract class Updater {
     private static final String JSON_FILE_EXT = ".json";
     private static final int MIN_DATA_VERSION = 1451; // 17w47a
+    private static final String DATABASE_DIRNAME = "data";
     private static final String DATABASE_PLAYERS_JSON = "players.json";
     private static final String DATABASE_EVENTS = "events";
     private static final String DATABASE_RANKINGS = "rankings";
@@ -243,7 +244,7 @@ public abstract class Updater {
         this.log = log;
 
         // cache some paths
-        this.dbPath = config.getDatabasePath();
+        this.dbPath = config.getDocumentRoot().resolve(DATABASE_DIRNAME);
         this.dbPlayersJsonPath = dbPath.resolve(DATABASE_PLAYERS_JSON);
         this.dbEventsPath = dbPath.resolve(DATABASE_EVENTS);
         this.dbRankingsPath = dbPath.resolve(DATABASE_RANKINGS);

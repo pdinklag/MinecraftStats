@@ -11,6 +11,8 @@ import de.pdinklag.mcstats.FileSystemDataSource;
 public class BukkitConfig extends Config {
     private static final String DEFAULT_WORLD_NAME= "world";
 
+    private String subdirName = "stats";
+    private boolean unpackWebFiles = true;
     private int updateInterval = 5;
 
     public BukkitConfig(Server server, Configuration bukkitConfig)  {
@@ -18,13 +20,15 @@ public class BukkitConfig extends Config {
         getDataSources().add(new FileSystemDataSource(Path.of(server.getWorldContainer().getAbsolutePath()), DEFAULT_WORLD_NAME));
 
         // read config
-        String databaseDir = bukkitConfig.getString("server.databaseDir");
-        if(databaseDir != null) 
+        String documentRoot = bukkitConfig.getString("data.documentRoot");
+        if(documentRoot != null) 
         {
-            setDatabasePath(Path.of(databaseDir));
+            setDocumentRoot(Path.of(documentRoot));
         }
 
-        updateInterval = bukkitConfig.getInt("updateInterval", updateInterval);
+        subdirName = bukkitConfig.getString("data.subdirName", subdirName);
+        unpackWebFiles = bukkitConfig.getBoolean("data.unpackWebFiles", unpackWebFiles);
+        updateInterval = bukkitConfig.getInt("data.updateInterval", updateInterval);
 
         setCustomName(bukkitConfig.getString("server.customName", getCustomName()));
 
@@ -46,6 +50,22 @@ public class BukkitConfig extends Config {
         setDefaultLanguage(bukkitConfig.getString("client.defaultLanguage", getDefaultLanguage()));
         setPlayersPerPage(bukkitConfig.getInt("client.playersPerPage", getPlayersPerPage()));
         setPlayerCacheUUIDPrefix(bukkitConfig.getInt("client.playerCacheUUIDPrefix", getPlayerCacheUUIDPrefix()));
+    }
+
+    public String getSubdirName() {
+        return subdirName;
+    }
+
+    public void setSubdirName(String subdirName) {
+        this.subdirName = subdirName;
+    }
+    
+    public boolean isUnpackWebFiles() {
+        return unpackWebFiles;
+    }
+
+    public void setUnpackWebFiles(boolean unpackWebFiles) {
+        this.unpackWebFiles = unpackWebFiles;
     }
 
     public int getUpdateInterval() {

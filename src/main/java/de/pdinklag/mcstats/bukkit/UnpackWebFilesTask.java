@@ -10,26 +10,24 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import de.pdinklag.mcstats.util.ResourceUtils;
 
-public class WebserverInitTask extends BukkitRunnable {
+public class UnpackWebFilesTask extends BukkitRunnable {
     private static final String WEB_RESOURCE_DIR = "www";
     private static final int WEB_FILENAME_PREFIX = WEB_RESOURCE_DIR.length() + 2; // enclodes by slashes ("/www/")
 
     private final MinecraftStatsPlugin plugin;
-    private final Webserver webserver;
+    private final Path documentRoot;
 
-    public WebserverInitTask(MinecraftStatsPlugin plugin, Webserver webserver) {
+    public UnpackWebFilesTask(MinecraftStatsPlugin plugin, Path documentRoot) {
         this.plugin = plugin;
-        this.webserver = webserver;
+        this.documentRoot = documentRoot;
     }
 
     @Override
     public void run() {
-        final Path target = webserver.getTarget();
-
         // unpack web files
         try {
             for(String resource : ResourceUtils.getResourceFilenames(getClass().getClassLoader(), WEB_RESOURCE_DIR)) {
-                final Path destPath = target.resolve(resource.substring(WEB_FILENAME_PREFIX));
+                final Path destPath = documentRoot.resolve(resource.substring(WEB_FILENAME_PREFIX));
                 if(destPath.getFileName().toString().contains(".")) {
                     // this is a file, extract it
                     // TODO: only do this if the destination file does not exist OR the MinecraftStats version is newer than the current (which is not yet stored anywhere)
@@ -44,7 +42,7 @@ public class WebserverInitTask extends BukkitRunnable {
                     Files.createDirectories(destPath);
                 }
             }
-            plugin.onTargetInitialized();
+            plugin.onWebPathInitialized();
         } catch(Exception e) {
             plugin.getLogger().severe(e.getMessage());
         }

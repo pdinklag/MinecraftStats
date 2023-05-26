@@ -13,8 +13,11 @@ import de.pdinklag.mcstats.FileSystemDataSource;
 
 public class JSONConfig extends Config {
     public JSONConfig(JSONObject json) throws JSONException {
-        // read databaseDir
-        setDatabasePath(Path.of(json.optString("databaseDir")));
+        // read document root
+        {
+            JSONObject data = json.getJSONObject("data");
+            setDocumentRoot(Path.of(data.getString("documentRoot")));
+        }
 
         // read data sources
         {

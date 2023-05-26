@@ -1,5 +1,6 @@
 package de.pdinklag.mcstats.cli;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -12,6 +13,11 @@ import org.json.JSONObject;
  */
 public class MinecraftStatsCLI {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+    private static String getJarFilename() {
+        final File jarFile = new File(MinecraftStatsCLI.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        return jarFile.getName();
+    }
 
     /**
      * The main method.
@@ -34,7 +40,8 @@ public class MinecraftStatsCLI {
                 e.printStackTrace();
             }
         } else {
-            System.err.println("you need to pass a config filename!");
+            System.err.println("Usage: java -jar " + getJarFilename() + " <config>");
+            System.exit(1);
         }
     }
 }
