@@ -70,6 +70,11 @@ task copyWww(type: Copy) {
     into 'build/www'
 }
 
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
 task jarCli (type: Jar) {
     archiveBaseName = "MinecraftStatsCLI"
 

@@ -226,7 +226,7 @@ public abstract class Updater {
             final int last = Math.min(first + playersPerPage, numPlayers);
 
             final JSONArray page = new JSONArray(playersPerPage);
-            for (var i = first; i < last; i++) {
+            for (int i = first; i < last; i++) {
                 page.put(playersSorted.get(i).getClientInfo(true));
             }
 
