@@ -1,5 +1,10 @@
 plugins {
     id "application"
+    id "org.gradlewebtools.minify" version "1.3.2"
+}
+
+application {
+    mainClass = 'de.pdinklag.mcstats.cli.MinecraftStatsCLI'
 }
 
 repositories {
@@ -14,20 +19,51 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
 }
 
-application {
-    mainClass = 'de.pdinklag.mcstats.cli.MinecraftStatsCLI'
+task concatJs {
+    inputs.files(
+        'www/js/dev/mcstats.js',
+        'www/js/dev/mcstats-localization.js',
+        'www/js/dev/mcstats-widgets.js',
+        'www/js/dev/mcstats-awardlist.js',
+        'www/js/dev/mcstats-awardview.js',
+        'www/js/dev/mcstats-eventlist.js',
+        'www/js/dev/mcstats-eventview.js',
+        'www/js/dev/mcstats-playerlist.js',
+        'www/js/dev/mcstats-playerview.js',
+        'www/js/dev/mcstats-hof.js',
+        'www/js/dev/mcstats-loader.js',
+        'www/js/dev/mcstats-start.js')
+    outputs.file("build/js/mcstats.js" )
+    doLast {
+        outputs.files.singleFile.withOutputStream { out ->
+            for (file in inputs.files) file.withInputStream { out << it << '\n' }
+        }
+    }
+}
+
+task minifyJs(type: org.gradlewebtools.minify.JsMinifyTask) {
+    dependsOn concatJs
+
+    srcDir = project.file('build/js')
+    dstDir = project.file('build/www/js')
+    options.createSourceMaps = true
+}
+
+task minifyCss(type: org.gradlewebtools.minify.CssMinifyTask) {
+    srcDir = project.file('www/css')
+    dstDir = project.file('build/www')
 }
 
 task copyWww(type: Copy) {
+    dependsOn minifyJs
+    dependsOn minifyCss
+
     from('www') {
         include 'index.html'
-        include 'style.min.css'
         include 'font/*.woff2'
         include 'img/**/*.gif'
         include 'img/**/*.png'
         include 'js/lib/**'
-        include 'js/mcstats.min.js'
-        include 'js/mcstats.min.js.map'
         include 'localization/*.json'
     }
     into 'build/www'
