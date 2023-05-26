@@ -47,6 +47,7 @@ task minifyJs(type: org.gradlewebtools.minify.JsMinifyTask) {
     srcDir = project.file('build/js')
     dstDir = project.file('build/www/js')
     options.createSourceMaps = true
+    options.emitUseStrict = false
 }
 
 task minifyCss(type: org.gradlewebtools.minify.CssMinifyTask) {
