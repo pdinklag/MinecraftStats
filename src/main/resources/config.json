@@ -10,8 +10,7 @@
                 "path": "/path/to/server",
                 "worldName": "world"
             }
-        ],
-        "customName": null
+        ]
     },
     "crown": {
         "silver": 2,
@@ -22,7 +21,8 @@
     "client": {
         "defaultLanguage": "en",
         "playersPerPage": 100,
-        "playerCacheUUIDPrefix": 2
+        "playerCacheUUIDPrefix": 2,
+        "serverName": null
     },
     "players": {
         "inactiveDays": 7,

@@ -5,8 +5,6 @@ data:
   unpackWebFiles: true
   updateInterval: 5
   webSubdir: "stats"
-server:
-  customName: null
 crown:
   bronze: 1
   silver: 2
@@ -15,6 +13,7 @@ client:
   defaultLanguage: "en"
   playersPerPage: 100
   playerCacheUUIDPrefix: 2
+  serverName: null
 players:
   inactiveDays: 90
   updateInactive: true

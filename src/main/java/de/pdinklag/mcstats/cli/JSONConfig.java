@@ -33,7 +33,6 @@ public class JSONConfig extends Config {
                         Path.of(source.getString("path")),
                         source.getString("worldName")));
             }
-            setCustomName(server.optString("customName", null));
         }
 
         // player settings
@@ -68,6 +67,7 @@ public class JSONConfig extends Config {
             setPlayersPerPage(client.getInt("playersPerPage"));
             setPlayerCacheUUIDPrefix(client.getInt("playerCacheUUIDPrefix"));
             setDefaultLanguage(client.getString("defaultLanguage"));
+            setServerName(client.optString("serverName", null));
         }
     }
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Config {
     private final ArrayList<DataSource> dataSources = new ArrayList<>();
     private Path documentRoot;
-    private String customName;
+    private String serverName;
     private Path statsPath;
     private Path eventsPath;
 
@@ -46,12 +46,12 @@ public class Config {
         this.documentRoot = databasePath;
     }
 
-    public String getCustomName() {
-        return customName;
+    public String getServerName() {
+        return serverName;
     }
 
-    public void setCustomName(String customName) {
-        this.customName = customName;
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
     
     public int getInactiveDays() {

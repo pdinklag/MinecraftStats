@@ -565,7 +565,7 @@ public abstract class Updater {
                 final JSONObject info = new JSONObject();
                 {
                     // determine the server name
-                    String serverName = config.getCustomName();
+                    String serverName = config.getServerName();
                     if (serverName == null) {
                         // try all data sources for a server.properties file
                         serverName = getServerMotd();

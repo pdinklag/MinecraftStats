@@ -36,8 +36,6 @@ public class BukkitConfig extends Config {
         setEventsPath(pluginDataPath.resolve(bukkitConfig.getString("data.eventsDir")));
         setStatsPath(pluginDataPath.resolve(bukkitConfig.getString("data.statsDir")));
 
-        setCustomName(bukkitConfig.getString("server.customName", getCustomName()));
-
         setInactiveDays(bukkitConfig.getInt("players.inactiveDays", getInactiveDays()));
         setMinPlaytime(bukkitConfig.getInt("players.minPlaytime", getMinPlaytime()));
         setUpdateInactive(bukkitConfig.getBoolean("players.updateInactive", isUpdateInactive()));
@@ -56,6 +54,7 @@ public class BukkitConfig extends Config {
         setDefaultLanguage(bukkitConfig.getString("client.defaultLanguage", getDefaultLanguage()));
         setPlayersPerPage(bukkitConfig.getInt("client.playersPerPage", getPlayersPerPage()));
         setPlayerCacheUUIDPrefix(bukkitConfig.getInt("client.playerCacheUUIDPrefix", getPlayerCacheUUIDPrefix()));
+        setServerName(bukkitConfig.getString("client.serverName", getServerName()));
     }
 
     public String getWebSubdir() {
