@@ -1,8 +1,8 @@
 data:
   documentRoot: null
-  subdirName: "stats"
   unpackWebFiles: true
   updateInterval: 5
+  webSubdir: "stats"
 server:
   customName: null
 crown:

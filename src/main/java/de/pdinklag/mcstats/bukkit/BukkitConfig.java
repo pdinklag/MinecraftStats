@@ -11,9 +11,9 @@ import de.pdinklag.mcstats.FileSystemDataSource;
 public class BukkitConfig extends Config {
     private static final String DEFAULT_WORLD_NAME= "world";
 
-    private String subdirName = "stats";
     private boolean unpackWebFiles = true;
     private int updateInterval = 5;
+    private String webSubdir = "stats";
 
     public BukkitConfig(Server server, Configuration bukkitConfig)  {
         // create data source
@@ -26,9 +26,9 @@ public class BukkitConfig extends Config {
             setDocumentRoot(Path.of(documentRoot));
         }
 
-        subdirName = bukkitConfig.getString("data.subdirName", subdirName);
         unpackWebFiles = bukkitConfig.getBoolean("data.unpackWebFiles", unpackWebFiles);
         updateInterval = bukkitConfig.getInt("data.updateInterval", updateInterval);
+        webSubdir = bukkitConfig.getString("data.webSubdir", webSubdir);
 
         setCustomName(bukkitConfig.getString("server.customName", getCustomName()));
 
@@ -52,12 +52,12 @@ public class BukkitConfig extends Config {
         setPlayerCacheUUIDPrefix(bukkitConfig.getInt("client.playerCacheUUIDPrefix", getPlayerCacheUUIDPrefix()));
     }
 
-    public String getSubdirName() {
-        return subdirName;
+    public String getWebSubdir() {
+        return webSubdir;
     }
 
-    public void setSubdirName(String subdirName) {
-        this.subdirName = subdirName;
+    public void setWebSubdir(String subdirName) {
+        this.webSubdir = subdirName;
     }
     
     public boolean isUnpackWebFiles() {

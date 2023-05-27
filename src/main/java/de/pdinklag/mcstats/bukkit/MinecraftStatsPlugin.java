@@ -26,7 +26,7 @@ public class MinecraftStatsPlugin extends JavaPlugin {
         if(config.getDocumentRoot() == null) {
             final PluginWebserver webserver = PluginWebserver.find(getServer());
             if(webserver != null) {
-                final Path documentRoot = webserver.getDocumentRoot().resolve(config.getSubdirName());
+                final Path documentRoot = webserver.getDocumentRoot().resolve(config.getWebSubdir());
                 config.setDocumentRoot(documentRoot);
                 if(config.isUnpackWebFiles()) {
                     new UnpackWebFilesTask(this, documentRoot).runTaskAsynchronously(this);
