@@ -1,6 +1,8 @@
 {
     "data": {
-        "documentRoot": "/var/www/html"
+        "documentRoot": "/var/www/html",
+        "eventsDir": "events",
+        "statsDir": "stats"
     },
     "server": {
         "sources": [
@@ -16,7 +18,6 @@
         "gold": 4,
         "bronze": 1
     },
-    "events": [],
     "configVersion": 1,
     "client": {
         "defaultLanguage": "en",

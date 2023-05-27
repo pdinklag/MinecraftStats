@@ -10,6 +10,8 @@ public class Config {
     private final ArrayList<DataSource> dataSources = new ArrayList<>();
     private Path documentRoot;
     private String customName;
+    private Path statsPath;
+    private Path eventsPath;
 
     private int inactiveDays = 7;
     private int minPlaytime = 60;
@@ -28,8 +30,6 @@ public class Config {
     private int playersPerPage = 100;
     private int playerCacheUUIDPrefix = 2;
     private String defaultLanguage = "en";
-
-    private final ArrayList<Event> events = new ArrayList<>();
 
     public Config() {
     }
@@ -162,7 +162,19 @@ public class Config {
         this.showLastOnline = showLastOnline;
     }
 
-    public ArrayList<Event> getEvents() {
-        return events;
+    public Path getStatsPath() {
+        return statsPath;
+    }
+
+    public void setStatsPath(Path statsPath) {
+        this.statsPath = statsPath;
+    }
+
+    public Path getEventsPath() {
+        return eventsPath;
+    }
+
+    public void setEventsPath(Path eventsPath) {
+        this.eventsPath = eventsPath;
     }
 }

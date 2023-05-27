@@ -47,12 +47,8 @@ public abstract class Updater {
     protected final Config config;
     protected final LogWriter log;
 
-    // protected final LinkedList<PlayerFilter> playerFilters = new LinkedList<>();
-    // protected final PlayerFilter inactiveFilter;
     private final HashMap<String, Stat> awards = new HashMap<>();
-
-    // protected final LinkedList<PlayerProfileProvider> localProfileProviders = new LinkedList<>();
-    // private final PlayerProfileProvider authenticProfileProvider;
+    private final HashMap<String, Event> events = new HashMap<>();
 
     // paths
     private final Path dbPath;
@@ -81,7 +77,7 @@ public abstract class Updater {
             }
         });
     }
-    
+
     private PlayerProfileProvider getLocalProfileProvider() {
         PlayerProfileProviderList providers = new PlayerProfileProviderList();
         gatherLocalProfileProviders(providers);
@@ -148,7 +144,8 @@ public abstract class Updater {
 
     protected PlayerFilter getInactiveFilter() {
         // filter players who are inactive
-        return new LastOnlinePlayerFilter(System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long) config.getInactiveDays());
+        return new LastOnlinePlayerFilter(
+                System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long) config.getInactiveDays());
     }
 
     private HashMap<String, Player> processPlayers(PlayerFilter filter) {
@@ -168,11 +165,11 @@ public abstract class Updater {
 
                             // read JSON
                             final JSONObject statsRoot = new JSONObject(Files.readString(path));
-                            final JSONObject stats =  statsRoot.getJSONObject("stats");
+                            final JSONObject stats = statsRoot.getJSONObject("stats");
 
                             // read advancements if present
                             final Path advancementsJsonPath = advancementsPath.resolve(filename);
-                            if(Files.exists(advancementsJsonPath)) {
+                            if (Files.exists(advancementsJsonPath)) {
                                 final JSONObject advancements = new JSONObject(Files.readString(advancementsJsonPath));
                                 stats.put("advancements", advancements);
                             }
@@ -207,7 +204,8 @@ public abstract class Updater {
         // filter players
         HashMap<String, Player> filteredPlayers = new HashMap<>();
         discoveredPlayers.forEach((uuid, player) -> {
-            if(filter.filter(player)) filteredPlayers.put(uuid, player);
+            if (filter.filter(player))
+                filteredPlayers.put(uuid, player);
         });
 
         return filteredPlayers;
@@ -215,7 +213,8 @@ public abstract class Updater {
 
     private void writePlayerList(Collection<Player> players, String filenameFormat) {
         final ArrayList<Player> playersSorted = new ArrayList<>(players);
-        Collections.sort(playersSorted, (a, b) -> a.getProfile().getName().compareToIgnoreCase(b.getProfile().getName()));
+        Collections.sort(playersSorted,
+                (a, b) -> a.getProfile().getName().compareToIgnoreCase(b.getProfile().getName()));
 
         final int playersPerPage = config.getPlayersPerPage();
         final int numPlayers = players.size();
@@ -239,6 +238,24 @@ public abstract class Updater {
         }
     }
 
+    private void parseAndRegisterStat(JSONObject json) throws Exception {
+        final Stat stat = StatParser.parse(json);
+        if (!awards.containsKey(stat.getId())) {
+            awards.put(stat.getId(), stat);
+        } else {
+            log.writeLine("duplicate stat id \"" + stat.getId() + "\"");
+        }
+    }
+
+    private void parseAndRegisterEvent(JSONObject json) throws Exception {
+        final Event event = EventParser.parse(json);
+        if (!events.containsKey(event.getId())) {
+            events.put(event.getId(), event);
+        } else {
+            log.writeLine("duplicate event id \"" + event.getId() + "\"");
+        }
+    }
+
     public Updater(Config config, LogWriter log) {
         this.config = config;
         this.log = log;
@@ -254,28 +271,60 @@ public abstract class Updater {
 
         // discover and instantiate stats
         try {
+            // from resources
             ResourceUtils.getResourceFilenames(getClass().getClassLoader(), "stats").forEach(resource -> {
                 try {
                     final JSONObject obj = new JSONObject(
                             StreamUtils.readStreamFully(getClass().getResourceAsStream(resource)));
-                    
-                    final Stat stat = StatParser.parse(obj);
-                    if(!awards.containsKey(stat.getId())) {
-                        awards.put(stat.getId(), stat);
-                    } else {
-                        log.writeLine("duplicate stat id \"" + stat.getId() + "\"");
-                    }
+                    parseAndRegisterStat(obj);
                 } catch (Exception e2) {
                     log.writeError("failed to load stat from resources: " + resource, e2);
                 }
             });
+
+            // from files
+            if (Files.isDirectory(config.getStatsPath())) {
+                Files.list(config.getStatsPath()).forEach(path -> {
+                    if (path.getFileName().toString().endsWith(JSON_FILE_EXT)) {
+                        log.writeLine("found " + path.toAbsolutePath().toString());
+                        try {
+                            final JSONObject obj = new JSONObject(Files.readString(path));
+                            log.writeLine("loaded " + path.toAbsolutePath().toString());
+                            parseAndRegisterStat(obj);
+                        } catch (Exception e2) {
+                            log.writeError("failed to load stat from file: " + path.toString(), e2);
+                        }
+                    }
+                });
+            }
         } catch (Exception e) {
             log.writeError("failed to discover stats", e);
         }
+
+        // discover events
+        try {
+            if (Files.isDirectory(config.getEventsPath())) {
+                Files.list(config.getEventsPath()).forEach(path -> {
+                    if (path.getFileName().toString().endsWith(JSON_FILE_EXT)) {
+                        log.writeLine("found " + path.toAbsolutePath().toString());
+                        try {
+                            final JSONObject obj = new JSONObject(Files.readString(path));
+                            parseAndRegisterEvent(obj);
+                            log.writeLine("loaded " + path.toAbsolutePath().toString());
+                        } catch (Exception e2) {
+                            log.writeError("failed to load stat from file: " + path.toString(), e2);
+                        }
+                    }
+                });
+            }
+        } catch (Exception e) {
+            log.writeError("failed to discover events", e);
+        }
     }
-    
+
     /**
      * Gets the server's message of the day.
+     * 
      * @return the server's message of the day
      */
     protected abstract String getServerMotd();
@@ -308,7 +357,7 @@ public abstract class Updater {
         PlayerFilter inactiveFilter = getInactiveFilter();
         PlayerProfileProvider localProvider = getLocalProfileProvider();
         PlayerProfileProvider authenticProvider = getAuthenticProfileProvider();
-        
+
         ArrayList<Player> activePlayers = new ArrayList<>();
         ArrayList<Player> validPlayers = new ArrayList<>();
         allPlayers.forEach((uuid, player) -> {
@@ -317,7 +366,7 @@ public abstract class Updater {
 
             // filter valid players
             final boolean isValid = player.getProfile().hasName();
-            if(isValid) {
+            if (isValid) {
                 validPlayers.add(player);
             }
 
@@ -335,7 +384,7 @@ public abstract class Updater {
                     log.writeLine("updating profile for " + player.getUuid() + " ...");
                     player.setProfile(authenticProvider.getPlayerProfile(player));
 
-                    if(!isValid && player.getProfile().hasName()) {
+                    if (!isValid && player.getProfile().hasName()) {
                         // player has become valid
                         validPlayers.add(player);
                     }
@@ -388,10 +437,10 @@ public abstract class Updater {
 
             // process events
             HashMap<Event, Ranking<IntValue>.Entry> eventWinners = new HashMap<>();
-            config.getEvents().forEach(event -> {
-                if(!event.hasEnded(now)) {
+            events.values().forEach(event -> {
+                if (!event.hasEnded(now)) {
                     final Stat linkedStat = awards.get(event.getLinkedStatId());
-                    if(linkedStat != null) {
+                    if (linkedStat != null) {
                         final Path eventDataPath = dbEventsPath.resolve(event.getId() + JSON_FILE_EXT);
 
                         final JSONObject eventData = new JSONObject();
@@ -401,26 +450,29 @@ public abstract class Updater {
                         eventData.put("endTime", ClientUtils.convertTimestamp(event.getEndTime()));
                         eventData.put("link", linkedStat.getId());
 
-                        if(event.hasStarted(now)) {
+                        if (event.hasStarted(now)) {
                             // the event is currently running, read initial scores and update ranking
                             log.writeLine("updating ranking for event " + event.getId());
 
-                            if(Files.exists(eventDataPath)) {
+                            if (Files.exists(eventDataPath)) {
                                 try {
-                                    final JSONObject initialRanking = new JSONObject(Files.readString(eventDataPath)).getJSONObject(EVENT_INITIAL_SCORE_FIELD);
+                                    final JSONObject initialRanking = new JSONObject(Files.readString(eventDataPath))
+                                            .getJSONObject(EVENT_INITIAL_SCORE_FIELD);
                                     event.setInitialScores(initialRanking);
                                     eventData.put(EVENT_INITIAL_SCORE_FIELD, initialRanking);
-                                } catch(Exception e) {
+                                } catch (Exception e) {
                                     log.writeError("failed to load initial scores for event " + event.getId(), e);
                                     eventData.put(EVENT_INITIAL_SCORE_FIELD, new JSONObject());
                                 }
                             } else {
-                                log.writeLine("event is already running, but no initial scores are available: " + event.getId());
+                                log.writeLine("event is already running, but no initial scores are available: "
+                                        + event.getId());
                                 eventData.put(EVENT_INITIAL_SCORE_FIELD, new JSONObject());
                             }
 
                             final Ranking<IntValue> eventRanking = new Ranking<IntValue>(validPlayers, player -> {
-                                return new IntValue(player.getStats().get(linkedStat).toInt() - event.getInitialScore(player));
+                                return new IntValue(
+                                        player.getStats().get(linkedStat).toInt() - event.getInitialScore(player));
                             });
                             eventData.put("ranking", eventRanking.toJSON());
 
@@ -432,22 +484,24 @@ public abstract class Updater {
                         } else {
                             // the event has not yet started, update initial scores
                             log.writeLine("updating initial scores for event " + event.getId());
-                            
+
                             final JSONObject initialScores = new JSONObject();
                             allPlayers.forEach((uuid, player) -> {
                                 final int score = player.getStats().get(linkedStat).toInt();
-                                if(score > 0) initialScores.put(uuid, score);
+                                if (score > 0)
+                                    initialScores.put(uuid, score);
                             });
                             eventData.put(EVENT_INITIAL_SCORE_FIELD, initialScores);
                         }
 
                         try {
                             Files.writeString(eventDataPath, eventData.toString());
-                        } catch(Exception e) {
+                        } catch (Exception e) {
                             log.writeError("error writing data for event " + event.getId(), e);
                         }
                     } else {
-                        log.writeLine("linked stat \"" + event.getLinkedStatId() + "\" does not exist for event: " + event.getId());
+                        log.writeLine("linked stat \"" + event.getLinkedStatId() + "\" does not exist for event: "
+                                + event.getId());
                     }
                 }
             });
@@ -518,7 +572,7 @@ public abstract class Updater {
                         if (serverName != null) {
                             serverName = serverName.replace("\\n", "<br>");
                         }
-                        
+
                         if (serverName == null) {
                             serverName = "";
                             log.writeLine(
@@ -586,7 +640,7 @@ public abstract class Updater {
 
                 // events
                 final JSONObject summaryEvents = new JSONObject();
-                config.getEvents().forEach(event -> {
+                events.values().forEach(event -> {
                     final JSONObject eventSummary = new JSONObject();
                     eventSummary.put("title", event.getTitle());
                     eventSummary.put("startTime", ClientUtils.convertTimestamp(event.getStartTime()));
@@ -595,7 +649,7 @@ public abstract class Updater {
                     eventSummary.put("active", event.hasStarted(now) && !event.hasEnded(now));
 
                     final Ranking<IntValue>.Entry winner = eventWinners.get(event);
-                    if(winner != null) {
+                    if (winner != null) {
                         eventSummary.put("best", winner.toJSON());
                         summaryRelevantPlayers.add(winner.getPlayer());
                     }

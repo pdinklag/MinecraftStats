@@ -1,5 +1,7 @@
 data:
   documentRoot: null
+  eventsDir: "events"
+  statsDir: "stats"
   unpackWebFiles: true
   updateInterval: 5
   webSubdir: "stats"

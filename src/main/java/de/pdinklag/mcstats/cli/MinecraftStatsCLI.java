@@ -25,11 +25,11 @@ public class MinecraftStatsCLI {
      */
     public static void main(String[] args) {
         if(args.length > 0) {
-            StdoutLogWriter log = new StdoutLogWriter();
+            final StdoutLogWriter log = new StdoutLogWriter();
             try {
                 // load config
-                JSONObject configJson = new JSONObject(Files.readString(Path.of(args[0])));
-                JSONConfig config = new JSONConfig(configJson);
+                final Path configPath = Path.of(args[0]);
+                JSONConfig config = new JSONConfig(configPath);
 
                 // run updater
                 CLIUpdater updater = new CLIUpdater(config, log);

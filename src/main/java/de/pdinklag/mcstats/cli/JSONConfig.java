@@ -1,5 +1,7 @@
 package de.pdinklag.mcstats.cli;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.json.JSONArray;
@@ -7,22 +9,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.pdinklag.mcstats.Config;
-import de.pdinklag.mcstats.EventParser;
-import de.pdinklag.mcstats.EventParseException;
 import de.pdinklag.mcstats.FileSystemDataSource;
 
 public class JSONConfig extends Config {
-    public JSONConfig(JSONObject json) throws JSONException {
-        // read document root
+    public JSONConfig(Path jsonPath) throws IOException, JSONException {
+        final JSONObject json = new JSONObject(Files.readString(jsonPath));
+
+        // data settings
         {
-            JSONObject data = json.getJSONObject("data");
+            final JSONObject data = json.getJSONObject("data");
             setDocumentRoot(Path.of(data.getString("documentRoot")));
+            setEventsPath(jsonPath.resolve(data.getString("eventsDir")));
+            setStatsPath(jsonPath.resolve(data.getString("statsDir")));
         }
 
-        // read data sources
+        // server settings
         {
-            JSONObject server = json.getJSONObject("server");
-            JSONArray sources = server.getJSONArray("sources");
+            final JSONObject server = json.getJSONObject("server");
+            final JSONArray sources = server.getJSONArray("sources");
             for (int i = 0; i < sources.length(); i++) {
                 JSONObject source = sources.getJSONObject(i);
                 getDataSources().add(new FileSystemDataSource(
@@ -34,7 +38,7 @@ public class JSONConfig extends Config {
 
         // player settings
         {
-            JSONObject players = json.getJSONObject("players");
+            final JSONObject players = json.getJSONObject("players");
             setInactiveDays(players.getInt("inactiveDays"));
             setMinPlaytime(players.getInt("minPlaytime"));
             setUpdateInactive(players.getBoolean("updateInactive"));
@@ -44,7 +48,7 @@ public class JSONConfig extends Config {
             setExcludeBanned(players.getBoolean("excludeBanned"));
             setExcludeOps(players.getBoolean("excludeOps"));
 
-            JSONArray excludeUUIDs = players.getJSONArray("excludeUUIDs");
+            final JSONArray excludeUUIDs = players.getJSONArray("excludeUUIDs");
             for (int i = 0; i < excludeUUIDs.length(); i++) {
                 getExcludeUUIDs().add(excludeUUIDs.getString(i));
             }
@@ -52,7 +56,7 @@ public class JSONConfig extends Config {
 
         // crown settings
         {
-            JSONObject crown = json.getJSONObject("crown");
+            final JSONObject crown = json.getJSONObject("crown");
             setGoldMedalWeight(crown.getInt("gold"));
             setSilverMedalWeight(crown.getInt("silver"));
             setBronzeMedalWeight(crown.getInt("bronze"));
@@ -60,24 +64,10 @@ public class JSONConfig extends Config {
 
         // client settings
         {
-            JSONObject client = json.getJSONObject("client");
+            final JSONObject client = json.getJSONObject("client");
             setPlayersPerPage(client.getInt("playersPerPage"));
             setPlayerCacheUUIDPrefix(client.getInt("playerCacheUUIDPrefix"));
             setDefaultLanguage(client.getString("defaultLanguage"));
-        }
-
-        // events
-        {
-            JSONArray events = json.optJSONArray("events");
-            if(events != null) {
-                for(int i = 0; i < events.length(); i++) {
-                    try {
-                        getEvents().add(EventParser.parse(events.getJSONObject(i)));
-                    } catch(EventParseException e) {
-                        throw new JSONException(e);
-                    }
-                }
-            }
         }
     }
 }

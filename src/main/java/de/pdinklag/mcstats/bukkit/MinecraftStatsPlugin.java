@@ -20,7 +20,7 @@ public class MinecraftStatsPlugin extends JavaPlugin {
     public void onEnable() {
         // load config
         saveDefaultConfig();
-        config = new BukkitConfig(getServer(), getConfig());
+        config = new BukkitConfig(this);
 
         // detect webserver if necessary
         if(config.getDocumentRoot() == null) {
