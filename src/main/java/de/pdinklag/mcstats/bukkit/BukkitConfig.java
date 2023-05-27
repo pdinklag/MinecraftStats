@@ -2,7 +2,6 @@ package de.pdinklag.mcstats.bukkit;
 
 import java.nio.file.Path;
 
-import org.bukkit.Server;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
 
@@ -40,7 +39,6 @@ public class BukkitConfig extends Config {
         setMinPlaytime(bukkitConfig.getInt("players.minPlaytime", getMinPlaytime()));
         setUpdateInactive(bukkitConfig.getBoolean("players.updateInactive", isUpdateInactive()));
         setProfileUpdateInterval(bukkitConfig.getInt("players.profileUpdateInterval", getProfileUpdateInterval()));
-        setShowLastOnline(bukkitConfig.getBoolean("players.showLastOnline", isShowLastOnline()));
 
         setExcludeBanned(bukkitConfig.getBoolean("players.excludeBanned", isExcludeBanned()));
         setExcludeOps(bukkitConfig.getBoolean("players.excludeOps", isExcludeOps()));
@@ -55,6 +53,7 @@ public class BukkitConfig extends Config {
         setPlayersPerPage(bukkitConfig.getInt("client.playersPerPage", getPlayersPerPage()));
         setPlayerCacheUUIDPrefix(bukkitConfig.getInt("client.playerCacheUUIDPrefix", getPlayerCacheUUIDPrefix()));
         setServerName(bukkitConfig.getString("client.serverName", getServerName()));
+        setShowLastOnline(bukkitConfig.getBoolean("client.showLastOnline", isShowLastOnline()));
     }
 
     public String getWebSubdir() {

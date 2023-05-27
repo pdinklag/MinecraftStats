@@ -42,7 +42,6 @@ public class JSONConfig extends Config {
             setMinPlaytime(players.getInt("minPlaytime"));
             setUpdateInactive(players.getBoolean("updateInactive"));
             setProfileUpdateInterval(players.getInt("profileUpdateInterval"));
-            setShowLastOnline(players.getBoolean("showLastOnline"));
 
             setExcludeBanned(players.getBoolean("excludeBanned"));
             setExcludeOps(players.getBoolean("excludeOps"));
@@ -68,6 +67,7 @@ public class JSONConfig extends Config {
             setPlayerCacheUUIDPrefix(client.getInt("playerCacheUUIDPrefix"));
             setDefaultLanguage(client.getString("defaultLanguage"));
             setServerName(client.optString("serverName", null));
+            setShowLastOnline(client.getBoolean("showLastOnline"));
         }
     }
 }

@@ -22,7 +22,8 @@
         "defaultLanguage": "en",
         "playersPerPage": 100,
         "playerCacheUUIDPrefix": 2,
-        "serverName": null
+        "serverName": null,
+        "showLastOnline": true
     },
     "players": {
         "inactiveDays": 7,
@@ -31,7 +32,6 @@
         "minPlaytime": 60,
         "excludeBanned": true,
         "excludeOps": false,
-        "excludeUUIDs": [],
-        "showLastOnline": true
+        "excludeUUIDs": []
     }
 }

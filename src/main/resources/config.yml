@@ -14,6 +14,7 @@ client:
   playersPerPage: 100
   playerCacheUUIDPrefix: 2
   serverName: null
+  showLastOnline: true
 players:
   inactiveDays: 90
   updateInactive: true
@@ -22,4 +23,3 @@ players:
   excludeBanned: true
   excludeOps: false
   excludeUUIDs: []
-  showLastOnline: true
