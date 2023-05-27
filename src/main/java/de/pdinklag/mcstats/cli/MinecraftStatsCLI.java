@@ -1,12 +1,9 @@
 package de.pdinklag.mcstats.cli;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import org.json.JSONObject;
 
 /**
  * The entry point for the MinecraftStats command-line interface.
