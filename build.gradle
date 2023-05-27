@@ -113,6 +113,6 @@ task zipFrontend (type: Zip) {
     dependsOn copyWww
     from 'build/www/'
 
-    archiveBaseName = 'mcstats-www'
+    archiveBaseName = 'MinecraftStatsWeb'
     destinationDirectory = file('build')
 }
