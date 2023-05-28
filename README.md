@@ -72,7 +72,9 @@ Extract the contents of `MinecraftStatsWeb.zip` to the place within your documen
 
 #### Migrating from Python
 
-If you previously used the Python version, you can use *MinecraftStats* just like before by using the CLI. Bascially, `update.py` is now `MinecraftStatsCLI.jar` that you run via `java -jar` rather than Python. Just like for Minecraft 1.13, Java 8 or later is required.
+If you previously used the Python version, you can use *MinecraftStats* almost like before by using the CLI. Bascially, `update.py` is now `MinecraftStatsCLI.jar` that you run via `java -jar` rather than Python. Just like for Minecraft 1.13, Java 8 or later is required.
+
+:warning: The former workflow of simply cloning this repository and updating away is now deprecated. The repository only contains the (Java) source code, the runnable jar must be built from source or can be downloaded from the releases.
 
 In your `config.json`, you will now have to add the `data → documentRoot` setting that points to your webserver (see [Configuration](#configuration) for details):
 
