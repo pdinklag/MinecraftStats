@@ -282,14 +282,12 @@ public abstract class Updater {
                 }
             });
 
-            // from files
+            // from 
             if (Files.isDirectory(config.getStatsPath())) {
                 Files.list(config.getStatsPath()).forEach(path -> {
                     if (path.getFileName().toString().endsWith(JSON_FILE_EXT)) {
-                        log.writeLine("found " + path.toAbsolutePath().toString());
                         try {
                             final JSONObject obj = new JSONObject(Files.readString(path));
-                            log.writeLine("loaded " + path.toAbsolutePath().toString());
                             parseAndRegisterStat(obj);
                         } catch (Exception e2) {
                             log.writeError("failed to load stat from file: " + path.toString(), e2);

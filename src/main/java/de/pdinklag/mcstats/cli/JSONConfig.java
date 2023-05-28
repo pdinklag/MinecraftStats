@@ -19,8 +19,10 @@ public class JSONConfig extends Config {
         {
             final JSONObject data = json.getJSONObject("data");
             setDocumentRoot(Path.of(data.getString("documentRoot")));
-            setEventsPath(jsonPath.resolve(data.getString("eventsDir")));
-            setStatsPath(jsonPath.resolve(data.getString("statsDir")));
+
+            final Path jsonDir = jsonPath.toAbsolutePath().getParent();
+            setEventsPath(jsonDir.resolve(data.optString("eventsDir", "events")));
+            setStatsPath(jsonDir.resolve(data.optString("statsDir", "stats")));
         }
 
         // server settings
@@ -36,38 +38,42 @@ public class JSONConfig extends Config {
         }
 
         // player settings
-        {
-            final JSONObject players = json.getJSONObject("players");
-            setInactiveDays(players.getInt("inactiveDays"));
-            setMinPlaytime(players.getInt("minPlaytime"));
-            setUpdateInactive(players.getBoolean("updateInactive"));
-            setProfileUpdateInterval(players.getInt("profileUpdateInterval"));
+        final JSONObject players = json.optJSONObject("players");
+        if (players != null) {
+            setInactiveDays(players.optInt("inactiveDays", getInactiveDays()));
+            setMinPlaytime(players.optInt("minPlaytime", getMinPlaytime()));
+            setUpdateInactive(players.optBoolean("updateInactive", isUpdateInactive()));
+            setProfileUpdateInterval(players.optInt("profileUpdateInterval", getProfileUpdateInterval()));
 
-            setExcludeBanned(players.getBoolean("excludeBanned"));
-            setExcludeOps(players.getBoolean("excludeOps"));
+            setExcludeBanned(players.optBoolean("excludeBanned", isExcludeBanned()));
+            setExcludeOps(players.optBoolean("excludeOps", isExcludeOps()));
 
-            final JSONArray excludeUUIDs = players.getJSONArray("excludeUUIDs");
-            for (int i = 0; i < excludeUUIDs.length(); i++) {
-                getExcludeUUIDs().add(excludeUUIDs.getString(i));
+            final JSONArray excludeUUIDs = players.optJSONArray("excludeUUIDs");
+            if (excludeUUIDs != null) {
+                for (int i = 0; i < excludeUUIDs.length(); i++) {
+                    getExcludeUUIDs().add(excludeUUIDs.getString(i));
+                }
             }
         }
 
         // crown settings
+        final JSONObject crown = json.optJSONObject("crown");
+        if(crown != null)
         {
-            final JSONObject crown = json.getJSONObject("crown");
-            setGoldMedalWeight(crown.getInt("gold"));
-            setSilverMedalWeight(crown.getInt("silver"));
-            setBronzeMedalWeight(crown.getInt("bronze"));
+            setGoldMedalWeight(crown.optInt("gold", getGoldMedalWeight()));
+            setSilverMedalWeight(crown.optInt("silver", getSilverMedalWeight()));
+            setBronzeMedalWeight(crown.optInt("bronze", getBronzeMedalWeight()));
         }
 
         // client settings
+        final JSONObject client = json.optJSONObject("client");
+        if(client != null)
         {
-            final JSONObject client = json.getJSONObject("client");
-            setPlayersPerPage(client.getInt("playersPerPage"));
-            setPlayerCacheUUIDPrefix(client.getInt("playerCacheUUIDPrefix"));
-            setDefaultLanguage(client.getString("defaultLanguage"));
-            setServerName(client.optString("serverName", null));
-            setShowLastOnline(client.getBoolean("showLastOnline"));
+            setPlayersPerPage(client.optInt("playersPerPage", getPlayersPerPage()));
+            setPlayerCacheUUIDPrefix(client.optInt("playerCacheUUIDPrefix", getPlayerCacheUUIDPrefix()));
+            setDefaultLanguage(client.optString("defaultLanguage", getDefaultLanguage()));
+            setServerName(client.optString("serverName", getServerName()));
+            setShowLastOnline(client.optBoolean("showLastOnline", isShowLastOnline()));
         }
     }
 }
