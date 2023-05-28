@@ -1,6 +1,7 @@
 plugins {
-    id "application"
-    id "org.gradlewebtools.minify" version "1.3.2"
+    id 'application'
+    id 'java'
+    id 'org.gradlewebtools.minify' version '1.3.2'
 }
 
 application {
@@ -75,8 +76,14 @@ compileJava {
     targetCompatibility = '1.8'
 }
 
+def cliBaseName = 'MinecraftStatsCLI'
+def pluginBaseName = 'MinecraftStatsPlugin'
+
+def libsDir = 'build/libs'
+def releaseDir = 'build/release'
+
 task jarCli (type: Jar) {
-    archiveBaseName = "MinecraftStatsCLI"
+    archiveBaseName = cliBaseName
 
     dependsOn compileJava
     dependsOn processResources
@@ -85,13 +92,13 @@ task jarCli (type: Jar) {
             'Main-Class': application.mainClass
         )
     }
-    from sourceSets.main.runtimeClasspath.collect { it.getName().endsWith(".jar") ? zipTree(it) : it }
+    from sourceSets.main.runtimeClasspath.collect { it.getName().endsWith('.jar') ? zipTree(it) : it }
     exclude 'de/pdinklag/mcstats/bukkit'
     exclude '*.yml'
 }
 
 task jarPlugin (type: Jar) {
-    archiveBaseName = "MinecraftStats"
+    archiveBaseName = pluginBaseName
 
     dependsOn compileJava
     dependsOn processResources
@@ -99,20 +106,37 @@ task jarPlugin (type: Jar) {
     from('build') {
         include 'www/**/*'
     }
-    from sourceSets.main.runtimeClasspath.collect { it.getName().endsWith(".jar") ? zipTree(it) : it }
+    from sourceSets.main.runtimeClasspath.collect { it.getName().endsWith('.jar') ? zipTree(it) : it }
     exclude 'de/pdinklag/mcstats/cli'
 }
 
-jar {
-    actions = []
+task distCli (type: Zip) {
     dependsOn jarCli
-    dependsOn jarPlugin
+    from(libsDir) {
+        include "${cliBaseName}.jar"
+    }
+    archiveBaseName = cliBaseName
+    destinationDirectory = file(releaseDir)
 }
 
-task zipFrontend (type: Zip) {
+task distPlugin (type: Copy) {
+    dependsOn jarPlugin
+    from(libsDir) {
+        include "${pluginBaseName}.jar"
+    }
+    into releaseDir
+}
+
+task distWeb (type: Zip) {
     dependsOn copyWww
     from 'build/www/'
 
     archiveBaseName = 'MinecraftStatsWeb'
-    destinationDirectory = file('build')
+    destinationDirectory = file(releaseDir)
+}
+
+task release {
+    dependsOn distCli
+    dependsOn distPlugin
+    dependsOn distWeb
 }
