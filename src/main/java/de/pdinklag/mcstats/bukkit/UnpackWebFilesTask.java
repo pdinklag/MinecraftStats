@@ -30,7 +30,6 @@ public class UnpackWebFilesTask extends BukkitRunnable {
                 final Path destPath = documentRoot.resolve(resource.substring(WEB_FILENAME_PREFIX));
                 if(destPath.getFileName().toString().contains(".")) {
                     // this is a file, extract it
-                    // TODO: only do this if the destination file does not exist OR the MinecraftStats version is newer than the current (which is not yet stored anywhere)
                     try(
                         InputStream in = getClass().getResourceAsStream(resource);
                         OutputStream out = Files.newOutputStream(destPath, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)
