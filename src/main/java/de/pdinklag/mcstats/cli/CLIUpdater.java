@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 import de.pdinklag.mcstats.Config;
@@ -12,6 +14,8 @@ import de.pdinklag.mcstats.LogWriter;
 import de.pdinklag.mcstats.Updater;
 
 public class CLIUpdater extends Updater {
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
     public CLIUpdater(Config config, LogWriter log) {
         super(config, log);
     }
@@ -33,5 +37,15 @@ public class CLIUpdater extends Updater {
             }
         }
         return null;
+    }
+
+    @Override
+    protected String getVersion() {
+        return MinecraftStatsCLI.getVersion();
+    }
+
+    @Override public void run() {
+        super.run();
+        log.writeLine("[" + LocalDateTime.now().format(DATE_FORMAT) + "] update finished");
     }
 }

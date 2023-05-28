@@ -1,16 +1,24 @@
 package de.pdinklag.mcstats.cli;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import de.pdinklag.mcstats.util.StreamUtils;
 
 /**
  * The entry point for the MinecraftStats command-line interface.
  */
 public class MinecraftStatsCLI {
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    public static String getVersion() {
+        try {
+            return StreamUtils.readStreamFully(MinecraftStatsCLI.class.getResourceAsStream("/version.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "0.0.0";
+        }
+    }
 
     private static String getJarFilename() {
         final File jarFile = new File(
@@ -30,13 +38,11 @@ public class MinecraftStatsCLI {
                 // load config
                 final Path configPath = Path.of(args[0]);
                 if (Files.isRegularFile(configPath)) {
-                    JSONConfig config = new JSONConfig(configPath);
+                    final JSONConfig config = new JSONConfig(configPath);
 
                     // run updater
-                    CLIUpdater updater = new CLIUpdater(config, log);
+                    final CLIUpdater updater = new CLIUpdater(config, log);
                     updater.run();
-
-                    log.writeLine("[" + LocalDateTime.now().format(DATE_FORMAT) + "] update finished");
                 } else {
                     System.err.println("Configuration file not found: " + configPath);
                     System.exit(1);
@@ -45,6 +51,7 @@ public class MinecraftStatsCLI {
                 e.printStackTrace();
             }
         } else {
+            System.err.println("MinecraftStats " + getVersion());
             System.err.println("Usage: java -jar " + getJarFilename() + " <config>");
             System.exit(1);
         }

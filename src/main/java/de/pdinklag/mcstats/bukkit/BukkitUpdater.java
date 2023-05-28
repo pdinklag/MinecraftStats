@@ -1,29 +1,32 @@
 package de.pdinklag.mcstats.bukkit;
 
-import org.bukkit.Server;
-
 import de.pdinklag.mcstats.Config;
 import de.pdinklag.mcstats.LogWriter;
 import de.pdinklag.mcstats.PlayerProfileProviderList;
 import de.pdinklag.mcstats.Updater;
 
 public class BukkitUpdater extends Updater {
-    private final Server server;
+    private final MinecraftStatsPlugin plugin;
 
-    public BukkitUpdater(Server server, Config config, LogWriter log) {
+    public BukkitUpdater(MinecraftStatsPlugin plugin, Config config, LogWriter log) {
         super(config, log);
-        this.server = server;
+        this.plugin = plugin;
     }
 
     @Override
     protected void gatherLocalProfileProviders(PlayerProfileProviderList providers) {
         super.gatherLocalProfileProviders(providers);
-        providers.addFirst(new OfflinePlayerProfileProvider(server));
+        providers.addFirst(new OfflinePlayerProfileProvider(plugin.getServer()));
     }
 
     @Override
     protected String getServerMotd() {
-        return server.getMotd();
+        return plugin.getServer().getMotd();
+    }
+
+    @Override
+    protected String getVersion() {
+        return plugin.getDescription().getVersion();
     }
 
     @Override

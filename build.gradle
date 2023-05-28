@@ -77,16 +77,30 @@ compileJava {
 }
 
 def cliBaseName = 'MinecraftStatsCLI'
-def pluginBaseName = 'MinecraftStatsPlugin'
+def pluginBaseName = 'MinecraftStats'
 
 def libsDir = 'build/libs'
 def releaseDir = 'build/release'
+def resourcesDir = 'build/resources'
+
+def cliResources = "${resourcesDir}/cli"
+def pluginResources = "${resourcesDir}/plugin"
+
+def version = project.file('version.txt').text
+
+task resourcesCli (type: Copy) {
+    from('.') {
+        include 'version.txt'
+    }
+    into cliResources
+}
 
 task jarCli (type: Jar) {
     archiveBaseName = cliBaseName
 
+    dependsOn resourcesCli
     dependsOn compileJava
-    dependsOn processResources
+
     manifest {
         attributes(
             'Main-Class': application.mainClass
@@ -94,32 +108,48 @@ task jarCli (type: Jar) {
     }
     from sourceSets.main.runtimeClasspath.collect { it.getName().endsWith('.jar') ? zipTree(it) : it }
     exclude 'de/pdinklag/mcstats/bukkit'
-    exclude '*.yml'
+    from cliResources
+}
+
+task resourcesPlugin (type: Copy) {
+    from('config/plugin') {
+        include '*.yml'
+    }
+    into pluginResources
+    filter { line -> line.replaceAll('@@MCSTATS_VERSION@@', version) }
 }
 
 task jarPlugin (type: Jar) {
     archiveBaseName = pluginBaseName
 
-    dependsOn compileJava
-    dependsOn processResources
+    dependsOn resourcesPlugin
     dependsOn copyWww
+    dependsOn compileJava
     from('build') {
         include 'www/**/*'
     }
     from sourceSets.main.runtimeClasspath.collect { it.getName().endsWith('.jar') ? zipTree(it) : it }
     exclude 'de/pdinklag/mcstats/cli'
+    from pluginResources
+    from('.') {
+        include 'stats/**/*.json'
+    }
 }
 
-task distCli (type: Zip) {
+task releaseCli (type: Zip) {
     dependsOn jarCli
     from(libsDir) {
         include "${cliBaseName}.jar"
+    }
+    from 'config/cli'
+    from('.') {
+        include 'stats/**/*.json'
     }
     archiveBaseName = cliBaseName
     destinationDirectory = file(releaseDir)
 }
 
-task distPlugin (type: Copy) {
+task releasePlugin (type: Copy) {
     dependsOn jarPlugin
     from(libsDir) {
         include "${pluginBaseName}.jar"
@@ -127,7 +157,7 @@ task distPlugin (type: Copy) {
     into releaseDir
 }
 
-task distWeb (type: Zip) {
+task releaseWeb (type: Zip) {
     dependsOn copyWww
     from 'build/www/'
 
@@ -136,7 +166,7 @@ task distWeb (type: Zip) {
 }
 
 task release {
-    dependsOn distCli
-    dependsOn distPlugin
-    dependsOn distWeb
+    dependsOn releaseCli
+    dependsOn releasePlugin
+    dependsOn releaseWeb
 }

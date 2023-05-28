@@ -329,6 +329,12 @@ public abstract class Updater {
      */
     protected abstract String getServerMotd();
 
+    /**
+     * Gets the updater version as a string.
+     * @return the updater version
+     */
+    protected abstract String getVersion();
+
     public void run() {
         // get current timestamp
         final long now = System.currentTimeMillis();
@@ -598,6 +604,7 @@ public abstract class Updater {
 
                     info.put("serverName", serverName);
                     info.put("updateTime", ClientUtils.convertTimestamp(now));
+                    info.put("updateVersion", getVersion());
                     info.put("defaultLanguage", config.getDefaultLanguage());
                     info.put("minPlayTime", config.getMinPlaytime());
                     info.put("showLastOnline", config.isShowLastOnline());

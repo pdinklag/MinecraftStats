@@ -1,6 +1,6 @@
 name: MinecraftStats
 main: de.pdinklag.mcstats.bukkit.MinecraftStatsPlugin
-version: 1.0
+version: @@MCSTATS_VERSION@@
 api-version: 1.13
 softdepend:
   - dynmap

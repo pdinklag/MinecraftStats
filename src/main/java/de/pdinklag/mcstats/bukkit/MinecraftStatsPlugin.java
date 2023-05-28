@@ -42,7 +42,7 @@ public class MinecraftStatsPlugin extends JavaPlugin {
     }
 
     void onWebPathInitialized() {
-        updater = new BukkitUpdater(getServer(), config, new LoggerLogWriter(getLogger()));
+        updater = new BukkitUpdater(this, config, new LoggerLogWriter(getLogger()));
         updateTask = new BukkitUpdateTask(updater);
         updateTask.runTaskTimerAsynchronously(this, 0, TICKS_PER_MINUTE * config.getUpdateInterval());
     }
