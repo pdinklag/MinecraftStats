@@ -423,9 +423,6 @@ public abstract class Updater {
                     } catch (Exception e) {
                         log.writeError("failed to write award data: " + awardJsonPath, e);
                     }
-                } else {
-                    log.writeLine("award " + id + " is not supported by server (data version "
-                            + serverDataVersion + ")");
                 }
             });
 
