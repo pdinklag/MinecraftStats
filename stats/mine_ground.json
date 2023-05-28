@@ -20,7 +20,9 @@
             "minecraft:rooted_dirt",
             "minecraft:sand",
             "minecraft:soul_sand",
-            "minecraft:soul_soil"
+            "minecraft:soul_soil",
+            "minecraft:suspicious_gravel",
+            "minecraft:suspicious_sand"
         ]
     }
 }
