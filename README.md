@@ -58,7 +58,7 @@ If you intend to use your own webserver, follow the steps described for the [web
 
 #### CLI
 
-Place the `MinecraftStatsCLI.jar` and `config.json` wherever you like. In the [Configuration](#configuration), you **must** set the `data → documentRoot` and `server → sources` settings to match your system.
+Unpack the `MinecraftStatsCLI.zip` from the release wherever you like. In the [Configuration](#configuration), you **must** set the `data → documentRoot` and `server → sources` settings to match your system.
 
 Furthermore, follow the steps described for the [web frontend setup](#web-frontend-setup) below.
 
@@ -70,11 +70,13 @@ The `server → sources` setting supports multiple entries, so you can combine m
 
 Extract the contents of `MinecraftStatsWeb.zip` to the place within your document root that you configured in the `data → documentRoot` setting.
 
+Make sure that the updater has write permissions to that directory.
+
 #### Migrating from Python
 
 If you previously used the Python version, you can use *MinecraftStats* almost like before by using the CLI. Bascially, `update.py` is now `MinecraftStatsCLI.jar` that you run via `java -jar` rather than Python. Just like for Minecraft 1.13, Java 8 or later is required.
 
-:warning: The former workflow of simply cloning this repository and updating away is now deprecated. The repository only contains the (Java) source code, the runnable jar must be built from source or can be downloaded from the releases.
+:warning: The former workflow of simply cloning this repository and updating away is now deprecated. The repository only contains the source code, the runnable jar and ready web frontend files must be built from source or can be downloaded from the releases. To migrate, keep your config and follow the steps described for the CLI and Web Frontend above, then do the following config updates.
 
 In your `config.json`, you will now have to add the `data → documentRoot` setting that points to your webserver (see [Configuration](#configuration) for details):
 
