@@ -154,46 +154,49 @@ public abstract class Updater {
             Path statsPath = source.getPlayerStatsPath();
             Path advancementsPath = source.getPlayerAdvancementsPath();
             try {
-                Files.list(statsPath).forEach(path -> {
-                    try {
-                        final String filename = path.getFileName().toString();
-                        if (Files.isRegularFile(path) && filename.endsWith(JSON_FILE_EXT)) {
-                            // extract UUID from filename
-                            final String uuid = filename.substring(0, filename.length() - JSON_FILE_EXT.length());
+                if (Files.isDirectory(statsPath)) {
+                    Files.list(statsPath).forEach(path -> {
+                        try {
+                            final String filename = path.getFileName().toString();
+                            if (Files.isRegularFile(path) && filename.endsWith(JSON_FILE_EXT)) {
+                                // extract UUID from filename
+                                final String uuid = filename.substring(0, filename.length() - JSON_FILE_EXT.length());
 
-                            // read JSON
-                            final JSONObject statsRoot = new JSONObject(Files.readString(path));
-                            final JSONObject stats = statsRoot.getJSONObject("stats");
+                                // read JSON
+                                final JSONObject statsRoot = new JSONObject(Files.readString(path));
+                                final JSONObject stats = statsRoot.getJSONObject("stats");
 
-                            // read advancements if present
-                            final Path advancementsJsonPath = advancementsPath.resolve(filename);
-                            if (Files.exists(advancementsJsonPath)) {
-                                final JSONObject advancements = new JSONObject(Files.readString(advancementsJsonPath));
-                                stats.put("advancements", advancements);
+                                // read advancements if present
+                                final Path advancementsJsonPath = advancementsPath.resolve(filename);
+                                if (Files.exists(advancementsJsonPath)) {
+                                    final JSONObject advancements = new JSONObject(
+                                            Files.readString(advancementsJsonPath));
+                                    stats.put("advancements", advancements);
+                                }
+
+                                // gather basic information
+                                Player player = discoveredPlayers.getOrDefault(uuid, new Player(uuid));
+
+                                final long lastOnlineTime = Files.getLastModifiedTime(path).toMillis();
+                                player.setLastOnlineTime(Math.max(player.getLastOnlineTime(), lastOnlineTime));
+
+                                final int dataVersion = DefaultReaders.DATA_VERSION_READER.read(statsRoot).toInt();
+                                player.setDataVersion(Math.max(player.getDataVersion(), dataVersion));
+
+                                final int playTime = DefaultReaders.PLAYTIME_READER.read(stats).toInt();
+                                player.setPlaytime(Math.max(player.getPlaytime(), playTime));
+
+                                // gather stats
+                                player.getStats().gather(awards.values(), stats, dataVersion);
+
+                                // register in set of players
+                                discoveredPlayers.put(uuid, player);
                             }
-
-                            // gather basic information
-                            Player player = discoveredPlayers.getOrDefault(uuid, new Player(uuid));
-
-                            final long lastOnlineTime = Files.getLastModifiedTime(path).toMillis();
-                            player.setLastOnlineTime(Math.max(player.getLastOnlineTime(), lastOnlineTime));
-
-                            final int dataVersion = DefaultReaders.DATA_VERSION_READER.read(statsRoot).toInt();
-                            player.setDataVersion(Math.max(player.getDataVersion(), dataVersion));
-
-                            final int playTime = DefaultReaders.PLAYTIME_READER.read(stats).toInt();
-                            player.setPlaytime(Math.max(player.getPlaytime(), playTime));
-
-                            // gather stats
-                            player.getStats().gather(awards.values(), stats, dataVersion);
-
-                            // register in set of players
-                            discoveredPlayers.put(uuid, player);
+                        } catch (Exception e) {
+                            log.writeError("failed to process file: " + path.toString(), e);
                         }
-                    } catch (Exception e) {
-                        log.writeError("failed to process file: " + path.toString(), e);
-                    }
-                });
+                    });
+                }
             } catch (IOException e) {
                 log.writeError("failed to run discovery on data source: " + statsPath.toString(), e);
             }
@@ -315,6 +318,7 @@ public abstract class Updater {
 
     /**
      * Gets the updater version as a string.
+     * 
      * @return the updater version
      */
     protected abstract String getVersion();
