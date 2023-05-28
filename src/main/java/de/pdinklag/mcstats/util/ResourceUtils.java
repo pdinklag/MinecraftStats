@@ -49,19 +49,17 @@ public class ResourceUtils {
     public static void extractResourcesToFiles(String dirname, Path dest)
             throws URISyntaxException, UnsupportedEncodingException, IOException {
         final int filenamePrefixLength = dirname.length() + 2;
+
         for (String resource : getResourceFilenames(dirname)) {
             final Path destPath = dest.resolve(resource.substring(filenamePrefixLength));
             if (destPath.getFileName().toString().contains(".")) {
-                // this is a file, extract it
+                Files.createDirectories(destPath.getParent());
                 try (
                         InputStream in = ResourceUtils.class.getResourceAsStream(resource);
                         OutputStream out = Files.newOutputStream(destPath, StandardOpenOption.CREATE,
                                 StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)) {
                     out.write(in.readAllBytes());
                 }
-            } else {
-                // this is a directory, create it
-                Files.createDirectories(destPath);
             }
         }
     }

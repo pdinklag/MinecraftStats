@@ -14,11 +14,9 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import de.pdinklag.mcstats.util.ResourceUtils;
 import de.pdinklag.mcstats.util.ClientUtils;
 import de.pdinklag.mcstats.util.FileUtils;
 import de.pdinklag.mcstats.util.MinecraftServerUtils;
-import de.pdinklag.mcstats.util.StreamUtils;
 
 /**
  * The heart of MinecraftStats.

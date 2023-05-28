@@ -27,7 +27,7 @@ public class UnpackTask extends BukkitRunnable {
             // notify plugin
             plugin.onUnpackComplete();
         } catch(Exception e) {
-            plugin.getLogger().severe(e.getMessage());
+            new LoggerLogWriter(plugin.getLogger()).writeError("Failed to unpack resources", e);
         }
     }
 }
