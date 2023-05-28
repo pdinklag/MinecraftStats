@@ -6,7 +6,7 @@ _MinecraftStats_ is a web browser application for the [statistics](http://minecr
 
 The presentation is done by giving __awards__ to players for certain achievements. For example, the player who played on the server for the longest total time receives the _Dedication_ award. Every award has a viewable ranking associated to it with __medals__ - the award holder gets the gold medal, the second the silver medal and the third the bronze medal for the award. Each medal gives players a __crown score__ (1 for every bronze medal, 2 for every silver, 4 for every gold medal), which is displayed in a server __hall of fame__.
 
-A live demo of _MinecraftStats_ in action is available here: [DVG Snapshot Stats](http://mine3.dvgaming.com/). Feel free to join the project's [Discord](https://discord.gg/brH5PGG8By)!
+A live demo of _MinecraftStats_ in action is available here: [DVG Snapshot Stats](http://mine3.dvgaming.com/). Feel free to join the project's [Discord](https://discord.gg/brH5PGG8By) for help &ndash; or just for fun!
 
 [TOC]
 
@@ -38,9 +38,9 @@ This section will guide you through getting *MinecraftStats* up and running.
 
 #### Plugin
 
-The plugin can be used in any server capable of running Spigot plugins, particularly SpigotMC or PaperMC. *MinecraftStats* automatically detects the following plugins that feature a webserver:
+The plugin can be used in any server capable of running Spigot plugins, particularly [Spigot](https://www.spigotmc.org/) or [PaperMC](https://papermc.io/). *MinecraftStats* automatically detects the following plugins that feature a webserver:
 
-* dynmap
+* [dynmap](https://github.com/webbukkit/dynmap)
 
 That said, if you have any of the above plugins installed, there is no need to setup a webserver yourself unless you desire to.
 
@@ -266,7 +266,7 @@ The project started as a hyper-casual idea to get player rankings for certain th
 
 *MinecraftStats* was rewritten twice. The first rewrite happened in 2018 following the release of [snapshot 17w47a](https://minecraft.fandom.com/wiki/Java_Edition_17w47a) for Minecraft 1.13, where Mojang change the structure of how Minecraft stores player statistics completely.
 
-Throughout the years, *MinecraftStats* gained some popularity, much more than anticipated. With that, requests for a Bukki/Spigot/Paper plugin became more frequent. A first shot at a plugin that simply executed the Python script failed, because many hosters don't allow that. For that reason, and to reflect the fact that the project had become much more complex and the Python code became more and more of a mess, the project was rewritten in Java in a way that both plugin and vanilla servers are supported.
+Throughout the years, *MinecraftStats* gained some popularity, much more than anticipated. With that, requests for a Bukkit (Spigot / PaperMC) plugin became more frequent. A first shot at a plugin that simply executed the Python script failed, because many hosters don't allow that. For that reason, and to reflect the fact that the project had become much more complex and the Python code became more and more of a mess, the project was rewritten in Java in a way that both plugin and vanilla servers are supported.
 
 ## License and Attribution
 
