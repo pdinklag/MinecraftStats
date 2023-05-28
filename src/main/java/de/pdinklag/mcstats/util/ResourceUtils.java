@@ -1,11 +1,16 @@
 package de.pdinklag.mcstats.util;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -16,17 +21,7 @@ import java.util.jar.JarFile;
  * Utilities related to the JAR's resources.
  */
 public class ResourceUtils {
-    /**
-     * Lists the names of the available resource files in the given directory.
-     * 
-     * @param classLoader the relevant class loader
-     * @param dirname the name of the directory to list
-     * @return the names of the available resource files in that directory
-     * @throws URISyntaxException
-     * @throws UnsupportedEncodingException
-     * @throws IOException
-     */
-    public static List<String> getResourceFilenames(ClassLoader classLoader, String dirname)
+    private static List<String> getResourceFilenames(String dirname)
             throws URISyntaxException, UnsupportedEncodingException, IOException {
         List<String> filenames = new ArrayList<>();
 
@@ -34,7 +29,7 @@ public class ResourceUtils {
             dirname = dirname + "/";
         }
 
-        final URL url = classLoader.getResource(dirname);
+        final URL url = ResourceUtils.class.getClassLoader().getResource(dirname);
         if (url != null && url.getProtocol().equals("jar")) {
             final String path = url.getPath();
             final String jarPath = path.substring(5, path.indexOf("!"));
@@ -49,5 +44,25 @@ public class ResourceUtils {
             }
         }
         return filenames;
+    }
+
+    public static void extractResourcesToFiles(String dirname, Path dest)
+            throws URISyntaxException, UnsupportedEncodingException, IOException {
+        final int filenamePrefixLength = dirname.length() + 2;
+        for (String resource : getResourceFilenames(dirname)) {
+            final Path destPath = dest.resolve(resource.substring(filenamePrefixLength));
+            if (destPath.getFileName().toString().contains(".")) {
+                // this is a file, extract it
+                try (
+                        InputStream in = ResourceUtils.class.getResourceAsStream(resource);
+                        OutputStream out = Files.newOutputStream(destPath, StandardOpenOption.CREATE,
+                                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)) {
+                    out.write(in.readAllBytes());
+                }
+            } else {
+                // this is a directory, create it
+                Files.createDirectories(destPath);
+            }
+        }
     }
 }

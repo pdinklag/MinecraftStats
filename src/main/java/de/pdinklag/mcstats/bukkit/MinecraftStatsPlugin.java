@@ -12,7 +12,7 @@ import de.pdinklag.mcstats.util.MinecraftServerUtils;
 public class MinecraftStatsPlugin extends JavaPlugin {
     private static final long TICKS_PER_MINUTE = 60L * MinecraftServerUtils.TICKS_PER_SECOND;
 
-    private BukkitConfig config;
+    BukkitConfig config;
     private BukkitUpdater updater;
     private BukkitUpdateTask updateTask;
 
@@ -28,20 +28,17 @@ public class MinecraftStatsPlugin extends JavaPlugin {
             if(webserver != null) {
                 final Path documentRoot = webserver.getDocumentRoot().resolve(config.getWebSubdir());
                 config.setDocumentRoot(documentRoot);
-                if(config.isUnpackWebFiles()) {
-                    new UnpackWebFilesTask(this, documentRoot).runTaskAsynchronously(this);
-                } else {
-                    onWebPathInitialized();
-                }
             } else {
                 getLogger().warning("No document root specified -- please state one explictly in the configuration, or install a supported plugin featuring a webserver!");
+                return;
             }
-        } else {
-            onWebPathInitialized();
         }
+
+        // unpack what's necessary and then continue
+        new UnpackTask(this, config).runTaskAsynchronously(this);
     }
 
-    void onWebPathInitialized() {
+    void onUnpackComplete() {
         updater = new BukkitUpdater(this, config, new LoggerLogWriter(getLogger()));
         updateTask = new BukkitUpdateTask(updater);
         updateTask.runTaskTimerAsynchronously(this, 0, TICKS_PER_MINUTE * config.getUpdateInterval());

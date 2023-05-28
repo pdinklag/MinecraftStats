@@ -271,18 +271,6 @@ public abstract class Updater {
 
         // discover and instantiate stats
         try {
-            // from resources
-            ResourceUtils.getResourceFilenames(getClass().getClassLoader(), "stats").forEach(resource -> {
-                try {
-                    final JSONObject obj = new JSONObject(
-                            StreamUtils.readStreamFully(getClass().getResourceAsStream(resource)));
-                    parseAndRegisterStat(obj);
-                } catch (Exception e2) {
-                    log.writeError("failed to load stat from resources: " + resource, e2);
-                }
-            });
-
-            // from 
             if (Files.isDirectory(config.getStatsPath())) {
                 Files.list(config.getStatsPath()).forEach(path -> {
                     if (path.getFileName().toString().endsWith(JSON_FILE_EXT)) {
