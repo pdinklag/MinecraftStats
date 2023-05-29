@@ -8,8 +8,6 @@ The presentation is done by giving __awards__ to players for certain achievement
 
 A live demo of _MinecraftStats_ in action is available here: [DVG Snapshot Stats](http://mine3.dvgaming.com/). Feel free to join the project's [Discord](https://discord.gg/brH5PGG8By) for help &ndash; or just for fun!
 
-[TOC]
-
 ## Overview
 
 This is to give a brief overview as to how *MinecraftStats* works.
@@ -267,6 +265,8 @@ The project started as a hyper-casual idea to get player rankings for certain th
 *MinecraftStats* was rewritten twice. The first rewrite happened in 2018 following the release of [snapshot 17w47a](https://minecraft.fandom.com/wiki/Java_Edition_17w47a) for Minecraft 1.13, where Mojang change the structure of how Minecraft stores player statistics completely.
 
 Throughout the years, *MinecraftStats* gained some popularity, much more than anticipated. With that, requests for a Bukkit (Spigot / PaperMC) plugin became more frequent. A first shot at a plugin that simply executed the Python script failed, because many hosters don't allow that. For that reason, and to reflect the fact that the project had become much more complex and the Python code became more and more of a mess, the project was rewritten in Java in a way that both plugin and vanilla servers are supported.
+
+Only since the Java implementation, *MinecraftStats* officially has numbered versions that follow the [Semantic Versioning](https://semver.org/) scheme.
 
 ## License and Attribution
 
