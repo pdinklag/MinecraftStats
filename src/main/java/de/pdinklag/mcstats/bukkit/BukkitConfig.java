@@ -9,15 +9,14 @@ import de.pdinklag.mcstats.Config;
 import de.pdinklag.mcstats.FileSystemDataSource;
 
 public class BukkitConfig extends Config {
-    private static final String DEFAULT_WORLD_NAME= "world";
-
     private boolean unpackWebFiles = true;
     private int updateInterval = 5;
     private String webSubdir = "stats";
 
     public BukkitConfig(Plugin plugin)  {
-        // create data source
-        getDataSources().add(new FileSystemDataSource(Path.of(plugin.getServer().getWorldContainer().getAbsolutePath()), DEFAULT_WORLD_NAME));
+        // create data source for default world
+        final String defaultWorldName = plugin.getServer().getWorlds().get(0).getName();
+        getDataSources().add(new FileSystemDataSource(Path.of(plugin.getServer().getWorldContainer().getAbsolutePath()), defaultWorldName));
 
         // read config
         final Configuration bukkitConfig = plugin.getConfig();
