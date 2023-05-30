@@ -17,7 +17,7 @@ public class Player {
     private int dataVersion = 0;
 
     // update information
-    private PlayerProfile profile;
+    private PlayerProfile profile = new PlayerProfile();
     private final PlayerStats stats = new PlayerStats();
 
     /**
@@ -27,7 +27,6 @@ public class Player {
      */
     public Player(String uuid) {
         this.uuid = uuid;
-        this.profile = new PlayerProfile(uuid, null);
     }
 
     /**

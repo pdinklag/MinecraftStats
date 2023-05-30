@@ -23,17 +23,24 @@ public class PlayerProfile {
     }
 
     /**
-     * Constructs unverified profile information.
+     * Constructs unvalidated profile information.
      * 
      * @param name the player's name
-     * @param skin the identifier (URL suffix) of the player's skin
      */
-    public PlayerProfile(String name, String skin) {
-        this(name, skin, 0);
+    public PlayerProfile(String name) {
+        this(name, null, 0);
+    }
+
+    /**
+     * Constructs empty profile information.
+     */
+    public PlayerProfile() {
+        this("", null, 0);
     }
 
     /**
      * Tests whether the profile has a player name.
+     * 
      * @return true if it has a name, false otherwise
      */
     public boolean hasName() {

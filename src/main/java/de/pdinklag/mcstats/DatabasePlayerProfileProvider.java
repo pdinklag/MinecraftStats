@@ -11,7 +11,7 @@ public class DatabasePlayerProfileProvider implements PlayerProfileProvider {
         JSONObject db = new JSONObject();
         players.forEach(player -> {
             PlayerProfile profile = player.getProfile();
-            if(profile.hasName()) {
+            if (profile.hasName()) {
                 JSONObject obj = new JSONObject();
                 obj.put("name", profile.getName());
                 obj.put("skin", profile.getSkin());
@@ -37,11 +37,14 @@ public class DatabasePlayerProfileProvider implements PlayerProfileProvider {
     public PlayerProfile getPlayerProfile(Player player) {
         if (playersJson.has(player.getUuid())) {
             try {
-                JSONObject obj = playersJson.getJSONObject(player.getUuid());
-                return new PlayerProfile(
-                    obj.getString("name"),
-                    obj.optString("skin", null),
-                    obj.getLong("update"));
+                final JSONObject obj = playersJson.getJSONObject(player.getUuid());
+                final String name = obj.getString("name");
+                if (!player.getUuid().equals(name)) {
+                    return new PlayerProfile(
+                            name,
+                            obj.optString("skin", null),
+                            obj.getLong("update"));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
