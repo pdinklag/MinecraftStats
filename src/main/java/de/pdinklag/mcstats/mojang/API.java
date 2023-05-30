@@ -50,7 +50,7 @@ public class API {
 
                 return new PlayerProfile(name, skin, System.currentTimeMillis());
             } else {
-                throw new APIRequestException("no response for UUID: " + uuid);
+                return null;
             }
         } catch (Exception e) {
             throw new APIRequestException(e);

@@ -58,7 +58,7 @@ public abstract class Updater {
     private final Path dbPlayerlistPath;
 
     protected PlayerProfileProvider getAuthenticProfileProvider() {
-        return new MojangAPIPlayerProfileProvider();
+        return new MojangAPIPlayerProfileProvider(log);
     }
 
     protected void gatherLocalProfileProviders(PlayerProfileProviderList providers) {
