@@ -13,11 +13,13 @@ repositories {
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url 'https://oss.sonatype.org/content/repositories/central' }
+    maven { url 'https://repo.codemc.org/repository/maven-releases' }
 }
 
 dependencies {
     implementation 'org.json:json:20220924'
     compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
+    compileOnly 'net.skinsrestorer:skinsrestorer-api:14.2.10'
 }
 
 task concatJs {
