@@ -26,6 +26,14 @@ Using the [Configuration](#configuration), you can change some behaviour like ex
 
 This documentation is written for both variants. If anything special applies to one variant in particular, you will always find a corresponding subsection.
 
+#### Plugin Exclusives
+
+The Plugin has some exclusive features, making its use much easier than the CLI. Some features are for communication with other plugins, others are conveniences that are enabled by being run in the scope of a server application.
+
+* Automatic updates at regular intervals.
+* Automatic detection of webservers run by other plugins ([dynmap](https://github.com/webbukkit/dynmap)).
+* Support for offline-mode skins via [SkinsRestorer](https://skinsrestorer.net/) (v14.2.2 or later).
+
 ## Setup
 
 This section will guide you through getting *MinecraftStats* up and running.
@@ -269,6 +277,14 @@ Throughout the years, *MinecraftStats* gained some popularity, much more than an
 Only since the Java implementation, *MinecraftStats* officially has numbered versions that follow the [Semantic Versioning](https://semver.org/) scheme.
 
 ## Changelog
+
+### 3.1.0
+
+This update adds SkinsRestorer for the plugin and avoids unnecessary Mojang API calls.
+
+* The plugin can now get skins from [SkinsRestorer](https://skinsrestorer.net/) v14.2.2 or later.
+* If a player is detected to be an offline player (e.g., Floodgate players or if the Mojang API gave an empty response), no further attempts at asking the Mojang API will be made.
+* Minimized the log output of the plugin.
 
 ### 3.0.2
 
