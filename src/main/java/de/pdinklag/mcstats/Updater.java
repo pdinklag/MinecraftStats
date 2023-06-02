@@ -293,11 +293,9 @@ public abstract class Updater {
             if (Files.isDirectory(config.getEventsPath())) {
                 Files.list(config.getEventsPath()).forEach(path -> {
                     if (path.getFileName().toString().endsWith(JSON_FILE_EXT)) {
-                        log.writeLine("found " + path.toAbsolutePath().toString());
                         try {
                             final JSONObject obj = new JSONObject(Files.readString(path));
                             parseAndRegisterEvent(obj);
-                            log.writeLine("loaded " + path.toAbsolutePath().toString());
                         } catch (Exception e2) {
                             log.writeError("failed to load stat from file: " + path.toString(), e2);
                         }
