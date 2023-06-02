@@ -44,7 +44,7 @@ public class BukkitUpdater extends Updater {
     @Override
     protected PlayerProfileProvider getAuthenticProfileProvider() {
         if (isSkinsRestorerAvailable) {
-            return new SkinsRestorerProfileProvider(log);
+            return new SkinsRestorerProfileProvider();
         } else {
             return super.getAuthenticProfileProvider();
         }

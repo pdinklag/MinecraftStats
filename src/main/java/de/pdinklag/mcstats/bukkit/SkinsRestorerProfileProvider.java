@@ -1,7 +1,6 @@
 package de.pdinklag.mcstats.bukkit;
 
 import de.pdinklag.mcstats.AccountType;
-import de.pdinklag.mcstats.LogWriter;
 import de.pdinklag.mcstats.Player;
 import de.pdinklag.mcstats.PlayerProfile;
 import de.pdinklag.mcstats.PlayerProfileProvider;
@@ -11,11 +10,8 @@ import net.skinsrestorer.api.property.IProperty;
 
 public class SkinsRestorerProfileProvider implements PlayerProfileProvider {
     private final SkinsRestorerAPI api;
-    private final LogWriter log;
 
-    public SkinsRestorerProfileProvider(LogWriter log) {
-        this.log = log;
-
+    public SkinsRestorerProfileProvider() {
         api = SkinsRestorerAPI.getApi();
     }
 
