@@ -10,6 +10,7 @@ import de.pdinklag.mcstats.util.ClientUtils;
 public class Player {
     // identifier
     private final String uuid;
+    private AccountType accountType;
 
     // discovery and filtering information
     private long lastOnlineTime = 0;
@@ -27,6 +28,7 @@ public class Player {
      */
     public Player(String uuid) {
         this.uuid = uuid;
+        this.accountType = AccountType.detect(uuid);
     }
 
     /**
@@ -36,6 +38,24 @@ public class Player {
      */
     public String getUuid() {
         return uuid;
+    }
+
+    /**
+     * Gets the player's account type.
+     * 
+     * @return the player's account type.
+     */
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    /**
+     * Sets the player's account type.
+     * 
+     * @param accountType the player's account type.
+     */
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 
     /**

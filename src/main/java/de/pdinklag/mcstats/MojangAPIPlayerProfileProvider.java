@@ -2,6 +2,7 @@ package de.pdinklag.mcstats;
 
 import de.pdinklag.mcstats.mojang.API;
 import de.pdinklag.mcstats.mojang.APIRequestException;
+import de.pdinklag.mcstats.mojang.EmptyResponseException;
 
 /**
  * Provides player profiles via the Mojang API.
@@ -18,15 +19,16 @@ public class MojangAPIPlayerProfileProvider implements PlayerProfileProvider {
 
     @Override
     public PlayerProfile getPlayerProfile(Player player) {
-        try {
-            PlayerProfile profile = API.requestPlayerProfile(player.getUuid());
-            if(profile != null) {
+        if (player.getAccountType().maybeMojangAccount()) {
+            try {
+                PlayerProfile profile = API.requestPlayerProfile(player.getUuid());
+                player.setAccountType(AccountType.MOJANG);
                 return profile;
-            } else {
-                log.writeLine("empty Mojang API response for player: " + player.getUuid());
+            } catch (EmptyResponseException e) {
+                player.setAccountType(AccountType.OFFLINE);
+            } catch (APIRequestException e) {
+                log.writeError("Mojang API profile request for player failed: " + player.getUuid(), e);
             }
-        } catch(APIRequestException e) {
-            log.writeError("Mojang API profile request for player failed: " + player.getUuid(), e);
         }
         return player.getProfile();
     }

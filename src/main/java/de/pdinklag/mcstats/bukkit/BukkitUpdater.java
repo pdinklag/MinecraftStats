@@ -68,8 +68,7 @@ public class BukkitUpdater extends Updater {
 
     @Override
     public void run() {
-        log.writeLine("Updating ...");
         super.run();
-        log.writeLine("Update complete.");
+        log.writeLine("Web frontend updated.");
     }
 }

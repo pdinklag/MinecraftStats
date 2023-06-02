@@ -375,7 +375,6 @@ public abstract class Updater {
                 final long updateInterval = DAYS_TO_MILLISECONDS * (long) config.getProfileUpdateInterval();
                 final long timeSinceUpdate = now - player.getProfile().getLastUpdateTime();
                 if (timeSinceUpdate >= updateInterval) {
-                    log.writeLine("updating profile for " + player.getUuid() + " ...");
                     player.setProfile(authenticProvider.getPlayerProfile(player));
 
                     if (!isValid && player.getProfile().hasName()) {

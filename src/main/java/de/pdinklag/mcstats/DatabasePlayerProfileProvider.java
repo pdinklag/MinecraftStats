@@ -15,6 +15,11 @@ public class DatabasePlayerProfileProvider implements PlayerProfileProvider {
                 JSONObject obj = new JSONObject();
                 obj.put("name", profile.getName());
                 obj.put("skin", profile.getSkin());
+
+                if (player.getAccountType().isMojangAPIResult()) {
+                    obj.put("type", player.getAccountType().ordinal());
+                }
+
                 obj.put("update", profile.getLastUpdateTime());
                 db.put(player.getUuid(), obj);
             }
@@ -39,6 +44,9 @@ public class DatabasePlayerProfileProvider implements PlayerProfileProvider {
             try {
                 final JSONObject obj = playersJson.getJSONObject(player.getUuid());
                 final String name = obj.getString("name");
+
+                player.setAccountType(AccountType.byOrdinal(obj.optInt("type", player.getAccountType().ordinal())));
+
                 if (!player.getUuid().equals(name)) {
                     return new PlayerProfile(
                             name,

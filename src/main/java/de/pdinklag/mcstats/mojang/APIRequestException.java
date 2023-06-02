@@ -18,5 +18,4 @@ public class APIRequestException extends RuntimeException {
     APIRequestException(String message, Throwable cause) {
         super(message, cause);
     }
-    
 }

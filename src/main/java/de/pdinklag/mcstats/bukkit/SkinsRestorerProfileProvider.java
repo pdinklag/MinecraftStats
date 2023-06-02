@@ -1,5 +1,6 @@
 package de.pdinklag.mcstats.bukkit;
 
+import de.pdinklag.mcstats.AccountType;
 import de.pdinklag.mcstats.LogWriter;
 import de.pdinklag.mcstats.Player;
 import de.pdinklag.mcstats.PlayerProfile;
@@ -32,14 +33,17 @@ public class SkinsRestorerProfileProvider implements PlayerProfileProvider {
             }
         }
 
-        final IProperty skinsRestorerProfile = api.getProfile(player.getUuid());
-        if (skinsRestorerProfile != null) {
-            final MojangProfileResponse mojangProfile = api.getSkinProfileData(skinsRestorerProfile);
-            return new PlayerProfile(mojangProfile.getProfileName(),
-                    mojangProfile.getTextures().getSKIN().getStrippedUrl(), System.currentTimeMillis());
-        } else {
-            log.writeLine("SkinsRestorer did not find any info on player: " + player.getUuid());
-            return currentProfile;
+        if (player.getAccountType().maybeMojangAccount()) {
+            final IProperty skinsRestorerProfile = api.getProfile(player.getUuid());
+            if (skinsRestorerProfile != null) {
+                player.setAccountType(AccountType.MOJANG);
+                final MojangProfileResponse mojangProfile = api.getSkinProfileData(skinsRestorerProfile);
+                return new PlayerProfile(mojangProfile.getProfileName(),
+                        mojangProfile.getTextures().getSKIN().getStrippedUrl(), System.currentTimeMillis());
+            } else {
+                player.setAccountType(AccountType.OFFLINE);
+            }
         }
+        return currentProfile;
     }
 }

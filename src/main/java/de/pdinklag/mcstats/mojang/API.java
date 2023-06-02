@@ -19,11 +19,14 @@ public class API {
 
     /**
      * Requests a player profile from the Mojang API.
+     * 
      * @param uuid the UUID of the player in question
      * @return the player profile associated to the given UUID.
-     * @throws APIRequestException in case any error occurs trying to request the profile
+     * @throws EmptyResponseException in case the Mojang API gives an empty response
+     * @throws APIRequestException    in case any error occurs trying to request the
+     *                                profile
      */
-    public static PlayerProfile requestPlayerProfile(String uuid) throws APIRequestException {
+    public static PlayerProfile requestPlayerProfile(String uuid) throws EmptyResponseException, APIRequestException {
         try {
             final String response;
             {
@@ -50,8 +53,10 @@ public class API {
 
                 return new PlayerProfile(name, skin, System.currentTimeMillis());
             } else {
-                return null;
+                throw new EmptyResponseException();
             }
+        } catch (EmptyResponseException e) {
+            throw e; // nb: delegate
         } catch (Exception e) {
             throw new APIRequestException(e);
         }
