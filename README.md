@@ -268,6 +268,26 @@ Throughout the years, *MinecraftStats* gained some popularity, much more than an
 
 Only since the Java implementation, *MinecraftStats* officially has numbered versions that follow the [Semantic Versioning](https://semver.org/) scheme.
 
+## Changelog
+
+### 3.0.2
+
+This patch release fixes issues that occurred for offline-mode servers.
+
+- The message logged when a player's UUID cannot be found by Mojang's API is now less scary.
+- The plugin now gets dynmap's actual `webpath` rather than assuming it to be "web".
+- Fixed a player's default name being their UUID, which causes their name never to be updated if they cannot be found by Mojang's API.
+
+### 3.0.1
+
+In full 202X fashion, here's a release-day patch that fixes an issue in the plugin. The CLI and web frontend are not affected.
+
+- The plugin now gets the default world's actual name from the Bukkit server rather than assuming it to be `world`.
+
+### 3.0.0
+
+This was the initial release of the Java reimplementation.
+
 ## License and Attribution
 
 *MinecraftStats* is released under the [Creative Commons BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license. This means you can pretty much use and modify it freely, with the only requirements being attribution and not putting it under restrictive licenses if modified.
