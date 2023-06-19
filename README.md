@@ -278,6 +278,14 @@ Only since the Java implementation, *MinecraftStats* officially has numbered ver
 
 ## Changelog
 
+### 3.2.0
+
+This update adds automatic detection of BlueMap's webserver and fixes bugs in the plugin.
+
+* Additionally to dynmap, the plugin now also detects the webserver of [BlueMap](https://bluemap.bluecolored.de/).
+* Fixed the `data → unpackWebFiles` being ignored.
+* Fixed an issue with non-ASCII characters in generated JSON files, color-coded server MOTDs should now work again.
+
 ### 3.1.0
 
 This update adds SkinsRestorer for the plugin and avoids unnecessary Mojang API calls.
