@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import de.pdinklag.mcstats.util.ClientUtils;
 import de.pdinklag.mcstats.util.FileUtils;
+import de.pdinklag.mcstats.util.JSONUtils;
 import de.pdinklag.mcstats.util.MinecraftServerUtils;
 
 /**
@@ -232,7 +233,7 @@ public abstract class Updater {
 
             final Path pageFilePath = dbPlayerlistPath.resolve(String.format(filenameFormat, pageNum + 1));
             try {
-                FileUtils.writeStringGzipped(pageFilePath, page.toString());
+                FileUtils.writeStringGzipped(pageFilePath, JSONUtils.toASCIIString(page));
             } catch (IOException e) {
                 log.writeError("failed to write playerlist page file: " + pageFilePath, e);
             }
@@ -416,7 +417,7 @@ public abstract class Updater {
                     // write award summary file
                     Path awardJsonPath = dbRankingsPath.resolve(id + JSON_FILE_EXT);
                     try {
-                        Files.writeString(awardJsonPath, ranking.toJSON().toString());
+                        Files.writeString(awardJsonPath, JSONUtils.toASCIIString(ranking.toJSON()));
                     } catch (Exception e) {
                         log.writeError("failed to write award data: " + awardJsonPath, e);
                     }
@@ -483,7 +484,7 @@ public abstract class Updater {
                         }
 
                         try {
-                            Files.writeString(eventDataPath, eventData.toString());
+                            Files.writeString(eventDataPath, JSONUtils.toASCIIString(eventData));
                         } catch (Exception e) {
                             log.writeError("error writing data for event " + event.getId(), e);
                         }
@@ -498,7 +499,7 @@ public abstract class Updater {
             allPlayers.forEach((uuid, player) -> {
                 Path playerdataPath = dbPlayerdataPath.resolve(uuid + JSON_FILE_EXT);
                 try {
-                    Files.writeString(playerdataPath, player.getStats().toJSON().toString());
+                    Files.writeString(playerdataPath, JSONUtils.toASCIIString(player.getStats().toJSON()));
                 } catch (Exception ex) {
                     log.writeError("failed to write player data: " + playerdataPath, ex);
                 }
@@ -506,7 +507,7 @@ public abstract class Updater {
 
             // write players.json for next update
             Files.writeString(dbPlayersJsonPath,
-                    DatabasePlayerProfileProvider.createDatabase(validPlayers).toString());
+                    JSONUtils.toASCIIString(DatabasePlayerProfileProvider.createDatabase(validPlayers)));
 
             // write playerlist
             writePlayerList(validPlayers, DATABASE_PLAYERLIST_ALL_FORMAT);
@@ -530,7 +531,7 @@ public abstract class Updater {
                 playerCache.forEach((prefix, cache) -> {
                     final Path groupPath = dbPlayercachePath.resolve(prefix + JSON_FILE_EXT);
                     try {
-                        Files.writeString(groupPath, cache.toString());
+                        Files.writeString(groupPath, JSONUtils.toASCIIString(cache));
                     } catch (IOException e) {
                         log.writeError("failed to write playerache file: " + groupPath, e);
                     }
@@ -656,7 +657,7 @@ public abstract class Updater {
 
                 // write
                 final Path summaryPath = dbPath.resolve(DATABASE_SUMMARY);
-                FileUtils.writeStringGzipped(summaryPath, summary.toString());
+                FileUtils.writeStringGzipped(summaryPath, JSONUtils.toASCIIString(summary));
             }
         } catch (Exception e) {
             log.writeError("failed to write database", e);
