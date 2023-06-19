@@ -16,6 +16,13 @@ public abstract class PluginWebserver {
                 return new DynmapWebserver(dynmapPlugin);
             }
         }
+        {
+            // try BlueMap
+            Plugin bluemapPlugin = pluginManager.getPlugin(BlueMapWebserver.PLUGIN_NAME);
+            if (bluemapPlugin != null) {
+                return new BlueMapWebserver(bluemapPlugin);
+            }
+        }
         return null;
     }
 
