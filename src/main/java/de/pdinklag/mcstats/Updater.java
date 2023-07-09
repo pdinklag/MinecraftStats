@@ -631,20 +631,22 @@ public abstract class Updater {
                 // events
                 final JSONObject summaryEvents = new JSONObject();
                 events.values().forEach(event -> {
-                    final JSONObject eventSummary = new JSONObject();
-                    eventSummary.put("title", event.getTitle());
-                    eventSummary.put("startTime", ClientUtils.convertTimestamp(event.getStartTime()));
-                    eventSummary.put("stopTime", ClientUtils.convertTimestamp(event.getEndTime()));
-                    eventSummary.put("link", event.getLinkedStatId());
-                    eventSummary.put("active", event.hasStarted(now) && !event.hasEnded(now));
+                    if(event.hasStarted(now)) {
+                        final JSONObject eventSummary = new JSONObject();
+                        eventSummary.put("title", event.getTitle());
+                        eventSummary.put("startTime", ClientUtils.convertTimestamp(event.getStartTime()));
+                        eventSummary.put("stopTime", ClientUtils.convertTimestamp(event.getEndTime()));
+                        eventSummary.put("link", event.getLinkedStatId());
+                        eventSummary.put("active", event.hasStarted(now) && !event.hasEnded(now));
 
-                    final Ranking<IntValue>.Entry winner = eventWinners.get(event);
-                    if (winner != null) {
-                        eventSummary.put("best", winner.toJSON());
-                        summaryRelevantPlayers.add(winner.getPlayer());
+                        final Ranking<IntValue>.Entry winner = eventWinners.get(event);
+                        if (winner != null) {
+                            eventSummary.put("best", winner.toJSON());
+                            summaryRelevantPlayers.add(winner.getPlayer());
+                        }
+
+                        summaryEvents.put(event.getId(), eventSummary);
                     }
-
-                    summaryEvents.put(event.getId(), eventSummary);
                 });
                 summary.put("events", summaryEvents);
 
