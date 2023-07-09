@@ -436,7 +436,7 @@ public abstract class Updater {
                         eventData.put("name", event.getId());
                         eventData.put("title", event.getTitle());
                         eventData.put("startTime", ClientUtils.convertTimestamp(event.getStartTime()));
-                        eventData.put("endTime", ClientUtils.convertTimestamp(event.getEndTime()));
+                        eventData.put("stopTime", ClientUtils.convertTimestamp(event.getEndTime()));
                         eventData.put("link", linkedStat.getId());
 
                         if (event.hasStarted(now)) {
@@ -634,7 +634,7 @@ public abstract class Updater {
                     final JSONObject eventSummary = new JSONObject();
                     eventSummary.put("title", event.getTitle());
                     eventSummary.put("startTime", ClientUtils.convertTimestamp(event.getStartTime()));
-                    eventSummary.put("endTime", ClientUtils.convertTimestamp(event.getEndTime()));
+                    eventSummary.put("stopTime", ClientUtils.convertTimestamp(event.getEndTime()));
                     eventSummary.put("link", event.getLinkedStatId());
                     eventSummary.put("active", event.hasStarted(now) && !event.hasEnded(now));
 
