@@ -280,6 +280,10 @@ Only since the Java implementation, *MinecraftStats* officially has numbered ver
 
 ## Changelog
 
+### 3.2.1
+
+This update fixes future events being displayed as "Finished" in the web frontend, as well as the "Invalid Date" display for event end times.
+
 ### 3.2.0
 
 This update adds automatic detection of BlueMap's webserver and fixes bugs in the plugin.
