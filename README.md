@@ -200,15 +200,15 @@ Be sure to align your start and end times to your update interval in order to av
 
 ### Example
 
-As an example, consider a Halloween-themed event called "Skeleton Hunt" that tracks how many skeletons people kill between October 30, 10 AM in the morning and midnight of November 1. We would create the file `skeleton-hunt.json` in the `events` directory with the following contents:
+As an example, consider a Halloween-themed event called "Skeleton Hunt" that tracks how many skeletons people kill between October 30, 10 AM in the morning and midnight of November 1. We would create the file `skeleton-hunt-2023.json` in the `events` directory with the following contents:
 
 ```json
 {
-    "name": "skeleton_hunt_2021",
+    "name": "skeleton_hunt_2023",
     "title": "Skeleton Hunt",
     "stat": "kill_skeleton",
     "startTime": "2023-10-30 10:00",
-    "endTime": "2023-01-01 00:00"
+    "endTime": "2023-11-01 00:00"
 }
 ```
 
