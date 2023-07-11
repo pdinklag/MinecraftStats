@@ -10,6 +10,8 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ "master" ]
+    tags:
+      - "v*.*.*"
   pull_request:
     branches: [ "master" ]
 
@@ -35,7 +37,6 @@ jobs:
         gradle-version: current
     - name: Releases
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
           build/release/MinecraftStatsCLI.zip
