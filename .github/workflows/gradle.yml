@@ -49,4 +49,4 @@ jobs:
         files: |
           build/release/MinecraftStatsCLI.zip
           build/release/MinecraftStatsWeb.zip
-        tag_name: ${{ steps.latest_tag.outputs.tag }}
+        tag_name: "v1.0.0"
