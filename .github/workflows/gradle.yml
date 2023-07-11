@@ -39,4 +39,3 @@ jobs:
         files: |
           build/release/MinecraftStatsCLI.zip
           build/release/MinecraftStatsWeb.zip
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
