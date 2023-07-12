@@ -43,8 +43,6 @@ a:hover {
 #navigation {
   background-color: black;
   border-radius: 0.5rem;
-  height: 75px;
-  width: 400px;
   align-items: center;
   justify-content: center;
   display: flex;
