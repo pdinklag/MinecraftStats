@@ -65,6 +65,7 @@ task copyWww(type: Copy) {
     from('www') {
         include 'index.html'
         include 'font/*.woff2'
+        include 'font/*.ttf'
         include 'img/**/*.gif'
         include 'img/**/*.png'
         include 'js/lib/**'
