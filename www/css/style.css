@@ -1,260 +1,369 @@
 /* define Minecraft font */
 @font-face {
-    font-family: minecraftia;
-    src: url(./font/minecraftia.woff2);
+  font-family: minecraftia;
+  src: url(./font/minecraftia.woff2);
 }
 
 @font-face {
-    font-family: Zpix;
-    src: url(./font/zpix.woff2?v2021-03-21);
+  font-family: Zpix;
+  src: url(./font/zpix.woff2?v2021-03-21);
 }
-  
+
 /* Global */
 html {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 /* Body */
 body {
-    font-family: minecraftia, Zpix, monospace;
-
-    color: #EEE;
-
-    background-color: black;
-    background-image: url('img/bg/grass_side.png'), url('img/bg/dirt.png'), url('img/bg/stone.png');
-    background-position: left top, left 64px, left 128px;
-    background-repeat: repeat-x, repeat-x, repeat;
+  font-family: minecraftia, Zpix, monospace;
+  color: #eee;
+  background-position: left top, left 64px, left 128px;
+  background: linear-gradient(-235deg, #565eb5 10%, #fd90af 100%);
 }
 
 /* Links */
 a {
-    color: #ACF;
-    text-decoration: none;
-    text-align: center;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
 }
 
 a:hover {
-    color: #ACF;
-    text-decoration: underline;
+  color: #acf;
+  text-decoration: underline;
 }
 
 /* Nav */
 #navigation {
-    background-color: rgba(0,0,0,0.75);
-    border-radius: 0.5rem;
+  background-color: black;
+  border-radius: 0.5rem;
+  height: 75px;
+  width: 400px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
 }
 
 #navbar-content {
-    z-index: 1;
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
 }
 
 .navbar-dark .navbar-toggler {
-    background-color: rgba(0,0,0,0.5);
-    border-width: 1px;
-    border-color: #333;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-width: 1px;
+  border-color: #333;
 }
 
-.navbar-dark .navbar-nav .nav-link { color: #ACF; }
-.navbar-dark .navbar-nav .nav-link:focus { color: #ACF; }
+.navbar-dark .navbar-nav .nav-link {
+  color: white;
+}
+.navbar-dark .navbar-nav .nav-link:focus {
+  color: #acf;
+}
 .navbar-dark .navbar-nav .nav-link:hover {
-    color: #ACF;
-    text-decoration: underline;
+  color: #acf;
+  text-decoration: underline;
 }
 
 /* Info */
 #info {
-    background-color: rgba(0,0,0,0.75);
-    border-radius: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.75);
+  border-radius: 0.5rem;
 }
 
 /* Text content types */
-.text-muted { color: #999 !important; }
-.text-success { color: #AFA !important; }
-.text-danger { color: #FAA !important; }
-.text-info { color: #CCF !important; }
-.text-data { color: #FFA !important; }
+.text-muted {
+  color: white !important;
+}
+.text-success {
+  color: #afa !important;
+}
+.text-danger {
+  color: #faa !important;
+}
+.text-info {
+  color: #ccf !important;
+}
+.text-data {
+  color: #ffa !important;
+}
 
 /* Tables */
 .table thead th {
-    color: #FFF;
-    border-bottom-style: solid;
-    border-bottom-color: #666 !important;
-    border-bottom-width: 2px;
+  color: #fff;
+  border-bottom-style: solid;
+  border-bottom-color: #666 !important;
+  border-bottom-width: 2px;
 }
 
-.table tbody td, .table tbody th {
-    border-top-style: dashed;
-    border-top-color: #666;
-    border-top-width: 1px;
-    border-bottom-style: none;
+.table tbody td,
+.table tbody th {
+  border-top-style: dashed;
+  border-top-color: #666;
+  border-top-width: 1px;
+  border-bottom-style: none;
 }
 
 .table tbody tr:hover {
-    color: #EEE;
+  color: #eee;
 }
 
 .table-hover tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(0, 0, 0, 0.33);
 }
 
 /* Time data */
 .table .time-data {
-    display: inline-block;
-    margin: 0;
-    border-spacing: 0;
+  display: inline-block;
+  margin: 0;
+  border-spacing: 0;
 }
 
 .table .time-data td {
-    border-style: none;
-    text-align: right;
-    color: #FFA;
-    padding: 0;
-    margin: 0;
+  border-style: none;
+  text-align: right;
+  color: #ffa;
+  padding: 0;
+  margin: 0;
 }
 
 .table .time-data tr:hover {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
 
-.table .time-data .days    { width: 3em; }
-.table .time-data .hours   { width: 2.75em; }
-.table .time-data .minutes { width: 3.75em; }
-.table .time-data .seconds { width: 2.75em; }
+.table .time-data .days {
+  width: 3em;
+}
+.table .time-data .hours {
+  width: 2.75em;
+}
+.table .time-data .minutes {
+  width: 3.75em;
+}
+.table .time-data .seconds {
+  width: 2.75em;
+}
 
 /* Text styles */
-.text-shadow { text-shadow: 2px 2px rgba(0,0,0,0.5); }
-.text-underline { text-decoration: underline; }
+.text-shadow {
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.5);
+}
+.text-underline {
+  text-decoration: underline;
+}
 
 /* Images */
 .img-pixelated {
-    /* "official" proposal */
-    image-rendering: pixelated;
-    /* Firefox (and others?) */
-    image-rendering: optimizeSpeed;
-    /* Internet Exploder */
-    -ms-interpolation-mode: nearest-neighbor;
+  /* "official" proposal */
+  image-rendering: pixelated;
+  /* Firefox (and others?) */
+  image-rendering: optimizeSpeed;
+  /* Internet Exploder */
+  -ms-interpolation-mode: nearest-neighbor;
 }
 
-.img-textsize { height: 1em; }
-.img-textsize-1_5 { height: 1.5em; }
-.img-textsize-2 { height: 2em; }
-.img-textsize-3 { height: 3em; }
-.img-textsize-8 { height: 8em; }
+.img-textsize {
+  height: 1em;
+}
+.img-textsize-1_5 {
+  height: 1.5em;
+}
+.img-textsize-2 {
+  height: 2em;
+}
+.img-textsize-3 {
+  height: 3em;
+}
+.img-textsize-8 {
+  height: 8em;
+}
 
-.img-left { margin-left: -1em; }
+.img-left {
+  margin-left: -1em;
+}
 
 /* Sizes */
-.textw { width: 1em; min-width: 1em; max-width: 1em; }
-.texth { height: 1em; min-height: 1em; max-height: 1em; }
+.textw {
+  width: 1em;
+  min-width: 1em;
+  max-width: 1em;
+}
+.texth {
+  height: 1em;
+  min-height: 1em;
+  max-height: 1em;
+}
 
-.textw-1_5 { width: 1.5em; min-width: 1.5em; max-width: 1.5em; }
-.texth-1_5 { height: 1.5em; min-height: 1.5em; max-height: 1.5em; }
+.textw-1_5 {
+  width: 1.5em;
+  min-width: 1.5em;
+  max-width: 1.5em;
+}
+.texth-1_5 {
+  height: 1.5em;
+  min-height: 1.5em;
+  max-height: 1.5em;
+}
 
 /* Pagination */
 .page-link {
-    border-color: #888;
-    background-color: rgba(0, 0, 0, 0.33);
-    color: #FFF;
+  border-color: #888;
+  background-color: rgba(0, 0, 0, 0.33);
+  color: #fff;
 }
 
 .page-link:hover {
-    border-color: #ACF;
-    background-color: rgba(0, 0, 0, 0.33);
-    color: #ACF;
+  border-color: #acf;
+  background-color: rgba(0, 0, 0, 0.33);
+  color: #acf;
 }
 
 .page-dots {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
 
 .page-item.active .page-link {
-    font-weight: bold;
-    background-color: rgba(0, 0, 0, 0.33);
-    border-color: #FA4;
-    color: #FE0;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.33);
+  border-color: #fa4;
+  color: #fe0;
 }
 
 .page-item.disabled .page-link {
-    background-color: rgba(0, 0, 0, 0.33);
-    border-color: #888;
-    color: #888;
+  background-color: rgba(0, 0, 0, 0.33);
+  border-color: #888;
+  color: #888;
 }
 
 /* Dropdowns */
 .dropdown-menu {
-    background-color: rgba(0, 0, 0, 0.75);
-    z-index: 2;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 2;
 }
 
 .dropdown-item:hover {
-    background-color: unset;
+  background-color: unset;
 }
 
 a.dropdown-item {
-    color: #ACF;
-    text-decoration: none;
+  color: #acf;
+  text-decoration: none;
 }
 
 a.dropdown-item:hover {
-    color: #ACF;
-    text-decoration: underline;
+  color: #acf;
+  text-decoration: underline;
 }
 
 /* Specials */
-.rank   { color: #888; }
-.rank-1 { color: #FC0; }
-.rank-2 { color: #DDF; }
-.rank-3 { color: #A80; }
+.rank {
+  color: #888;
+}
+.rank-1 {
+  color: #fc0;
+}
+.rank-2 {
+  color: #ddf;
+}
+.rank-3 {
+  color: #a80;
+}
 
 .round-box {
-    background-color: rgba(0,0,0,0.5);
-    border-radius: 0.5rem;
+  border-radius: 0.5rem;
+  box-shadow: inset -3px 3px;
 }
 
 .mcstats-entry {
-    border: 0.125rem solid #444;
-    border-radius: 0.75rem;
+  border: 0.125rem solid #444;
+  border-radius: 0.75rem;
 
-    background-image: url('img/bg/stonebrick.png');
+  background: rgb(0, 0, 0, 0.7);
 }
 
 .minecraft-face {
 }
 
 #header {
-    height: 64px;
+  height: 64px;
 }
 
 #footer {
-    background-image: url('img/bg/bedrock.png');
-    background-position: top left;
-    background-repeat: repeat;
+  background-image: url("img/bg/bedrock.png");
+  background-position: top left;
+  background-repeat: repeat;
 }
 
 /* Minecraft text formattings */
-.mc-text-0 { color: #000000; } /* black */
-.mc-text-1 { color: #0000AA; } /* dark_blue */
-.mc-text-2 { color: #00AA00; } /* dark_green */
-.mc-text-3 { color: #00AAAA; } /* dark_aqua */
-.mc-text-4 { color: #AA0000; } /* dark_red */
-.mc-text-5 { color: #AA00AA; } /* dark_purple */
-.mc-text-6 { color: #FFAA00; } /* gold */
-.mc-text-7 { color: #AAAAAA; } /* gray */
-.mc-text-8 { color: #555555; } /* dark_gray */
-.mc-text-9 { color: #5555FF; } /* blue */
-.mc-text-a { color: #55FF55; } /* green */
-.mc-text-b { color: #55FFFF; } /* aqua */
-.mc-text-c { color: #FF5555; } /* red */
-.mc-text-d { color: #FF55FF; } /* light_purple */
-.mc-text-e { color: #FFFF55; } /* yellow */
-.mc-text-f { color: #FFFFFF; } /* white */
-.mc-text-k { /* obfuscated */
-        transform: scale(1, -1) translateY(-1px);
-        text-shadow: -1.5px 1.5px;
-        display: inline-block;
+.mc-text-0 {
+  color: #000000;
+} /* black */
+.mc-text-1 {
+  color: #0000aa;
+} /* dark_blue */
+.mc-text-2 {
+  color: #00aa00;
+} /* dark_green */
+.mc-text-3 {
+  color: #00aaaa;
+} /* dark_aqua */
+.mc-text-4 {
+  color: #aa0000;
+} /* dark_red */
+.mc-text-5 {
+  color: #aa00aa;
+} /* dark_purple */
+.mc-text-6 {
+  color: #ffaa00;
+} /* gold */
+.mc-text-7 {
+  color: #aaaaaa;
+} /* gray */
+.mc-text-8 {
+  color: #555555;
+} /* dark_gray */
+.mc-text-9 {
+  color: #5555ff;
+} /* blue */
+.mc-text-a {
+  color: #55ff55;
+} /* green */
+.mc-text-b {
+  color: #55ffff;
+} /* aqua */
+.mc-text-c {
+  color: #ff5555;
+} /* red */
+.mc-text-d {
+  color: #ff55ff;
+} /* light_purple */
+.mc-text-e {
+  color: #ffff55;
+} /* yellow */
+.mc-text-f {
+  color: #ffffff;
+} /* white */
+.mc-text-k {
+  /* obfuscated */
+  transform: scale(1, -1) translateY(-1px);
+  text-shadow: -1.5px 1.5px;
+  display: inline-block;
 }
-.mc-text-l { font-weight: bold; } /* bold */
-.mc-text-m { text-decoration: line-through; } /* strikethrough */
-.mc-text-n { text-decoration: underline; } /* underline */
-.mc-text-o { font-style: italic; } /* underline */
+.mc-text-l {
+  font-weight: bold;
+} /* bold */
+.mc-text-m {
+  text-decoration: line-through;
+} /* strikethrough */
+.mc-text-n {
+  text-decoration: underline;
+} /* underline */
+.mc-text-o {
+  font-style: italic;
+} /* underline */
