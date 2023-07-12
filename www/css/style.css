@@ -21,7 +21,7 @@ html {
 
 /* Body */
 body {
-  font-family: Monocraft, minecraftia, Zpix, monospace;
+  font-family: minecraftia, Zpix, monospace;
   color: #eee;
   background-position: left top, left 64px, left 128px;
   background: linear-gradient(-235deg, #565eb5 10%, #fd90af 100%);
