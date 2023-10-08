@@ -2,7 +2,7 @@
 
 [![Minecraft 1.13 to 1.12](https://img.shields.io/badge/Minecraft-1.13%20--%201.20-brightgreen)](https://www.minecraft.net/) [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://github.com/pdinklag/MinecraftStats/blob/master/LICENSE.txt) [![Example Installation at DVGaming.com](https://img.shields.io/badge/Example-DVGaming.COM%20Snapshot%20Server-blue)](http://mine3.dvgaming.com/) [![Discord](https://img.shields.io/discord/850982115633790976.svg?label=Discord&logo=discord&logoColor=ffffff&color=8399E8&labelColor=7A7EC2)](https://discord.gg/brH5PGG8By)
 
-_MinecraftStats_ is a web browser application for the [statistics](http://minecraft.gamepedia.com/Statistics) that Minecraft servers collect for players.
+_MinecraftStats_ is a web browser application for the [statistics](https://minecraft.wiki/w/Statistics) that Minecraft servers collect for players.
 
 The presentation is done by giving __awards__ to players for certain achievements. For example, the player who played on the server for the longest total time receives the _Dedication_ award. Every award has a viewable ranking associated to it with __medals__ - the award holder gets the gold medal, the second the silver medal and the third the bronze medal for the award. Each medal gives players a __crown score__ (1 for every bronze medal, 2 for every silver, 4 for every gold medal), which is displayed in a server __hall of fame__.
 
@@ -225,7 +225,7 @@ A JSON object defining an award consists of the following felds:
   * `ticks`: A number of ticks, in which Minecraft measures durations (e.g., for how long a player has done something).
   * `tenths_of_heart`: 1/10 of a heart, in which Minecraft measures health and damage (e.g., how much damage was done for something).
 * **`reader`**: Defines how data is read from the player statistics JSON files, see [Data Readers](#data-readers) for more information.
-* **`minVersion`** (optional): The minimum data version that the server must have in order for this award to be enabled. If the server runs an older version of Minecraft, the award is not included in the web frontend. If no minimum version is specified, the default is 1451, which is the data version of [snapshot 17w47a](https://minecraft.fandom.com/wiki/Java_Edition_17w47a), the first version supported by *MinecraftStats*. You can find the data version of a specific Minecraft version by consulting the info panel on a version page in the [Minecraft Wiki](https://minecraft.fandom.com/wiki/Minecraft_Wiki).
+* **`minVersion`** (optional): The minimum data version that the server must have in order for this award to be enabled. If the server runs an older version of Minecraft, the award is not included in the web frontend. If no minimum version is specified, the default is 1451, which is the data version of [snapshot 17w47a](https://minecraft.wiki/w/Java_Edition_17w47a), the first version supported by *MinecraftStats*. You can find the data version of a specific Minecraft version by consulting the info panel on a version page in the [Minecraft Wiki](https://minecraft.wiki).
 
 As a hint, if you wish to create a custom award, it is a good idea to find an already existing award that is similar to what you have in mind, and then copy its JSON file and edit it as needed. Especially regarding data readers, this is by far the most simple way that should work for almost all cases.
 
@@ -272,7 +272,7 @@ Here is some help troubleshooting common issues.
 
 The project started as a hyper-casual idea to get player rankings for certain things. It was meant as a special attraction on our small snapshot survival server at [DVGaming](https://dvgaming.com/). Because we ran snapshot versions of Minecraft, vanilla servers had to be supported and thus a plugin for Bukkit was out of question. The project was a very simple command-line script in the beginning, and I chose Python to do that.
 
-*MinecraftStats* was rewritten twice. The first rewrite happened in 2018 following the release of [snapshot 17w47a](https://minecraft.fandom.com/wiki/Java_Edition_17w47a) for Minecraft 1.13, where Mojang change the structure of how Minecraft stores player statistics completely.
+*MinecraftStats* was rewritten twice. The first rewrite happened in 2018 following the release of [snapshot 17w47a](https://minecraft.wiki/w/Java_Edition_17w47a) for Minecraft 1.13, where Mojang change the structure of how Minecraft stores player statistics completely.
 
 Throughout the years, *MinecraftStats* gained some popularity, much more than anticipated. With that, requests for a Bukkit (Spigot / PaperMC) plugin became more frequent. A first shot at a plugin that simply executed the Python script failed, because many hosters don't allow that. For that reason, and to reflect the fact that the project had become much more complex and the Python code became more and more of a mess, the project was rewritten in Java in a way that both plugin and vanilla servers are supported.
 
