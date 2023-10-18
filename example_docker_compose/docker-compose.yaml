@@ -1,0 +1,38 @@
+version: "3.4"
+
+services:
+    # MinecraftJava:
+    #     image: ghcr.io/gameservermanagers/gameserver:mc
+    #     environment:
+    #         - TZ=Europe/Berlin
+    #     volumes:
+    #         - ./data:/data
+    #     ports:
+    #         - 25565:25565
+    #     restart: unless-stopped
+
+    MinecraftStats:
+        image: chrisbesch/minecraft_stats
+        environment:
+            - TZ=Europe/Berlin
+            # configures the DockerCron container to send a SIGHUP to this container every five minutes
+            - "CRON_TIME=*/5 * * * *"
+        volumes:
+          - ./data/serverfiles:/app/serverfiles:ro
+          - ./config.json:/app/config.json:ro
+          - ./web_server:/app/www
+
+    WebServer:
+        image: nginx
+        volumes:
+          - ./web_server:/usr/share/nginx/html:ro
+          - ./nginx.conf:/etc/nginx/nginx.conf
+        ports:
+          - 80:80
+
+    DockerCron:
+        image: chrisbesch/docker_cron
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock:rw"
+        environment:
+            - TZ=Europe/Berlin
