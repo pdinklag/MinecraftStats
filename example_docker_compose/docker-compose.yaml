@@ -1,15 +1,17 @@
 version: "3.4"
 
 services:
-    # MinecraftJava:
-    #     image: ghcr.io/gameservermanagers/gameserver:mc
-    #     environment:
-    #         - TZ=Europe/Berlin
-    #     volumes:
-    #         - ./data:/data
-    #     ports:
-    #         - 25565:25565
-    #     restart: unless-stopped
+    # You can use any minecraft server—if you like even running without Docker on the host.
+    MinecraftJava:
+        image: ghcr.io/gameservermanagers/gameserver:mc
+        environment:
+            - TZ=Europe/Berlin
+        volumes:
+        # expose the serverfiles on the host machine
+            - ./data:/data
+        ports:
+            - 25565:25565
+        restart: unless-stopped
 
     MinecraftStats:
         image: chrisbesch/minecraft_stats
@@ -18,21 +20,30 @@ services:
             # configures the DockerCron container to send a SIGHUP to this container every five minutes
             - "CRON_TIME=*/5 * * * *"
         volumes:
+          # make sure this points to the location of the serverfiles on the host
           - ./data/serverfiles:/app/serverfiles:ro
+          # You can configure the application here.
+          # But remember that all paths (like for documentRoot) are inside the Docker container.
+          # So you probably don't have to touch any of the paths
           - ./config.json:/app/config.json:ro
+          # this is where the static web files end up
           - ./web_server:/app/www
+        restart: unless-stopped
 
+    # You can use any webserver—if you like even running on the host without Docker.
     WebServer:
         image: nginx
         volumes:
           - ./web_server:/usr/share/nginx/html:ro
-          - ./nginx.conf:/etc/nginx/nginx.conf
         ports:
           - 80:80
+        restart: unless-stopped
 
+    # This is used to send a SIGHUP to the MinecraftStats container in regular intervals.
     DockerCron:
         image: chrisbesch/docker_cron
         volumes:
             - "/var/run/docker.sock:/var/run/docker.sock:rw"
         environment:
             - TZ=Europe/Berlin
+        restart: unless-stopped

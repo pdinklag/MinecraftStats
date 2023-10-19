@@ -8,9 +8,9 @@
         ]
     },
     "data": {
-        "documentRoot": "app/www",
-        "eventsDir": "events",
-        "statsDir": "stats"
+        "documentRoot": "/app/www",
+        "eventsDir": "/app/events",
+        "statsDir": "/app/stats"
     },
     "crown": {
         "silver": 2,
@@ -28,7 +28,7 @@
         "inactiveDays": 7,
         "updateInactive": false,
         "profileUpdateInterval": 3,
-        "minPlaytime": 60,
+        "minPlaytime": 0,
         "excludeBanned": true,
         "excludeOps": false,
         "excludeUUIDs": []

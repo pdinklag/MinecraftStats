@@ -631,7 +631,7 @@ public abstract class Updater {
                 // events
                 final JSONObject summaryEvents = new JSONObject();
                 events.values().forEach(event -> {
-                    if(event.hasStarted(now)) {
+                    if (event.hasStarted(now)) {
                         final JSONObject eventSummary = new JSONObject();
                         eventSummary.put("title", event.getTitle());
                         eventSummary.put("startTime", ClientUtils.convertTimestamp(event.getStartTime()));
