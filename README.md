@@ -168,7 +168,7 @@ java -jar MinecraftStatsCLI.jar config.json
 Instead of running the CLI on the host you can place it neatly separated into multiple container using Docker.
 The [Dockerfile](./Dockerfile) builds the image [chrisbesch/minecraft_stats](https://hub.docker.com/r/chrisbesch/minecraft_stats).
 Here is an example deployment using Docker Compose: [example_docker_compose](./example_docker_compose)
-Run it with `docker compose up` and you should have a Minecraft Server, MinecraftStats with the accompanying Cron job and web server running on [http://localhost:80](http://localhost:80).
+Run it with `docker compose up` and you should have a Minecraft Server (on localhost:25565), MinecraftStats with the accompanying Cron job and web server running on [http://localhost:80](http://localhost:80).
 
 ##### Automatic Updates
 
