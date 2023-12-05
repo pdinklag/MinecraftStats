@@ -23,6 +23,13 @@ public abstract class PluginWebserver {
                 return new BlueMapWebserver(bluemapPlugin);
             }
         }
+        {
+            // try squaremap
+            Plugin squaremapPlugin = pluginManager.getPlugin(SquaremapWebserver.PLUGIN_NAME);
+            if (squaremapPlugin != null) {
+                return new SquaremapWebserver(squaremapPlugin);
+            }
+        }
         return null;
     }
 

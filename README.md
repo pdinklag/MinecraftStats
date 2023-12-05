@@ -48,6 +48,7 @@ The plugin can be used in any server capable of running Spigot plugins, particul
 
 * [dynmap](https://github.com/webbukkit/dynmap)
 * [BlueMap](https://bluemap.bluecolored.de/)
+* [squaremap](https://modrinth.com/plugin/squaremap)
 
 That said, if you have any of the above plugins installed, there is no need to setup a webserver yourself unless you desire to.
 
@@ -154,6 +155,7 @@ If you rely on *MinecraftStats* to find a webserver plugin, this is how you and 
 
 * **dynmap**: Let's say your URL is `my-server.com:8123`, then you access the *MinecraftStats* frontend via `my-server.com:8123/stats/index.html`. Note that due to how dynmap's webserver is configured, you cannot leave the `/index.html` part by default. If you change the `data → webSubdir` setting, the `/stats/` part in the URL must be changed accordingly.
 * **BlueMap**: The same as for dynmap applies, but note that the default port there is different. The default URL in BlueMap will be `my-server.com:8100/stats/index.html`.
+* **squaremap**: The same as for dynmap applies, but note that the default port there is different. The default URL in squaremap will be `my-server.com:8080/stats/index.html`.
 
 #### CLI
 
