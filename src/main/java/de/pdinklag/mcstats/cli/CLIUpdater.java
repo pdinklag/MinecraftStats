@@ -32,19 +32,22 @@ public class CLIUpdater extends Updater {
             final Path propertiesPath = dataSource.getServerPath().resolve("server.properties");
             if (Files.exists(propertiesPath)) {
                 final Properties properties = new Properties();
-                final CharsetDecoder decoder = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
+                final CharsetDecoder decoder = StandardCharsets.UTF_8.newDecoder()
+                        .onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
                 try (final InputStream fis = Files.newInputStream(propertiesPath)) {
                     properties.load(new InputStreamReader(fis, decoder));
                 } catch (CharacterCodingException e) {
-                    log.writeLine("[" + LocalDateTime.now().format(DATE_FORMAT) + "] seems like the server.properties file is not encoded in UTF-8, trying ISO-8859-1");
-                    try (final BufferedReader reader = Files.newBufferedReader(propertiesPath, StandardCharsets.ISO_8859_1)) {
+                    log.writeLine("[" + LocalDateTime.now().format(DATE_FORMAT)
+                            + "] seems like the server.properties file is not encoded in UTF-8, trying ISO-8859-1");
+                    try (final BufferedReader reader = Files.newBufferedReader(propertiesPath,
+                            StandardCharsets.ISO_8859_1)) {
                         properties.load(reader);
                     } catch (IOException e1) {
                     }
                 } catch (IOException e) {
                 }
                 final String motd = properties.getProperty("motd");
-                if(motd != null) {
+                if (motd != null) {
                     return motd;
                 }
             }
@@ -57,7 +60,8 @@ public class CLIUpdater extends Updater {
         return MinecraftStatsCLI.getVersion();
     }
 
-    @Override public void run() {
+    @Override
+    public void run() {
         super.run();
         log.writeLine("[" + LocalDateTime.now().format(DATE_FORMAT) + "] update finished");
     }
