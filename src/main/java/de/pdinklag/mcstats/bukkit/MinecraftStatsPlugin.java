@@ -23,13 +23,17 @@ public class MinecraftStatsPlugin extends JavaPlugin {
         config = new BukkitConfig(this);
 
         // detect webserver if necessary
-        if(config.getDocumentRoot() == null) {
+        if (config.getDocumentRoot() == null) {
             final PluginWebserver webserver = PluginWebserver.find(getServer());
-            if(webserver != null) {
+            if (webserver != null) {
+                getLogger().info(
+                        "Exporting to auto-detected webserver document root: " + webserver.getDocumentRoot().toAbsolutePath());
+
                 final Path documentRoot = webserver.getDocumentRoot().resolve(config.getWebSubdir());
                 config.setDocumentRoot(documentRoot);
             } else {
-                getLogger().warning("No document root specified -- please state one explictly in the configuration, or install a supported plugin featuring a webserver!");
+                getLogger().warning(
+                        "No document root specified -- please state one explictly in the configuration, or install a supported plugin featuring a webserver!");
                 return;
             }
         }
@@ -46,7 +50,7 @@ public class MinecraftStatsPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if(updateTask != null) {
+        if (updateTask != null) {
             updateTask.cancel();
         }
     }
