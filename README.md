@@ -282,6 +282,15 @@ Only since the Java implementation, *MinecraftStats* officially has numbered ver
 
 ## Changelog
 
+### 3.3.0
+
+This update adds automatic detection of squremap's webserver and fixes bugs in both the plugin and CLI.
+
+* The plugin now also auto-detects the webserver of [squaremap](https://modrinth.com/plugin/squaremap).
+* Fixed a 404 error in the frontend if the server has no (active) players.
+* Fixed decoding of `server.properties` to cause wrong display of server names / MOTDs.
+* Fixed parsing of BlueMap's web root directory.
+
 ### 3.2.1
 
 This update fixes future events being displayed as "Finished" in the web frontend, as well as the "Invalid Date" display for event end times.
@@ -290,7 +299,7 @@ This update fixes future events being displayed as "Finished" in the web fronten
 
 This update adds automatic detection of BlueMap's webserver and fixes bugs in the plugin.
 
-* Additionally to dynmap, the plugin now also detects the webserver of [BlueMap](https://bluemap.bluecolored.de/).
+* The plugin now also auto-detects the webserver of [BlueMap](https://bluemap.bluecolored.de/).
 * Fixed the `data → unpackWebFiles` being ignored.
 * Fixed an issue with non-ASCII characters in generated JSON files, color-coded server MOTDs should now work again.
 
