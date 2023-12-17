@@ -3,7 +3,7 @@
     "unit": "int",
     "reader": {
         "$type": "match-sum",
-        "path": ["minecraft:broken"],
+        "path": ["minecraft:used"],
         "patterns": [
             "minecraft:.+_shovel"
         ]
