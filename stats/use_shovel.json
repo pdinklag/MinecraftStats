@@ -2,7 +2,10 @@
     "id": "use_shovel",
     "unit": "int",
     "reader": {
-        "$type": "int",
-        "path": ["minecraft:used","minecraft:+_shovel"]
+        "$type": "match-sum",
+        "path": ["minecraft:broken"],
+        "patterns": [
+            "minecraft:.+_shovel"
+        ]
     }
 }
