@@ -1,0 +1,8 @@
+{
+    "id": "use_shovel",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:used","minecraft:+_shovel"]
+    }
+}
