@@ -1,0 +1,12 @@
+{
+    "id": "place_deepslate",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:.+_deepslate",
+            "minecraft:deeplate+_."
+        ]
+    }
+}
