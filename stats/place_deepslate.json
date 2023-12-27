@@ -6,7 +6,7 @@
         "path": ["minecraft:used"],
         "patterns": [
             "minecraft:.+_deepslate",
-            "minecraft:deeplate+_."
+            "minecraft:deeplate_.+"
         ]
     }
 }
