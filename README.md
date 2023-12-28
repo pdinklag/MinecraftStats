@@ -172,6 +172,11 @@ The [Dockerfile](./Dockerfile) builds the image [chrisbesch/minecraft_stats](htt
 Here is an example deployment using Docker Compose: [example_docker_compose](./example_docker_compose)
 Run it with `docker compose up` and you should have a Minecraft Server (on localhost:25565), MinecraftStats with the accompanying Cron job and web server running on [http://localhost:80](http://localhost:80).
 
+If you want to [add custom awards](#custom-awards), run the docker compose project without your custom awards first.
+The `./stats` and `./web_server` dirs will be populated.
+Now you can add your custom awards.
+To update the container, delete these dirs, update and start the container and add your custom awards again.
+
 ##### Automatic Updates
 
 The CLI does not include any means for automatic updates - you need to take care of this yourself. The following lists some possibilities you might have.

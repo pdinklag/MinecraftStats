@@ -3,9 +3,14 @@
 # It waits patiently for a SIGHUP from the DockerCron container.
 # Once it receives one it performs an update.
 
-echo 'copy static html files into /app/www'
 mkdir -p /app/www
-cp -fr /app/raw_www/* /app/www
+# only copy the localization files if /app/www is empty
+if [ -z "$(ls -A /app/www)" ]; then
+    echo 'copy static html files into /app/www'
+    cp -fr /app/raw_www/* /app/www
+else
+    echo '/app/www is already filled; delete that dir to repopulate'
+fi
 
 echo 'copy stat files into /app/stats'
 mkdir -p /app/stats
