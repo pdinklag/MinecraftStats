@@ -7,6 +7,10 @@ echo 'copy static html files into /app/www'
 mkdir -p /app/www
 cp -fr /app/raw_www/* /app/www
 
+echo 'copy stat files into /app/stats'
+mkdir -p /app/stats
+cp -fr /app/raw_stats/* /app/stats
+
 echo 'running initial update after boot'
 java -jar /app/MinecraftStatsCLI.jar /app/config.json || true
 

@@ -1,0 +1,11 @@
+{
+    "id": "sneak_time",
+    "unit": "ticks",
+    "reader": {
+        "$type": "int",
+        "path": [
+            "minecraft:custom",
+            "minecraft:sneak_time"
+        ]
+    }
+}

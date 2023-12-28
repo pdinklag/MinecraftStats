@@ -1,0 +1,8 @@
+{
+    "id": "use_flint",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:used","minecraft:flint_and_steel"]
+    }
+}

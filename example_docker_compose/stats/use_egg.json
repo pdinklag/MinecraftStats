@@ -1,0 +1,8 @@
+{
+    "id": "use_egg",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:used","minecraft:egg"]
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "id": "place_glass",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:.*glass",
+            "minecraft:.*glass_pane"
+        ]
+    }
+}

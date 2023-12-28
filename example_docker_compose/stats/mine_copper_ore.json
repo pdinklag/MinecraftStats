@@ -1,0 +1,13 @@
+{
+    "id": "mine_copper_ore",
+    "unit": "int",
+    "minVersion": 2681,
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:mined"],
+        "patterns": [
+            "minecraft:copper_ore",
+            "minecraft:deepslate_copper_ore"
+        ]
+    }
+}

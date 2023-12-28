@@ -1,0 +1,8 @@
+{
+    "id": "damage_taken",
+    "unit": "tenths_of_heart",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:damage_taken"]
+    }
+}

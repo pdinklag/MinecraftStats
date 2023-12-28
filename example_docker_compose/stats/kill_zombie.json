@@ -1,0 +1,14 @@
+{
+    "id": "kill_zombie",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:killed"],
+        "patterns": [
+            "minecraft:drowned",
+            "minecraft:husk",
+            "minecraft:zombie",
+            "minecraft:zombie_villager"
+        ]
+    }
+}

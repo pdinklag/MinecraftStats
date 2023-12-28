@@ -1,0 +1,9 @@
+{
+    "id": "craft_respawn_anchor",
+    "unit": "int",
+    "minVersion": 2515,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:crafted","minecraft:respawn_anchor"]
+    }
+}

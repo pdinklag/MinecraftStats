@@ -1,0 +1,8 @@
+{
+    "id": "mine_obsidian",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:mined","minecraft:obsidian"]
+    }
+}

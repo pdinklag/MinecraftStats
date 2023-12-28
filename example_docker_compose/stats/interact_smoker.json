@@ -1,0 +1,9 @@
+{
+    "id": "interact_smoker",
+    "unit": "int",
+    "minVersion": 1919,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:interact_with_smoker"]
+    }
+}

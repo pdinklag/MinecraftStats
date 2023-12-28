@@ -1,0 +1,9 @@
+{
+    "id": "use_honey_bottle",
+    "unit": "int",
+    "minVersion": 2200,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:used","minecraft:honey_bottle"]
+    }
+}

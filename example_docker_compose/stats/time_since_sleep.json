@@ -1,0 +1,8 @@
+{
+    "id": "time_since_sleep",
+    "unit": "ticks",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:time_since_rest"]
+    }
+}

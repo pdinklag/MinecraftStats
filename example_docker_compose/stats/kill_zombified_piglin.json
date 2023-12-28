@@ -1,0 +1,12 @@
+{
+    "id": "kill_zombified_piglin",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:killed"],
+        "patterns": [
+            "minecraft:zombie_pigman",
+            "minecraft:zombified_piglin"
+        ]
+    }
+}

@@ -15,7 +15,7 @@ COPY --from=builder /app/build/libs/MinecraftStatsCLI.jar /app/MinecraftStatsCLI
 # copy from raw_www to www in entrypoint.sh
 COPY --from=builder /app/build/www /app/raw_www
 
-COPY ./stats /app/stats
+COPY ./stats /app/raw_stats
 COPY ./entrypoint.sh /app/entrypoint.sh
 
 ENTRYPOINT [ "/app/entrypoint.sh" ]

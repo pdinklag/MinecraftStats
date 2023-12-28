@@ -1,0 +1,14 @@
+{
+    "id": "open_container",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:custom"],
+        "patterns": [
+            "minecraft:open_chest",
+            "minecraft:open_enderchest",
+            "minecraft:open_shulker_box",
+            "minecraft:trigger_trapped_chest"
+        ]
+    }
+}

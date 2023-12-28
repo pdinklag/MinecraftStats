@@ -1,0 +1,8 @@
+{
+    "id": "ride_boat",
+    "unit": "cm",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:boat_one_cm"]
+    }
+}

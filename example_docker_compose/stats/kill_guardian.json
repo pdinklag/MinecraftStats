@@ -1,0 +1,12 @@
+{
+    "id": "kill_guardian",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:killed"],
+        "patterns": [
+            "minecraft:elder_guardian",
+            "minecraft:guardian"
+        ]
+    }
+}

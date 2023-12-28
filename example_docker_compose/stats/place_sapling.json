@@ -1,0 +1,12 @@
+{
+    "id": "place_sapling",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:.+_sapling",
+            "mangrove_propagule"
+        ]
+    }
+}

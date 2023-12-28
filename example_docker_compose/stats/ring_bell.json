@@ -1,0 +1,9 @@
+{
+    "id": "ring_bell",
+    "unit": "int",
+    "minVersion": 1907,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:bell_ring"]
+    }
+}

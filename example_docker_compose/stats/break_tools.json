@@ -1,0 +1,17 @@
+{
+    "id": "break_tools",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:broken"],
+        "patterns": [
+            "minecraft:.+_axe",
+            "minecraft:.+_hoe",
+            "minecraft:.+_pickaxe",
+            "minecraft:.+_shovel",
+            "minecraft:fishing_rod",
+            "minecraft:flint_and_steel",
+            "minecraft:shears"
+        ]
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "id": "eat_fish",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:clownfish",
+            "minecraft:cod",
+            "minecraft:cooked_cod",
+            "minecraft:cooked_salmon",
+            "minecraft:salmon",
+            "minecraft:tropical_fish"
+        ]
+    }
+}

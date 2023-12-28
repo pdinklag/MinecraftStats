@@ -1,0 +1,10 @@
+{
+    "id": "collect_berries",
+    "unit": "int",
+    "minVersion": 1916,
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:picked_up"],
+        "patterns": ["minecraft:.+_berries"]
+    }
+}

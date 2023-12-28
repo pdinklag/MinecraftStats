@@ -1,0 +1,11 @@
+{
+    "id": "tnt_used",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": [
+            "minecraft:used",
+            "minecraft:tnt"
+        ]
+    }
+}

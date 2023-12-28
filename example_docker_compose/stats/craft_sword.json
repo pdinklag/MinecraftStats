@@ -1,0 +1,11 @@
+{
+    "id": "craft_sword",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:crafted"],
+        "patterns": [
+            "minecraft:.+_sword"
+        ]
+    }
+}

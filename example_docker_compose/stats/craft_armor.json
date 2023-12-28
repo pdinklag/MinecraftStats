@@ -1,0 +1,15 @@
+{
+    "id": "craft_armor",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:crafted"],
+        "patterns": [
+            "minecraft:.+_helmet",
+            "minecraft:.+_leggings",
+            "minecraft:.+_boots",
+            "minecraft:.+_chestplate",
+            "minecraft:shield"
+        ]
+    }
+}

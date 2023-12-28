@@ -1,0 +1,11 @@
+{
+    "id": "bee_nests_mined",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": [
+            "minecraft:mined",
+            "minecraft:bee_nest"
+        ]
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "id": "use_dirt",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:dirt",
+            "minecraft:mud",
+            "minecraft:rooted_dirt"
+        ]
+    }
+}

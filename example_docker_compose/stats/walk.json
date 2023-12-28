@@ -1,0 +1,8 @@
+{
+    "id": "walk",
+    "unit": "cm",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:walk_one_cm"]
+    }
+}

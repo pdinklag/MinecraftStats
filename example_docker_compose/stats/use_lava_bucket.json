@@ -1,0 +1,8 @@
+{
+    "id": "use_lava_bucket",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:used","minecraft:lava_bucket"]
+    }
+}

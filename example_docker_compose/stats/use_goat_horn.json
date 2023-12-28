@@ -1,0 +1,9 @@
+{
+    "id": "use_goat_horn",
+    "unit": "int",
+    "minVersion": 3093,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:used","minecraft:goat_horn"]
+    }
+}

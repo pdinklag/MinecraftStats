@@ -1,0 +1,8 @@
+{
+    "id": "dive",
+    "unit": "cm",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:walk_under_water_one_cm"]
+    }
+}

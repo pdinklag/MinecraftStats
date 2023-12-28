@@ -1,0 +1,12 @@
+{
+    "id": "play",
+    "unit": "ticks",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:custom"],
+        "patterns": [
+            "minecraft:play_one_minute",
+            "minecraft:play_time"
+        ]
+    }
+}

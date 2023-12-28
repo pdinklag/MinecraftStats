@@ -1,0 +1,16 @@
+{
+    "id": "mine_nether_foliage",
+    "unit": "int",
+    "minVersion": 2504,
+    "reader": {
+        "$type": "match-sum",
+        "path": [
+            "minecraft:mined"
+        ],
+        "patterns": [
+            "minecraft:crimson_roots",
+            "minecraft:nether_sprouts",
+            "minecraft:warped_roots"
+        ]
+    }
+}

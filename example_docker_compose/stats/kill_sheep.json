@@ -1,0 +1,8 @@
+{
+    "id": "kill_sheep",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:killed","minecraft:sheep"]
+    }
+}

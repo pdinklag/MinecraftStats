@@ -1,0 +1,9 @@
+{
+    "id": "interact_cartography",
+    "unit": "int",
+    "minVersion": 1921,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:interact_with_cartography_table"]
+    }
+}

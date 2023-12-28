@@ -1,0 +1,12 @@
+{
+    "id": "kill_squid",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:killed"],
+        "patterns": [
+            "minecraft:glow_squid",
+            "minecraft:squid"
+        ]
+    }
+}

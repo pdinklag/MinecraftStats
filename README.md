@@ -243,7 +243,7 @@ As a hint, if you wish to create a custom award, it is a good idea to find an al
 Readers define how an award score is determined from a player's statistics JSON. There are different types of readers that can be selected using the **`$type`** field. The other fields that are available depend on the selected type. The following is a listing of the available reader types, each with an example award (ID) for reference.
 
 * **`int`**: Reads a single integer from the nested object given by the `path` array. The final entry in `path` is the name of the field to read. Example: `jump`.
-* **`match-sum`**: Reads multiple integers from the nested bject given by `path`. The fields that are read are given in the `patterns` array, which may contain [regular expressions](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html). Example: `break_tools`.
+* **`match-sum`**: Reads multiple integers from the nested object given by `path`. The fields that are read are given in the `patterns` array, which may contain [regular expressions](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html). Example: `break_tools`.
 * **`set-count`**: Counts the number of distinct entries in the nested object or array given by `path`. Example: `biomes`.
 
 #### Advancements

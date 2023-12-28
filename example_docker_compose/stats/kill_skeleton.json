@@ -1,0 +1,12 @@
+{
+    "id": "kill_skeleton",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:killed"],
+        "patterns": [
+            "minecraft:skeleton",
+            "minecraft:stray"
+        ]
+    }
+}

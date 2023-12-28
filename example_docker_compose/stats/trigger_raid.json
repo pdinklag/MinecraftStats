@@ -1,0 +1,9 @@
+{
+    "id": "trigger_raid",
+    "unit": "int",
+    "minVersion": 1912,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:raid_trigger"]
+    }
+}

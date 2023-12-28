@@ -1,0 +1,8 @@
+{
+    "id": "biomes",
+    "unit": "int",
+    "reader": {
+        "$type": "set-count",
+        "path": ["advancements", "minecraft:adventure/adventuring_time", "criteria"]
+    }
+}

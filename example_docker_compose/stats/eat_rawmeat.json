@@ -1,0 +1,15 @@
+{
+    "id": "eat_rawmeat",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:beef",
+            "minecraft:chicken",
+            "minecraft:mutton",
+            "minecraft:porkchop",
+            "minecraft:rabbit"
+        ]
+    }
+}

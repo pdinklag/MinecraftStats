@@ -1,0 +1,13 @@
+{
+    "id": "templates_collected",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": [
+            "minecraft:picked_up"
+        ],
+        "patterns": [
+            "minecraft:.+_template",
+        ]
+    }
+}

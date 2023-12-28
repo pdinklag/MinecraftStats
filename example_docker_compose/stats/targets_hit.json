@@ -1,0 +1,11 @@
+{
+    "id": "targets_hit",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": [
+            "minecraft:custom",
+            "minecraft:target_hit"
+        ]
+    }
+}

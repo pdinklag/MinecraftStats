@@ -1,0 +1,8 @@
+{
+    "id": "kill_any",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:custom","minecraft:mob_kills"]
+    }
+}

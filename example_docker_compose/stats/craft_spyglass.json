@@ -1,0 +1,9 @@
+{
+    "id": "craft_spyglass",
+    "unit": "int",
+    "minVersion": 2681,
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:crafted","minecraft:spyglass"]
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "id": "kill_hoglins",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:killed"],
+        "patterns": [
+            "minecraft:hoglin",
+            "minecraft:zoglin"
+        ]
+    }
+}

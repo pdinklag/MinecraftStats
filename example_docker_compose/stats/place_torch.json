@@ -1,0 +1,12 @@
+{
+    "id": "place_torch",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:used"],
+        "patterns": [
+            "minecraft:soul_torch",
+            "minecraft:torch"
+        ]
+    }
+}

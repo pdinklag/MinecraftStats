@@ -1,0 +1,14 @@
+{
+    "id": "kill_fish",
+    "unit": "int",
+    "reader": {
+        "$type": "match-sum",
+        "path": ["minecraft:killed"],
+        "patterns": [
+            "minecraft:cod",
+            "minecraft:pufferfish",
+            "minecraft:salmon",
+            "minecraft:tropical_fish"
+        ]
+    }
+}
