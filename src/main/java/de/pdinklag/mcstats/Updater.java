@@ -213,29 +213,45 @@ public abstract class Updater {
         return filteredPlayers;
     }
 
+    private Path getPlayerListFilePath(String filenameFormat, int pageNum) {
+        return dbPlayerlistPath.resolve(String.format(filenameFormat, pageNum + 1));
+    }
+
     private void writePlayerList(Collection<Player> players, String filenameFormat) {
-        final ArrayList<Player> playersSorted = new ArrayList<>(players);
-        Collections.sort(playersSorted,
-                (a, b) -> a.getProfile().getName().compareToIgnoreCase(b.getProfile().getName()));
+        if (players.size() == 0) {
+            // if there are no players, generate the first page as empty
+            final JSONArray empty = new JSONArray(0);
 
-        final int playersPerPage = config.getPlayersPerPage();
-        final int numPlayers = players.size();
-        final int numPages = (int) Math.ceil((double) numPlayers / playersPerPage);
-
-        for (int pageNum = 0; pageNum < numPages; pageNum++) {
-            final int first = pageNum * playersPerPage;
-            final int last = Math.min(first + playersPerPage, numPlayers);
-
-            final JSONArray page = new JSONArray(playersPerPage);
-            for (int i = first; i < last; i++) {
-                page.put(playersSorted.get(i).getClientInfo(true));
-            }
-
-            final Path pageFilePath = dbPlayerlistPath.resolve(String.format(filenameFormat, pageNum + 1));
+            final Path filePath = getPlayerListFilePath(filenameFormat, 0);
             try {
-                FileUtils.writeStringGzipped(pageFilePath, JSONUtils.toASCIIString(page));
+                FileUtils.writeStringGzipped(filePath, JSONUtils.toASCIIString(empty));
             } catch (IOException e) {
-                log.writeError("failed to write playerlist page file: " + pageFilePath, e);
+                log.writeError("failed to write playerlist page file: " + filePath, e);
+            }
+        } else {
+            final ArrayList<Player> playersSorted = new ArrayList<>(players);
+            Collections.sort(playersSorted,
+                    (a, b) -> a.getProfile().getName().compareToIgnoreCase(b.getProfile().getName()));
+
+            final int playersPerPage = config.getPlayersPerPage();
+            final int numPlayers = players.size();
+            final int numPages = (int) Math.ceil((double) numPlayers / playersPerPage);
+
+            for (int pageNum = 0; pageNum < numPages; pageNum++) {
+                final int first = pageNum * playersPerPage;
+                final int last = Math.min(first + playersPerPage, numPlayers);
+
+                final JSONArray page = new JSONArray(playersPerPage);
+                for (int i = first; i < last; i++) {
+                    page.put(playersSorted.get(i).getClientInfo(true));
+                }
+
+                final Path pageFilePath = getPlayerListFilePath(filenameFormat, pageNum);
+                try {
+                    FileUtils.writeStringGzipped(pageFilePath, JSONUtils.toASCIIString(page));
+                } catch (IOException e) {
+                    log.writeError("failed to write playerlist page file: " + pageFilePath, e);
+                }
             }
         }
     }
