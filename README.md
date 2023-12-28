@@ -165,6 +165,18 @@ When using the CLI, the data for the web frontend needs to be updated by executi
 java -jar MinecraftStatsCLI.jar config.json
 ```
 
+#### CLI in Docker
+
+Instead of running the CLI on the host you can place it neatly separated into multiple container using Docker.
+The [Dockerfile](./Dockerfile) builds the image [chrisbesch/minecraft_stats](https://hub.docker.com/r/chrisbesch/minecraft_stats).
+Here is an example deployment using Docker Compose: [example_docker_compose](./example_docker_compose)
+Run it with `docker compose up` and you should have a Minecraft Server (on localhost:25565), MinecraftStats with the accompanying Cron job and web server running on [http://localhost:80](http://localhost:80).
+
+If you want to [add custom awards](#custom-awards), run the docker compose project without your custom awards first.
+The `./stats` and `./web_server` dirs will be populated.
+Now you can add your custom awards.
+To update the container, delete these dirs, update and start the container and add your custom awards again.
+
 ##### Automatic Updates
 
 The CLI does not include any means for automatic updates - you need to take care of this yourself. The following lists some possibilities you might have.
@@ -236,7 +248,7 @@ As a hint, if you wish to create a custom award, it is a good idea to find an al
 Readers define how an award score is determined from a player's statistics JSON. There are different types of readers that can be selected using the **`$type`** field. The other fields that are available depend on the selected type. The following is a listing of the available reader types, each with an example award (ID) for reference.
 
 * **`int`**: Reads a single integer from the nested object given by the `path` array. The final entry in `path` is the name of the field to read. Example: `jump`.
-* **`match-sum`**: Reads multiple integers from the nested bject given by `path`. The fields that are read are given in the `patterns` array, which may contain [regular expressions](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html). Example: `break_tools`.
+* **`match-sum`**: Reads multiple integers from the nested object given by `path`. The fields that are read are given in the `patterns` array, which may contain [regular expressions](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html). Example: `break_tools`.
 * **`set-count`**: Counts the number of distinct entries in the nested object or array given by `path`. Example: `biomes`.
 
 #### Advancements
@@ -269,6 +281,7 @@ Here is some help troubleshooting common issues.
   * Any file not found (code 404) errors may hint that data has not been generated. Make sure there is a `data` folder in your webserver's document root. If not, chances are you did not run any update, or the data was written to a wrong location (double-check the configuration).
   * If there is anything logged about a *CORS Policy*, chances are you are trying to open `index.html` from your filesystem directly. As a security measure, most browsers do not support loading JavaScript from the filesystem, hence the frontend will not work. Please use a local webserver instead.
   * In case you have configured your webserver to compress files before transfer to the client, this may cause it to compress the `.json.gz` files of *MinecraftStats* and confuse the frontend, rendering it unable to properly decompress them. Please make sure that there is an exception for `*.gz` files &ndash; they are already compressed!
+  * If you're getting an error like this in the browser console `Uncaught incorrect header check` there might not be any active players. Try setting `minPlaytime` to `0` and `inactiveDays` to something large.
 
 ## History
 
