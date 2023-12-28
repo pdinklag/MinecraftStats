@@ -27,6 +27,7 @@ services:
           # So you probably don't have to touch any of the paths
           - ./config.json:/app/config.json:ro
           # this is where the static web files end up
+          # if you want any custom stats, put them here after running the docker compose setup once
           - ./web_server:/app/www
         restart: unless-stopped
 
