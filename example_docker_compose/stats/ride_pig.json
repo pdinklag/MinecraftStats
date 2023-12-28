@@ -1,8 +1,0 @@
-{
-    "id": "ride_pig",
-    "unit": "cm",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:pig_one_cm"]
-    }
-}

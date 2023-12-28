@@ -1,8 +1,0 @@
-{
-    "id": "play_record",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:play_record"]
-    }
-}

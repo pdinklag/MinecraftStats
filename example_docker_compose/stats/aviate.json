@@ -1,8 +1,0 @@
-{
-    "id": "aviate",
-    "unit": "cm",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:aviate_one_cm"]
-    }
-}

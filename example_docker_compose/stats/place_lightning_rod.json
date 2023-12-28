@@ -1,9 +1,0 @@
-{
-    "id": "place_lightning_rod",
-    "unit": "int",
-    "minVersion": 2681,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:used","minecraft:lightning_rod"]
-    }
-}

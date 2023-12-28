@@ -1,9 +1,0 @@
-{
-    "id": "place_lodestone",
-    "unit": "int",
-    "minVersion": 2520,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:used","minecraft:lodestone"]
-    }
-}

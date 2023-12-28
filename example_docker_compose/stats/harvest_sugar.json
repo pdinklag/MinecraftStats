@@ -1,8 +1,0 @@
-{
-    "id": "harvest_sugar",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:picked_up","minecraft:sugar_cane"]
-    }
-}

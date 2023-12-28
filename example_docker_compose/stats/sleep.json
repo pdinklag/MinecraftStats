@@ -1,8 +1,0 @@
-{
-    "id": "sleep",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:sleep_in_bed"]
-    }
-}

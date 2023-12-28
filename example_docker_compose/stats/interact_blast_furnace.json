@@ -1,9 +1,0 @@
-{
-    "id": "interact_blast_furnace",
-    "unit": "int",
-    "minVersion": 1919,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:interact_with_blast_furnace"]
-    }
-}

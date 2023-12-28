@@ -1,8 +1,0 @@
-{
-    "id": "ride_minecart",
-    "unit": "cm",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:minecart_one_cm"]
-    }
-}

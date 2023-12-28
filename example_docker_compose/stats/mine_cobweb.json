@@ -1,8 +1,0 @@
-{
-    "id": "mine_cobweb",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:mined","minecraft:cobweb"]
-    }
-}

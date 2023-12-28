@@ -1,8 +1,0 @@
-{
-    "id": "sprint",
-    "unit": "cm",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:sprint_one_cm"]
-    }
-}

@@ -1,8 +1,0 @@
-{
-    "id": "mine_nether_quartz_ore",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:mined","minecraft:nether_quartz_ore"]
-    }
-}

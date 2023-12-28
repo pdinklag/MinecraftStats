@@ -1,8 +1,0 @@
-{
-    "id": "eat_cookie",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:used","minecraft:cookie"]
-    }
-}

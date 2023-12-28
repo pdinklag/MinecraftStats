@@ -1,9 +1,0 @@
-{
-    "id": "interact_lectern",
-    "unit": "int",
-    "minVersion": 1921,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:interact_with_lectern"]
-    }
-}

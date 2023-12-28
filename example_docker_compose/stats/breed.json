@@ -1,8 +1,0 @@
-{
-    "id": "breed",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:animals_bred"]
-    }
-}

@@ -1,8 +1,0 @@
-{
-    "id": "use_fireworks",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:used","minecraft:firework_rocket"]
-    }
-}

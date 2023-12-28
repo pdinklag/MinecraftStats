@@ -1,8 +1,0 @@
-{
-    "id": "swim",
-    "unit": "cm",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:swim_one_cm"]
-    }
-}

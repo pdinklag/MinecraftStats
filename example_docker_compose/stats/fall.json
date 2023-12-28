@@ -1,8 +1,0 @@
-{
-    "id": "fall",
-    "unit": "cm",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:fall_one_cm"]
-    }
-}

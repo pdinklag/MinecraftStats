@@ -1,8 +1,0 @@
-{
-    "id": "place_chorus_flower",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:used","minecraft:chorus_flower"]
-    }
-}

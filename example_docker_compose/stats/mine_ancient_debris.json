@@ -1,9 +1,0 @@
-{
-    "id": "mine_ancient_debris",
-    "unit": "int",
-    "minVersion": 2504,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:mined","minecraft:ancient_debris"]
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "id": "craft_recovery_compass",
-    "unit": "int",
-    "minVersion": 3088,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:crafted","minecraft:recovery_compass"]
-    }
-}

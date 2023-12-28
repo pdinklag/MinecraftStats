@@ -1,8 +1,0 @@
-{
-    "id": "craft_ender_chest",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:crafted","minecraft:ender_chest"]
-    }
-}

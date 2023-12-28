@@ -1,9 +1,0 @@
-{
-    "id": "win_raid",
-    "unit": "int",
-    "minVersion": 1912,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:raid_win"]
-    }
-}

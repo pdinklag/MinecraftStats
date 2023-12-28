@@ -1,8 +1,0 @@
-{
-    "id": "craft_sponge",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:crafted","minecraft:sponge"]
-    }
-}

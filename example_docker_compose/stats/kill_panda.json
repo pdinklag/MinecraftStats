@@ -1,9 +1,0 @@
-{
-    "id": "kill_panda",
-    "unit": "int",
-    "minVersion": 1901,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:killed","minecraft:panda"]
-    }
-}

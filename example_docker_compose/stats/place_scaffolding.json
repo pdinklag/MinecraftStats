@@ -1,9 +1,0 @@
-{
-    "id": "place_scaffolding",
-    "unit": "int",
-    "minVersion": 1908,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:used","minecraft:scaffolding"]
-    }
-}

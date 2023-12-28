@@ -1,9 +1,0 @@
-{
-    "id": "kill_piglin_brute",
-    "unit": "int",
-    "minVersion": 2569,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:killed","minecraft:piglin_brute"]
-    }
-}

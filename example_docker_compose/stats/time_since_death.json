@@ -1,8 +1,0 @@
-{
-    "id": "time_since_death",
-    "unit": "ticks",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:time_since_death"]
-    }
-}

@@ -1,8 +1,0 @@
-{
-    "id": "use_ender_eye",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:used","minecraft:ender_eye"]
-    }
-}

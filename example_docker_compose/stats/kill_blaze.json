@@ -1,8 +1,0 @@
-{
-    "id": "kill_blaze",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:killed","minecraft:blaze"]
-    }
-}

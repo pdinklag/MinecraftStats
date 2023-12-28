@@ -1,8 +1,0 @@
-{
-    "id": "enchant",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:enchant_item"]
-    }
-}

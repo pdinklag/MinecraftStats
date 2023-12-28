@@ -1,9 +1,0 @@
-{
-    "id": "interact_anvil",
-    "unit": "int",
-    "minVersion": 2219,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:interact_with_anvil"]
-    }
-}

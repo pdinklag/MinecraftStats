@@ -1,9 +1,0 @@
-{
-    "id": "interact_stonecutter",
-    "unit": "int",
-    "minVersion": 1926,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:interact_with_stonecutter"]
-    }
-}

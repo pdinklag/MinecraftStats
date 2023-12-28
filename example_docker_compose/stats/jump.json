@@ -1,8 +1,0 @@
-{
-    "id": "jump",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:custom","minecraft:jump"]
-    }
-}

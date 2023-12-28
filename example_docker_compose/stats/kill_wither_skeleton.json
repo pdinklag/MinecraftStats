@@ -1,8 +1,0 @@
-{
-    "id": "kill_wither_skeleton",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:killed","minecraft:wither_skeleton"]
-    }
-}

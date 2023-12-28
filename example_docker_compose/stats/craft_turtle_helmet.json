@@ -1,9 +1,0 @@
-{
-    "id": "craft_turtle_helmet",
-    "unit": "int",
-    "minVersion": 1467,
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:crafted","minecraft:turtle_helmet"]
-    }
-}

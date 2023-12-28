@@ -1,8 +1,0 @@
-{
-    "id": "kill_bat",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:killed","minecraft:bat"]
-    }
-}

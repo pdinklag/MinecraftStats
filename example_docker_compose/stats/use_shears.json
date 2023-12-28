@@ -1,8 +1,0 @@
-{
-    "id": "use_shears",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:used","minecraft:shears"]
-    }
-}

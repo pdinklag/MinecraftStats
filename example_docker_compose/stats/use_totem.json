@@ -1,8 +1,0 @@
-{
-    "id": "use_totem",
-    "unit": "int",
-    "reader": {
-        "$type": "int",
-        "path": ["minecraft:used","minecraft:totem_of_undying"]
-    }
-}
