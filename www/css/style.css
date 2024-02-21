@@ -1,17 +1,17 @@
 /* define Minecraft font */
 @font-face {
   font-family: minecraftia;
-  src: url(./font/minecraftia.woff2);
+  src: url(../font/minecraftia.woff2);
 }
 
 @font-face {
   font-family: Zpix;
-  src: url(./font/zpix.woff2?v2021-03-21);
+  src: url(../font/zpix.woff2?v2021-03-21);
 }
 
 @font-face {
   font-family: Monocraft;
-  src: url(./font/Monocraft.ttf);
+  src: url(../font/Monocraft.ttf);
 }
 
 /* Global */
@@ -84,16 +84,16 @@ a:hover {
   color: white !important;
 }
 .text-success {
-  color: #afa !important;
+  color: rgb(80, 255, 80) !important;
 }
 .text-danger {
-  color: #faa !important;
+  color: rgb(255, 97, 97) !important;
 }
 .text-info {
-  color: #ccf !important;
+  color: rgb(115, 115, 255) !important;
 }
 .text-data {
-  color: #ffa !important;
+  color: rgb(255, 255, 0) !important;
 }
 
 /* Tables */
@@ -269,25 +269,25 @@ a.dropdown-item:hover {
   color: #888;
 }
 .rank-1 {
-  color: #fc0;
+  color: rgb(255, 204, 0);
 }
 .rank-2 {
-  color: #ddf;
+  color: rgb(176, 190, 202);
 }
 .rank-3 {
-  color: #a80;
+  color: rgb(234, 172, 97);
 }
 
 .round-box {
   border-radius: 0.5rem;
-  border: white dashed 1.75px;
+  border: white solid 2px;
 }
 
 .mcstats-entry {
   border: 0.125rem solid #444;
-  border-radius: 0.75rem;
-  background: #3d0b37;
-  box-shadow: white 3px 3px;
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: rgb(255, 255, 255, 0.5) 0 0 0.75rem;
 }
 
 .minecraft-face {
@@ -298,7 +298,7 @@ a.dropdown-item:hover {
 }
 
 #footer {
-  background-image: url("img/bg/bedrock.png");
+  background-color: rgba(0, 0, 0, 0.75);
   background-position: top left;
   background-repeat: repeat;
 }
