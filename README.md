@@ -32,7 +32,7 @@ The Plugin has some exclusive features, making its use much easier than the CLI.
 
 * Automatic updates at regular intervals.
 * Automatic detection of webservers run by other plugins ([dynmap](https://github.com/webbukkit/dynmap)).
-* Support for offline-mode skins via [SkinsRestorer](https://skinsrestorer.net/) (v14.2.2 or later).
+* Support for offline-mode skins via [SkinsRestorer](https://skinsrestorer.net/) (v15.0.0 or later).
 
 ## Setup
 

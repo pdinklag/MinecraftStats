@@ -19,7 +19,7 @@ repositories {
 dependencies {
     implementation 'org.json:json:20220924'
     compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
-    compileOnly 'net.skinsrestorer:skinsrestorer-api:14.2.10'
+    compileOnly 'net.skinsrestorer:skinsrestorer-api:15.0.0'
 }
 
 task concatJs {

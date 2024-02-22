@@ -11,7 +11,7 @@ import de.pdinklag.mcstats.util.Version;
 
 public class BukkitUpdater extends Updater {
     private static final String SKINS_RESTORER_PLUGIN_NAME = "SkinsRestorer";
-    private static final Version SKINS_RESTORER_MIN_VERSION = new Version(14, 2, 2);
+    private static final Version SKINS_RESTORER_MIN_VERSION = new Version(15, 0, 0);
 
     private final MinecraftStatsPlugin plugin;
     private boolean isSkinsRestorerAvailable;
