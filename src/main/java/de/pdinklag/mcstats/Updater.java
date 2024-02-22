@@ -36,7 +36,8 @@ public abstract class Updater {
     private static final String DATABASE_PLAYERLIST_ACTIVE_FORMAT = "active%d.json.gz";
     private static final String DATABASE_SUMMARY = "summary.json.gz";
 
-    private static final String EVENT_INITIAL_SCORE_FIELD = "initialRanking";
+    private static final String EVENT_INITIAL_RANKING_FIELD = "initialRanking";
+    private static final String EVENT_RANKING_FIELD = "ranking";
 
     private static final int MINUTES_TO_TICKS = 60 * MinecraftServerUtils.TICKS_PER_SECOND;
 
@@ -441,13 +442,31 @@ public abstract class Updater {
             });
 
             // process events
-            HashMap<Event, Ranking<IntValue>.Entry> eventWinners = new HashMap<>();
+            HashMap<Event, EventWinner> eventWinners = new HashMap<>();
             events.values().forEach(event -> {
-                if (!event.hasEnded(now)) {
+                final Path eventDataPath = dbEventsPath.resolve(event.getId() + JSON_FILE_EXT);
+                if (event.hasEnded(now)) {
+                    // event has ended, get winner from JSON and store it into summary
+                    if (Files.exists(eventDataPath)) {
+                        try {
+                            final JSONArray eventRanking = new JSONObject(Files.readString(eventDataPath))
+                                    .getJSONArray(EVENT_RANKING_FIELD);
+                            final EventWinner winner = EventWinner.fromJsonRanking(eventRanking, uuid -> {
+                                return allPlayers.get(uuid);
+                            });
+                            if (winner != null) {
+                                eventWinners.put(event, winner);
+                            }
+                        } catch (Exception e) {
+                            log.writeError("failed to load winner for ended event " + event.getId(), e);
+                        }
+                    } else {
+                        log.writeLine("event has ended, but data file does not exist: " + event.getId());
+                    }
+                } else {
+                    // event has not yet ended, update ranking
                     final Stat linkedStat = awards.get(event.getLinkedStatId());
                     if (linkedStat != null) {
-                        final Path eventDataPath = dbEventsPath.resolve(event.getId() + JSON_FILE_EXT);
-
                         final JSONObject eventData = new JSONObject();
                         eventData.put("name", event.getId());
                         eventData.put("title", event.getTitle());
@@ -462,29 +481,29 @@ public abstract class Updater {
                             if (Files.exists(eventDataPath)) {
                                 try {
                                     final JSONObject initialRanking = new JSONObject(Files.readString(eventDataPath))
-                                            .getJSONObject(EVENT_INITIAL_SCORE_FIELD);
+                                            .getJSONObject(EVENT_INITIAL_RANKING_FIELD);
                                     event.setInitialScores(initialRanking);
-                                    eventData.put(EVENT_INITIAL_SCORE_FIELD, initialRanking);
+                                    eventData.put(EVENT_INITIAL_RANKING_FIELD, initialRanking);
                                 } catch (Exception e) {
                                     log.writeError("failed to load initial scores for event " + event.getId(), e);
-                                    eventData.put(EVENT_INITIAL_SCORE_FIELD, new JSONObject());
+                                    eventData.put(EVENT_INITIAL_RANKING_FIELD, new JSONObject());
                                 }
                             } else {
                                 log.writeLine("event is already running, but no initial scores are available: "
                                         + event.getId());
-                                eventData.put(EVENT_INITIAL_SCORE_FIELD, new JSONObject());
+                                eventData.put(EVENT_INITIAL_RANKING_FIELD, new JSONObject());
                             }
 
                             final Ranking<IntValue> eventRanking = new Ranking<IntValue>(validPlayers, player -> {
                                 return new IntValue(
                                         player.getStats().get(linkedStat).toInt() - event.getInitialScore(player));
                             });
-                            eventData.put("ranking", eventRanking.toJSON());
+                            eventData.put(EVENT_RANKING_FIELD, eventRanking.toJSON());
 
                             // store best for front page
                             List<Ranking<IntValue>.Entry> rankingEntries = eventRanking.getOrderedEntries();
                             if (rankingEntries.size() > 0) {
-                                eventWinners.put(event, rankingEntries.get(0));
+                                eventWinners.put(event, new EventWinner(rankingEntries.get(0)));
                             }
                         } else {
                             // the event has not yet started, update initial scores
@@ -496,7 +515,7 @@ public abstract class Updater {
                                 if (score > 0)
                                     initialScores.put(uuid, score);
                             });
-                            eventData.put(EVENT_INITIAL_SCORE_FIELD, initialScores);
+                            eventData.put(EVENT_INITIAL_RANKING_FIELD, initialScores);
                         }
 
                         try {
@@ -655,9 +674,9 @@ public abstract class Updater {
                         eventSummary.put("link", event.getLinkedStatId());
                         eventSummary.put("active", event.hasStarted(now) && !event.hasEnded(now));
 
-                        final Ranking<IntValue>.Entry winner = eventWinners.get(event);
+                        final EventWinner winner = eventWinners.get(event);
                         if (winner != null) {
-                            eventSummary.put("best", winner.toJSON());
+                            eventSummary.put("best", winner.getJSON());
                             summaryRelevantPlayers.add(winner.getPlayer());
                         }
 
