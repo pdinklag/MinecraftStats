@@ -50,6 +50,6 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          build/release/MinecraftStatsCLI.zip
+          build/release/MinecraftStatsCLI.jar
           build/release/MinecraftStatsWeb.zip
         tag_name: ${{ steps.tag_version.outputs.new_tag }}
