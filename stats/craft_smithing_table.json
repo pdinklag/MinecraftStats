@@ -1,5 +1,5 @@
 {
-    "id": "craft_paper",
+    "id": "craft_smithing_table",
     "unit": "int",
     "reader": {
         "$type": "int",
