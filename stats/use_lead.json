@@ -1,0 +1,8 @@
+{
+    "id": "use_lead",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:used","minecraft:lead"]
+    }
+}
