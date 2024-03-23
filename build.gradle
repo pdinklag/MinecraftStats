@@ -74,6 +74,15 @@ task copyWww(type: Copy) {
     into 'build/www'
 }
 
+task copyHelper(type: Copy) {
+
+    from('helper') {
+        include 'index.js'
+        include 'config.json'
+    }
+    into 'build/helper'
+}
+
 compileJava {
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
@@ -163,6 +172,8 @@ task releasePlugin (type: Copy) {
 task releaseWeb (type: Zip) {
     dependsOn copyWww
     from 'build/www/'
+    dependsOn copyHelper
+    from 'build/helper/'
 
     archiveBaseName = 'MinecraftStatsWeb'
     destinationDirectory = file(releaseDir)
