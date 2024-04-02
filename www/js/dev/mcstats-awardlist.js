@@ -27,7 +27,7 @@ mcstats.showAwardsList = function() {
                     <div class="p-1 round-box text-center">
                         ${holder}
                         <br/>
-                        ${info}
+                        <a class="text-center">${info}</a>
                     </div>
                 </div>
             </div>

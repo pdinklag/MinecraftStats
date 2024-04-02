@@ -81,7 +81,7 @@ a:hover {
 
 /* Text content types */
 .text-muted {
-  color: white !important;
+  color: #3a3a3a !important;
 }
 .text-success {
   color: rgb(166, 227, 161) !important;
@@ -154,7 +154,7 @@ a:hover {
 
 /* Text styles */
 .text-shadow {
-  text-shadow: 2px 2px rgba(0, 0, 0, 0.5);
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.2);
 }
 .text-underline {
   text-decoration: underline;
@@ -266,7 +266,7 @@ a.dropdown-item:hover {
 
 /* Specials */
 .rank {
-  color: #888;
+  color: #444;
 }
 .rank-1 {
   color: #f9e2af
@@ -288,9 +288,6 @@ a.dropdown-item:hover {
   border-radius: 0.5rem;
   background: #313244;
   box-shadow: rgb(0 0 0 / 50%) 0 0 0.75rem;
-}
-
-.minecraft-face {
 }
 
 #header {
