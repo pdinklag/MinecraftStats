@@ -22,26 +22,26 @@ html {
 /* Body */
 body {
   font-family: minecraftia, Zpix, monospace;
-  color: #eee;
+  color: #cdd6f4;
   background-position: left top, left 64px, left 128px;
-  background: linear-gradient(-235deg, #565eb5 10%, #fd90af 100%);
+  background-color: #1e1e2e;
 }
 
 /* Links */
 a {
-  color: #fff;
+  color: #cdd6f4;;
   text-decoration: none;
   text-align: center;
 }
 
 a:hover {
-  color: #acf;
+  color: rgb(137, 180, 250);
   text-decoration: underline;
 }
 
 /* Nav */
 #navigation {
-  background-color: black;
+  background-color: rgb(88, 91, 112 );
   border-radius: 0.5rem;
   align-items: center;
   justify-content: center;
@@ -63,19 +63,19 @@ a:hover {
 }
 
 .navbar-dark .navbar-nav .nav-link {
-  color: white;
+  color: #cdd6f4;
 }
 .navbar-dark .navbar-nav .nav-link:focus {
-  color: #acf;
+  color: rgb(137, 180, 250);
 }
 .navbar-dark .navbar-nav .nav-link:hover {
-  color: #acf;
+  color: rgb(137, 180, 250);
   text-decoration: underline;
 }
 
 /* Info */
 #info {
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgb(108, 112, 134);
   border-radius: 0.5rem;
 }
 
@@ -84,40 +84,40 @@ a:hover {
   color: white !important;
 }
 .text-success {
-  color: rgb(80, 255, 80) !important;
+  color: rgb(166, 227, 161) !important;
 }
 .text-danger {
-  color: rgb(255, 97, 97) !important;
+  color: rgb(243, 139, 168) !important;
 }
 .text-info {
-  color: rgb(115, 115, 255) !important;
+  color: rgb(249, 226, 175) !important;
 }
 .text-data {
-  color: rgb(255, 255, 0) !important;
+  color: rgb(137, 180, 250) !important;
 }
 
 /* Tables */
 .table thead th {
-  color: #fff;
+  color: #cdd6f4;
   border-bottom-style: solid;
-  border-bottom-color: #666 !important;
+  border-bottom-color: #6c7086 !important;
   border-bottom-width: 2px;
 }
 
 .table tbody td,
 .table tbody th {
   border-top-style: dashed;
-  border-top-color: #666;
+  border-top-color: #6c7086;
   border-top-width: 1px;
   border-bottom-style: none;
 }
 
 .table tbody tr:hover {
-  color: #eee;
+  color: rgba(147, 153, 178, 0.3)
 }
 
 .table-hover tbody tr:hover {
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(147, 153, 178, 0.3)
 }
 
 /* Time data */
@@ -130,7 +130,7 @@ a:hover {
 .table .time-data td {
   border-style: none;
   text-align: right;
-  color: #ffa;
+  color: #f9e2af;
   padding: 0;
   margin: 0;
 }
@@ -269,25 +269,25 @@ a.dropdown-item:hover {
   color: #888;
 }
 .rank-1 {
-  color: rgb(255, 204, 0);
+  color: #f9e2af
 }
 .rank-2 {
-  color: rgb(176, 190, 202);
+  color: #a6adc8;
 }
 .rank-3 {
-  color: rgb(234, 172, 97);
+  color: #fab387;
 }
 
 .round-box {
   border-radius: 0.5rem;
-  border: white solid 2px;
+  border: #6c7086 solid 2px;
 }
 
 .mcstats-entry {
-  border: 0.125rem solid #444;
+  /* border: 0.125rem solid #fff; */
   border-radius: 0.5rem;
-  background: rgba(0, 0, 0, 0.7);
-  box-shadow: rgb(255, 255, 255, 0.5) 0 0 0.75rem;
+  background: #313244;
+  box-shadow: rgb(0 0 0 / 50%) 0 0 0.75rem;
 }
 
 .minecraft-face {
@@ -298,59 +298,59 @@ a.dropdown-item:hover {
 }
 
 #footer {
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgb(24, 24, 37, 0.75);
   background-position: top left;
   background-repeat: repeat;
 }
 
 /* Minecraft text formattings */
 .mc-text-0 {
-  color: #000000;
+  color: #cdd6f4;
 } /* black */
 .mc-text-1 {
-  color: #0000aa;
+  color: #89b4fa;
 } /* dark_blue */
 .mc-text-2 {
-  color: #00aa00;
+  color: #a6e3a1;
 } /* dark_green */
 .mc-text-3 {
-  color: #00aaaa;
+  color: #94e2d5;
 } /* dark_aqua */
 .mc-text-4 {
-  color: #aa0000;
+  color: #eba0ac;
 } /* dark_red */
 .mc-text-5 {
-  color: #aa00aa;
+  color: #b4befe;
 } /* dark_purple */
 .mc-text-6 {
-  color: #ffaa00;
+  color: #f9e2af;
 } /* gold */
 .mc-text-7 {
-  color: #aaaaaa;
+  color: #cdd6f4;
 } /* gray */
 .mc-text-8 {
-  color: #555555;
+  color: #cdd6f4;
 } /* dark_gray */
 .mc-text-9 {
-  color: #5555ff;
+  color: #89b4fa;
 } /* blue */
 .mc-text-a {
-  color: #55ff55;
+  color: #94e2d5  ;
 } /* green */
 .mc-text-b {
-  color: #55ffff;
+  color: #89dceb;
 } /* aqua */
 .mc-text-c {
-  color: #ff5555;
+  color: #f38ba8;
 } /* red */
 .mc-text-d {
-  color: #ff55ff;
+  color: #cba6f7;
 } /* light_purple */
 .mc-text-e {
-  color: #ffff55;
+  color: #f9e2af;
 } /* yellow */
 .mc-text-f {
-  color: #ffffff;
+  color: #cdd6f4;
 } /* white */
 .mc-text-k {
   /* obfuscated */
