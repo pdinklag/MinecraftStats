@@ -1,0 +1,9 @@
+{
+    {
+    "id": "craft_crafter",
+    "unit": "int",
+    "reader": {
+        "$type": "int",
+        "path": ["minecraft:crafted","minecraft:crafter"]
+    }
+}
