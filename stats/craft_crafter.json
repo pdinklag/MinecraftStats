@@ -1,5 +1,4 @@
 {
-    {
     "id": "craft_crafter",
     "unit": "int",
     "reader": {
