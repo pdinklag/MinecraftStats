@@ -282,6 +282,14 @@ Only since the Java implementation, *MinecraftStats* officially has numbered ver
 
 ## Changelog
 
+### 3.31
+
+This update uses a newer API of SkinsRestorer and fixes more MOTD issues.
+
+* Updated the [SkinsRestorer](https://skinsrestorer.net/) API &ndash; version 15.0.0 or later is now required. Because of breaking changes in their API, older versions of SkinsRestorer are no longer supported.
+* Fixed winners of finished events not displayed correctly.
+* Fixed newlines being incorrectly replaced in the MOTD, causing the summary to become unparseable.
+
 ### 3.3.0
 
 This update adds automatic detection of squremap's webserver and fixes bugs in both the plugin and CLI.
@@ -307,7 +315,7 @@ This update adds automatic detection of BlueMap's webserver and fixes bugs in th
 
 This update adds SkinsRestorer for the plugin and avoids unnecessary Mojang API calls.
 
-* The plugin can now get skins from [SkinsRestorer](https://skinsrestorer.net/) v14.2.2 or later.
+* The plugin can now get skins from [SkinsRestorer](https://skinsrestorer.net/) ~~14.2.2~~ 15.0.0 or later.
 * If a player is detected to be an offline player (e.g., Floodgate players or if the Mojang API gave an empty response), no further attempts at asking the Mojang API will be made.
 * Minimized the log output of the plugin.
 
