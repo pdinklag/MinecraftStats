@@ -4,6 +4,7 @@ import java.nio.file.Path;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.pdinklag.mcstats.bukkit.webserver.PluginWebserver;
 import de.pdinklag.mcstats.util.MinecraftServerUtils;
 
 /**

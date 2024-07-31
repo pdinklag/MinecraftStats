@@ -1,4 +1,4 @@
-package de.pdinklag.mcstats.bukkit;
+package de.pdinklag.mcstats.bukkit.webserver;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,8 +8,6 @@ import java.util.regex.Pattern;
 import org.bukkit.plugin.Plugin;
 
 public class BlueMapWebserver extends PluginWebserver {
-    public static final String PLUGIN_NAME = "BlueMap";
-
     private static final String CONFIG_FILENAME = "webserver.conf";
     private static final Pattern WEBROOT_PATTERN = Pattern.compile("webroot: \"(.+)\"");
     private static final String DEFAULT_WEBROOT = "bluemap/web";

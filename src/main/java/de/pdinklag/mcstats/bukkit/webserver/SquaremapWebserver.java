@@ -1,4 +1,4 @@
-package de.pdinklag.mcstats.bukkit;
+package de.pdinklag.mcstats.bukkit.webserver;
 
 import java.nio.file.Path;
 
@@ -6,8 +6,6 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
 
 public class SquaremapWebserver extends PluginWebserver {
-    public static final String PLUGIN_NAME = "squaremap";
-
     private static final String DEFAULT_WEBPATH = "web";
 
     private final Path documentRoot;

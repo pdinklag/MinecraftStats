@@ -1,4 +1,4 @@
-package de.pdinklag.mcstats.bukkit;
+package de.pdinklag.mcstats.bukkit.webserver;
 
 import java.nio.file.Path;
 
@@ -6,8 +6,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 public class DynmapWebserver extends PluginWebserver {
-    public static final String PLUGIN_NAME = "dynmap";
-    
     private static final String CONFIG_FILENAME = "configuration.txt";
     private static final String DEFAULT_WEBPATH = "web";
 
