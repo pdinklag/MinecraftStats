@@ -32,7 +32,6 @@ The Plugin has some exclusive features, making its use much easier than the CLI.
 
 * Automatic updates at regular intervals.
 * Automatic detection of webservers run by other plugins ([dynmap](https://github.com/webbukkit/dynmap)).
-* Support for offline-mode skins via [SkinsRestorer](https://skinsrestorer.net/) (v15.0.0 or later).
 
 ## Setup
 
@@ -282,11 +281,15 @@ Only since the Java implementation, *MinecraftStats* officially has numbered ver
 
 ## Changelog
 
-### 3.31
+### 3.4.0
+
+* &hellip;
+
+### 3.3.1
 
 This update uses a newer API of SkinsRestorer and fixes more MOTD issues.
 
-* Updated the [SkinsRestorer](https://skinsrestorer.net/) API &ndash; version 15.0.0 or later is now required. Because of breaking changes in their API, older versions of SkinsRestorer are no longer supported.
+* ~~Updated the [SkinsRestorer](https://skinsrestorer.net/) API &ndash; version 15.0.0 or later is now required. Because of breaking changes in their API, older versions of SkinsRestorer are no longer supported.~~-
 * Fixed winners of finished events not displayed correctly.
 * Fixed newlines being incorrectly replaced in the MOTD, causing the summary to become unparseable.
 
@@ -315,7 +318,7 @@ This update adds automatic detection of BlueMap's webserver and fixes bugs in th
 
 This update adds SkinsRestorer for the plugin and avoids unnecessary Mojang API calls.
 
-* The plugin can now get skins from [SkinsRestorer](https://skinsrestorer.net/) ~~14.2.2~~ 15.0.0 or later.
+* ~~The plugin can now get skins from [SkinsRestorer](https://skinsrestorer.net/)~~ ~~14.2.2~~ ~~15.0.0 or later.~~
 * If a player is detected to be an offline player (e.g., Floodgate players or if the Mojang API gave an empty response), no further attempts at asking the Mojang API will be made.
 * Minimized the log output of the plugin.
 

@@ -4,4 +4,3 @@ version: @@MCSTATS_VERSION@@
 api-version: 1.13
 softdepend:
   - dynmap
-  - SkinsRestorer

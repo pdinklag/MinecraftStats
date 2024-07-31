@@ -12,6 +12,7 @@ public class BukkitConfig extends Config {
     private boolean unpackWebFiles = true;
     private int updateInterval = 5;
     private String webSubdir = "stats";
+    private boolean skinsRestorerEnabled = false;
 
     public BukkitConfig(Plugin plugin)  {
         // create data source for default world
@@ -29,6 +30,8 @@ public class BukkitConfig extends Config {
         unpackWebFiles = bukkitConfig.getBoolean("data.unpackWebFiles", unpackWebFiles);
         updateInterval = bukkitConfig.getInt("data.updateInterval", updateInterval);
         webSubdir = bukkitConfig.getString("data.webSubdir", webSubdir);
+
+        skinsRestorerEnabled = bukkitConfig.getBoolean("plugin.skinsRestorerEnabled", skinsRestorerEnabled);
 
         final Path pluginDataPath = plugin.getDataFolder().toPath();
         setEventsPath(pluginDataPath.resolve(bukkitConfig.getString("data.eventsDir")));
@@ -77,5 +80,13 @@ public class BukkitConfig extends Config {
 
     public void setUpdateInterval(int updateInterval) {
         this.updateInterval = updateInterval;
+    }
+
+    public boolean isSkinsRestorerEnabled() {
+        return skinsRestorerEnabled;
+    }
+
+    public void setSkinsRestorerEnabled(boolean skinsRestorerEnabled) {
+        this.skinsRestorerEnabled = skinsRestorerEnabled;
     }
 }
