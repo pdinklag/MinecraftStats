@@ -26,6 +26,8 @@ public abstract class PluginWebserver {
         final PluginManager pluginManager = server.getPluginManager();
 
         PluginWebserver webserver;
+        if ((webserver = getPluginWebserver(pluginManager, "Plan", PlanWebserver.class)) != null)
+            return webserver;
         if ((webserver = getPluginWebserver(pluginManager, "dynmap", DynmapWebserver.class)) != null)
             return webserver;
         if ((webserver = getPluginWebserver(pluginManager, "BlueMap", BlueMapWebserver.class)) != null)
