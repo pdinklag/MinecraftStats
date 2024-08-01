@@ -1,6 +1,5 @@
 // Load a JSON file from an URL
-loadJson = function(url, successFunc, compressed = false, allowCache = false) {
-    // load zlib-compressed JSON as byte sequence, then decompress
+loadJson = function(url, successFunc, allowCache = false) {
     var req = new XMLHttpRequest();
     req.open('GET', url, true);
 
@@ -8,22 +7,8 @@ loadJson = function(url, successFunc, compressed = false, allowCache = false) {
         req.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     }
 
-    if(compressed) {
-        req.responseType = 'arraybuffer';
-    }
-
     req.onload = function(e) {
-        var data;
-        if(compressed) {
-            // decompress JSON
-            var compressedData = new Uint8Array(req.response);
-            data = JSON.parse(pako.inflate(compressedData, {to: 'string'}));
-        } else {
-            data = JSON.parse(req.response);
-        }
-
-        // call success handler
-        successFunc(data);
+        successFunc(JSON.parse(req.response));
     };
     req.send();
 };
@@ -35,11 +20,10 @@ class Loader {
         this.numLoaded = 0;
     }
 
-    addRequest(url, successFunc, compressed = false) {
+    addRequest(url, successFunc) {
         this.requests.push({
             url: url,
             successFunc: successFunc,
-            compressed: compressed,
         });
     }
 
@@ -53,7 +37,7 @@ class Loader {
                 if(loader.numLoaded >= loader.requests.length) {
                     loader.oncomplete();
                 }
-            }, req.compressed);
+            });
         });
     }
 }

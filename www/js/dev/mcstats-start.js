@@ -101,7 +101,7 @@ summaryLoader = new Loader(function() {
     localizationLoader.start();
 });
 
-summaryLoader.addRequest('data/summary.json.gz', function(summary) {
+summaryLoader.addRequest('data/summary.json', function(summary) {
     // store summary data
     mcstats.info = summary.info;
     mcstats.players = summary.players;
@@ -115,7 +115,7 @@ summaryLoader.addRequest('data/summary.json.gz', function(summary) {
     if(params.lang === undefined) {
         params.lang = "en";
     }
-}, true); // compressed!
+});
 
 // Start
 mcstats.showLoader();

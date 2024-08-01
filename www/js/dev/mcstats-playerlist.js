@@ -1,5 +1,5 @@
 mcstats.showPlayerList = function(page=1,inactive=false) {
-    loadJson('data/playerlist/' + (inactive ? 'all' : 'active') + page + '.json.gz', function(list) {
+    loadJson('data/playerlist/' + (inactive ? 'all' : 'active') + page + '.json', function(list) {
         // add players to cache
         list.forEach(function(p){
             mcstats.players[p.uuid] = {
@@ -142,5 +142,5 @@ mcstats.showPlayerList = function(page=1,inactive=false) {
             mcstats.localize('page.playerList.count', [numPlayers, numActive, numInactive]),
             mcstats.localize('page.playerList.paginationInfo', [numPerPage]) + '<br/>',
             false);
-    }, true);
+    });
 }

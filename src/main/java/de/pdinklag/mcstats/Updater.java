@@ -15,7 +15,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.pdinklag.mcstats.util.ClientUtils;
-import de.pdinklag.mcstats.util.FileUtils;
 import de.pdinklag.mcstats.util.JSONUtils;
 import de.pdinklag.mcstats.util.MinecraftServerUtils;
 
@@ -32,9 +31,9 @@ public abstract class Updater {
     private static final String DATABASE_PLAYERCACHE = "playercache";
     private static final String DATABASE_PLAYERDATA = "playerdata";
     private static final String DATABASE_PLAYERLIST = "playerlist";
-    private static final String DATABASE_PLAYERLIST_ALL_FORMAT = "all%d.json.gz";
-    private static final String DATABASE_PLAYERLIST_ACTIVE_FORMAT = "active%d.json.gz";
-    private static final String DATABASE_SUMMARY = "summary.json.gz";
+    private static final String DATABASE_PLAYERLIST_ALL_FORMAT = "all%d.json";
+    private static final String DATABASE_PLAYERLIST_ACTIVE_FORMAT = "active%d.json";
+    private static final String DATABASE_SUMMARY = "summary.json";
 
     private static final String EVENT_INITIAL_RANKING_FIELD = "initialRanking";
     private static final String EVENT_RANKING_FIELD = "ranking";
@@ -225,7 +224,7 @@ public abstract class Updater {
 
             final Path filePath = getPlayerListFilePath(filenameFormat, 0);
             try {
-                FileUtils.writeStringGzipped(filePath, JSONUtils.toASCIIString(empty));
+                Files.writeString(filePath, JSONUtils.toASCIIString(empty));
             } catch (IOException e) {
                 log.writeError("failed to write playerlist page file: " + filePath, e);
             }
@@ -249,7 +248,7 @@ public abstract class Updater {
 
                 final Path pageFilePath = getPlayerListFilePath(filenameFormat, pageNum);
                 try {
-                    FileUtils.writeStringGzipped(pageFilePath, JSONUtils.toASCIIString(page));
+                    Files.writeString(pageFilePath, JSONUtils.toASCIIString(page));
                 } catch (IOException e) {
                     log.writeError("failed to write playerlist page file: " + pageFilePath, e);
                 }
@@ -695,7 +694,7 @@ public abstract class Updater {
 
                 // write
                 final Path summaryPath = dbPath.resolve(DATABASE_SUMMARY);
-                FileUtils.writeStringGzipped(summaryPath, JSONUtils.toASCIIString(summary));
+                Files.writeString(summaryPath, JSONUtils.toASCIIString(summary));
             }
         } catch (Exception e) {
             log.writeError("failed to write database", e);
