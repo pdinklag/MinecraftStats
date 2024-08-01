@@ -37,5 +37,13 @@ public abstract class PluginWebserver {
         return null;
     }
 
-    public abstract Path getDocumentRoot();
+    protected Path documentRoot;
+
+    public final Path getDocumentRoot() {
+        return documentRoot;
+    }
+
+    protected void setDocumentRoot(Path documentRoot) {
+        this.documentRoot = documentRoot;
+    }
 }

@@ -12,10 +12,8 @@ public class BlueMapWebserver extends PluginWebserver {
     private static final Pattern WEBROOT_PATTERN = Pattern.compile("webroot: \"(.+)\"");
     private static final String DEFAULT_WEBROOT = "bluemap/web";
 
-    private final Path documentRoot;
-
-    public BlueMapWebserver(Plugin bluemapPlugin) {
-        final Path bluemapPath = bluemapPlugin.getDataFolder().toPath().toAbsolutePath();
+    public BlueMapWebserver(Plugin plugin) {
+        final Path bluemapPath = plugin.getDataFolder().toPath().toAbsolutePath();
         final Path bluemapWebserverConfigPath = bluemapPath.resolve(CONFIG_FILENAME);
 
         String webRoot;
@@ -33,11 +31,6 @@ public class BlueMapWebserver extends PluginWebserver {
             webRoot = DEFAULT_WEBROOT;
         }
 
-        this.documentRoot = bluemapPlugin.getServer().getWorldContainer().toPath().resolve(webRoot).toAbsolutePath();
-    }
-
-    @Override
-    public Path getDocumentRoot() {
-        return documentRoot;
+        setDocumentRoot(plugin.getServer().getWorldContainer().toPath().resolve(webRoot).toAbsolutePath());
     }
 }

@@ -8,25 +8,18 @@ import org.bukkit.plugin.Plugin;
 public class SquaremapWebserver extends PluginWebserver {
     private static final String DEFAULT_WEBPATH = "web";
 
-    private final Path documentRoot;
-
-    public SquaremapWebserver(Plugin squaremapPlugin) {
-        final Path squaremapPath = squaremapPlugin.getDataFolder().toPath().toAbsolutePath();
+    public SquaremapWebserver(Plugin plugin) {
+        final Path pluginPath = plugin.getDataFolder().toPath().toAbsolutePath();
 
         String webPath;
         try {
-            final Configuration squaremapConfig = squaremapPlugin.getConfig();
-            webPath = squaremapConfig.getString("settings.web-directory.path", DEFAULT_WEBPATH);
-        } catch(Exception e) {
+            final Configuration config = plugin.getConfig();
+            webPath = config.getString("settings.web-directory.path", DEFAULT_WEBPATH);
+        } catch (Exception e) {
             e.printStackTrace();
             webPath = DEFAULT_WEBPATH;
         }
 
-        this.documentRoot = squaremapPath.resolve(webPath);
-    }
-
-    @Override
-    public Path getDocumentRoot() {
-        return documentRoot;
+        setDocumentRoot(pluginPath.resolve(webPath));
     }
 }
