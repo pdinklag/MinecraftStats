@@ -32,6 +32,8 @@ public abstract class PluginWebserver {
             return webserver;
         if ((webserver = getPluginWebserver(pluginManager, "squaremap", SquaremapWebserver.class)) != null)
             return webserver;
+        if ((webserver = getPluginWebserver(pluginManager, "Pl3xMap", Pl3xMapWebserver.class)) != null)
+            return webserver;
         return null;
     }
 
