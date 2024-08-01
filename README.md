@@ -31,7 +31,7 @@ This documentation is written for both variants. If anything special applies to 
 The Plugin has some exclusive features, making its use much easier than the CLI. Some features are for communication with other plugins, others are conveniences that are enabled by being run in the scope of a server application.
 
 * Automatic updates at regular intervals.
-* Automatic detection of webservers run by other plugins ([dynmap](https://github.com/webbukkit/dynmap)).
+* Automatic detection of webservers run by other plugins ([Plan](https://www.spigotmc.org/resources/plan-player-analytics.32536/), [dynmap](https://github.com/webbukkit/dynmap), [BlueMap](https://bluemap.bluecolored.de/), [squaremap](https://modrinth.com/plugin/squaremap), [Pl3xMap](https://github.com/granny/Pl3xMap)).
 
 ## Setup
 
@@ -45,9 +45,11 @@ This section will guide you through getting *MinecraftStats* up and running.
 
 The plugin can be used in any server capable of running Spigot plugins, particularly [Spigot](https://www.spigotmc.org/) or [PaperMC](https://papermc.io/). *MinecraftStats* automatically detects the following plugins that feature a webserver:
 
+* [Plan](https://www.spigotmc.org/resources/plan-player-analytics.32536/)
 * [dynmap](https://github.com/webbukkit/dynmap)
 * [BlueMap](https://bluemap.bluecolored.de/)
 * [squaremap](https://modrinth.com/plugin/squaremap)
+* [Pl3xMap](https://github.com/granny/Pl3xMap)
 
 That said, if you have any of the above plugins installed, there is no need to setup a webserver yourself unless you desire to.
 
@@ -152,9 +154,11 @@ By installing the plugin with the default configuration and if you have a plugin
 
 If you rely on *MinecraftStats* to find a webserver plugin, this is how you and your players access the web frontend using a browser:
 
+* **Plan**: Let's say your plan URL starts with `my-server.com:8804`, then you access the *MinecraftStats* frontend via `my-server.com:8804/stats`. If you change the `data → webSubdir` setting, the `/stats` part in the URL must be changed accordingly.
 * **dynmap**: Let's say your URL is `my-server.com:8123`, then you access the *MinecraftStats* frontend via `my-server.com:8123/stats/index.html`. Note that due to how dynmap's webserver is configured, you cannot leave the `/index.html` part by default. If you change the `data → webSubdir` setting, the `/stats/` part in the URL must be changed accordingly.
 * **BlueMap**: The same as for dynmap applies, but note that the default port there is different. The default URL in BlueMap will be `my-server.com:8100/stats/index.html`.
 * **squaremap**: The same as for dynmap applies, but note that the default port there is different. The default URL in squaremap will be `my-server.com:8080/stats/index.html`.
+* **Pl3xMap**: The same as for dynmap applies, but note that the default port there is different. The default URL in squaremap will be `my-server.com:8080/stats/index.html`.
 
 #### CLI
 
