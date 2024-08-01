@@ -154,7 +154,7 @@ By installing the plugin with the default configuration and if you have a plugin
 
 If you rely on *MinecraftStats* to find a webserver plugin, this is how you and your players access the web frontend using a browser:
 
-* **Plan**: Let's say your plan URL starts with `my-server.com:8804`, then you access the *MinecraftStats* frontend via `my-server.com:8804/stats`. If you change the `data → webSubdir` setting, the `/stats` part in the URL must be changed accordingly.
+* **Plan**: Let's say your plan URL starts with `my-server.com:8804`, then you access the *MinecraftStats* frontend via `my-server.com:8804/stats/index.html`. Note that due to how the webserver is configured, you cannot leave the `/index.html` part by default. If you change the `data → webSubdir` setting, the `/stats` part in the URL must be changed accordingly.
 * **dynmap**: Let's say your URL is `my-server.com:8123`, then you access the *MinecraftStats* frontend via `my-server.com:8123/stats/index.html`. Note that due to how dynmap's webserver is configured, you cannot leave the `/index.html` part by default. If you change the `data → webSubdir` setting, the `/stats/` part in the URL must be changed accordingly.
 * **BlueMap**: The same as for dynmap applies, but note that the default port there is different. The default URL in BlueMap will be `my-server.com:8100/stats/index.html`.
 * **squaremap**: The same as for dynmap applies, but note that the default port there is different. The default URL in squaremap will be `my-server.com:8080/stats/index.html`.
