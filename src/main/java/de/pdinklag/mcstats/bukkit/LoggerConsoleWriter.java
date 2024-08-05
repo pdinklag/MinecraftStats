@@ -4,12 +4,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.Logger;
 
-import de.pdinklag.mcstats.LogWriter;
+import de.pdinklag.mcstats.ConsoleWriter;
 
-public class LoggerLogWriter implements LogWriter {
+public class LoggerConsoleWriter implements ConsoleWriter {
     private final Logger logger;
 
-    public LoggerLogWriter(Logger logger) {
+    public LoggerConsoleWriter(Logger logger) {
         this.logger = logger;
     }
 

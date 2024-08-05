@@ -36,6 +36,7 @@ public class BukkitConfig extends Config {
         final Path pluginDataPath = plugin.getDataFolder().toPath();
         setEventsPath(pluginDataPath.resolve(bukkitConfig.getString("data.eventsDir")));
         setStatsPath(pluginDataPath.resolve(bukkitConfig.getString("data.statsDir")));
+        setLogfilePath(pluginDataPath.resolve(bukkitConfig.getString("data.logfile")));
 
         setInactiveDays(bukkitConfig.getInt("players.inactiveDays", getInactiveDays()));
         setMinPlaytime(bukkitConfig.getInt("players.minPlaytime", getMinPlaytime()));

@@ -44,7 +44,6 @@ public abstract class Updater {
 
     // initialization
     protected final Config config;
-    protected final LogWriter log;
 
     private final HashMap<String, Stat> awards = new HashMap<>();
     private final HashMap<String, Event> events = new HashMap<>();
@@ -59,7 +58,7 @@ public abstract class Updater {
     private final Path dbPlayerlistPath;
 
     protected PlayerProfileProvider getAuthenticProfileProvider() {
-        return new MojangAPIPlayerProfileProvider(log);
+        return new MojangAPIPlayerProfileProvider();
     }
 
     protected void gatherLocalProfileProviders(PlayerProfileProviderList providers) {
@@ -71,7 +70,7 @@ public abstract class Updater {
                     JSONArray usercacheJson = new JSONArray(Files.readString(usercachePath));
                     providers.add(new UserCachePlayerProfileProvider(usercacheJson));
                 } catch (Exception e) {
-                    log.writeError("failed to read usercache: " + usercachePath.toString(), e);
+                    Log.getCurrent().writeError("failed to read usercache: " + usercachePath.toString(), e);
                 }
             }
         });
@@ -87,7 +86,8 @@ public abstract class Updater {
                 JSONObject playersJson = new JSONObject(Files.readString(dbPlayersJsonPath));
                 providers.addFirst(new DatabasePlayerProfileProvider(playersJson));
             } catch (Exception e) {
-                log.writeError("failed to load players from previous database: " + dbPlayersJsonPath.toString(), e);
+                Log.getCurrent().writeError(
+                        "failed to load players from previous database: " + dbPlayersJsonPath.toString(), e);
             }
         }
         return providers;
@@ -111,7 +111,8 @@ public abstract class Updater {
                         JSONArray ops = new JSONArray(Files.readString(bannedPlayersPath));
                         filters.add(new JSONPlayerFilter(ops));
                     } catch (Exception e) {
-                        log.writeError("failed to read banned players file: " + bannedPlayersPath.toString(), e);
+                        Log.getCurrent()
+                                .writeError("failed to read banned players file: " + bannedPlayersPath.toString(), e);
                     }
                 }
             });
@@ -126,7 +127,7 @@ public abstract class Updater {
                         JSONArray ops = new JSONArray(Files.readString(opsPath));
                         filters.add(new JSONPlayerFilter(ops));
                     } catch (Exception e) {
-                        log.writeError("failed to read ops file: " + opsPath.toString(), e);
+                        Log.getCurrent().writeError("failed to read ops file: " + opsPath.toString(), e);
                     }
                 }
             });
@@ -194,12 +195,12 @@ public abstract class Updater {
                                 discoveredPlayers.put(uuid, player);
                             }
                         } catch (Exception e) {
-                            log.writeError("failed to process file: " + path.toString(), e);
+                            Log.getCurrent().writeError("failed to process file: " + path.toString(), e);
                         }
                     });
                 }
             } catch (IOException e) {
-                log.writeError("failed to run discovery on data source: " + statsPath.toString(), e);
+                Log.getCurrent().writeError("failed to run discovery on data source: " + statsPath.toString(), e);
             }
         });
 
@@ -226,7 +227,7 @@ public abstract class Updater {
             try {
                 Files.writeString(filePath, JSONUtils.toASCIIString(empty));
             } catch (IOException e) {
-                log.writeError("failed to write playerlist page file: " + filePath, e);
+                Log.getCurrent().writeError("failed to write playerlist page file: " + filePath, e);
             }
         } else {
             final ArrayList<Player> playersSorted = new ArrayList<>(players);
@@ -250,7 +251,7 @@ public abstract class Updater {
                 try {
                     Files.writeString(pageFilePath, JSONUtils.toASCIIString(page));
                 } catch (IOException e) {
-                    log.writeError("failed to write playerlist page file: " + pageFilePath, e);
+                    Log.getCurrent().writeError("failed to write playerlist page file: " + pageFilePath, e);
                 }
             }
         }
@@ -261,7 +262,7 @@ public abstract class Updater {
         if (!awards.containsKey(stat.getId())) {
             awards.put(stat.getId(), stat);
         } else {
-            log.writeLine("duplicate stat id \"" + stat.getId() + "\"");
+            Log.getCurrent().writeLine(Log.Category.CONFIG, "duplicate stat id \"" + stat.getId() + "\"");
         }
     }
 
@@ -270,13 +271,12 @@ public abstract class Updater {
         if (!events.containsKey(event.getId())) {
             events.put(event.getId(), event);
         } else {
-            log.writeLine("duplicate event id \"" + event.getId() + "\"");
+            Log.getCurrent().writeLine(Log.Category.CONFIG, "duplicate event id \"" + event.getId() + "\"");
         }
     }
 
-    public Updater(Config config, LogWriter log) {
+    public Updater(Config config) {
         this.config = config;
-        this.log = log;
 
         // cache some paths
         this.dbPath = config.getDocumentRoot().resolve(DATABASE_DIRNAME);
@@ -296,13 +296,13 @@ public abstract class Updater {
                             final JSONObject obj = new JSONObject(Files.readString(path));
                             parseAndRegisterStat(obj);
                         } catch (Exception e2) {
-                            log.writeError("failed to load stat from file: " + path.toString(), e2);
+                            Log.getCurrent().writeError("failed to load stat from file: " + path.toString(), e2);
                         }
                     }
                 });
             }
         } catch (Exception e) {
-            log.writeError("failed to discover stats", e);
+            Log.getCurrent().writeError("failed to discover stats", e);
         }
 
         // discover events
@@ -314,13 +314,13 @@ public abstract class Updater {
                             final JSONObject obj = new JSONObject(Files.readString(path));
                             parseAndRegisterEvent(obj);
                         } catch (Exception e2) {
-                            log.writeError("failed to load stat from file: " + path.toString(), e2);
+                            Log.getCurrent().writeError("failed to load stat from file: " + path.toString(), e2);
                         }
                     }
                 });
             }
         } catch (Exception e) {
-            log.writeError("failed to discover events", e);
+            Log.getCurrent().writeError("failed to discover events", e);
         }
     }
 
@@ -346,7 +346,7 @@ public abstract class Updater {
         try {
             Files.createDirectories(dbPath);
         } catch (Exception e) {
-            log.writeError("failed to create database directories: " + dbPath.toString(), e);
+            Log.getCurrent().writeError("failed to create database directories: " + dbPath.toString(), e);
         }
 
         // discover and process players
@@ -435,7 +435,7 @@ public abstract class Updater {
                     try {
                         Files.writeString(awardJsonPath, JSONUtils.toASCIIString(ranking.toJSON()));
                     } catch (Exception e) {
-                        log.writeError("failed to write award data: " + awardJsonPath, e);
+                        Log.getCurrent().writeError("failed to write award data: " + awardJsonPath, e);
                     }
                 }
             });
@@ -457,10 +457,11 @@ public abstract class Updater {
                                 eventWinners.put(event, winner);
                             }
                         } catch (Exception e) {
-                            log.writeError("failed to load winner for ended event " + event.getId(), e);
+                            Log.getCurrent().writeError("failed to load winner for ended event " + event.getId(), e);
                         }
                     } else {
-                        log.writeLine("event has ended, but data file does not exist: " + event.getId());
+                        Log.getCurrent().writeLine(Log.Category.EVENTS,
+                                "event has ended, but data file does not exist: " + event.getId());
                     }
                 } else {
                     // event has not yet ended, update ranking
@@ -475,7 +476,8 @@ public abstract class Updater {
 
                         if (event.hasStarted(now)) {
                             // the event is currently running, read initial scores and update ranking
-                            log.writeLine("updating ranking for event " + event.getId());
+                            Log.getCurrent().writeLine(Log.Category.EVENTS,
+                                    "updating ranking for event " + event.getId());
 
                             if (Files.exists(eventDataPath)) {
                                 try {
@@ -484,12 +486,15 @@ public abstract class Updater {
                                     event.setInitialScores(initialRanking);
                                     eventData.put(EVENT_INITIAL_RANKING_FIELD, initialRanking);
                                 } catch (Exception e) {
-                                    log.writeError("failed to load initial scores for event " + event.getId(), e);
+                                    Log.getCurrent()
+                                            .writeError("failed to load initial scores for event " + event.getId(), e);
                                     eventData.put(EVENT_INITIAL_RANKING_FIELD, new JSONObject());
                                 }
                             } else {
-                                log.writeLine("event is already running, but no initial scores are available: "
-                                        + event.getId());
+                                Log.getCurrent()
+                                        .writeLine(Log.Category.EVENTS,
+                                                "event is already running, but no initial scores are available: "
+                                                        + event.getId());
                                 eventData.put(EVENT_INITIAL_RANKING_FIELD, new JSONObject());
                             }
 
@@ -506,7 +511,8 @@ public abstract class Updater {
                             }
                         } else {
                             // the event has not yet started, update initial scores
-                            log.writeLine("updating initial scores for event " + event.getId());
+                            Log.getCurrent().writeLine(Log.Category.EVENTS,
+                                    "updating initial scores for event " + event.getId());
 
                             final JSONObject initialScores = new JSONObject();
                             allPlayers.forEach((uuid, player) -> {
@@ -520,11 +526,13 @@ public abstract class Updater {
                         try {
                             Files.writeString(eventDataPath, JSONUtils.toASCIIString(eventData));
                         } catch (Exception e) {
-                            log.writeError("error writing data for event " + event.getId(), e);
+                            Log.getCurrent().writeError("error writing data for event " + event.getId(), e);
                         }
                     } else {
-                        log.writeLine("linked stat \"" + event.getLinkedStatId() + "\" does not exist for event: "
-                                + event.getId());
+                        Log.getCurrent()
+                                .writeLine(Log.Category.CONFIG,
+                                        "linked stat \"" + event.getLinkedStatId() + "\" does not exist for event: "
+                                                + event.getId());
                     }
                 }
             });
@@ -535,7 +543,7 @@ public abstract class Updater {
                 try {
                     Files.writeString(playerdataPath, JSONUtils.toASCIIString(player.getStats().toJSON()));
                 } catch (Exception ex) {
-                    log.writeError("failed to write player data: " + playerdataPath, ex);
+                    Log.getCurrent().writeError("failed to write player data: " + playerdataPath, ex);
                 }
             });
 
@@ -567,7 +575,7 @@ public abstract class Updater {
                     try {
                         Files.writeString(groupPath, JSONUtils.toASCIIString(cache));
                     } catch (IOException e) {
-                        log.writeError("failed to write playerache file: " + groupPath, e);
+                        Log.getCurrent().writeError("failed to write playerache file: " + groupPath, e);
                     }
                 });
             }
@@ -599,7 +607,7 @@ public abstract class Updater {
 
                         if (serverName == null) {
                             serverName = "";
-                            log.writeLine(
+                            Log.getCurrent().writeLine(Log.Category.CONFIG,
                                     "the server's name could not be determined -- try stating a customName in the config");
                         }
                     }
@@ -615,7 +623,7 @@ public abstract class Updater {
                                 hasIcon = true;
                                 break;
                             } catch (Exception e) {
-                                log.writeError("failed to copy icon " + iconPath + " to " + dbPath, e);
+                                Log.getCurrent().writeError("failed to copy icon " + iconPath + " to " + dbPath, e);
                             }
                         }
                     }
@@ -697,7 +705,7 @@ public abstract class Updater {
                 Files.writeString(summaryPath, JSONUtils.toASCIIString(summary));
             }
         } catch (Exception e) {
-            log.writeError("failed to write database", e);
+            Log.getCurrent().writeError("failed to write database", e);
         }
     }
 }

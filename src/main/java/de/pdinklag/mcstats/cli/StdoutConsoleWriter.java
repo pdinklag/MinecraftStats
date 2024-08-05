@@ -1,8 +1,8 @@
 package de.pdinklag.mcstats.cli;
 
-import de.pdinklag.mcstats.LogWriter;
+import de.pdinklag.mcstats.ConsoleWriter;
 
-public class StdoutLogWriter implements LogWriter {
+public class StdoutConsoleWriter implements ConsoleWriter {
     @Override
     public void writeLine(String line) {
         System.out.println(line);

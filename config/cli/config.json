@@ -10,7 +10,8 @@
     "data": {
         "documentRoot": "/var/www/html",
         "eventsDir": "events",
-        "statsDir": "stats"
+        "statsDir": "stats",
+        "logfile": "update.log"
     },
     "crown": {
         "silver": 2,

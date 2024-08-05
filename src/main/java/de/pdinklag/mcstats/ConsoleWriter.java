@@ -1,9 +1,9 @@
 package de.pdinklag.mcstats;
 
 /**
- * Interface for log writers.
+ * Interface for console writers.
  */
-public interface LogWriter {
+public interface ConsoleWriter {
     /**
      * Writes a line to the log.
      * @param line the line to write

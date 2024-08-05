@@ -4,6 +4,7 @@ data:
   statsDir: "stats"
   unpackWebFiles: true
   updateInterval: 5
+  logfile: "update.log"
   webSubdir: "stats"
 plugin:
   skinsRestorerEnabled: false

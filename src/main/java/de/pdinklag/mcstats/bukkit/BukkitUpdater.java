@@ -1,14 +1,14 @@
 package de.pdinklag.mcstats.bukkit;
 
-import de.pdinklag.mcstats.LogWriter;
+import de.pdinklag.mcstats.Log;
 import de.pdinklag.mcstats.PlayerProfileProviderList;
 import de.pdinklag.mcstats.Updater;
 
 public class BukkitUpdater extends Updater {
     private final MinecraftStatsPlugin plugin;
 
-    public BukkitUpdater(MinecraftStatsPlugin plugin, BukkitConfig config, LogWriter log) {
-        super(config, log);
+    public BukkitUpdater(MinecraftStatsPlugin plugin, BukkitConfig config) {
+        super(config);
         this.plugin = plugin;
     }
 
@@ -31,6 +31,6 @@ public class BukkitUpdater extends Updater {
     @Override
     public void run() {
         super.run();
-        log.writeLine("Web frontend updated.");
+        Log.getCurrent().writeLine(Log.Category.PROGRESS, "Web frontend updated.");
     }
 }

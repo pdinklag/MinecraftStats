@@ -12,6 +12,7 @@ public class Config {
     private String serverName;
     private Path statsPath;
     private Path eventsPath;
+    private Path logfilePath;
 
     private int inactiveDays = 7;
     private int minPlaytime = 60;
@@ -176,5 +177,13 @@ public class Config {
 
     public void setEventsPath(Path eventsPath) {
         this.eventsPath = eventsPath;
+    }
+
+    public Path getLogfilePath() {
+        return logfilePath;
+    }
+
+    public void setLogfilePath(Path logfilePath) {
+        this.logfilePath = logfilePath;
     }
 }

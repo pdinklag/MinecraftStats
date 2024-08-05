@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import de.pdinklag.mcstats.Log;
 import de.pdinklag.mcstats.util.StreamUtils;
 
 /**
@@ -33,22 +34,23 @@ public class MinecraftStatsCLI {
      */
     public static void main(String[] args) {
         if (args.length > 0) {
-            final StdoutLogWriter log = new StdoutLogWriter();
+            final StdoutConsoleWriter consoleWriter = new StdoutConsoleWriter();
             try {
                 // load config
                 final Path configPath = Path.of(args[0]);
                 if (Files.isRegularFile(configPath)) {
                     final JSONConfig config = new JSONConfig(configPath);
+                    Log.setCurrent(new Log(config.getLogfilePath(), consoleWriter));
 
                     // run updater
-                    final CLIUpdater updater = new CLIUpdater(config, log);
+                    final CLIUpdater updater = new CLIUpdater(config);
                     updater.run();
                 } else {
                     System.err.println("Configuration file not found: " + configPath);
                     System.exit(1);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                consoleWriter.writeError("update failed", e);
             }
         } else {
             System.err.println("MinecraftStats " + getVersion());

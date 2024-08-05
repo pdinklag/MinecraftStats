@@ -23,6 +23,7 @@ public class JSONConfig extends Config {
             final Path jsonDir = jsonPath.toAbsolutePath().getParent();
             setEventsPath(jsonDir.resolve(data.optString("eventsDir", "events")));
             setStatsPath(jsonDir.resolve(data.optString("statsDir", "stats")));
+            setLogfilePath(jsonDir.resolve(data.optString("logfile", "update.log")));
         }
 
         // server settings
@@ -58,8 +59,7 @@ public class JSONConfig extends Config {
 
         // crown settings
         final JSONObject crown = json.optJSONObject("crown");
-        if(crown != null)
-        {
+        if (crown != null) {
             setGoldMedalWeight(crown.optInt("gold", getGoldMedalWeight()));
             setSilverMedalWeight(crown.optInt("silver", getSilverMedalWeight()));
             setBronzeMedalWeight(crown.optInt("bronze", getBronzeMedalWeight()));
@@ -67,8 +67,7 @@ public class JSONConfig extends Config {
 
         // client settings
         final JSONObject client = json.optJSONObject("client");
-        if(client != null)
-        {
+        if (client != null) {
             setPlayersPerPage(client.optInt("playersPerPage", getPlayersPerPage()));
             setPlayerCacheUUIDPrefix(client.optInt("playerCacheUUIDPrefix", getPlayerCacheUUIDPrefix()));
             setDefaultLanguage(client.optString("defaultLanguage", getDefaultLanguage()));
