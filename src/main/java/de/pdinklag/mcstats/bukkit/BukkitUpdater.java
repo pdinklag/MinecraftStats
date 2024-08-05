@@ -2,7 +2,7 @@ package de.pdinklag.mcstats.bukkit;
 
 import java.util.Deque;
 
-import de.pdinklag.mcstats.Log;
+import de.pdinklag.mcstats.ConsoleWriter;
 import de.pdinklag.mcstats.PlayerProfileProvider;
 import de.pdinklag.mcstats.Updater;
 
@@ -35,17 +35,13 @@ public class BukkitUpdater extends Updater {
     }
 
     @Override
-    public void run() {
-        super.run();
+    public void run(ConsoleWriter consoleWriter) {
+        super.run(consoleWriter);
 
         if (firstUpdate) {
-            Log.getCurrent().writeLine(
-                    Log.Category.PROGRESS, "Web frontend updated. This will now happen every "
-                            + config.getUpdateInterval() + " minute(s) without any further logging to the console.");
+            plugin.getLogger().info("Web frontend updated. This will now happen every "
+                    + config.getUpdateInterval() + " minute(s) without any further logging to the console.");
             firstUpdate = false;
-        } else {
-            Log.getCurrent().writeLine(
-                    Log.Category.SILENT_PROGRESS, "Web frontend updated.");
         }
     }
 }

@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 import de.pdinklag.mcstats.Config;
+import de.pdinklag.mcstats.ConsoleWriter;
 import de.pdinklag.mcstats.DataSource;
 import de.pdinklag.mcstats.Log;
 import de.pdinklag.mcstats.Updater;
@@ -57,8 +58,8 @@ public class CLIUpdater extends Updater {
     }
 
     @Override
-    public void run() {
-        super.run();
+    public void run(ConsoleWriter consoleWriter) {
+        super.run(consoleWriter);
         Log.getCurrent().writeLine(Log.Category.PROGRESS, "update finished");
     }
 }

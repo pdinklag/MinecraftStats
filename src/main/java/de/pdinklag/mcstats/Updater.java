@@ -357,12 +357,19 @@ public abstract class Updater {
      */
     protected abstract String getVersion();
 
-    public void run() {
+    public void run(ConsoleWriter consoleWriter) {
         // get current timestamp
         final long now = System.currentTimeMillis();
 
-        // get log
-        final Log log = Log.getCurrent();
+        // initialize log
+        final Log log;
+        try {
+            log = new Log(config.getLogfilePath(), consoleWriter);
+            Log.setCurrent(log);
+        } catch (IOException ex) {
+            consoleWriter.writeError("failed to initialize logging", ex);
+            return;
+        }
 
         // create database directories
         try {
@@ -751,5 +758,13 @@ public abstract class Updater {
         } catch (Exception e) {
             log.writeError("failed to write database", e);
         }
+
+        // close log
+        try {
+            log.close();
+        } catch (IOException ex) {
+            consoleWriter.writeError("failed to close log", ex);
+        }
+        Log.setCurrent(null);
     }
 }

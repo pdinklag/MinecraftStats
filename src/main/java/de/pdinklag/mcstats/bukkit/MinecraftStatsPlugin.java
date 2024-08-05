@@ -1,12 +1,9 @@
 package de.pdinklag.mcstats.bukkit;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.pdinklag.mcstats.ConsoleWriter;
-import de.pdinklag.mcstats.Log;
 import de.pdinklag.mcstats.bukkit.webserver.PluginWebserver;
 import de.pdinklag.mcstats.util.MinecraftServerUtils;
 
@@ -26,27 +23,17 @@ public class MinecraftStatsPlugin extends JavaPlugin {
         saveDefaultConfig();
         config = new BukkitConfig(this);
 
-        // initialize logging
-        ConsoleWriter consoleWriter = new LoggerConsoleWriter(getLogger());
-        try {
-            Log.setCurrent(new Log(config.getLogfilePath(), consoleWriter));
-        } catch (IOException ex) {
-            consoleWriter.writeError("failed to initialize logging", ex);
-            return;
-        }
-
         // detect webserver if necessary
         if (config.getDocumentRoot() == null) {
             final PluginWebserver webserver = PluginWebserver.find(getServer());
             if (webserver != null) {
-                Log.getCurrent().writeLine(Log.Category.CONFIG,
-                        "Exporting to auto-detected webserver document root: "
-                                + webserver.getDocumentRoot().toAbsolutePath());
+                getLogger().info("Exporting to auto-detected webserver document root: "
+                        + webserver.getDocumentRoot().toAbsolutePath());
 
                 final Path documentRoot = webserver.getDocumentRoot().resolve(config.getWebSubdir());
                 config.setDocumentRoot(documentRoot);
             } else {
-                Log.getCurrent().writeLine(Log.Category.CONFIG,
+                getLogger().warning(
                         "No document root specified -- please state one explictly in the configuration, or install a supported plugin featuring a webserver!");
                 return;
             }
@@ -58,7 +45,7 @@ public class MinecraftStatsPlugin extends JavaPlugin {
 
     void onUnpackComplete() {
         updater = new BukkitUpdater(this, config);
-        updateTask = new BukkitUpdateTask(updater);
+        updateTask = new BukkitUpdateTask(updater, new LoggerConsoleWriter(getLogger()));
         updateTask.runTaskTimerAsynchronously(this, 0, TICKS_PER_MINUTE * config.getUpdateInterval());
     }
 
