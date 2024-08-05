@@ -27,13 +27,14 @@ public class Log {
      * The available log categories.
      */
     public enum Category {
-        // generic message types that should be visible in the console
+        // message types that should be visible in the console
         PROGRESS(true), // generic progress updates
         CONFIG(true), // messages related to the configuration
         ERROR(true), // error messages, typically accompanied by a stacktrace
 
-        // message types specific to certain parts of MinecraftStats
-        EVENTS,
+        // other message types
+        SILENT_PROGRESS, // generic progress updates, however not written to the console
+        EVENTS, // messages related to updating events
         ;
 
         private final boolean console;

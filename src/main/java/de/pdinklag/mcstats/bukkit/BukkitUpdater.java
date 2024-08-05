@@ -6,10 +6,14 @@ import de.pdinklag.mcstats.Updater;
 
 public class BukkitUpdater extends Updater {
     private final MinecraftStatsPlugin plugin;
+    private final BukkitConfig config;
+    private boolean firstUpdate;
 
     public BukkitUpdater(MinecraftStatsPlugin plugin, BukkitConfig config) {
         super(config);
         this.plugin = plugin;
+        this.config = config;
+        this.firstUpdate = true;
     }
 
     @Override
@@ -31,6 +35,15 @@ public class BukkitUpdater extends Updater {
     @Override
     public void run() {
         super.run();
-        Log.getCurrent().writeLine(Log.Category.PROGRESS, "Web frontend updated.");
+
+        if (firstUpdate) {
+            Log.getCurrent().writeLine(
+                    Log.Category.PROGRESS, "Web frontend updated. This will now happen every "
+                            + config.getUpdateInterval() + " minute(s) without any further logging to the console.");
+            firstUpdate = false;
+        } else {
+            Log.getCurrent().writeLine(
+                    Log.Category.SILENT_PROGRESS, "Web frontend updated.");
+        }
     }
 }
