@@ -451,7 +451,8 @@ public abstract class Updater {
             } else {
                 log.writeLine(Log.Category.PLAYERS, player.getDisplayString()
                         + " is eligible for awards and marked as " + (isActive ? "ACTIVE" : "INACTIVE")
-                        + " (profile retrieved from " + player.getProfile().getProvider().getDisplayString() + ")");
+                        + " (profile retrieved from " + player.getProfile().getProvider().getDisplayString()
+                        + ", account type is " + player.getAccountType() + ")");
             }
         });
 
