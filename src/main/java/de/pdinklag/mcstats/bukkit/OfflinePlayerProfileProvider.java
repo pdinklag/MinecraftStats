@@ -20,9 +20,14 @@ public class OfflinePlayerProfileProvider implements PlayerProfileProvider {
     public PlayerProfile getPlayerProfile(Player player) {
         OfflinePlayer offlinePlayer = server.getOfflinePlayer(UUID.fromString(player.getUuid()));
         if(offlinePlayer != null) {
-            return new PlayerProfile(offlinePlayer.getName());
+            return new PlayerProfile(offlinePlayer.getName(), this);
         } else {
             return player.getProfile();
         }
+    }
+
+    @Override
+    public String getDisplayString() {
+        return "Bukkit API";
     }
 }

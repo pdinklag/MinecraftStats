@@ -8,6 +8,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONObject;
 
 import de.pdinklag.mcstats.PlayerProfile;
+import de.pdinklag.mcstats.PlayerProfileProvider;
 import de.pdinklag.mcstats.util.StreamUtils;
 
 /**
@@ -26,7 +27,7 @@ public class API {
      * @throws APIRequestException    in case any error occurs trying to request the
      *                                profile
      */
-    public static PlayerProfile requestPlayerProfile(String uuid) throws EmptyResponseException, APIRequestException {
+    public static PlayerProfile requestPlayerProfile(String uuid, PlayerProfileProvider provider) throws EmptyResponseException, APIRequestException {
         try {
             final String response;
             {
@@ -51,7 +52,7 @@ public class API {
                         .getString("url")
                         .substring(SKIN_URL.length());
 
-                return new PlayerProfile(name, skin, System.currentTimeMillis());
+                return new PlayerProfile(name, skin, System.currentTimeMillis(), provider);
             } else {
                 throw new EmptyResponseException();
             }

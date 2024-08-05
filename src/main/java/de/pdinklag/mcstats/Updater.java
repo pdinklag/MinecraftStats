@@ -7,8 +7,10 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -61,7 +63,7 @@ public abstract class Updater {
         return new MojangAPIPlayerProfileProvider();
     }
 
-    protected void gatherLocalProfileProviders(PlayerProfileProviderList providers) {
+    protected void gatherLocalProfileProviders(Deque<PlayerProfileProvider> providers) {
         // usercache.json
         config.getDataSources().forEach(source -> {
             Path usercachePath = MinecraftServerUtils.getUserCachePath(source.getServerPath());
@@ -76,8 +78,8 @@ public abstract class Updater {
         });
     }
 
-    private PlayerProfileProvider getLocalProfileProvider() {
-        PlayerProfileProviderList providers = new PlayerProfileProviderList();
+    private Iterable<PlayerProfileProvider> getLocalProfileProviders() {
+        LinkedList<PlayerProfileProvider> providers = new LinkedList<>();
         gatherLocalProfileProviders(providers);
 
         // players.json
@@ -93,8 +95,8 @@ public abstract class Updater {
         return providers;
     }
 
-    protected PlayerFilter getHardPlayerFilter() {
-        PlayerFilterList filters = new PlayerFilterList();
+    protected Iterable<PlayerFilter> getHardPlayerFilters() {
+        ArrayList<PlayerFilter> filters = new ArrayList<>();
 
         // filter players whose data version is too low
         filters.add(new DataVersionPlayerFilter(MIN_DATA_VERSION, Integer.MAX_VALUE));
@@ -109,7 +111,7 @@ public abstract class Updater {
                 if (Files.isRegularFile(bannedPlayersPath)) {
                     try {
                         JSONArray ops = new JSONArray(Files.readString(bannedPlayersPath));
-                        filters.add(new JSONPlayerFilter(ops));
+                        filters.add(new JSONPlayerFilter(ops, "banned"));
                     } catch (Exception e) {
                         Log.getCurrent()
                                 .writeError("failed to read banned players file: " + bannedPlayersPath.toString(), e);
@@ -125,7 +127,7 @@ public abstract class Updater {
                 if (Files.isRegularFile(opsPath)) {
                     try {
                         JSONArray ops = new JSONArray(Files.readString(opsPath));
-                        filters.add(new JSONPlayerFilter(ops));
+                        filters.add(new JSONPlayerFilter(ops, "op"));
                     } catch (Exception e) {
                         Log.getCurrent().writeError("failed to read ops file: " + opsPath.toString(), e);
                     }
@@ -148,7 +150,9 @@ public abstract class Updater {
                 System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long) config.getInactiveDays());
     }
 
-    private HashMap<String, Player> processPlayers(PlayerFilter filter) {
+    private HashMap<String, Player> processPlayers(Iterable<PlayerFilter> filters) {
+        final Log log = Log.getCurrent();
+
         HashMap<String, Player> discoveredPlayers = new HashMap<>();
 
         // discover players in data sources
@@ -157,6 +161,8 @@ public abstract class Updater {
             Path advancementsPath = source.getPlayerAdvancementsPath();
             try {
                 if (Files.isDirectory(statsPath)) {
+                    log.writeLine(Log.Category.PLAYERS, "discovering players in " + statsPath.toString() + " ...");
+
                     Files.list(statsPath).forEach(path -> {
                         try {
                             final String filename = path.getFileName().toString();
@@ -195,20 +201,33 @@ public abstract class Updater {
                                 discoveredPlayers.put(uuid, player);
                             }
                         } catch (Exception e) {
-                            Log.getCurrent().writeError("failed to process file: " + path.toString(), e);
+                            log.writeError("failed to process file: " + path.toString(), e);
                         }
                     });
                 }
             } catch (IOException e) {
-                Log.getCurrent().writeError("failed to run discovery on data source: " + statsPath.toString(), e);
+                log.writeError("failed to run discovery on data source: " + statsPath.toString(), e);
             }
         });
+
+        log.writeLine(Log.Category.PLAYERS, "discovered " + discoveredPlayers.size() + " total player(s)");
 
         // filter players
         HashMap<String, Player> filteredPlayers = new HashMap<>();
         discoveredPlayers.forEach((uuid, player) -> {
-            if (filter.filter(player))
+            boolean eligible = true;
+            for (PlayerFilter filter : filters) {
+                if (!filter.filter(player)) {
+                    log.writeLine(Log.Category.PLAYERS, player.getDisplayString() + " is NOT eligible for awards ("
+                            + filter.getFilterCriteria() + ")");
+                    eligible = false;
+                    break;
+                }
+            }
+
+            if (eligible) {
                 filteredPlayers.put(uuid, player);
+            }
         });
 
         return filteredPlayers;
@@ -342,15 +361,18 @@ public abstract class Updater {
         // get current timestamp
         final long now = System.currentTimeMillis();
 
+        // get log
+        final Log log = Log.getCurrent();
+
         // create database directories
         try {
             Files.createDirectories(dbPath);
         } catch (Exception e) {
-            Log.getCurrent().writeError("failed to create database directories: " + dbPath.toString(), e);
+            log.writeError("failed to create database directories: " + dbPath.toString(), e);
         }
 
         // discover and process players
-        HashMap<String, Player> allPlayers = processPlayers(getHardPlayerFilter());
+        HashMap<String, Player> allPlayers = processPlayers(getHardPlayerFilters());
 
         // find effective server version
         final int serverDataVersion;
@@ -364,14 +386,20 @@ public abstract class Updater {
 
         // update player profiles and filter valid players
         PlayerFilter inactiveFilter = getInactiveFilter();
-        PlayerProfileProvider localProvider = getLocalProfileProvider();
+        Iterable<PlayerProfileProvider> localProviders = getLocalProfileProviders();
         PlayerProfileProvider authenticProvider = getAuthenticProfileProvider();
 
         ArrayList<Player> activePlayers = new ArrayList<>();
         ArrayList<Player> validPlayers = new ArrayList<>();
         allPlayers.forEach((uuid, player) -> {
             // use local sources
-            player.setProfile(localProvider.getPlayerProfile(player));
+            for (PlayerProfileProvider provider : localProviders) {
+                final PlayerProfile profile = provider.getPlayerProfile(player);
+                if (profile.hasName()) {
+                    player.setProfile(profile);
+                    break;
+                }
+            }
 
             // filter valid players
             final boolean isValid = player.getProfile().hasName();
@@ -390,6 +418,17 @@ public abstract class Updater {
                 final long updateInterval = DAYS_TO_MILLISECONDS * (long) config.getProfileUpdateInterval();
                 final long timeSinceUpdate = now - player.getProfile().getLastUpdateTime();
                 if (timeSinceUpdate >= updateInterval) {
+                    final String baseMessage = player.getDisplayString() + ": retrieving authentic profile from "
+                            + authenticProvider.getDisplayString() + " ";
+                    if (!isValid) {
+                        log.writeLine(Log.Category.PLAYERS, baseMessage + "(trying to resolve UUID)");
+                    } else if (isActive) {
+                        log.writeLine(Log.Category.PLAYERS, baseMessage + "(profile update interval)");
+                    } else if (isActive) {
+                        log.writeLine(Log.Category.PLAYERS,
+                                baseMessage + "(profile update interval, update of inactive players activated)");
+                    }
+
                     player.setProfile(authenticProvider.getPlayerProfile(player));
 
                     if (!isValid && player.getProfile().hasName()) {
@@ -398,7 +437,18 @@ public abstract class Updater {
                     }
                 }
             }
+
+            if (!player.getProfile().hasName()) {
+                log.writeLine(Log.Category.PLAYERS, player.getDisplayString()
+                        + " is NOT eligible for awards because no player name could be determined");
+            } else {
+                log.writeLine(Log.Category.PLAYERS, player.getDisplayString()
+                        + " is eligible for awards and marked as " + (isActive ? "ACTIVE" : "INACTIVE")
+                        + " (profile retrieved from " + player.getProfile().getProvider().getDisplayString() + ")");
+            }
         });
+
+        log.writeLine(Log.Category.PLAYERS, validPlayers.size() + " eligible, " + activePlayers.size() + " active");
 
         // write database
         try {
@@ -435,7 +485,7 @@ public abstract class Updater {
                     try {
                         Files.writeString(awardJsonPath, JSONUtils.toASCIIString(ranking.toJSON()));
                     } catch (Exception e) {
-                        Log.getCurrent().writeError("failed to write award data: " + awardJsonPath, e);
+                        log.writeError("failed to write award data: " + awardJsonPath, e);
                     }
                 }
             });
@@ -457,10 +507,10 @@ public abstract class Updater {
                                 eventWinners.put(event, winner);
                             }
                         } catch (Exception e) {
-                            Log.getCurrent().writeError("failed to load winner for ended event " + event.getId(), e);
+                            log.writeError("failed to load winner for ended event " + event.getId(), e);
                         }
                     } else {
-                        Log.getCurrent().writeLine(Log.Category.EVENTS,
+                        log.writeLine(Log.Category.EVENTS,
                                 "event has ended, but data file does not exist: " + event.getId());
                     }
                 } else {
@@ -476,8 +526,7 @@ public abstract class Updater {
 
                         if (event.hasStarted(now)) {
                             // the event is currently running, read initial scores and update ranking
-                            Log.getCurrent().writeLine(Log.Category.EVENTS,
-                                    "updating ranking for event " + event.getId());
+                            log.writeLine(Log.Category.EVENTS, "updating ranking for event " + event.getId());
 
                             if (Files.exists(eventDataPath)) {
                                 try {
@@ -486,15 +535,13 @@ public abstract class Updater {
                                     event.setInitialScores(initialRanking);
                                     eventData.put(EVENT_INITIAL_RANKING_FIELD, initialRanking);
                                 } catch (Exception e) {
-                                    Log.getCurrent()
-                                            .writeError("failed to load initial scores for event " + event.getId(), e);
+                                    log.writeError("failed to load initial scores for event " + event.getId(), e);
                                     eventData.put(EVENT_INITIAL_RANKING_FIELD, new JSONObject());
                                 }
                             } else {
-                                Log.getCurrent()
-                                        .writeLine(Log.Category.EVENTS,
-                                                "event is already running, but no initial scores are available: "
-                                                        + event.getId());
+                                log.writeLine(Log.Category.EVENTS,
+                                        "event is already running, but no initial scores are available: "
+                                                + event.getId());
                                 eventData.put(EVENT_INITIAL_RANKING_FIELD, new JSONObject());
                             }
 
@@ -511,8 +558,7 @@ public abstract class Updater {
                             }
                         } else {
                             // the event has not yet started, update initial scores
-                            Log.getCurrent().writeLine(Log.Category.EVENTS,
-                                    "updating initial scores for event " + event.getId());
+                            log.writeLine(Log.Category.EVENTS, "updating initial scores for event " + event.getId());
 
                             final JSONObject initialScores = new JSONObject();
                             allPlayers.forEach((uuid, player) -> {
@@ -526,13 +572,11 @@ public abstract class Updater {
                         try {
                             Files.writeString(eventDataPath, JSONUtils.toASCIIString(eventData));
                         } catch (Exception e) {
-                            Log.getCurrent().writeError("error writing data for event " + event.getId(), e);
+                            log.writeError("error writing data for event " + event.getId(), e);
                         }
                     } else {
-                        Log.getCurrent()
-                                .writeLine(Log.Category.CONFIG,
-                                        "linked stat \"" + event.getLinkedStatId() + "\" does not exist for event: "
-                                                + event.getId());
+                        log.writeLine(Log.Category.CONFIG, "linked stat \"" + event.getLinkedStatId()
+                                + "\" does not exist for event: " + event.getId());
                     }
                 }
             });
@@ -543,7 +587,7 @@ public abstract class Updater {
                 try {
                     Files.writeString(playerdataPath, JSONUtils.toASCIIString(player.getStats().toJSON()));
                 } catch (Exception ex) {
-                    Log.getCurrent().writeError("failed to write player data: " + playerdataPath, ex);
+                    log.writeError("failed to write player data: " + playerdataPath, ex);
                 }
             });
 
@@ -575,7 +619,7 @@ public abstract class Updater {
                     try {
                         Files.writeString(groupPath, JSONUtils.toASCIIString(cache));
                     } catch (IOException e) {
-                        Log.getCurrent().writeError("failed to write playerache file: " + groupPath, e);
+                        log.writeError("failed to write playerache file: " + groupPath, e);
                     }
                 });
             }
@@ -607,7 +651,7 @@ public abstract class Updater {
 
                         if (serverName == null) {
                             serverName = "";
-                            Log.getCurrent().writeLine(Log.Category.CONFIG,
+                            log.writeLine(Log.Category.CONFIG,
                                     "the server's name could not be determined -- try stating a customName in the config");
                         }
                     }
@@ -623,7 +667,7 @@ public abstract class Updater {
                                 hasIcon = true;
                                 break;
                             } catch (Exception e) {
-                                Log.getCurrent().writeError("failed to copy icon " + iconPath + " to " + dbPath, e);
+                                log.writeError("failed to copy icon " + iconPath + " to " + dbPath, e);
                             }
                         }
                     }
@@ -705,7 +749,7 @@ public abstract class Updater {
                 Files.writeString(summaryPath, JSONUtils.toASCIIString(summary));
             }
         } catch (Exception e) {
-            Log.getCurrent().writeError("failed to write database", e);
+            log.writeError("failed to write database", e);
         }
     }
 }

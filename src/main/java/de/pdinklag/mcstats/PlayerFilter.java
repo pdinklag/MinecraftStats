@@ -10,4 +10,10 @@ public interface PlayerFilter {
      * @return true if the player stays, false if it goes
      */
     public boolean filter(Player player);
+
+    /**
+     * Returns a string describing the filter criteria of this filter.
+     * @return a string describing the filter criteria of this filter
+     */
+    public String getFilterCriteria();
 }

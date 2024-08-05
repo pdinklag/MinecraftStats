@@ -10,4 +10,6 @@ public interface PlayerProfileProvider {
      * @return a profile for the player, or null if none can be provided
      */
     public PlayerProfile getPlayerProfile(Player player);
+
+    public String getDisplayString();
 }

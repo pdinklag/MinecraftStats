@@ -35,4 +35,9 @@ public class ExcludeUUIDPlayerFilter implements PlayerFilter {
     public boolean filter(Player player) {
         return !excludedUuids.contains(player.getUuid());
     }
+
+    @Override
+    public String getFilterCriteria() {
+        return "excluded UUID";
+    }
 }

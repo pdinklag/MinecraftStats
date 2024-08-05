@@ -8,6 +8,20 @@ import de.pdinklag.mcstats.util.ClientUtils;
  * Represents a player tracked by MinecraftStats.
  */
 public class Player {
+    private static class DummyProfileProvider implements PlayerProfileProvider {
+        @Override
+        public PlayerProfile getPlayerProfile(Player player) {
+            return new PlayerProfile(this);
+        }
+
+        @Override
+        public String getDisplayString() {
+            return "initialization";
+        }
+    }
+
+    private static final DummyProfileProvider dummyProfileProvider = new DummyProfileProvider();
+
     // identifier
     private final String uuid;
     private AccountType accountType;
@@ -18,7 +32,7 @@ public class Player {
     private int dataVersion = 0;
 
     // update information
-    private PlayerProfile profile = new PlayerProfile();
+    private PlayerProfile profile = dummyProfileProvider.getPlayerProfile(this);
     private final PlayerStats stats = new PlayerStats();
 
     /**
@@ -121,5 +135,13 @@ public class Player {
 
         info.put("last", ClientUtils.convertTimestamp(lastOnlineTime));
         return info;
+    }
+
+    public String getDisplayString() {
+        if (getProfile().hasName()) {
+            return uuid + " (" + profile.getName() + ")";
+        } else {
+            return uuid + " (name N/A)";
+        }
     }
 }

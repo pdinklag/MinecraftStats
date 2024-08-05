@@ -22,5 +22,9 @@ public class DataVersionPlayerFilter implements PlayerFilter {
         int dataVersion = player.getDataVersion();
         return dataVersion >= minVersion && dataVersion <= maxVersion;
     }
-    
+
+    @Override
+    public String getFilterCriteria() {
+        return "data version";
+    }
 }

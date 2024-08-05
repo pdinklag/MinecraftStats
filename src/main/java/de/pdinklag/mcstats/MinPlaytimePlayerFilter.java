@@ -18,5 +18,9 @@ public class MinPlaytimePlayerFilter implements PlayerFilter {
     public boolean filter(Player player) {
         return player.getPlaytime() >= minPlaytime;
     }
-    
+
+    @Override
+    public String getFilterCriteria() {
+        return "minimum playtime too low";
+    }
 }

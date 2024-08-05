@@ -28,9 +28,14 @@ public class UserCachePlayerProfileProvider implements PlayerProfileProvider {
     public PlayerProfile getPlayerProfile(Player player) {
         String uuid = player.getUuid();
         if (uuidToName.containsKey(uuid)) {
-            return new PlayerProfile(uuidToName.get(uuid));
+            return new PlayerProfile(uuidToName.get(uuid), this);
         } else {
             return player.getProfile();
         }
+    }
+
+    @Override
+    public String getDisplayString() {
+        return "usercache.json";
     }
 }

@@ -34,6 +34,7 @@ public class Log {
 
         // other message types
         SILENT_PROGRESS, // generic progress updates, however not written to the console
+        PLAYERS, // messages related to filtering players
         EVENTS, // messages related to updating events
         ;
 

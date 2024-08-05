@@ -1,7 +1,9 @@
 package de.pdinklag.mcstats.bukkit;
 
+import java.util.Deque;
+
 import de.pdinklag.mcstats.Log;
-import de.pdinklag.mcstats.PlayerProfileProviderList;
+import de.pdinklag.mcstats.PlayerProfileProvider;
 import de.pdinklag.mcstats.Updater;
 
 public class BukkitUpdater extends Updater {
@@ -17,7 +19,7 @@ public class BukkitUpdater extends Updater {
     }
 
     @Override
-    protected void gatherLocalProfileProviders(PlayerProfileProviderList providers) {
+    protected void gatherLocalProfileProviders(Deque<PlayerProfileProvider> providers) {
         super.gatherLocalProfileProviders(providers);
         providers.addFirst(new OfflinePlayerProfileProvider(plugin.getServer()));
     }

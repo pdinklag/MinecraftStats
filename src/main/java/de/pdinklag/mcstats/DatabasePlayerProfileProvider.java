@@ -51,12 +51,17 @@ public class DatabasePlayerProfileProvider implements PlayerProfileProvider {
                     return new PlayerProfile(
                             name,
                             obj.optString("skin", null),
-                            obj.getLong("update"));
+                            obj.getLong("update"), this);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         return player.getProfile();
+    }
+
+    @Override
+    public String getDisplayString() {
+        return "previous database";
     }
 }

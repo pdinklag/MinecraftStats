@@ -18,7 +18,7 @@ public class MojangAPIPlayerProfileProvider implements PlayerProfileProvider {
     public PlayerProfile getPlayerProfile(Player player) {
         if (player.getAccountType().maybeMojangAccount()) {
             try {
-                PlayerProfile profile = API.requestPlayerProfile(player.getUuid());
+                PlayerProfile profile = API.requestPlayerProfile(player.getUuid(), this);
                 player.setAccountType(AccountType.MOJANG);
                 return profile;
             } catch (EmptyResponseException e) {
@@ -28,5 +28,10 @@ public class MojangAPIPlayerProfileProvider implements PlayerProfileProvider {
             }
         }
         return player.getProfile();
+    }
+
+    @Override
+    public String getDisplayString() {
+        return "Mojang API";
     }
 }

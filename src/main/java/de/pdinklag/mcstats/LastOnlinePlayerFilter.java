@@ -18,5 +18,9 @@ public class LastOnlinePlayerFilter implements PlayerFilter {
     public boolean filter(Player player) {
         return player.getLastOnlineTime() >= latestOnlineTime;
     }
-    
+
+    @Override
+    public String getFilterCriteria() {
+        return "last online time too long ago";
+    }
 }
