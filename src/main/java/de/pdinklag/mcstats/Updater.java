@@ -1,5 +1,6 @@
 package de.pdinklag.mcstats;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,6 +18,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import de.pdinklag.mcstats.Log.Category;
 import de.pdinklag.mcstats.util.ClientUtils;
 import de.pdinklag.mcstats.util.JSONUtils;
 import de.pdinklag.mcstats.util.MinecraftServerUtils;
@@ -41,6 +43,9 @@ public abstract class Updater {
     private static final String DATABASE_PLAYERLIST_ACTIVE_FORMAT = "active%d.json";
     private static final String DATABASE_SUMMARY = "summary.json";
     private static final String DATABASE_LEGACY_SUMMARY = "summary.json.gz";
+
+    private static final String CLIENT_INDEX_HTML = "index.html";
+    private static final String CLIENT_VERSION_PREFIX = "<!-- MinecraftStats Client v";
 
     private static final String EVENT_INITIAL_RANKING_FIELD = "initialRanking";
     private static final String EVENT_RANKING_FIELD = "ranking";
@@ -323,7 +328,7 @@ public abstract class Updater {
      */
     protected abstract String getVersion();
 
-    public void run(ConsoleWriter consoleWriter) {
+    public boolean run(ConsoleWriter consoleWriter) {
         // initialize log
         final Log log;
         try {
@@ -331,7 +336,48 @@ public abstract class Updater {
             Log.setCurrent(log);
         } catch (IOException ex) {
             consoleWriter.writeError("failed to initialize logging", ex);
-            return;
+            return false;
+        }
+
+        // before doing anything meaningful, check that the client is up to date to
+        // avoid things breaking
+        final Path documentRoot = config.getDocumentRoot();
+        final Path indexHtmlPath = documentRoot.resolve(CLIENT_INDEX_HTML);
+        if (Files.isRegularFile(indexHtmlPath)) {
+            try {
+                final Version clientVersion;
+                final BufferedReader r = Files.newBufferedReader(indexHtmlPath);
+                String firstLine = r.readLine();
+                r.close();
+                
+                if (firstLine.startsWith(CLIENT_VERSION_PREFIX)) {
+                    final int begin = CLIENT_VERSION_PREFIX.length();
+                    final int end = firstLine.indexOf(' ', begin);
+
+                    clientVersion = Version.parse(firstLine.substring(begin, end));
+
+                    log.writeLine(Category.SILENT_PROGRESS,
+                            "parsed client version " + clientVersion.toString() + " from " + CLIENT_INDEX_HTML);
+                } else {
+                    log.writeLine(Category.SILENT_PROGRESS,
+                            "no version information was found in " + CLIENT_INDEX_HTML + ", assuming outdated client");
+                    clientVersion = new Version(2, 0, 0);
+                }
+
+                if (clientVersion.compareTo(MIN_CLIENT_VERSION) < 0) {
+                    log.writeLine(Log.Category.PROGRESS,
+                            "Your MinecraftStats web files (version " + clientVersion
+                                    + ") are outdated -- at least version "
+                                    + MIN_CLIENT_VERSION + " is required.");
+                    return false;
+                }
+            } catch (Exception ex) {
+                log.writeError("failed to read verson from " + indexHtmlPath.toString(), ex);
+                return false;
+            }
+        } else {
+            log.writeLine(Log.Category.SILENT_PROGRESS, "bypassing client version check because " + CLIENT_INDEX_HTML
+                    + " was not found in the document root");
         }
 
         // discover and instantiate stats
@@ -791,5 +837,8 @@ public abstract class Updater {
             consoleWriter.writeError("failed to close log", ex);
         }
         Log.setCurrent(null);
+
+        // done
+        return true;
     }
 }

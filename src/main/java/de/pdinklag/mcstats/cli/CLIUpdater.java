@@ -58,8 +58,12 @@ public class CLIUpdater extends Updater {
     }
 
     @Override
-    public void run(ConsoleWriter consoleWriter) {
-        super.run(consoleWriter);
-        Log.getCurrent().writeLine(Log.Category.PROGRESS, "update finished");
+    public boolean run(ConsoleWriter consoleWriter) {
+        if (super.run(consoleWriter)) {
+            Log.getCurrent().writeLine(Log.Category.PROGRESS, "update finished");
+            return true;
+        } else {
+            return false;
+        }
     }
 }

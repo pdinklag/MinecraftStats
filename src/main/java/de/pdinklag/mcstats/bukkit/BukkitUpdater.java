@@ -35,13 +35,15 @@ public class BukkitUpdater extends Updater {
     }
 
     @Override
-    public void run(ConsoleWriter consoleWriter) {
-        super.run(consoleWriter);
-
+    public boolean run(ConsoleWriter consoleWriter) {
+        final boolean success = super.run(consoleWriter);
         if (firstUpdate) {
-            plugin.getLogger().info("Web frontend updated. This will now happen every "
-                    + config.getUpdateInterval() + " minute(s) without any further logging to the console.");
+            if (success) {
+                plugin.getLogger().info("Web frontend updated. This will now happen every "
+                        + config.getUpdateInterval() + " minute(s) without any further logging to the console.");
+            }
             firstUpdate = false;
         }
+        return success;
     }
 }
