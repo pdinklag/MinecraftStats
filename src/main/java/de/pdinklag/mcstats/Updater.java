@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale.Category;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -390,6 +391,8 @@ public abstract class Updater {
             }
             serverDataVersion = maxDataVersion;
         }
+        log.writeLine(Log.Category.PLAYERS,
+                "assuming maximum player data version " + serverDataVersion + " to be server version");
 
         // update player profiles and filter valid players
         PlayerFilter inactiveFilter = getInactiveFilter();
@@ -495,6 +498,11 @@ public abstract class Updater {
                     } catch (Exception e) {
                         log.writeError("failed to write award data: " + awardJsonPath, e);
                     }
+
+                    log.writeLine(Log.Category.AWARDS, id + " updated (" + rankingEntries.size() + " ranking entries)");
+                } else {
+                    log.writeLine(Log.Category.AWARDS,
+                            id + " not supported for server data version " + serverDataVersion);
                 }
             });
 
