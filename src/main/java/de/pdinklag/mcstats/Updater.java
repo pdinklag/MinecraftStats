@@ -19,11 +19,14 @@ import org.json.JSONObject;
 import de.pdinklag.mcstats.util.ClientUtils;
 import de.pdinklag.mcstats.util.JSONUtils;
 import de.pdinklag.mcstats.util.MinecraftServerUtils;
+import de.pdinklag.mcstats.util.Version;
 
 /**
  * The heart of MinecraftStats.
  */
 public abstract class Updater {
+    private static final Version MIN_CLIENT_VERSION = new Version(3, 4, 0);
+
     private static final String JSON_FILE_EXT = ".json";
     private static final int MIN_DATA_VERSION = 1451; // 17w47a
     private static final String DATABASE_DIRNAME = "data";
@@ -703,6 +706,7 @@ public abstract class Updater {
                     info.put("serverName", serverName);
                     info.put("updateTime", ClientUtils.convertTimestamp(now));
                     info.put("updateVersion", getVersion());
+                    info.put("minClientVersion", MIN_CLIENT_VERSION);
                     info.put("defaultLanguage", config.getDefaultLanguage());
                     info.put("minPlayTime", config.getMinPlaytime());
                     info.put("showLastOnline", config.isShowLastOnline());
