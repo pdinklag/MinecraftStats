@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale.Category;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,6 +36,7 @@ public abstract class Updater {
     private static final String DATABASE_PLAYERLIST_ALL_FORMAT = "all%d.json";
     private static final String DATABASE_PLAYERLIST_ACTIVE_FORMAT = "active%d.json";
     private static final String DATABASE_SUMMARY = "summary.json";
+    private static final String DATABASE_LEGACY_SUMMARY = "summary.json.gz";
 
     private static final String EVENT_INITIAL_RANKING_FIELD = "initialRanking";
     private static final String EVENT_RANKING_FIELD = "ranking";
@@ -306,6 +306,18 @@ public abstract class Updater {
         this.dbPlayercachePath = dbPath.resolve(DATABASE_PLAYERCACHE);
         this.dbPlayerdataPath = dbPath.resolve(DATABASE_PLAYERDATA);
         this.dbPlayerlistPath = dbPath.resolve(DATABASE_PLAYERLIST);
+
+        // make sure any legacy summary file is deleted
+        {
+            final Path legacySummaryPath = dbPath.resolve(DATABASE_LEGACY_SUMMARY);
+            if (Files.isRegularFile(legacySummaryPath)) {
+                try {
+                    Files.delete(legacySummaryPath);
+                } catch (IOException ex) {
+                    Log.getCurrent().writeError("failed to delete legacy summary file", ex);
+                }
+            }
+        }
 
         // discover and instantiate stats
         try {
