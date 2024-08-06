@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,9 +51,6 @@ public abstract class Updater {
 
     // initialization
     protected final Config config;
-
-    private final HashMap<String, Stat> awards = new HashMap<>();
-    private final HashMap<String, Event> events = new HashMap<>();
 
     // paths
     private final Path dbPath;
@@ -154,7 +152,7 @@ public abstract class Updater {
                 System.currentTimeMillis() - DAYS_TO_MILLISECONDS * (long) config.getInactiveDays());
     }
 
-    private HashMap<String, Player> processPlayers(Iterable<PlayerFilter> filters) {
+    private HashMap<String, Player> processPlayers(Iterable<PlayerFilter> filters, Map<String, Stat> awards) {
         final Log log = Log.getCurrent();
 
         HashMap<String, Player> discoveredPlayers = new HashMap<>();
@@ -280,7 +278,7 @@ public abstract class Updater {
         }
     }
 
-    private void parseAndRegisterStat(JSONObject json) throws Exception {
+    private void parseAndRegisterStat(JSONObject json, Map<String, Stat> awards) throws Exception {
         final Stat stat = StatParser.parse(json);
         if (!awards.containsKey(stat.getId())) {
             awards.put(stat.getId(), stat);
@@ -289,7 +287,7 @@ public abstract class Updater {
         }
     }
 
-    private void parseAndRegisterEvent(JSONObject json) throws Exception {
+    private void parseAndRegisterEvent(JSONObject json, Map<String, Event> events) throws Exception {
         final Event event = EventParser.parse(json);
         if (!events.containsKey(event.getId())) {
             events.put(event.getId(), event);
@@ -309,54 +307,6 @@ public abstract class Updater {
         this.dbPlayercachePath = dbPath.resolve(DATABASE_PLAYERCACHE);
         this.dbPlayerdataPath = dbPath.resolve(DATABASE_PLAYERDATA);
         this.dbPlayerlistPath = dbPath.resolve(DATABASE_PLAYERLIST);
-
-        // make sure any legacy summary file is deleted
-        {
-            final Path legacySummaryPath = dbPath.resolve(DATABASE_LEGACY_SUMMARY);
-            if (Files.isRegularFile(legacySummaryPath)) {
-                try {
-                    Files.delete(legacySummaryPath);
-                } catch (IOException ex) {
-                    Log.getCurrent().writeError("failed to delete legacy summary file", ex);
-                }
-            }
-        }
-
-        // discover and instantiate stats
-        try {
-            if (Files.isDirectory(config.getStatsPath())) {
-                Files.list(config.getStatsPath()).forEach(path -> {
-                    if (path.getFileName().toString().endsWith(JSON_FILE_EXT)) {
-                        try {
-                            final JSONObject obj = new JSONObject(Files.readString(path));
-                            parseAndRegisterStat(obj);
-                        } catch (Exception e2) {
-                            Log.getCurrent().writeError("failed to load stat from file: " + path.toString(), e2);
-                        }
-                    }
-                });
-            }
-        } catch (Exception e) {
-            Log.getCurrent().writeError("failed to discover stats", e);
-        }
-
-        // discover events
-        try {
-            if (Files.isDirectory(config.getEventsPath())) {
-                Files.list(config.getEventsPath()).forEach(path -> {
-                    if (path.getFileName().toString().endsWith(JSON_FILE_EXT)) {
-                        try {
-                            final JSONObject obj = new JSONObject(Files.readString(path));
-                            parseAndRegisterEvent(obj);
-                        } catch (Exception e2) {
-                            Log.getCurrent().writeError("failed to load stat from file: " + path.toString(), e2);
-                        }
-                    }
-                });
-            }
-        } catch (Exception e) {
-            Log.getCurrent().writeError("failed to discover events", e);
-        }
     }
 
     /**
@@ -374,9 +324,6 @@ public abstract class Updater {
     protected abstract String getVersion();
 
     public void run(ConsoleWriter consoleWriter) {
-        // get current timestamp
-        final long now = System.currentTimeMillis();
-
         // initialize log
         final Log log;
         try {
@@ -387,6 +334,56 @@ public abstract class Updater {
             return;
         }
 
+        // discover and instantiate stats
+        HashMap<String, Stat> awards = new HashMap<>();
+        try {
+            if (Files.isDirectory(config.getStatsPath())) {
+                Files.list(config.getStatsPath()).forEach(path -> {
+                    if (path.getFileName().toString().endsWith(JSON_FILE_EXT)) {
+                        try {
+                            final JSONObject obj = new JSONObject(Files.readString(path));
+                            parseAndRegisterStat(obj, awards);
+                        } catch (Exception e2) {
+                            log.writeError("failed to load stat from file: " + path.toString(), e2);
+                        }
+                    }
+                });
+            }
+        } catch (Exception e) {
+            log.writeError("failed to discover stats", e);
+        }
+
+        // discover events
+        HashMap<String, Event> events = new HashMap<>();
+        try {
+            if (Files.isDirectory(config.getEventsPath())) {
+                Files.list(config.getEventsPath()).forEach(path -> {
+                    if (path.getFileName().toString().endsWith(JSON_FILE_EXT)) {
+                        try {
+                            final JSONObject obj = new JSONObject(Files.readString(path));
+                            parseAndRegisterEvent(obj, events);
+                        } catch (Exception e2) {
+                            log.writeError("failed to load stat from file: " + path.toString(), e2);
+                        }
+                    }
+                });
+            }
+        } catch (Exception e) {
+            log.writeError("failed to discover events", e);
+        }
+
+        // make sure the legacy summary file is deleted
+        {
+            final Path legacySummaryPath = dbPath.resolve(DATABASE_LEGACY_SUMMARY);
+            if (Files.isRegularFile(legacySummaryPath)) {
+                try {
+                    Files.delete(legacySummaryPath);
+                } catch (IOException ex) {
+                    consoleWriter.writeError("failed to delete legacy summary file", ex);
+                }
+            }
+        }
+
         // create database directories
         try {
             Files.createDirectories(dbPath);
@@ -394,8 +391,11 @@ public abstract class Updater {
             log.writeError("failed to create database directories: " + dbPath.toString(), e);
         }
 
+        // get current timestamp
+        final long now = System.currentTimeMillis();
+
         // discover and process players
-        HashMap<String, Player> allPlayers = processPlayers(getHardPlayerFilters());
+        HashMap<String, Player> allPlayers = processPlayers(getHardPlayerFilters(), awards);
 
         // find effective server version
         final int serverDataVersion;
