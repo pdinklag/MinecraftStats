@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
     implementation 'org.json:json:20220924'
-    compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.20.6-R0.1-SNAPSHOT'
     compileOnly 'net.skinsrestorer:skinsrestorer-api:15.0.0'
 }
 
@@ -74,8 +74,8 @@ task copyWww(type: Copy) {
 }
 
 compileJava {
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
 }
 
 def cliBaseName = 'MinecraftStatsCLI'

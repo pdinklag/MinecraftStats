@@ -20,15 +20,23 @@ public class UserCachePlayerProfileProvider implements PlayerProfileProvider {
     public UserCachePlayerProfileProvider(JSONArray usercache) {
         for (int i = 0; i < usercache.length(); i++) {
             JSONObject entry = usercache.getJSONObject(i);
-            uuidToName.put(entry.getString("uuid"), entry.getString("name"));
+            if (entry.has("uuid") && entry.has("name")) {
+                String u = entry.getString("uuid");
+                String name = entry.getString("name");
+                uuidToName.put(u.toLowerCase(), name);
+                uuidToName.put(u.replace("-", "").toLowerCase(), name);
+            }
         }
     }
 
     @Override
     public PlayerProfile getPlayerProfile(Player player) {
-        String uuid = player.getUuid();
+        String uuid = player.getUuid().toLowerCase();
+        String cleanUuid = uuid.replace("-", "");
         if (uuidToName.containsKey(uuid)) {
             return new PlayerProfile(uuidToName.get(uuid));
+        } else if (uuidToName.containsKey(cleanUuid)) {
+            return new PlayerProfile(uuidToName.get(cleanUuid));
         } else {
             return player.getProfile();
         }

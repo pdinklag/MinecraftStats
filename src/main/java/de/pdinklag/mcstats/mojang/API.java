@@ -30,8 +30,14 @@ public class API {
         try {
             final String response;
             {
-                URL url = new URL(API_URL + uuid);
+                String cleanUuid = uuid.replace("-", "");
+                URL url = new URL(API_URL + cleanUuid);
                 HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                int responseCode = conn.getResponseCode();
+                if (responseCode == 204 || responseCode == 404 || responseCode == 400) {
+                    conn.disconnect();
+                    throw new EmptyResponseException();
+                }
                 response = StreamUtils.readStreamFully(conn.getInputStream());
                 conn.disconnect();
             }
