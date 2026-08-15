@@ -128,6 +128,9 @@ The configuration is done in the plugin's `config.yml`. If it does not exist, th
 
 The following settings are **for the plugin only**:
 
+* **`data → worldPath`**: The absolute path of the world directory that contains the player statistics (i.e., the `stats` directory with JSON files in it) and advancements. Leave this to `null` to use the server's default world, which is correct for most setups. Set it only if your player data is stored in a different world than the server's default one, for example because the world was moved or your host uses a custom world container. For player data in `/srv/minecraft/smp/stats`, set this to `/srv/minecraft/smp`. Note that the remaining server files (user cache, banned players, ops and the server icon) continue to be read from the server directory itself. If no `stats` directory is found, a warning is logged and no players will be found.
+
+  *MinecraftStats* supports both world layouts and detects them automatically: newer Minecraft versions store the player data in the world's `players` subdirectory (`<world>/players/stats`), while older versions store it directly in the world directory (`<world>/stats`). You therefore do not need to set `worldPath` just because your server uses the newer layout.
 * **`data → webSubdir`**: The name of the directory that *MinecraftStats* creates in the webserver's document root. This only applies if `data → documentRoot` is `null` and the plugin found a supported webserver.
 * **`data → unpackWebFiles`**: If set to `true`, the plugin will automatically unpack all the necessary files required for the web frontend. This only applies if `data → documentRoot` is `null` and the plugin found a supported webserver. :warning: If you modify the web frontend, set this to `false` to ensure that your changes won't be overridden.
 * **`data → updateInterval`**: The data for the web frontend is updated every this many minutes.

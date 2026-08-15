@@ -1,5 +1,12 @@
 data:
   documentRoot: null
+  # The absolute path of the world directory containing the player stats and advancements.
+  # Leave this at null to use the server's default world, which is correct for most setups.
+  # Both world layouts are detected automatically, so this does not need to be set just because
+  # your server stores the player data in the world's "players" subdirectory.
+  # Set it only if the player data lives in a different world than the server's default one,
+  # e.g. "/srv/minecraft/smp" for stats in "/srv/minecraft/smp/stats".
+  worldPath: null
   eventsDir: "events"
   statsDir: "stats"
   unpackWebFiles: true
