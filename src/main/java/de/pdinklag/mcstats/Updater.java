@@ -198,6 +198,10 @@ public abstract class Updater {
                             log.writeError("failed to process file: " + path.toString(), e);
                         }
                     });
+                } else {
+                    // without this, a misconfigured world path silently yields no players at all
+                    log.writeLine("WARNING: no player stats directory at " + statsPath.toString()
+                            + " -- check that the configured world path points at the world containing the player data");
                 }
             } catch (IOException e) {
                 log.writeError("failed to run discovery on data source: " + statsPath.toString(), e);

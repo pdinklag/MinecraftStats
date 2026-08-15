@@ -14,12 +14,19 @@ public class BukkitConfig extends Config {
     private String webSubdir = "stats";
 
     public BukkitConfig(Plugin plugin)  {
-        // create data source for default world
-        final String defaultWorldName = plugin.getServer().getWorlds().get(0).getName();
-        getDataSources().add(new FileSystemDataSource(Path.of(plugin.getServer().getWorldContainer().getAbsolutePath()), defaultWorldName));
-
         // read config
         final Configuration bukkitConfig = plugin.getConfig();
+
+        // create the data source, either for an explicitly configured world or for the default world
+        final Path serverPath = Path.of(plugin.getServer().getWorldContainer().getAbsolutePath());
+        final String configuredWorldPath = bukkitConfig.getString("data.worldPath");
+        if (configuredWorldPath != null && !configuredWorldPath.isEmpty()) {
+            getDataSources().add(new FileSystemDataSource(serverPath, Path.of(configuredWorldPath)));
+        } else {
+            final String defaultWorldName = plugin.getServer().getWorlds().get(0).getName();
+            getDataSources().add(new FileSystemDataSource(serverPath, defaultWorldName));
+        }
+
         String documentRoot = bukkitConfig.getString("data.documentRoot");
         if(documentRoot != null) 
         {
