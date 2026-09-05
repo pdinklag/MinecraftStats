@@ -1,53 +1,25 @@
-mcstats.showAwardsList = function() {
-    viewHTML = '';
+mcstats.showAwardsList = function(view = 'cards') {
+    var cards = (view != 'table');
 
-    var numPerRow = 3;
-    var counter = 0;
-    var currentRow = '';
-
-    mcstats.awardKeysByTitle.forEach(function(id) {
-        var award = mcstats.awards[id];
-        var holder, info;
-
-        if(award.best) {
-            holder = mcstats.playerWidget(award.best.uuid);
-            info = award.desc + ': ' + mcstats.formatValue(award.best.value, award.unit, true);
+    // view switcher, styled like the pagination controls
+    var switcherItem = function(caption, hash, active) {
+        if(active) {
+            return `<li class="page-item active"><div class="page-link">${caption}</div></li>`;
         } else {
-            holder = mcstats.playerWidget(false);
-            info = `<span class="text-muted">(${award.desc})</span>`;
+            return `<li class="page-item"><a class="page-link" href="${hash}">${caption}</a></li>`;
         }
+    };
 
-        currentRow += `
-            <div class="col-sm">
-                <div class="container p-1 mb-3 mcstats-entry">
-                    <div class="h4 p-1 mb-1 round-box text-center align-middle">
-                        <img class="img-pixelated img-textsize align-baseline" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
-                        <a href="#award:${id}">${award.title}</a>
-                    </div>
-                    <div class="p-1 round-box text-center">
-                        ${holder}
-                        <br/>
-                        ${info}
-                    </div>
-                </div>
-            </div>
-        `;
-
-        if(++counter >= numPerRow) {
-            viewHTML += `<div class="row">${currentRow}</div>`;
-            currentRow = '';
-            counter = 0;
-        }
-    });
-
-    if(counter > 0) {
-        for(var i = counter; i < numPerRow; i++) {
-            currentRow += `<div class="col-sm"></div>`;
-        }
-        viewHTML += `<div class="row">${currentRow}</div>`;
-    }
+    var switcher = `
+        <div class="text-center mt-3">
+            <ul class="pagination justify-content-center">
+                ${switcherItem(mcstats.localize('page.awardList.viewCards'), '#awards:cards', cards)}
+                ${switcherItem(mcstats.localize('page.awardList.viewTable'), '#awards:table', !cards)}
+            </ul>
+        </div>
+    `;
 
     // show
-    mcstats.viewContent.innerHTML = viewHTML;
+    mcstats.viewContent.innerHTML = switcher + (cards ? mcstats.renderAwardCards() : mcstats.renderAwardTable());
     mcstats.showView(mcstats.localize('page.awardList.title'), false, false, false);
 };

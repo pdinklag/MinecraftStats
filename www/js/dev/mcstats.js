@@ -126,6 +126,14 @@ window.onhashchange = function() {
         mcstats.showEvent(id);
     } else if(hash == '#loader') {
         // stick with loader - for debugging purposes
+    } else if(hash.startsWith('#awards')) {
+        // go to awards list, in the requested view
+        var view = 'cards';
+        var x = hash.indexOf(':');
+        if(x >= 0) {
+            view = hash.substring(x+1);
+        }
+        mcstats.showAwardsList(view);
     } else {
         // go to awards list (default)
         mcstats.showAwardsList();

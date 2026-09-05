@@ -28,6 +28,8 @@ task concatJs {
         'www/js/dev/mcstats-localization.js',
         'www/js/dev/mcstats-widgets.js',
         'www/js/dev/mcstats-awardlist.js',
+        'www/js/dev/mcstats-awardcards.js',
+        'www/js/dev/mcstats-awardtable.js',
         'www/js/dev/mcstats-awardview.js',
         'www/js/dev/mcstats-eventlist.js',
         'www/js/dev/mcstats-eventview.js',
