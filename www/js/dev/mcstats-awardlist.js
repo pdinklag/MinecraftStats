@@ -1,53 +1,47 @@
 mcstats.showAwardsList = function() {
-    viewHTML = '';
-
-    var numPerRow = 3;
-    var counter = 0;
-    var currentRow = '';
+    var tbody = '';
 
     mcstats.awardKeysByTitle.forEach(function(id) {
         var award = mcstats.awards[id];
-        var holder, info;
+        var holder, value;
 
         if(award.best) {
             holder = mcstats.playerWidget(award.best.uuid);
-            info = award.desc + ': ' + mcstats.formatValue(award.best.value, award.unit, true);
+            value = mcstats.formatValue(award.best.value, award.unit, true);
         } else {
             holder = mcstats.playerWidget(false);
-            info = `<span class="text-muted">(${award.desc})</span>`;
+            value = '';
         }
 
-        currentRow += `
-            <div class="col-sm">
-                <div class="container p-1 mb-3 mcstats-entry">
-                    <div class="h4 p-1 mb-1 round-box text-center align-middle">
-                        <img class="img-pixelated img-textsize align-baseline" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
-                        <a href="#award:${id}">${award.title}</a>
-                    </div>
-                    <div class="p-1 round-box text-center">
-                        ${holder}
-                        <br/>
-                        ${info}
-                    </div>
-                </div>
-            </div>
+        tbody += `
+            <tr>
+                <td>
+                    <img class="img-pixelated img-textsize-1_5 align-baseline me-1" src="img/award-icons/${id}.png" alt="${id}" title="${award.title}"/>
+                    <a href="#award:${id}">${award.title}</a>
+                    <br/>
+                    <small class="text-muted">${award.desc}</small>
+                </td>
+                <td>${holder}</td>
+                <td class="text-data text-end">${value}</td>
+            </tr>
         `;
-
-        if(++counter >= numPerRow) {
-            viewHTML += `<div class="row">${currentRow}</div>`;
-            currentRow = '';
-            counter = 0;
-        }
     });
 
-    if(counter > 0) {
-        for(var i = counter; i < numPerRow; i++) {
-            currentRow += `<div class="col-sm"></div>`;
-        }
-        viewHTML += `<div class="row">${currentRow}</div>`;
-    }
+    mcstats.viewContent.innerHTML = `
+        <div class="mcstats-entry p-1">
+        <div class="round-box p-1">
+            <table class="table table-responsive-xs table-hover table-sm">
+            <thead>
+                <th scope="col" class="text-shadow">${mcstats.localize('stat.award')}</th>
+                <th scope="col" class="text-shadow">${mcstats.localize('stat.player')}</th>
+                <th scope="col" class="text-end text-shadow">${mcstats.localize('page.awardList.value')}</th>
+            </thead>
+            <tbody>${tbody}</tbody>
+            </table>
+        </div>
+        </div>
+    `;
 
     // show
-    mcstats.viewContent.innerHTML = viewHTML;
     mcstats.showView(mcstats.localize('page.awardList.title'), false, false, false);
 };
